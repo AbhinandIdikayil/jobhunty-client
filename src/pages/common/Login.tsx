@@ -1,5 +1,48 @@
+import React from "react"
+import { Login as LoginI } from "../../types/AllTypes"
+import * as Yup from 'yup'
+import { Formik, Field, FormikValues, Form } from 'formik'
+import { Link, useNavigate } from "react-router-dom"
+import { AppDispatch , RootState } from "../../redux/store"
+import { useDispatch, useSelector } from "react-redux"
+import { login } from "../../redux/actions/userAction"
 
-function Login() {
+const validationSchema = Yup.object().shape({
+    email: Yup.string().required('Email is required').email('Invalid email'),
+    password: Yup.string().required('Password is required').min(4, 'must be atleast 4 character'),
+
+})
+
+const Login: React.FC = () => {
+
+
+    const user = useSelector((state: RootState) => state.user)
+    const dispath: AppDispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const initialValues: LoginI = {
+        email: '',
+        password: ''
+    }
+
+    async function handleSubmit(values: FormikValues) {
+        const url = window.location.href.split('/')[3];
+        if (url == 'login') {
+            const formData: LoginI = {
+                ...values
+            }
+            try {
+                const data = await dispath(login(formData)).unwrap()
+                if (data) {
+                    navigate('/home')
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        console.log(values)
+    }
+
     return (
         <div className="bg-white h-screen">
             <div className="flex  max-md:flex-col max-md:gap-0">
@@ -66,36 +109,72 @@ function Login() {
                                 </div>
                                 <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[104px]" />
                             </div>
+                            <Formik
+                                initialValues={initialValues}
+                                validationSchema={validationSchema}
+                                onSubmit={handleSubmit}
+                            >
+                                {({ isSubmitting, errors }) => (
+                                    <>
+                                        <Form className="flex flex-col">
+                                        
+                                            <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                Email Address
+                                                <span className="text-red-600">
+                                                    {
+                                                        errors?.email && '(' + errors.email + ')'||
+                                                        user?.err && (user?.err as string ).includes('user') && '(' + user?.err + ")"
+                                                    }
+                                                </span>
+                                            </div>
+                                            <Field
+                                                placeholder=' Enter email address'
+                                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                type="text"
+                                                name='email'
+                                            />
 
-                            <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                Email Address
-                            </div>
-                            <input
-                                placeholder=' Enter email address'
-                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                type="text"
-                            />
+                                            <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                Password
+                                                <span className="text-red-600">
+                                                    {
+                                                        errors?.password && '(' + errors.password + ')' ||
+                                                        user?.err && (user?.err as string).includes('password') && '(' + user?.err + ")"
+                                                    }
+                                                </span>
+                                            </div>
+                                            <Field
+                                                name='password'
+                                                placeholder=' Enter password'
+                                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                type="text"
+                                            />
 
-                            <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                Password
-                            </div>
-                            <input
-                                placeholder=' Enter password'
-                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                type="text"
-                            />
+                                            {
+                                                isSubmitting ? (
+                                                    <button className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                        Loging in
+                                                    </button>
+                                                ) : (
+                                                    <button type="submit" disabled={isSubmitting} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                        Login
+                                                    </button>
+                                                )
+                                            }
 
-                            <div className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
-                                Continue
-                            </div>
-                            <div className="flex gap-2 mt-4">
-                                <div className="text-gray-800 leading-[160%]">
-                                    Already have an account?
-                                </div>
-                                <div className="font-semibold text-center text-indigo-600 leading-[150%]">
-                                    Login
-                                </div>
-                            </div>
+                                            <div className="flex gap-2 mt-4">
+                                                <div className="text-gray-800 leading-[160%]">
+                                                    Dont have an account?
+                                                </div>
+                                                <Link to={'/signup'} className="font-semibold text-center text-indigo-600 leading-[150%]">
+                                                    signup
+                                                </Link>
+                                            </div>
+
+                                        </Form>
+                                    </>
+                                )}
+                            </Formik>
                         </div>
                     </div>
                 </div>

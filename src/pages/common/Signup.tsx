@@ -1,7 +1,77 @@
+import * as Yup from 'yup'
+import { Form, Formik, Field, FormikValues } from 'formik'
+import { useState } from 'react';
+import CircularProgress from '@mui/material/CircularProgress'
+import Backdrop from '@mui/material/Backdrop';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signupUser } from '../../redux/actions/userAction';
+import { AppDispatch  , RootState} from '../../redux/store';
+import { SignupForm } from '../../types/AllTypes';
+
+
 
 function Signup() {
+
+
+    const user = useSelector((state: RootState) => state?.user)
+    const dispath: AppDispatch = useDispatch();
+    const navigate = useNavigate()
+
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const initialValues = {
+        name: '',
+        email: '',
+        password: ''
+    }
+
+    const validationSchema = Yup.object().shape({
+        name: Yup
+            .string()
+            .required('name is required'),
+        email: Yup
+            .string()
+            .required('Email is required')
+            .email('Invalid email'),
+        password: Yup
+            .string()
+            .required('password is required')
+            .min(4, 'atleast 4 charchter')
+    })
+
+
+    async function handleSubmit(values: FormikValues) {
+        console.log(values)
+        const url = window.location.href.split('/')[3]
+        if (url == 'signup') {
+            const formData: SignupForm = {
+                ...values,
+                role: 'user'
+            }
+            try {
+                const data = await dispath(signupUser(formData)).unwrap()
+                console.log(data)
+                if (data) {
+                    navigate('/login')
+                }
+            } catch (error) {
+                handleClose();
+                console.log(error)
+            }
+        }
+
+    }
+
     return (
         <div className="bg-white h-screen">
+
             <div className="flex  max-md:flex-col max-md:gap-0">
                 <div className="hidden md:flex flex-col w-[50%] ">
                     <div className="flex flex-col">
@@ -66,48 +136,91 @@ function Signup() {
                                 </div>
                                 <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[104px]" />
                             </div>
-                            <div className="mt-1 font-semibold leading-[160%] text-slate-600">
-                                Full name
-                            </div>
-                            <input
-                                placeholder='Enter your full name'
-                                type="text"
-                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                            />
+                            <Formik
+                                initialValues={initialValues}
+                                validationSchema={validationSchema}
+                                onSubmit={handleSubmit}
+                            >
+                                {({ errors, isSubmitting }) => (
+                                    <Form className='flex flex-col'>
+                                        <div className="mt-1 font-semibold leading-[160%] text-slate-600">
+                                            Full name
+                                            <span className='text-red-600'>
+                                                {
+                                                    errors?.name && errors?.name ||
+                                                    user?.err && (user?.err as string).includes('user') && '(' + user?.err + ')'
+                                                }
+                                            </span>
+                                        </div>
+                                        <Field
+                                            name='name'
+                                            placeholder='Enter your full name'
+                                            type="text"
+                                            className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                        />
 
-                            <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                Email Address
-                            </div>
-                            <input
-                                placeholder=' Enter email address'
-                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                type="text"
-                            />
+                                        <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                            Email Address
+                                            <span className='text-red-600'>
+                                                {
+                                                    errors?.email && errors?.email
+                                                }
+                                            </span>
+                                        </div>
+                                        <Field
+                                            name='email'
+                                            placeholder=' Enter email address'
+                                            className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                            type="text"
+                                        />
 
-                            <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                Password
-                            </div>
-                            <input
-                                placeholder=' Enter password'
-                                className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                type="text"
-                            />
+                                        <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                            Password
+                                            <span className='text-red-600'>
+                                                {
+                                                    errors?.password && errors?.password
+                                                }
+                                            </span>
+                                        </div>
+                                        <Field
+                                            name='password'
+                                            placeholder=' Enter password'
+                                            className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                            type="text"
+                                        />
+                                        {
+                                            isSubmitting ? (
+                                                <button disabled={isSubmitting} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                    Signup..
+                                                </button>
+                                            ) : (
+                                                <button onClick={handleOpen} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                    Signup
+                                                </button>
+                                            )
+                                        }
 
-                            <div className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
-                                Continue
-                            </div>
-                            <div className="flex gap-2 mt-4">
-                                <div className="text-gray-800 leading-[160%]">
-                                    Already have an account?
-                                </div>
-                                <div className="font-semibold text-center text-indigo-600 leading-[150%]">
-                                    Login
-                                </div>
-                            </div>
+                                        <div className="flex gap-2 mt-4">
+                                            <div className="text-gray-800 leading-[160%]">
+                                                Already have an account?
+                                            </div>
+                                            <Link to={'/login'} className="font-semibold text-center text-indigo-600 leading-[150%]">
+                                                Login
+                                            </Link>
+                                        </div>
+                                    </Form>
+                                )}
+
+                            </Formik>
                         </div>
                     </div>
                 </div>
             </div>
+            <Backdrop
+                open={open}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div>
     )
 }
