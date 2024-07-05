@@ -1,7 +1,6 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
-import { login, signupUser } from '../../actions/userAction'
-
+import { googleLoginAndSignup, login, logout, signupUser } from '../../actions/userAction'
 
 const initialState: UserReducer = {
     loading: false,
@@ -14,49 +13,92 @@ const initialState: UserReducer = {
 const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        resetState: (state) => {
+            state.user = null
+            state.role = null
+            state.loading = false
+            state.err = false
+        }
+    },
     extraReducers: (builder: ActionReducerMapBuilder<UserReducer>) => {
         builder
             .addCase(signupUser.pending, (state) => {
                 state.loading = true
-                    state.err = false
-                    state.role = null
-                    state.user = null
+                state.err = false
+                state.role = null
+                state.user = null
             })
             .addCase(signupUser.fulfilled, (state, action) => {
                 state.loading = false
-                    state.err = false
-                    state.role = action.payload.role as 'user' | 'company' | 'admin'
-                    state.user = action.payload
+                state.err = false
+                state.role = action.payload.role as 'user' | 'company' | 'admin'
+                state.user = action.payload
             })
             .addCase(signupUser.rejected, (state, action) => {
                 state.loading = false
                 if (action.payload) {
                     state.err = (action.payload as ErrorPayload).message;
-                  } else {
+                } else {
                     state.err = action.error.message || 'An unknown error occurred';
-                  }
+                }
                 state.role = null
                 state.user = null
             })
-            .addCase(login.pending,(state) => {
+            .addCase(login.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(login.fulfilled,(state,{payload}) => {
+            .addCase(login.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.user = payload
                 state.err = false
                 state.role = payload.role as 'user' | 'company' | 'admin'
             })
-            .addCase(login.rejected,(state,action) => {
+            .addCase(login.rejected, (state, action) => {
                 state.loading = false
-                if(action.payload){
+                if (action.payload) {
                     state.err = (action.payload as ErrorPayload).message
                 } else {
                     state.err = action.error.message || 'An unknown error occured'
                 }
             })
+            .addCase(googleLoginAndSignup.pending, (state) => {
+                state.loading = true
+                state.role = null
+            })
+            .addCase(googleLoginAndSignup.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = false
+                state.user = payload
+                state.role = payload?.role as 'user' | 'company' | 'admin'
+            })
+            .addCase(googleLoginAndSignup.rejected, (state, action) => {
+                state.loading = false
+                state.role = null
+                if (action.payload) {
+                    state.err = (action.payload as ErrorPayload).message
+                } else {
+                    state.err = action.error.message || 'An unknown error occured'
+                }
+            })
+            .addCase(logout.pending,(state) => {
+                state.loading = true
+                state.role = null
+            })
+            .addCase(logout.fulfilled,(state) => {
+                state.loading = false
+                state.user = null
+                state.role = null
+
+            })
+            .addCase(logout.rejected,(state,{payload}) => {
+                state.loading = false
+                state.err = payload?.message || 'error occured' 
+            })
     }
 })
+
+
+export const { resetState } = userSlice.actions
 
 export default userSlice.reducer

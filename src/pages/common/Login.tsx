@@ -1,11 +1,12 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Login as LoginI } from "../../types/AllTypes"
 import * as Yup from 'yup'
 import { Formik, Field, FormikValues, Form } from 'formik'
 import { Link, useNavigate } from "react-router-dom"
-import { AppDispatch , RootState } from "../../redux/store"
+import { AppDispatch, RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { login } from "../../redux/actions/userAction"
+import Navbar from "../user/BeforeOneApplicant/Navbar"
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Invalid email'),
@@ -15,10 +16,19 @@ const validationSchema = Yup.object().shape({
 
 const Login: React.FC = () => {
 
-
     const user = useSelector((state: RootState) => state.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate();
+    const [isCompanyLogin, setIsCompanyLogin] = useState(false);
+
+    useEffect(() => {
+        if (user?.role == 'user') {
+            navigate('/home');
+        } else if (user?.role == 'company'){
+            navigate('/company')
+        }
+        setIsCompanyLogin(window.location.pathname.includes('/company/login'))
+    }, [user])
 
     const initialValues: LoginI = {
         email: '',
@@ -45,18 +55,14 @@ const Login: React.FC = () => {
 
     return (
         <div className="bg-white h-screen">
+            <Navbar />
             <div className="flex  max-md:flex-col max-md:gap-0">
                 <div className="hidden md:flex flex-col w-[50%] ">
                     <div className="flex flex-col">
                         <div className="flex gap-5 justify-between items-start pl-16 bg-slate-50 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
                             <div className="flex flex-col mt-7">
                                 <div className="flex gap-3 self-end text-2xl font-bold tracking-tight leading-9 text-gray-800 whitespace-nowrap">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/40550eadec7bbc460f9ee4be4291e780f8963001faa5df2daa66f0614767c8b9?"
-                                        className="shrink-0 aspect-[1.35] w-[43px]"
-                                    />
-                                    <div className="flex-auto">JobHuntly</div>
+
                                 </div>
                                 <div className="flex flex-col px-8 py-6 mt-28 w-full bg-white max-md:px-5 max-md:mt-10">
                                     <div className="flex gap-2 items-start max-md:pr-5">
@@ -80,14 +86,30 @@ const Login: React.FC = () => {
                 </div>
                 <div className="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
                     <div className="flex flex-col h-full justify-center px-16 w-full text-base bg-white max-md:px-5 max-md:max-w-full">
-                        <div className="flex flex-col pt-5 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
+                        <div className="flex flex-col pt-3 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
                             <div className="flex gap-0 justify-center self-center font-semibold text-indigo-600 leading-[160%]">
-                                <div className="justify-center px-3 py-2 bg-violet-100">
-                                    Job Seeker
-                                </div>
-                                <div className="justify-center px-3 py-2 whitespace-nowrap bg-white">
-                                    Company
-                                </div>
+                                {
+                                    isCompanyLogin ? (
+                                        <>
+                                            <Link to={'/login'} className="justify-center px-3 py-2 bg-white">
+                                                Job Seeker
+                                            </Link>
+                                            <Link to={'/company/login'} className="justify-center px-3 py-2 whitespace-nowrap bg-violet-100 ">
+                                                Company
+                                            </Link>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Link to={'/login'} className="justify-center px-3 py-2 bg-violet-100">
+                                                Job Seeker
+                                            </Link>
+                                            <Link to={'/company/login'} className="justify-center px-3 py-2 whitespace-nowrap bg-white">
+                                                Company
+                                            </Link>
+                                        </>
+                                    )
+                                }
+
                             </div>
                             <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
                                 Welcome back dude{" "}
@@ -117,13 +139,13 @@ const Login: React.FC = () => {
                                 {({ isSubmitting, errors }) => (
                                     <>
                                         <Form className="flex flex-col">
-                                        
+
                                             <div className="mt-4 font-semibold leading-[160%] text-slate-600">
                                                 Email Address
                                                 <span className="text-red-600">
                                                     {
-                                                        errors?.email && '(' + errors.email + ')'||
-                                                        user?.err && (user?.err as string ).includes('user') && '(' + user?.err + ")"
+                                                        errors?.email && '(' + errors.email + ')' ||
+                                                        user?.err && (user?.err as string).includes('user') && '(' + user?.err + ")"
                                                     }
                                                 </span>
                                             </div>
