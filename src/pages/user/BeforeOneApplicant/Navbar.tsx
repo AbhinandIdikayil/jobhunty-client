@@ -1,24 +1,34 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink } from 'react-router-dom'
+import {  NavLink, useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../../redux/store'
-// import { resetState } from '../../../redux/reducers/user/userSlice';
+import { resetState } from '../../../redux/reducers/user/userSlice';
 import { logout } from '../../../redux/actions/userAction';
+import { useEffect } from 'react';
 
 function Navbar() {
     const user = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate()
 
-    async function handleLogout () {
-        // dispatch(resetState())
+    useEffect(() => {
+        if(user.role == 'company'){
+            return navigate('/company')
+        } else if (user.role == 'user') {
+            return navigate('/home')
+        }
+    }, [])
+
+    async function handleLogout() {
         try {
             let data = await dispatch(logout(undefined))
-            console.log(data);
+            if (data) {
+                dispatch(resetState())
+            }
         } catch (error) {
             console.log(error);
         }
     }
 
-    console.log(user)
     return (
         <nav className="flex justify-center items-center self-stretch px-16 w-full max-md:px-5 max-md:max-w-full border-b-2">
             <div className="flex gap-5 justify-between  w-full max-w-[1192px] max-md:flex-wrap max-md:max-w-full">

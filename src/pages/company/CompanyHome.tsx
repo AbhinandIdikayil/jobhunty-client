@@ -1,661 +1,160 @@
-import React from 'react'
 
-function CompanyHome() {
-    return (
-        <div className="bg-white">
-            <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                    <div className="flex flex-col grow justify-between py-8 mx-auto w-full shadow-sm bg-slate-50 leading-[160%]">
-                        <div className="flex gap-2 mx-6 text-2xl font-bold tracking-tight leading-9 text-gray-800 whitespace-nowrap max-md:mx-2.5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/422ff6da33a2a08c381a8b31d872aa34af4021028810b72391a1006af8e4f92c?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 my-auto w-8 aspect-square"
-                            />
-                            <div>JobHuntly</div>
-                        </div>
-                        <div className="flex gap-3 justify-center mt-8 text-base font-medium text-indigo-600 whitespace-nowrap">
-                            <div className="shrink-0 my-auto w-1 h-8 bg-indigo-600" />
-                            <div className="flex gap-4 py-3 pr-4 pl-4 bg-violet-100">
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/3bef9c023297874520a2283c81a4c53de4ca5204bc27eb1e4657c489f080665d?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <div className="flex-1">Dashboard</div>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 px-8 py-3 whitespace-nowrap max-md:px-5">
-                            <div className="flex gap-4 text-base font-medium text-slate-500">
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/9977aaf06475a719d768acae9f48ab40b9aef28e0165261041a4e52cfca9acb8?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <div>Messages</div>
-                            </div>
-                            <div className="flex flex-col justify-center text-sm font-semibold text-white">
-                                <div className="justify-center items-center w-6 h-6 bg-indigo-600 rounded-full">
-                                    1
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 py-3 pr-4 pl-8 text-base font-medium text-slate-500 max-md:px-5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/e362946c064ada6cc5ff5b5eec03239cc254e2e870b5ff28a70875534be65142?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex-1">Company Profile</div>
-                        </div>
-                        <div className="flex gap-4 py-3 pr-4 pl-8 text-base font-medium text-slate-500 max-md:px-5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/b358d7fbfcb41ba8281dc23ab77b79e2b605c3d4ed4fb4112878b368200619fa?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex-1">All Applicants</div>
-                        </div>
-                        <div className="flex gap-4 py-3 pr-4 pl-8 text-base font-medium text-slate-500 max-md:px-5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/86e57dd280d8b9b353b970df269cb16b03753e49ba158a150441b4597bdcc730?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex-1">Job Listing</div>
-                        </div>
-                        <div className="flex gap-4 py-3 pr-4 pl-8 text-base font-medium text-slate-500 max-md:px-5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/ef062218f2c4b58a643be52ef05123d05f90247377416964c51d271d6776d28c?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex-1">My Schedule</div>
-                        </div>
-                        <div className="shrink-0 mt-8 h-px bg-indigo-200" />
-                        <div className="self-start mt-8 ml-8 text-sm font-semibold tracking-wide leading-6 text-gray-800 max-md:ml-2.5">
-                            SETTINGS
-                        </div>
-                        <div className="flex gap-4 py-3 pr-4 pl-8 mt-6 text-base font-medium whitespace-nowrap text-slate-500 max-md:px-5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/6fa6148bd6308148f2d6bbb36a1f1c44370a7235a22fbea630899cc6270a1786?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex-1">Settings</div>
-                        </div>
-                        <div className="flex gap-4 py-3 pr-4 pl-8 text-base font-medium text-slate-500 max-md:px-5">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/7d96403e4e55d3d503723ab39ab1135f29150c6a85320078b88fe62034280be7?apiKey=bf80438c4595450788b907771330b274&"
-                                className="shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex-1">Help Center</div>
-                        </div>
-                        <div className="flex flex-col justify-center px-8 pt-5 mt-[599px] max-md:px-5 max-md:mt-10">
-                            <div className="flex gap-4">
-                                <img
-                                    loading="lazy"
-                                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/abd8251f579af596e6df11d9e6dbf59483de4165dfba424a675b34279961d5e1?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 my-auto w-12 aspect-square"
-                                />
-                                <div className="flex flex-col">
-                                    <div className="text-lg font-semibold text-slate-800">
-                                        Maria Kelly
-                                    </div>
-                                    <div className="text-sm text-slate-600">
-                                        MariaKlly@email.com
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
-                    <div className="flex flex-col grow pb-6 max-md:max-w-full">
-                        <div className="flex gap-5 justify-between px-8 py-4 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                            <div className="flex gap-4 whitespace-nowrap">
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/28fcac72ebb7d51aabcc8a2e42dcfd241ea63b6ee352291d3a8ebc64ceae3826?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 self-start w-12 aspect-square"
-                                />
-                                <div className="flex flex-col">
-                                    <div className="text-base leading-6 text-slate-600">
-                                        Company
-                                    </div>
-                                    <div className="flex gap-2 text-xl font-semibold leading-6 text-slate-800">
-                                        <div>Nomad</div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/11e2517998516c181ac04025690221ae22f5c4e4eb4dee7f65d6fdbaf2f88a9b?apiKey=bf80438c4595450788b907771330b274&"
-                                            className="shrink-0 w-6 aspect-square"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex gap-5 justify-center text-base font-bold leading-6 text-center text-white">
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/22cc243b4b17eb6822f1aae2f96ecac59c86787ba7154d9a5282f66481ba231f?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 my-auto w-10 aspect-square"
-                                />
-                                <div className="flex gap-2.5 justify-center px-6 py-3 bg-indigo-600 max-md:px-5">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
-                                    <div>Post a job</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex gap-5 justify-between px-px mt-8 w-full max-md:flex-wrap max-md:max-w-full">
-                            <div className="flex flex-col px-5 max-md:max-w-full">
-                                <div className="text-2xl font-semibold leading-7 text-slate-800 max-md:max-w-full">
-                                    Good morning, Maria
-                                </div>
-                                <div className="mt-2 text-base font-medium leading-6 text-slate-500 max-md:max-w-full">
-                                    Here is your job listings statistic report from July 19 - July
-                                    25.
-                                </div>
-                            </div>
-                            <div className="flex gap-4 justify-between px-4 py-3 my-auto text-base leading-6 bg-white border border-solid border-zinc-200 text-slate-800">
-                                <div>Jul 19 - Jul 25</div>
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/947f0915c2db61a0853787c774c64c4cf69bbb6bd8e3f7eef20c8ed60349f52d?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 my-auto w-5 aspect-square"
-                                />
-                            </div>
-                        </div>
-                        <div className="px-5 mt-8 max-md:max-w-full">
-                            <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                                <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div className="flex grow gap-3.5 items-center p-6 w-full text-white bg-indigo-600 max-md:px-5 max-md:mt-6">
-                                        <div className="self-stretch my-auto text-5xl font-semibold leading-10 max-md:text-4xl">
-                                            76
-                                        </div>
-                                        <div className="text-lg font-medium leading-7">
-                                            New candidates to review
-                                        </div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/0d67482e3d717ee772fa042101c13ad242d3c3efbcfa9515fa9715b3514f77fd?apiKey=bf80438c4595450788b907771330b274&"
-                                            className="shrink-0 self-stretch my-auto w-6 aspect-square"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div className="flex grow gap-3.5 justify-between p-6 w-full text-white bg-emerald-300 max-md:px-5 max-md:mt-6">
-                                        <div className="flex gap-3.5">
-                                            <div className="text-5xl font-semibold leading-10 max-md:text-4xl">
-                                                3
-                                            </div>
-                                            <div className="my-auto text-lg font-medium leading-7">
-                                                Schedule for today
-                                            </div>
-                                        </div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/5192c2afba141d8c84b3ed160d0b813c35157bac93e43620e4127a0fd1d8c6fb?apiKey=bf80438c4595450788b907771330b274&"
-                                            className="shrink-0 my-auto w-6 aspect-square"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div className="flex grow gap-2.5 justify-between p-6 w-full text-white bg-sky-400 max-md:px-5 max-md:mt-6">
-                                        <div className="flex gap-3.5">
-                                            <div className="text-5xl font-semibold leading-10 max-md:text-4xl">
-                                                24
-                                            </div>
-                                            <div className="my-auto text-lg font-medium leading-7">
-                                                Messages received
-                                            </div>
-                                        </div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/1925330832ae6e0032c5685bd4dc5177474b0e377d509538ee3547c357bb6bb1?apiKey=bf80438c4595450788b907771330b274&"
-                                            className="shrink-0 my-auto w-6 aspect-square"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mt-6 max-md:max-w-full">
-                            <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                                <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
-                                    <div className="flex flex-col grow py-6 w-full bg-white border border-solid border-zinc-200 max-md:mt-6 max-md:max-w-full">
-                                        <div className="flex gap-5 justify-between mx-6 max-md:flex-wrap max-md:mr-2.5 max-md:max-w-full">
-                                            <div className="flex flex-col">
-                                                <div className="text-xl font-semibold leading-6 text-slate-800">
-                                                    Job statistics
-                                                </div>
-                                                <div className="mt-1 text-sm leading-6 text-slate-500">
-                                                    Showing Jobstatistic Jul 19-25
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-0 self-start p-1 text-base font-semibold leading-6 text-indigo-600 whitespace-nowrap bg-violet-100">
-                                                <div className="justify-center px-3 py-2 bg-white">
-                                                    Week
-                                                </div>
-                                                <div className="justify-center px-3 py-2 bg-violet-100">
-                                                    Month
-                                                </div>
-                                                <div className="justify-center px-3 py-2 bg-violet-100">
-                                                    Year
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-5 justify-between items-start px-6 mt-4 text-base font-semibold leading-6 bg-white shadow-sm text-slate-500 max-md:flex-wrap max-md:px-5">
-                                            <div className="flex flex-col self-stretch whitespace-nowrap text-slate-800">
-                                                <div>Overview</div>
-                                                <div className="shrink-0 mt-2 h-1 bg-indigo-600 rounded-none" />
-                                            </div>
-                                            <div>Jobs View</div>
-                                            <div className="max-md:max-w-full">Jobs Applied</div>
-                                        </div>
-                                        <div className="mx-6 mt-12 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
-                                            <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                                                <div className="flex flex-col w-[65%] max-md:ml-0 max-md:w-full">
-                                                    <div className="flex flex-col grow text-base font-medium leading-6 text-center text-slate-500 max-md:mt-6 max-md:max-w-full">
-                                                        <div className="flex flex-col py-2 ml-28 text-white whitespace-nowrap bg-slate-800 w-[82px] max-md:ml-2.5">
-                                                            <div className="flex gap-2">
-                                                                <div className="shrink-0 my-auto w-4 h-4 bg-emerald-300 rounded" />
-                                                                <div>122</div>
-                                                            </div>
-                                                            <div className="flex gap-2">
-                                                                <div className="shrink-0 my-auto w-4 h-4 bg-sky-400 rounded" />
-                                                                <div>34</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex gap-4 items-end whitespace-nowrap max-md:flex-wrap">
-                                                            <div className="flex flex-col flex-1 self-stretch">
-                                                                <div className="shrink-0 bg-amber-400 h-[115px]" />
-                                                                <div className="shrink-0 bg-violet-500 h-[115px]" />
-                                                                <div className="mt-2">Mon</div>
-                                                            </div>
-                                                            <div className="flex flex-col flex-1 mt-20 max-md:mt-10">
-                                                                <div className="shrink-0 bg-amber-400 h-[26px]" />
-                                                                <div className="shrink-0 bg-violet-500 h-[132px]" />
-                                                                <div className="mt-2">Tue</div>
-                                                            </div>
-                                                            <div className="flex flex-col flex-1 mt-20 max-md:mt-10">
-                                                                <div className="shrink-0 bg-amber-400 h-[110px]" />
-                                                                <div className="shrink-0 w-12 h-12 bg-violet-500" />
-                                                                <div className="mt-2">Wed</div>
-                                                            </div>
-                                                            <div className="flex flex-col flex-1 self-start mt-2">
-                                                                <div className="shrink-0 bg-amber-400 h-[54px]" />
-                                                                <div className="shrink-0 bg-violet-500 h-[168px]" />
-                                                                <div className="mt-2">Thu</div>
-                                                            </div>
-                                                            <div className="flex flex-col flex-1 mt-9">
-                                                                <div className="shrink-0 bg-amber-400 h-[132px]" />
-                                                                <div className="shrink-0 h-16 bg-violet-500" />
-                                                                <div className="mt-2">Fri</div>
-                                                            </div>
-                                                            <div className="flex flex-col flex-1 mt-36 max-md:mt-10">
-                                                                <div className="shrink-0 bg-amber-400 h-[43px]" />
-                                                                <div className="shrink-0 bg-violet-500 h-[42px]" />
-                                                                <div className="mt-2">Sat</div>
-                                                            </div>
-                                                            <div className="flex flex-col flex-1 mt-32 max-md:mt-10">
-                                                                <div className="shrink-0 bg-amber-400 h-[11px]" />
-                                                                <div className="shrink-0 h-24 bg-violet-500" />
-                                                                <div className="mt-2">Sun</div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex gap-5 justify-between mt-2 max-md:flex-wrap">
-                                                            <div className="flex gap-2">
-                                                                <div className="shrink-0 my-auto w-4 h-4 bg-amber-400 rounded" />
-                                                                <div>Job View</div>
-                                                            </div>
-                                                            <div className="flex gap-2">
-                                                                <div className="shrink-0 my-auto w-4 h-4 bg-violet-500 rounded" />
-                                                                <div>Job Applied</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="flex flex-col ml-5 w-[35%] max-md:ml-0 max-md:w-full">
-                                                    <div className="flex flex-col grow mt-1.5 max-md:mt-7">
-                                                        <div className="flex flex-col p-4 w-full bg-white border border-solid border-zinc-200">
-                                                            <div className="flex gap-5 justify-between">
-                                                                <div className="text-lg font-semibold leading-7 text-slate-800">
-                                                                    Job Views
-                                                                </div>
-                                                                <div className="flex justify-center items-center p-1.5 w-8 h-8 bg-amber-400 rounded-[32px]">
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/b58c3c6fc28c4e0f1d0b6d52fa6c7bf8ff6647fa0dd82572266a71bd983ff3f9?apiKey=bf80438c4595450788b907771330b274&"
-                                                                        className="w-5 aspect-square"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="mt-3.5 text-4xl font-semibold leading-9 text-center text-slate-800">
-                                                                2,342
-                                                            </div>
-                                                            <div className="flex gap-2 text-lg font-medium leading-7 text-center">
-                                                                <div className="text-slate-500">This Week </div>
-                                                                <div className="flex gap-0 pr-1.5 text-violet-500 whitespace-nowrap">
-                                                                    <div>6.4%</div>
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/04ec4a4506dc32d534191018ffbd570687fbb14f6888a220b5d57497850f860b?apiKey=bf80438c4595450788b907771330b274&"
-                                                                        className="shrink-0 my-auto w-5 aspect-square"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="flex flex-col p-4 mt-4 w-full bg-white border border-solid border-zinc-200">
-                                                            <div className="flex gap-5 justify-between">
-                                                                <div className="text-lg font-semibold leading-7 text-slate-800">
-                                                                    Job Applied
-                                                                </div>
-                                                                <div className="flex justify-center items-center p-1.5 w-8 h-8 bg-violet-500 rounded-[32px]">
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c8642f66d4c4e6ff99eccd32ba0627ad24c7116e532e0a15a5fb6ff80bfb2089?apiKey=bf80438c4595450788b907771330b274&"
-                                                                        className="w-5 aspect-square"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="mt-3.5 text-4xl font-semibold leading-9 text-center text-slate-800">
-                                                                654
-                                                            </div>
-                                                            <div className="flex gap-2 text-lg font-medium leading-7 text-center">
-                                                                <div className="text-slate-500">This Week </div>
-                                                                <div className="flex gap-0 pr-1.5 text-red-400 whitespace-nowrap">
-                                                                    <div>0.5%</div>
-                                                                    <img
-                                                                        loading="lazy"
-                                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/40003d672b31e1c9bbcdf175c9dd408c935d9a9598474d7d3ab4827f43837ebc?apiKey=bf80438c4595450788b907771330b274&"
-                                                                        className="shrink-0 my-auto w-5 aspect-square"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
-                                    <div className="flex flex-col grow max-md:mt-6">
-                                        <div className="flex flex-col pt-6 pb-6 w-full bg-white border border-solid border-zinc-200">
-                                            <div className="self-start ml-6 text-xl font-semibold leading-6 text-center text-slate-800 max-md:ml-2.5">
-                                                Job Open
-                                            </div>
-                                            <div className="flex gap-4 items-start px-6 pt-2.5 pb-5 mt-4 max-md:px-5">
-                                                <div className="self-start text-7xl font-semibold leading-[72px] text-slate-800 max-md:text-4xl">
-                                                    12
-                                                </div>
-                                                <div className="flex-auto self-end mt-10 text-xl leading-8 text-slate-500">
-                                                    Jobs Opened
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col pt-6 pb-6 mt-6 w-full bg-white border border-solid border-zinc-200">
-                                            <div className="self-start ml-6 text-xl font-semibold leading-6 text-center text-slate-800 max-md:ml-2.5">
-                                                Applicants Summary
-                                            </div>
-                                            <div className="flex gap-2 px-6 py-2 mt-4 whitespace-nowrap max-md:px-5">
-                                                <div className="text-7xl font-semibold leading-[72px] text-slate-800 max-md:text-4xl">
-                                                    67
-                                                </div>
-                                                <div className="self-end mt-6 text-xl leading-8 text-slate-500">
-                                                    Applicants
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-0 justify-center px-6 max-md:px-5">
-                                                <div className="shrink-0 h-4 bg-violet-500 w-[150px]" />
-                                                <div className="shrink-0 h-4 bg-emerald-300 w-[77px]" />
-                                                <div className="shrink-0 w-10 h-4 bg-sky-400" />
-                                                <div className="shrink-0 w-7 h-4 bg-amber-400" />
-                                                <div className="flex-1 shrink-0 h-4 bg-red-400" />
-                                            </div>
-                                            <div className="flex gap-5 justify-between px-6 text-base leading-6 text-slate-800 max-md:px-5">
-                                                <div className="flex flex-col pt-6">
-                                                    <div className="flex gap-2">
-                                                        <div className="shrink-0 my-auto w-5 h-5 bg-violet-500 rounded" />
-                                                        <div>
-                                                            Full Time :{" "}
-                                                            <span className="font-medium text-slate-800">
-                                                                45
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex gap-2 mt-2">
-                                                        <div className="shrink-0 my-auto w-5 h-5 bg-emerald-300 rounded" />
-                                                        <div>
-                                                            Part-Time :{" "}
-                                                            <span className="font-medium text-slate-800">
-                                                                24
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex gap-2 mt-2">
-                                                        <div className="shrink-0 my-auto w-5 h-5 bg-sky-400 rounded" />
-                                                        <div>
-                                                            Remote :{" "}
-                                                            <span className="font-medium text-slate-800">
-                                                                22
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="flex flex-col self-start pt-6">
-                                                    <div className="flex gap-2">
-                                                        <div className="shrink-0 my-auto w-5 h-5 bg-amber-400 rounded" />
-                                                        <div>
-                                                            Internship :{" "}
-                                                            <span className="font-medium text-slate-800">
-                                                                32
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="flex gap-2 mt-2">
-                                                        <div className="shrink-0 my-auto w-5 h-5 bg-red-400 rounded" />
-                                                        <div>
-                                                            Contract :{" "}
-                                                            <span className="font-medium text-slate-800">
-                                                                30
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex flex-col mt-6 border border-solid border-zinc-200 max-md:max-w-full">
-                            <div className="flex gap-5 justify-between p-6 w-full font-semibold bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                <div className="text-xl leading-6 text-slate-800">
-                                    Job Updates
-                                </div>
-                                <div className="flex gap-2 text-base leading-6 text-indigo-600">
-                                    <div>View All</div>
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/91b969619ab6ae4edfcb08646ad01c396be532e86067e245a8b03ff64740f0c7?apiKey=bf80438c4595450788b907771330b274&"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
-                                </div>
-                            </div>
-                            <div className="p-6 max-md:px-5 max-md:max-w-full">
-                                <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                                    <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
-                                        <div className="flex flex-col grow p-6 mx-auto w-full text-sm font-semibold leading-6 bg-white border border-solid border-zinc-200 max-md:pl-5 max-md:mt-10">
-                                            <div className="flex gap-5 justify-between text-emerald-300 whitespace-nowrap">
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/98dd67d5b501cec1d613d6591932d51a0221ba22ad9008be452100d6537f275f?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 w-12 aspect-square"
-                                                />
-                                                <div className="justify-center self-start px-2.5 py-1.5 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                                                    Full-Time
-                                                </div>
-                                            </div>
-                                            <div className="mt-4 text-lg text-slate-800">
-                                                Social Media Assistant
-                                            </div>
-                                            <div className="flex gap-2 justify-between text-base text-slate-500">
-                                                <div>Nomad</div>
-                                                <div>Paris, France</div>
-                                            </div>
-                                            <div className="flex gap-2 mt-6 whitespace-nowrap">
-                                                <div className="justify-center px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                    Marketing
-                                                </div>
-                                                <div className="justify-center px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                                                    Design
-                                                </div>
-                                            </div>
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/f222244f5aac6ace1bb71e2d414b3d8448a9027abe1c1ded52d5ee933bcb688d?apiKey=bf80438c4595450788b907771330b274&"
-                                                className="self-center mt-6 aspect-[33.33] w-[199px]"
-                                            />
-                                            <div className="mt-2 text-center text-slate-500 max-md:mr-1.5">
-                                                <span className="font-semibold text-slate-800">
-                                                    5 applied
-                                                </span>{" "}
-                                                <span className="text-slate-500">of 10 capacity</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
-                                        <div className="flex flex-col grow p-6 mx-auto w-full text-sm font-semibold leading-6 bg-white border border-solid border-zinc-200 max-md:pl-5 max-md:mt-10">
-                                            <div className="flex gap-5 justify-between text-emerald-300 whitespace-nowrap">
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a4a0f79389fba4c6d33f37439376e2abce44580b00b3c8a125a65bf32c51e859?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 w-12 aspect-square"
-                                                />
-                                                <div className="justify-center self-start px-2.5 py-1.5 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                                                    Full-Time
-                                                </div>
-                                            </div>
-                                            <div className="mt-4 text-lg text-slate-800">
-                                                Brand Designer
-                                            </div>
-                                            <div className="flex gap-2 justify-between text-base text-slate-500">
-                                                <div>Nomad</div>
-                                                <div>Paris, France</div>
-                                            </div>
-                                            <div className="flex gap-2 mt-6 whitespace-nowrap">
-                                                <div className="justify-center px-2.5 py-1.5 text-emerald-300 border border-emerald-300 border-solid rounded-[80px]">
-                                                    Business
-                                                </div>
-                                                <div className="justify-center px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                                                    Design
-                                                </div>
-                                            </div>
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/0a29a3205a57d1fc2a3a847f6ad135309bdd4c2c2cffa3851552be25c7ac6d78?apiKey=bf80438c4595450788b907771330b274&"
-                                                className="self-center mt-6 aspect-[33.33] w-[198px]"
-                                            />
-                                            <div className="self-start mt-2 text-center text-slate-500">
-                                                <span className="font-semibold text-slate-800">
-                                                    5 applied
-                                                </span>{" "}
-                                                <span className="text-slate-500">of 10 capacity</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
-                                        <div className="flex flex-col grow py-6 pr-0.5 pl-6 mx-auto w-full text-sm font-semibold leading-6 bg-white border border-solid border-zinc-200 max-md:pl-5 max-md:mt-10">
-                                            <div className="flex gap-5 justify-between pr-4 text-emerald-300 whitespace-nowrap">
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/b8c00f42450a32ba213225dc65262e348f3fe248d47a7c17ff963a7eff09435b?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 w-12 aspect-square"
-                                                />
-                                                <div className="justify-center self-start px-2.5 py-1.5 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                                                    Full-Time
-                                                </div>
-                                            </div>
-                                            <div className="mt-4 text-lg text-slate-800">
-                                                Interactive Developer
-                                            </div>
-                                            <div className="flex gap-2 justify-between text-base text-slate-500">
-                                                <div>Terraform</div>
-                                                <div>Berlin, Germany</div>
-                                            </div>
-                                            <div className="flex gap-2 mt-6 whitespace-nowrap">
-                                                <div className="justify-center px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                    Marketing
-                                                </div>
-                                                <div className="justify-center px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                                                    Design
-                                                </div>
-                                            </div>
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/f222244f5aac6ace1bb71e2d414b3d8448a9027abe1c1ded52d5ee933bcb688d?apiKey=bf80438c4595450788b907771330b274&"
-                                                className="self-center mt-6 aspect-[33.33] w-[221px]"
-                                            />
-                                            <div className="mt-2 text-center text-slate-500">
-                                                <span className="font-semibold text-slate-800">
-                                                    5 applied
-                                                </span>{" "}
-                                                <span className="text-slate-500">of 10 capacity</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col ml-5 w-3/12 max-md:ml-0 max-md:w-full">
-                                        <div className="flex flex-col grow p-6 mx-auto w-full text-sm font-semibold leading-6 bg-white border border-solid border-zinc-200 max-md:pl-5 max-md:mt-10">
-                                            <div className="flex gap-5 justify-between text-emerald-300 whitespace-nowrap">
-                                                <img
-                                                    loading="lazy"
-                                                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/21d3495426f43d2090102557740d9d0f615f49b7c7a0d27e036d81a17644f7e4?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 w-12 aspect-square"
-                                                />
-                                                <div className="justify-center self-start px-2.5 py-1.5 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                                                    Full-Time
-                                                </div>
-                                            </div>
-                                            <div className="mt-4 text-lg text-slate-800">
-                                                Product Designer
-                                            </div>
-                                            <div className="flex gap-2 justify-between text-base text-slate-500">
-                                                <div>ClassPass</div>
-                                                <div>Berlin, Germ..</div>
-                                            </div>
-                                            <div className="flex gap-2 mt-6 whitespace-nowrap">
-                                                <div className="justify-center px-2.5 py-1.5 text-emerald-300 border border-emerald-300 border-solid rounded-[80px]">
-                                                    Business
-                                                </div>
-                                                <div className="justify-center px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                                                    Design
-                                                </div>
-                                            </div>
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/0a29a3205a57d1fc2a3a847f6ad135309bdd4c2c2cffa3851552be25c7ac6d78?apiKey=bf80438c4595450788b907771330b274&"
-                                                className="self-center mt-6 aspect-[33.33] w-[198px]"
-                                            />
-                                            <div className="self-start mt-2 text-center text-slate-500">
-                                                <span className="font-semibold text-slate-800">
-                                                    5 applied
-                                                </span>{" "}
-                                                <span className="text-slate-500">of 10 capacity</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import List from '@mui/material/List';
+import Divider from '@mui/material/Divider';
+import { MdOutlineArrowBackIos } from "react-icons/md";
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { RiHome2Line } from "react-icons/ri";
+import { BiMessageDetail } from "react-icons/bi";
+import { TbBuildingSkyscraper } from "react-icons/tb";
+import { PiUsersThreeDuotone } from "react-icons/pi";
+import { LuClipboardList } from "react-icons/lu";
+import { AiOutlineSchedule } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
+import Header from '../../components/company/Header';
+import { Outlet , NavLink } from 'react-router-dom';
+
+
+const drawerWidth = 240;
+
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
+    open?: boolean;
+}>(({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginLeft: 0,
+    }),
+}));
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
 }
 
-export default CompanyHome
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+    transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(4, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+}));
+
+export default function CompanyHome() {
+    const [open, setOpen] = React.useState(true);
+
+    const handleDrawerOpen = React.useCallback(() => {
+        setOpen(true);
+    }, [])
+
+    const handleDrawerClose = React.useCallback(() => {
+        setOpen(false);
+    }, []);
+
+    const navLinks = ['','messages','profile','applicants','job-list','schedules']
+
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+
+                <Header open={open} func={handleDrawerOpen} />
+
+            </AppBar>
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                        boxSizing: 'border-box',
+                    },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={open}
+            >
+                <DrawerHeader>
+                    <MdOutlineArrowBackIos onClick={handleDrawerClose} />
+                </DrawerHeader>
+                <Divider />
+                <List>
+                    {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
+                        <ListItem key={text} disablePadding >
+                            <NavLink className={'sidebar-link'} end to={navLinks[index]}>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {
+                                            text == 'Dashboard' && <RiHome2Line size={30} /> ||
+                                            text == 'Messages' && <BiMessageDetail size={30} /> ||
+                                            text == 'Company profiles' && <TbBuildingSkyscraper size={30} /> ||
+                                            text == 'All applicants' && <PiUsersThreeDuotone size={30} /> ||
+                                            text == 'Job listing' && <LuClipboardList size={30} /> ||
+                                            text == 'My schedule' && <AiOutlineSchedule size={30} />
+                                        }
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </NavLink>
+                        </ListItem>
+                    ))}
+                </List>
+                <Divider />
+                <List>
+                    {['Settings'].map((text) => (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    <IoSettingsOutline size={30} />
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+            </Drawer>
+            <Main open={open}>
+                <DrawerHeader>
+
+                </DrawerHeader>
+                <Outlet context={{ open }} />
+
+            </Main>
+        </Box>
+    );
+}

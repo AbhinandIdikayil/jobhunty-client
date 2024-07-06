@@ -22,11 +22,6 @@ const Login: React.FC = () => {
     const [isCompanyLogin, setIsCompanyLogin] = useState(false);
 
     useEffect(() => {
-        if (user?.role == 'user') {
-            navigate('/home');
-        } else if (user?.role == 'company'){
-            navigate('/company')
-        }
         setIsCompanyLogin(window.location.pathname.includes('/company/login'))
     }, [user])
 

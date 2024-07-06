@@ -5,9 +5,8 @@ import CircularProgress from '@mui/material/CircularProgress'
 import Backdrop from '@mui/material/Backdrop';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { googleLoginAndSignup, signupUser } from '../../redux/actions/userAction';
+import { googleLoginAndSignup, signupUser, verifyOtp } from '../../redux/actions/userAction';
 import { AppDispatch, RootState } from '../../redux/store';
-import { SignupForm } from '../../types/AllTypes';
 import { GoogleLogin } from '@react-oauth/google'
 import Navbar from '../user/BeforeOneApplicant/Navbar';
 
@@ -20,8 +19,13 @@ function Signup() {
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate()
     const [isCompanySignup, setIsCompanySignup] = useState(false);
-
+    const [otpPage, setOtpPage] = useState(false)
     const [open, setOpen] = useState(false);
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -34,6 +38,18 @@ function Signup() {
         email: '',
         password: ''
     }
+
+    const otpInitialValues = {
+        otp: ''
+    }
+
+    const otpValidationSchema = Yup.object().shape({
+        otp: Yup
+            .number()
+            .typeError('only numbers are allowed')
+            .required('otp is required')
+
+    })
 
     const validationSchema = Yup.object().shape({
         name: Yup
@@ -52,20 +68,13 @@ function Signup() {
 
 
     useEffect(() => {
-        if (user?.user) {
-            navigate('/home');
-        }
+        // if (user?.user) {
+        //     navigate('/home');
+        // }
         setIsCompanySignup(window.location.pathname.includes('/company/signup'))
     }, [user])
 
 
-    // const login = useGoogleLogin({
-    //     onSuccess:(data) => handleGoogleAuth(data),
-    //     flow:'implicit',
-    //     onError: (err) => {
-    //         console.log(err)
-    //     }
-    // });
     const responseMessage = (response: Object) => {
         console.log(response);
         handleGoogleAuth(response)
@@ -77,6 +86,7 @@ function Signup() {
     async function handleGoogleAuth(data: any) {
         try {
             let result = await dispath(googleLoginAndSignup(data)).unwrap()
+            console.log(result)
             if (result) {
                 navigate('/home')
             }
@@ -87,34 +97,42 @@ function Signup() {
 
 
     async function handleSubmit(values: FormikValues) {
-        console.log(values)
+        try {
+            const data = await dispath(signupUser(values)).unwrap()
+            setName(data.name)
+            setEmail(data.email)
+            setPassword(data.password)
+            if (data) {
+                setOtpPage(true)
+                handleClose();
+            }
+        } catch (error) {
+            handleClose();
+            console.log(error)
+        }
+
+    }
+
+
+    async function handleOtp(values: FormikValues) {
         const url = window.location.pathname.split('/')[1]
-        console.log(url)
-        console.log(url.includes('company'))
         const signupConfig = {
-            'company': { role: 'company', navigateTo: '/company/login' },
+            'company': { role: 'company', navigateTo: '/company' },
             'signup': { role: 'user', navigateTo: '/login' },
         } as const
-
         type SignupType = keyof typeof signupConfig;
-        console.log(Object.keys(signupConfig))
         const urLKey = Object.keys(signupConfig).find(key => url.includes(key)) as SignupType | undefined
-        console.log(urLKey)
+
         if (urLKey) {
             const { role, navigateTo } = signupConfig[urLKey]
-            console.log(role, navigateTo)
-            const formData: SignupForm = {
-                ...values,
-                role
-            }
             try {
-                const data = await dispath(signupUser(formData)).unwrap()
-                console.log(data)
+                console.log(name, password, values?.otp,role)
+                const data = await dispath(verifyOtp({ email, name, password, otp: values?.otp, role }));
+
                 if (data) {
                     navigate(navigateTo)
                 }
             } catch (error) {
-                handleClose();
                 console.log(error)
             }
         } else {
@@ -155,130 +173,172 @@ function Signup() {
                 </div>
                 <div className="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
                     <div className="flex flex-col h-full justify-center px-16 w-full text-base bg-white max-md:px-5 max-md:max-w-full">
-                        <div className="flex flex-col pt-5 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
-                            <div className="flex gap-0 justify-center self-center font-semibold text-indigo-600 leading-[160%]">
-                                {
-                                    isCompanySignup ? (
-                                        <>
-                                            <Link to={'/signup'} className="justify-center px-3 py-2 bg-white">
-                                                Job Seeker
-                                            </Link>
-                                            <Link to={'/company/signup'} className="justify-center px-3 py-2 whitespace-nowrap bg-violet-100 ">
-                                                Company
-                                            </Link>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Link to={'/signup'} className="justify-center px-3 py-2 bg-violet-100">
-                                                Job Seeker
-                                            </Link>
-                                            <Link to={'/company/signup'} className="justify-center px-3 py-2 whitespace-nowrap bg-white">
-                                                Company
-                                            </Link>
-                                        </>
-                                    )
-                                }
-                            </div>
-                            <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
-                                Get more opportunities{" "}
-                            </div>
-                            <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600  border-indigo-200  leading-[160%] max-md:px-5">
-                                {/* <div className="w-full"> */}
-                                <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />
-                                {/* <img
+                        {
+                            otpPage ? (
+                                <div className="flex flex-col pt-5 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
+                                    <Formik
+                                        initialValues={otpInitialValues}
+                                        validationSchema={otpValidationSchema}
+                                        onSubmit={handleOtp}
+                                    >
+                                        {({ errors }) => (
+                                            <Form className='flex flex-col'>
+                                                <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
+                                                    Get more opportunities{" "}
+                                                </div>
+                                                <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                    Email Address
+                                                    <span className='text-red-600'>
+                                                        {
+                                                            errors?.otp && errors?.otp
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <Field
+                                                    name='otp'
+                                                    placeholder='Enter otp'
+                                                    className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                    type="text"
+                                                />
+
+                                                <button onClick={handleOpen} type='submit' className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                    verify
+                                                </button>
+
+                                            </Form>
+                                        )}
+
+
+                                    </Formik>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col pt-5 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
+                                    <div className="flex gap-0 justify-center self-center font-semibold text-indigo-600 leading-[160%]">
+                                        {
+                                            isCompanySignup ? (
+                                                <>
+                                                    <Link to={'/signup'} className="justify-center px-3 py-2 bg-white">
+                                                        Job Seeker
+                                                    </Link>
+                                                    <Link to={'/company/signup'} className="justify-center px-3 py-2 whitespace-nowrap bg-violet-100 ">
+                                                        Company
+                                                    </Link>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Link to={'/signup'} className="justify-center px-3 py-2 bg-violet-100">
+                                                        Job Seeker
+                                                    </Link>
+                                                    <Link to={'/company/signup'} className="justify-center px-3 py-2 whitespace-nowrap bg-white">
+                                                        Company
+                                                    </Link>
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                    <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
+                                        Get more opportunities{" "}
+                                    </div>
+                                    <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600  border-indigo-200  leading-[160%] max-md:px-5">
+                                        {/* <div className="w-full"> */}
+                                        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />
+                                        {/* <img
                                         loading="lazy"
                                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/2019ff383b243dae561ad6a469db084ba563760d8f4bb4a2722edf42f5a32861?"
                                         className="shrink-0 my-auto w-5 aspect-square"
                                     />
                                     <div>Sign Up with Google</div> */}
-                                {/* </div> */}
-                            </div>
-                            <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
-                                <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[109px]" />
-                                <div className="flex-auto self-stretch">
-                                    Or sign up with email
+                                        {/* </div> */}
+                                    </div>
+                                    <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
+                                        <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[109px]" />
+                                        <div className="flex-auto self-stretch">
+                                            Or sign up with email
+                                        </div>
+                                        <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[104px]" />
+                                    </div>
+                                    <Formik
+                                        initialValues={initialValues}
+                                        validationSchema={validationSchema}
+                                        onSubmit={handleSubmit}
+                                    >
+                                        {({ errors, isSubmitting }) => (
+                                            <Form className='flex flex-col'>
+                                                <div className="mt-1 font-semibold leading-[160%] text-slate-600">
+                                                    {
+                                                        isCompanySignup ? 'Company name' : 'Full name'
+                                                    }
+                                                    <span className='text-red-600'>
+                                                        {
+                                                            errors?.name && errors?.name ||
+                                                            user?.err && (user?.err as string).includes('user') && '(' + user?.err + ')'
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <Field
+                                                    name='name'
+                                                    placeholder='Enter your full name'
+                                                    type="text"
+                                                    className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                />
+
+                                                <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                    Email Address
+                                                    <span className='text-red-600'>
+                                                        {
+                                                            errors?.email && errors?.email
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <Field
+                                                    name='email'
+                                                    placeholder=' Enter email address'
+                                                    className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                    type="email"
+                                                />
+
+                                                <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                    Password
+                                                    <span className='text-red-600'>
+                                                        {
+                                                            errors?.password && errors?.password
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <Field
+                                                    name='password'
+                                                    placeholder=' Enter password'
+                                                    className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                    type="text"
+                                                />
+                                                {
+                                                    isSubmitting ? (
+                                                        <button disabled={isSubmitting} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                            Signup..
+                                                        </button>
+                                                    ) : (
+                                                        <button onClick={handleOpen} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                            Signup
+                                                        </button>
+                                                    )
+                                                }
+
+                                                <div className="flex gap-2 mt-4">
+                                                    <div className="text-gray-800 leading-[160%]">
+                                                        Already have an account?
+                                                    </div>
+                                                    <Link to={'/login'} className="font-semibold text-center text-indigo-600 leading-[150%]">
+                                                        Login
+                                                    </Link>
+                                                </div>
+                                            </Form>
+                                        )}
+
+                                    </Formik>
                                 </div>
-                                <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[104px]" />
-                            </div>
-                            <Formik
-                                initialValues={initialValues}
-                                validationSchema={validationSchema}
-                                onSubmit={handleSubmit}
-                            >
-                                {({ errors, isSubmitting }) => (
-                                    <Form className='flex flex-col'>
-                                        <div className="mt-1 font-semibold leading-[160%] text-slate-600">
-                                            {
-                                                isCompanySignup ? 'Company name' : 'Full name'
-                                            }
-                                            <span className='text-red-600'>
-                                                {
-                                                    errors?.name && errors?.name ||
-                                                    user?.err && (user?.err as string).includes('user') && '(' + user?.err + ')'
-                                                }
-                                            </span>
-                                        </div>
-                                        <Field
-                                            name='name'
-                                            placeholder='Enter your full name'
-                                            type="text"
-                                            className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                        />
+                            )
+                        }
 
-                                        <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                            Email Address
-                                            <span className='text-red-600'>
-                                                {
-                                                    errors?.email && errors?.email
-                                                }
-                                            </span>
-                                        </div>
-                                        <Field
-                                            name='email'
-                                            placeholder=' Enter email address'
-                                            className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                            type="text"
-                                        />
-
-                                        <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                            Password
-                                            <span className='text-red-600'>
-                                                {
-                                                    errors?.password && errors?.password
-                                                }
-                                            </span>
-                                        </div>
-                                        <Field
-                                            name='password'
-                                            placeholder=' Enter password'
-                                            className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                            type="text"
-                                        />
-                                        {
-                                            isSubmitting ? (
-                                                <button disabled={isSubmitting} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
-                                                    Signup..
-                                                </button>
-                                            ) : (
-                                                <button onClick={handleOpen} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
-                                                    Signup
-                                                </button>
-                                            )
-                                        }
-
-                                        <div className="flex gap-2 mt-4">
-                                            <div className="text-gray-800 leading-[160%]">
-                                                Already have an account?
-                                            </div>
-                                            <Link to={'/login'} className="font-semibold text-center text-indigo-600 leading-[150%]">
-                                                Login
-                                            </Link>
-                                        </div>
-                                    </Form>
-                                )}
-
-                            </Formik>
-                        </div>
                     </div>
                 </div>
             </div>

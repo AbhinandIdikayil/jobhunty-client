@@ -1,0 +1,6 @@
+.sidebar-link.active {
+    color: blue;
+}
+.sidebar-link.active > div > div> span {
+    font-weight: bolder;
+}

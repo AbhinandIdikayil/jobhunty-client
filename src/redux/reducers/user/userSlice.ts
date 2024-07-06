@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
-import { googleLoginAndSignup, login, logout, signupUser } from '../../actions/userAction'
+import { googleLoginAndSignup, login, logout, signupUser, verifyOtp } from '../../actions/userAction'
 
 const initialState: UserReducer = {
     loading: false,
@@ -94,6 +94,24 @@ const userSlice = createSlice({
             .addCase(logout.rejected,(state,{payload}) => {
                 state.loading = false
                 state.err = payload?.message || 'error occured' 
+            })
+            .addCase(verifyOtp.pending,(state) => {
+                state.loading = true
+                state.err = false
+                state.role = null
+                state.user = null
+            })
+            .addCase(verifyOtp.fulfilled,(state,{payload}) => {
+                state.loading = false
+                state.err = false
+                state.role = payload?.role as 'user' | 'company' | 'admin'
+                state.user = payload
+            })
+            .addCase(verifyOtp.rejected,(state,{payload}) => {
+                state.loading = false
+                state.err = payload?.message || 'error occured' 
+                state.role = null
+                state.user = null
             })
     }
 })

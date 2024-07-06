@@ -1,34 +1,34 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Login, SignupForm } from "../../types/AllTypes";
+import { Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
 import { AXIOS_INSTANCE_AUTH } from "../../constants/axiosInstance";
 
+// interface SignupRequest {
+//   name: string,
+//   email: string,
+//   password: string,
+// } 
 
-interface AuthResponse {
-  token: string;
-  user: User2;
+interface ErrorPayload {
+  message: string;
+  // Other error details
 }
-
-interface User2 {
-  name: string;
-  email: string;
-}
-
 interface User {
-  // Define the structure of your user data
-  // For example:
-  id: string;
-  name: string;
-  email: string;
-  role: string
+  email: string,
+  name: string,
+  password: string,
+  role: string,
+  otp: string,
 }
 
 interface ErrorPayload {
   message: string;
 }
 
-export const signupUser = createAsyncThunk<User, SignupForm, { rejectValue: ErrorPayload }>(
+
+
+export const signupUser = createAsyncThunk<User, any, { rejectValue: ErrorPayload }>(
   'user/signup',
-  async (userData: SignupForm, { rejectWithValue }) => {
+  async (userData: any, { rejectWithValue }) => {
     try {
       const { data } = await AXIOS_INSTANCE_AUTH.post('/signup', userData)
       return data
@@ -39,6 +39,17 @@ export const signupUser = createAsyncThunk<User, SignupForm, { rejectValue: Erro
   }
 )
 
+export const verifyOtp = createAsyncThunk<verifyOtpResponse,verifyOtpRequest,{rejectValue: ErrorPayload}>(
+  'user/verify-otp',
+  async (req:verifyOtpRequest, { rejectWithValue }) => {
+    try {
+      const { data } = await AXIOS_INSTANCE_AUTH.post('/verify-otp', req)
+      return data
+    } catch (error: any) {
+      return rejectWithValue(error)
+    }
+  }
+)
 
 export const login = createAsyncThunk<User, Login, { rejectValue: ErrorPayload }>(
   'user/login',
@@ -53,15 +64,15 @@ export const login = createAsyncThunk<User, Login, { rejectValue: ErrorPayload }
   }
 )
 
-export const googleLoginAndSignup = createAsyncThunk(
+export const googleLoginAndSignup = createAsyncThunk<any,any,{rejectValue:ErrorPayload}>(
   'user/google',
-  async (payload, { rejectWithValue }) => {
+  async (payload: any, { rejectWithValue }) => {
     try {
       const { data } = await AXIOS_INSTANCE_AUTH.post('/google', { token: payload?.credential as string }, {
         withCredentials: true
       })
       return data
-    } catch (error) {
+    } catch (error: Error | any) {
       console.log(error)
       return rejectWithValue(error)
     }
@@ -69,13 +80,13 @@ export const googleLoginAndSignup = createAsyncThunk(
 )
 
 
-export const logout = createAsyncThunk<any, any,{rejectValue: ErrorPayload}>(
+export const logout = createAsyncThunk<any, any, { rejectValue: ErrorPayload }>(
   'user/logout',
   async (_: undefined, { rejectWithValue }) => {
     try {
-      const {data} = await AXIOS_INSTANCE_AUTH.post('/logout',{},{withCredentials:true})
+      const { data } = await AXIOS_INSTANCE_AUTH.post('/logout', {}, { withCredentials: true })
       return data
-    } catch (error:any | Error) {
+    } catch (error: any | Error) {
       return rejectWithValue(error)
     }
   }
