@@ -2,25 +2,11 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
+
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import { MdOutlineArrowBackIos } from "react-icons/md";
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { RiHome2Line } from "react-icons/ri";
-import { BiMessageDetail } from "react-icons/bi";
-import { TbBuildingSkyscraper } from "react-icons/tb";
-import { PiUsersThreeDuotone } from "react-icons/pi";
-import { LuClipboardList } from "react-icons/lu";
-import { AiOutlineSchedule } from "react-icons/ai";
-import { IoSettingsOutline } from "react-icons/io5";
-import Header from '../../components/company/Header';
-import { Outlet , NavLink } from 'react-router-dom';
+
+import { Outlet } from 'react-router-dom';
+import SideDrawer from '../../components/company/SideDrawer';
 
 
 const drawerWidth = 240;
@@ -86,68 +72,16 @@ export default function CompanyHome() {
         setOpen(false);
     }, []);
 
-    const navLinks = ['','messages','profile','applicants','job-list','schedules']
+    const navLinks = ['', 'messages', 'profile', 'applicants', 'job-list', 'schedules']
 
     return (
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="fixed" open={open}>
-
-                <Header open={open} func={handleDrawerOpen} />
-
-            </AppBar>
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
-                        width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="persistent"
-                anchor="left"
+            <SideDrawer
                 open={open}
-            >
-                <DrawerHeader>
-                    <MdOutlineArrowBackIos onClick={handleDrawerClose} />
-                </DrawerHeader>
-                <Divider />
-                <List>
-                    {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
-                        <ListItem key={text} disablePadding >
-                            <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        {
-                                            text == 'Dashboard' && <RiHome2Line size={30} /> ||
-                                            text == 'Messages' && <BiMessageDetail size={30} /> ||
-                                            text == 'Company profiles' && <TbBuildingSkyscraper size={30} /> ||
-                                            text == 'All applicants' && <PiUsersThreeDuotone size={30} /> ||
-                                            text == 'Job listing' && <LuClipboardList size={30} /> ||
-                                            text == 'My schedule' && <AiOutlineSchedule size={30} />
-                                        }
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </NavLink>
-                        </ListItem>
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {['Settings'].map((text) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <IoSettingsOutline size={30} />
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
+                navLinks={navLinks}
+                handleDrawerOpen={handleDrawerOpen}
+                handleDrawerClose={handleDrawerClose}
+            />
             <Main open={open}>
                 <DrawerHeader>
 
