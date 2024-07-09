@@ -29,11 +29,11 @@ const userSlice = createSlice({
                 state.role = null
                 state.user = null
             })
-            .addCase(signupUser.fulfilled, (state, action) => {
+            .addCase(signupUser.fulfilled, (state) => {
                 state.loading = false
                 state.err = false
-                state.role = action.payload.role as 'user' | 'company' | 'admin'
-                state.user = action.payload
+                state.role = null
+                state.user = null
             })
             .addCase(signupUser.rejected, (state, action) => {
                 state.loading = false
@@ -89,7 +89,7 @@ const userSlice = createSlice({
                 state.loading = false
                 state.user = null
                 state.role = null
-
+                state.err = false
             })
             .addCase(logout.rejected,(state,{payload}) => {
                 state.loading = false

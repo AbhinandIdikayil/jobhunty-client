@@ -1,4 +1,3 @@
-import * as Yup from 'yup'
 import { Form, Formik, Field, FormikValues } from 'formik'
 import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress'
@@ -9,12 +8,14 @@ import { googleLoginAndSignup, signupUser, verifyOtp } from '../../redux/actions
 import { AppDispatch, RootState } from '../../redux/store';
 import { GoogleLogin } from '@react-oauth/google'
 import Navbar from '../user/BeforeOneApplicant/Navbar';
+import Timer from '../../components/common/Timer';
+import { otpValidationSchema, validationSchema } from '../../validation/common/signup-validation';
 
 
 
 
 function Signup() {
-
+    
     const user = useSelector((state: RootState) => state?.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate()
@@ -24,7 +25,8 @@ function Signup() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-
+    const [isExpired, setIsExpired] = useState(false);
+    
 
     const handleClose = () => {
         setOpen(false);
@@ -43,34 +45,16 @@ function Signup() {
         otp: ''
     }
 
-    const otpValidationSchema = Yup.object().shape({
-        otp: Yup
-            .number()
-            .typeError('only numbers are allowed')
-            .required('otp is required')
-
-    })
-
-    const validationSchema = Yup.object().shape({
-        name: Yup
-            .string()
-            .required('name is required'),
-        email: Yup
-            .string()
-            .required('Email is required')
-            .email('Invalid email')
-            .matches(/^([A-Z0-9_+-]+\.?)*[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i, 'email is invalid'),
-        password: Yup
-            .string()
-            .required('password is required')
-            .min(4, 'atleast 4 charchter')
-    })
-
 
     useEffect(() => {
-        // if (user?.user) {
-        //     navigate('/home');
-        // }
+        if(user.role == 'company'){
+            return navigate('/company')
+        } else if (user.role == 'user') {
+            return navigate('/home')
+        }
+    }, [])
+
+    useEffect(() => {
         setIsCompanySignup(window.location.pathname.includes('/company/signup'))
     }, [user])
 
@@ -94,17 +78,38 @@ function Signup() {
             console.log(error);
         }
     }
-
-
+    
+    
     async function handleSubmit(values: FormikValues) {
         try {
-            const data = await dispath(signupUser(values)).unwrap()
-            setName(data.name)
-            setEmail(data.email)
-            setPassword(data.password)
-            if (data) {
-                setOtpPage(true)
-                handleClose();
+            
+            if (isExpired) {
+                alert('OTP has expired. Please request a new one.');
+                return;
+            }
+            setName(values?.name)
+            setPassword(values?.password)
+            setEmail(values?.email)
+
+            const url = window.location.pathname.split('/')[1]
+            const signupConfig = {
+                'company': { role: 'company', navigateTo: '/company' },
+                'signup': { role: 'user', navigateTo: '/login' },
+            } as const
+            type SignupType = keyof typeof signupConfig;
+            const urLKey = Object.keys(signupConfig).find(key => url.includes(key)) as SignupType | undefined
+            if (urLKey) {
+                const { role } = signupConfig[urLKey]
+                const form = {
+                    ...values,
+                    role
+                }
+                const data = await dispath(signupUser(form)).unwrap()
+                console.log(form)
+                if (data) {
+                    setOtpPage(true)
+                    handleClose();
+                }
             }
         } catch (error) {
             handleClose();
@@ -126,8 +131,8 @@ function Signup() {
         if (urLKey) {
             const { role, navigateTo } = signupConfig[urLKey]
             try {
-                console.log(name, password, values?.otp,role)
-                const data = await dispath(verifyOtp({ email, name, password, otp: values?.otp, role }));
+                console.log(name, password, values?.otp, role)
+                const data = await dispath(verifyOtp({ email:email,name:name, password:password, otp: values?.otp, role }));
 
                 if (data) {
                     navigate(navigateTo)
@@ -139,6 +144,13 @@ function Signup() {
             console.log('unrecognized url')
         }
     }
+
+
+    const handleExpire = () => {
+        setIsExpired(true);
+        alert('OTP has expired. Please request a new one.');
+    };
+
 
     return (
         <div className="bg-white h-screen">
@@ -186,6 +198,9 @@ function Signup() {
                                                 <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
                                                     Get more opportunities{" "}
                                                 </div>
+
+                                                <Timer initialSeconds={120} onExpire={handleExpire} />
+
                                                 <div className="mt-4 font-semibold leading-[160%] text-slate-600">
                                                     Email Address
                                                     <span className='text-red-600'>

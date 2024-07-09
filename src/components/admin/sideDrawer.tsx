@@ -6,18 +6,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { RiHome2Line } from "react-icons/ri";
-import { BiMessageDetail } from "react-icons/bi";
 import { TbBuildingSkyscraper } from "react-icons/tb";
 import { PiUsersThreeDuotone } from "react-icons/pi";
-import { LuClipboardList } from "react-icons/lu";
-import { AiOutlineSchedule } from "react-icons/ai";
-import { IoSettingsOutline } from "react-icons/io5";
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './Header';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
+import { IoSettingsOutline } from 'react-icons/io5';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -56,7 +53,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 interface props {
   handleDrawerOpen: () => void,
   handleDrawerClose:() => void,
-  navLinks: [],
+  navLinks: string[],
   open: boolean
 }
 
@@ -76,6 +73,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            backgroundColor:'#f4f4f4'
           },
         }}
         variant="persistent"
@@ -87,21 +85,19 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         </DrawerHeader>
         <Divider />
         <List>
-          {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
-            <ListItem key={text} disablePadding >
+          {['Dashboard','Company request', 'All companies', 'All users'].map((text, index) => (
+            <ListItem key={text} disablePadding>
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton>
+                <ListItemButton  sx={{width:drawerWidth}}>
                   <ListItemIcon>
                     {
                       text == 'Dashboard' && <RiHome2Line size={30} /> ||
-                      text == 'Messages' && <BiMessageDetail size={30} /> ||
-                      text == 'Company profiles' && <TbBuildingSkyscraper size={30} /> ||
-                      text == 'All applicants' && <PiUsersThreeDuotone size={30} /> ||
-                      text == 'Job listing' && <LuClipboardList size={30} /> ||
-                      text == 'My schedule' && <AiOutlineSchedule size={30} />
+                      text == 'Company request' && <TbBuildingSkyscraper size={30} /> ||
+                      text == 'All companies' && <PiUsersThreeDuotone size={30} /> ||
+                      text == 'All users' && <PiUsersThreeDuotone size={30} /> 
                     }
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText className='' primary={text} />
                 </ListItemButton>
               </NavLink>
             </ListItem>

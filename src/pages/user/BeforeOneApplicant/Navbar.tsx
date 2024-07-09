@@ -3,26 +3,18 @@ import {  NavLink, useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { resetState } from '../../../redux/reducers/user/userSlice';
 import { logout } from '../../../redux/actions/userAction';
-import { useEffect } from 'react';
 
 function Navbar() {
     const user = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
 
-    useEffect(() => {
-        if(user.role == 'company'){
-            return navigate('/company')
-        } else if (user.role == 'user') {
-            return navigate('/home')
-        }
-    }, [])
-
     async function handleLogout() {
         try {
             let data = await dispatch(logout(undefined))
             if (data) {
                 dispatch(resetState())
+                navigate('/login')
             }
         } catch (error) {
             console.log(error);

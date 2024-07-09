@@ -1,19 +1,25 @@
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Home from './pages/user/BeforeOneApplicant/Home'
 import CompanyHome from './pages/company/CompanyHome'
 import Dashboard from './pages/company/Dashboard'
-import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
+import AdminLogin from './pages/admin/Login'
+import AdminHome from './pages/admin/AdminHome'
+import UsersListing from './pages/admin/UsersListing'
 
 function App() {
 
   return (
     <Routes>
+
+      ////! routes for user
+      <Route path='' element={<Navigate to='/home' />} />
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
       <Route path='/home' element={<Home />} />
+
 
      ////! routes for the company
       <Route path='/company'>
@@ -31,7 +37,15 @@ function App() {
 
 
       ////! routes for admin
-
+      <Route path='/admin'>
+        <Route path='' element={<AdminLogin />} />
+        <Route path='home' element={<AdminHome />}>
+            <Route path=''  />
+            <Route path='requests' element={<UsersListing />} />
+            <Route path='companies' element={<h1>companies</h1>} />
+            <Route path='users' element={<h1>useres</h1>} />
+        </Route>
+      </Route>
     </Routes>
   )
 }

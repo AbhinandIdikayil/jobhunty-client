@@ -16,10 +16,19 @@ const validationSchema = Yup.object().shape({
 
 const Login: React.FC = () => {
 
+
     const user = useSelector((state: RootState) => state.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate();
     const [isCompanyLogin, setIsCompanyLogin] = useState(false);
+
+    useEffect(() => {
+        if (user.role == 'company') {
+            return navigate('/company')
+        } else if (user.role == 'user') {
+            return navigate('/home')
+        }
+    }, [])
 
     useEffect(() => {
         setIsCompanyLogin(window.location.pathname.includes('/company/login'))

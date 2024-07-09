@@ -84,8 +84,9 @@ export default function CompanyHome() {
             />
             <Main open={open}>
                 <DrawerHeader>
-
                 </DrawerHeader>
+
+
                 <Outlet context={{ open }} />
 
             </Main>
