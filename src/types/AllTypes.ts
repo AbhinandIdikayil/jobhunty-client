@@ -38,3 +38,6 @@ export type ErrorPayload = {
     message: string
 }
 
+export interface prop {
+    open:boolean
+}

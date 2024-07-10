@@ -40,10 +40,10 @@ function App() {
       <Route path='/admin'>
         <Route path='' element={<AdminLogin />} />
         <Route path='home' element={<AdminHome />}>
-            <Route path=''  />
-            <Route path='requests' element={<UsersListing />} />
-            <Route path='companies' element={<h1>companies</h1>} />
-            <Route path='users' element={<h1>useres</h1>} />
+          <Route path='' />
+          <Route path='requests' element={<h1>useres</h1>} />
+          <Route path='companies' element={<h1>companies</h1>} />
+          <Route path='users' element={<UsersListing />} />
         </Route>
       </Route>
     </Routes>
