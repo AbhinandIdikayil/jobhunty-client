@@ -1,13 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {  NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { resetState } from '../../../redux/reducers/user/userSlice';
 import { logout } from '../../../redux/actions/userAction';
+import { useEffect } from 'react';
 
 function Navbar() {
     const user = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
+
+
+    useEffect(() => {
+        if(user.role == 'user') {
+            return navigate('/home')
+        }else if(user.role == 'company'){
+            return navigate('/company')
+        }
+    }, [])
 
     async function handleLogout() {
         try {

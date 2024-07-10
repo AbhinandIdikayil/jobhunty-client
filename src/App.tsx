@@ -8,6 +8,7 @@ import Dashboard from './pages/company/Dashboard'
 import AdminLogin from './pages/admin/Login'
 import AdminHome from './pages/admin/AdminHome'
 import UsersListing from './pages/admin/UsersListing'
+import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
 
 function App() {
 
@@ -23,7 +24,13 @@ function App() {
 
      ////! routes for the company
       <Route path='/company'>
-        <Route path='' element={<CompanyHome />}>
+        <Route path='login' element={<Login />} />
+        <Route path='signup' element={<Signup />} />
+        <Route path='' element={
+          <CompnanyPrivateRoute>
+            <CompanyHome />
+          </CompnanyPrivateRoute>
+        }>
           <Route path='' element={<Dashboard />} />
           <Route path='messages' element={<h1>messages</h1>} />
           <Route path='profile' element={<h1>profile</h1>} />
@@ -31,8 +38,6 @@ function App() {
           <Route path='job-list' element={<h1>job list</h1>} />
           <Route path='schedules' element={<h1>schedules</h1>} />
         </Route>
-        <Route path='login' element={<Login />} />
-        <Route path='signup' element={<Signup />} />
       </Route>
 
 
@@ -41,7 +46,7 @@ function App() {
         <Route path='' element={<AdminLogin />} />
         <Route path='home' element={<AdminHome />}>
           <Route path='' />
-          <Route path='requests' element={<h1>useres</h1>} />
+          <Route path='requests' element={<h1>users</h1>} />
           <Route path='companies' element={<h1>companies</h1>} />
           <Route path='users' element={<UsersListing />} />
         </Route>

@@ -1,12 +1,18 @@
 import { useSelector } from 'react-redux'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { RootState } from '../../redux/store'
+import { ReactNode } from 'react'
 
-function CompnanyPrivateRoute() {
+
+interface Children {
+    children: ReactNode;
+  }
+
+function CompnanyPrivateRoute({children}:Children) {
     const state = useSelector((state: RootState) => state?.user)
 
     if (state.role == 'company' && state.user) {
-        return <Outlet />
+        return children
     } else {
         return <Navigate to={'/company/login'} />
     }

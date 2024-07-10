@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import store, { persistor } from './redux/store.ts'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { PersistGate } from 'redux-persist/integration/react'
-
+import { NextUIProvider } from '@nextui-org/react'
 const clientId = process.env.CLIENT_ID as string
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -16,7 +16,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <GoogleOAuthProvider clientId={clientId}>
-            <App />
+            <NextUIProvider>
+              <App />
+            </NextUIProvider>
           </GoogleOAuthProvider>
         </PersistGate>
       </Provider>

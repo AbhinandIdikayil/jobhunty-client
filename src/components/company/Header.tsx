@@ -1,11 +1,12 @@
 import { HiMenuAlt3 } from "react-icons/hi";
-
+import DropDown from "./DropDown";
 interface props {
     func: () => void,
     open: boolean
 }
 
-function Header({func,open}:props) {
+function Header({ func, open }: props) {
+
     return (
         <div className="flex gap-5 justify-between px-8 py-4 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full">
             <div className="flex gap-4 whitespace-nowrap">
@@ -23,11 +24,12 @@ function Header({func,open}:props) {
                     </div>
                     <div className="flex gap-2 text-xl font-semibold leading-6 text-slate-800">
                         <div>Nomad</div>
-                        <img
+                        {/* <img
                             loading="lazy"
                             src="https://cdn.builder.io/api/v1/image/assets/TEMP/11e2517998516c181ac04025690221ae22f5c4e4eb4dee7f65d6fdbaf2f88a9b?apiKey=bf80438c4595450788b907771330b274&"
                             className="shrink-0 w-6 aspect-square"
-                        />
+                        /> */}
+                        <DropDown />
                     </div>
                 </div>
             </div>

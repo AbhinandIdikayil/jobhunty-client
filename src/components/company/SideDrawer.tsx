@@ -90,7 +90,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton>
+                <ListItemButton sx={{width: drawerWidth}}>
                   <ListItemIcon>
                     {
                       text == 'Dashboard' && <RiHome2Line size={30} /> ||
