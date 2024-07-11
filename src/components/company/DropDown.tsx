@@ -108,7 +108,6 @@ export default function DropDown() {
                 </DropdownSection>
 
                 <DropdownSection className="hover:cursor-pointer" aria-label="Help & Feedback">
-
                     <DropdownItem  key="logout" className="bg-indigo-600 font-semibold" onClick={handleLogout}>Log Out</DropdownItem>
                 </DropdownSection>
             </DropdownMenu>
