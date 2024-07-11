@@ -18,8 +18,9 @@ export const validationSchema = Yup.object().shape({
 
 export const otpValidationSchema = Yup.object().shape({
     otp: Yup
-        .number()
-        .typeError('only numbers are allowed')
-        .required('otp is required')
-
+        .string()
+        .matches(/^\d+$/, 'only numbers are allowed') // Ensures that only numbers are allowed
+        .min(4, 'otp must be exactly 4 digits') // Ensures that the OTP is at least 4 digits long
+        .max(4, 'otp must be exactly 4 digits') // Ensures that the OTP is at most 4 digits long
+        .required('otp is required') // Ensures that the OTP is provided
 })

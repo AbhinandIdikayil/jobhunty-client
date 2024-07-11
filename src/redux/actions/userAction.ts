@@ -47,7 +47,7 @@ export const verifyOtp = createAsyncThunk<verifyOtpResponse,verifyOtpRequest,{re
       const { data } = await AXIOS_INSTANCE_AUTH.post('/verify-otp', req)
       return data
     } catch (error: any) {
-      return rejectWithValue(error)
+      return rejectWithValue(error.response.data)
     }
   }
 )

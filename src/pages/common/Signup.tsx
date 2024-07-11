@@ -10,6 +10,7 @@ import { GoogleLogin } from '@react-oauth/google'
 import Navbar from '../user/BeforeOneApplicant/Navbar';
 import Timer from '../../components/common/Timer';
 import { otpValidationSchema, validationSchema } from '../../validation/common/signup-validation';
+import { resetErr } from '../../redux/reducers/user/userSlice';
 
 
 
@@ -127,17 +128,19 @@ function Signup() {
         } as const
         type SignupType = keyof typeof signupConfig;
         const urLKey = Object.keys(signupConfig).find(key => url.includes(key)) as SignupType | undefined
-
+        
         if (urLKey) {
+            handleOpen();
             const { role, navigateTo } = signupConfig[urLKey]
             try {
                 console.log(name, password, values?.otp, role)
-                const data = await dispath(verifyOtp({ email:email,name:name, password:password, otp: values?.otp, role }));
-
+                const data = await dispath(verifyOtp({ email:email,name:name, password:password, otp: values?.otp, role })).unwrap();
+                console.log(data)
                 if (data) {
                     navigate(navigateTo)
                 }
             } catch (error) {
+                handleClose()
                 console.log(error)
             }
         } else {
@@ -202,21 +205,23 @@ function Signup() {
                                                 <Timer initialSeconds={120} onExpire={handleExpire} />
 
                                                 <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                                    Email Address
+                                                    Enter otp
                                                     <span className='text-red-600'>
                                                         {
-                                                            errors?.otp && errors?.otp
+                                                            errors?.otp && errors?.otp ||
+                                                            user?.err  && user?.err
                                                         }
                                                     </span>
                                                 </div>
                                                 <Field
+                                                    // onChange={resetErr()}
                                                     name='otp'
                                                     placeholder='Enter otp'
                                                     className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
                                                     type="text"
                                                 />
 
-                                                <button onClick={handleOpen} type='submit' className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                <button type='submit' className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
                                                     verify
                                                 </button>
 

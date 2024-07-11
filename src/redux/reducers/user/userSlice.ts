@@ -19,6 +19,9 @@ const userSlice = createSlice({
             state.role = null
             state.loading = false
             state.err = false
+        },
+        resetErr: (state) => {
+            state.err = false
         }
     },
     extraReducers: (builder: ActionReducerMapBuilder<UserReducer>) => {
@@ -117,6 +120,6 @@ const userSlice = createSlice({
 })
 
 
-export const { resetState } = userSlice.actions
+export const { resetState , resetErr } = userSlice.actions
 
 export default userSlice.reducer
