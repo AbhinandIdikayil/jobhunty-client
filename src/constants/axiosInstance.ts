@@ -8,4 +8,3 @@ export const AXIOS_INSTANCE_AUTH = axios.create({
     withCredentials:true
 })
 
-

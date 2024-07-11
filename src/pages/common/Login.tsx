@@ -41,7 +41,7 @@ const Login: React.FC = () => {
 
     async function handleSubmit(values: FormikValues) {
         const url = window.location.href.split('/')[3];
-        if (url == 'login') {
+        // if (url == 'login') {
             const formData: LoginI = {
                 ...values
             }
@@ -53,7 +53,7 @@ const Login: React.FC = () => {
             } catch (error) {
                 console.log(error)
             }
-        }
+        // }
         console.log(values)
     }
 

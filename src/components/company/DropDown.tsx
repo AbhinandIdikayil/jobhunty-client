@@ -26,6 +26,7 @@ export default function DropDown() {
     return (
         <Dropdown
             showArrow
+            className="rounded-xl shadow-2xl shadow-slate-400 border-2"
             radius="sm"
             classNames={{
                 base: "before:bg-default-200", // change arrow background
@@ -44,7 +45,7 @@ export default function DropDown() {
             <DropdownMenu
                 aria-label="Custom item styles"
                 disabledKeys={["profile"]}
-                className="p-3"
+                className="p-3 rounded-sm border-1"
                 itemClasses={{
                     base: [
                         "rounded-md",
@@ -59,7 +60,7 @@ export default function DropDown() {
                     ],
                 }}
             >
-                <DropdownSection aria-label="Profile & Actions" showDivider>
+                <DropdownSection aria-label="Profile & Actions"  showDivider>
                     <DropdownItem
                         isReadOnly
                         key="profile"
@@ -106,9 +107,9 @@ export default function DropDown() {
                     </DropdownItem>
                 </DropdownSection>
 
-                <DropdownSection aria-label="Help & Feedback">
+                <DropdownSection className="hover:cursor-pointer" aria-label="Help & Feedback">
 
-                    <DropdownItem key="logout" onClick={handleLogout}>Log Out</DropdownItem>
+                    <DropdownItem  key="logout" className="bg-indigo-600 font-semibold" onClick={handleLogout}>Log Out</DropdownItem>
                 </DropdownSection>
             </DropdownMenu>
         </Dropdown>
