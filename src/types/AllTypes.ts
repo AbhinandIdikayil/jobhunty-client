@@ -21,17 +21,19 @@ export type Login = {
 
 export type verifyOtpRequest = {
     otp: string,
-    name: string,
+    name?: string,
     email: string,
-    password: string,
-    role: string
+    password?: string,
+    role?: string,
+    intention?: boolean
+
 }
 
 export type verifyOtpResponse = {
     name: string,
     email: string,
     role: string,
-    isBlocked: string
+    isBlocked: string,
 }
 
 export type ErrorPayload = {

@@ -118,32 +118,36 @@ const userSlice = createSlice({
                 state.err = false
                 state.loading = true
             })
-            .addCase(verifyEmail.fulfilled, (state,{payload}) => {
+            .addCase(verifyEmail.fulfilled, (state, { payload }) => {
                 state.user = payload
                 state.err = false
                 state.loading = false
             })
             .addCase(verifyEmail.rejected, (state, { payload }) => {
-                state.err = payload?.message
+                state.err = payload?.message || false
                 state.loading = false
             })
-            .addCase(forgotPassword.pending,(state) => {
+            .addCase(forgotPassword.pending, (state) => {
                 state.loading = true
                 state.user = null
                 state.err = false
                 state.role = null
             })
-            .addCase(forgotPassword.fulfilled,(state,{payload}) => {
+            .addCase(forgotPassword.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.user = payload
                 state.role = null
                 state.err = false
             })
-            .addCase(forgotPassword.rejected,(state,{payload}) => {
+            .addCase(forgotPassword.rejected, (state, action) => {
                 state.loading = false
                 state.user = null
                 state.role = null
-                state.err = payload
+                if (action.payload) {
+                    state.err = (action.payload as ErrorPayload).message
+                } else {
+                    state.err = action.error.message || 'An unknown error occured'
+                }
             })
     }
 })

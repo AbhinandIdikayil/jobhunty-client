@@ -111,9 +111,9 @@ export const verifyEmail = createAsyncThunk<string, IVerifyEmail, { rejectValue:
   }
 )
 
-export const forgotPassword = createAsyncThunk(
+export const forgotPassword = createAsyncThunk<any,any>(
   'user/forgotPassword',
-  async (req, { rejectWithValue }) => {
+  async (req:any, { rejectWithValue }) => {
     try {
       const { data } = await AXIOS_INSTANCE_AUTH.put('/forgot-password',req);
       console.log(data)
