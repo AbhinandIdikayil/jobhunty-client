@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
-import { googleLoginAndSignup, login, logout, signupUser, verifyOtp } from '../../actions/userAction'
+import { forgotPassword, googleLoginAndSignup, login, logout, signupUser, verifyEmail, verifyOtp } from '../../actions/userAction'
 
 const initialState: UserReducer = {
     loading: false,
@@ -84,42 +84,72 @@ const userSlice = createSlice({
                     state.err = action.error.message || 'An unknown error occured'
                 }
             })
-            .addCase(logout.pending,(state) => {
+            .addCase(logout.pending, (state) => {
                 state.loading = true
                 state.role = null
             })
-            .addCase(logout.fulfilled,(state) => {
+            .addCase(logout.fulfilled, (state) => {
                 state.loading = false
                 state.user = null
                 state.role = null
                 state.err = false
             })
-            .addCase(logout.rejected,(state,{payload}) => {
+            .addCase(logout.rejected, (state, { payload }) => {
                 state.loading = false
-                state.err = payload?.message || 'error occured' 
+                state.err = payload?.message || 'error occured'
             })
-            .addCase(verifyOtp.pending,(state) => {
+            .addCase(verifyOtp.pending, (state) => {
                 state.loading = true
                 state.err = false
                 state.role = null
                 state.user = null
             })
-            .addCase(verifyOtp.fulfilled,(state,{payload}) => {
+            .addCase(verifyOtp.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = false
                 state.role = payload?.role as 'user' | 'company' | 'admin'
                 state.user = payload
             })
-            .addCase(verifyOtp.rejected,(state,{payload}) => {
+            .addCase(verifyOtp.rejected, (state, { payload }) => {
                 state.loading = false
-                state.err = payload?.message || 'error occured' 
+                state.err = payload?.message || 'error occured'
                 state.role = null
                 state.user = null
+            })
+            .addCase(verifyEmail.pending, (state) => {
+                state.err = false
+                state.loading = true
+            })
+            .addCase(verifyEmail.fulfilled, (state) => {
+                state.err = false
+                state.loading = false
+            })
+            .addCase(verifyEmail.rejected, (state, { payload }) => {
+                state.err = payload?.message
+                state.loading = false
+            })
+            .addCase(forgotPassword.pending,(state) => {
+                state.loading = true
+                state.user = null
+                state.err = false
+                state.role = null
+            })
+            .addCase(forgotPassword.fulfilled,(state,{payload}) => {
+                state.loading = false
+                state.user = payload
+                state.role = null
+                state.err = false
+            })
+            .addCase(forgotPassword.rejected,(state,{payload}) => {
+                state.loading = false
+                state.user = null
+                state.role = null
+                state.err = payload
             })
     }
 })
 
 
-export const { resetState , resetErr } = userSlice.actions
+export const { resetState, resetErr } = userSlice.actions
 
 export default userSlice.reducer

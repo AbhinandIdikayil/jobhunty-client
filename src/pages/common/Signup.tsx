@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import { GoogleLogin } from '@react-oauth/google'
 import Navbar from '../user/BeforeOneApplicant/Navbar';
 import Timer from '../../components/common/Timer';
-import { otpValidationSchema, validationSchema } from '../../validation/common/signup-validation';
+import { otpInitialValues, otpValidationSchema, validationSchema } from '../../validation/common/signup-validation';
 import { resetErr } from '../../redux/reducers/user/userSlice';
 
 
@@ -42,9 +42,6 @@ function Signup() {
         password: ''
     }
 
-    const otpInitialValues = {
-        otp: ''
-    }
 
 
     useEffect(() => {
@@ -121,6 +118,7 @@ function Signup() {
 
 
     async function handleOtp(values: FormikValues) {
+        resetErr()
         const url = window.location.pathname.split('/')[1]
         const signupConfig = {
             'company': { role: 'company', navigateTo: '/company' },

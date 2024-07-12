@@ -41,3 +41,9 @@ export type ErrorPayload = {
 export interface prop {
     open:boolean
 }
+
+export interface IVerifyEmail {
+    email: string
+}
+
+

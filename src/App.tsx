@@ -9,6 +9,7 @@ import AdminLogin from './pages/admin/Login'
 import AdminHome from './pages/admin/AdminHome'
 import UsersListing from './pages/admin/UsersListing'
 import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
+import ForgotPassword from './pages/common/ForgotPassword'
 
 function App() {
 
@@ -21,6 +22,9 @@ function App() {
       <Route path='/signup' element={<Signup />} />
       <Route path='/home' element={<Home />} />
 
+
+
+      <Route path='/forgot-password' element={<ForgotPassword />} />
 
      ////! routes for the company
       <Route path='/company'>

@@ -24,3 +24,28 @@ export const otpValidationSchema = Yup.object().shape({
         .max(4, 'otp must be exactly 4 digits') // Ensures that the OTP is at most 4 digits long
         .required('otp is required') // Ensures that the OTP is provided
 })
+
+
+
+export const LoginvalidationSchema = Yup.object().shape({
+    email: Yup.string().required('Email is required').email('Invalid email'),
+    password: Yup.string().required('Password is required').min(4, 'must be atleast 4 character'),
+})
+
+
+export const otpInitialValues = {
+    otp: ''
+}
+
+
+export const forgotPasswordValidation = Yup.object().shape({
+    newPassword: Yup
+        .string()
+        .required('password is required')
+        .min(4,'Atleast 4 characher'),
+    confirmPassword: Yup
+        .string()
+        .required('confirm password is required')
+        .oneOf([Yup.ref('newPassword')],'Passwords must match')
+        .min(4,'Atleast 4 character')
+})

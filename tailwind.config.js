@@ -6,6 +6,8 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}', // Include all files in src directory
+    './@/**/*.{ts,tsx}',
   ],
   prefix: "",
   theme: {

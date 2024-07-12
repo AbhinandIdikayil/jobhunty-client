@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
+import { IVerifyEmail, Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
 import { AXIOS_INSTANCE_AUTH } from "../../constants/axiosInstance";
 
 // interface SignupRequest {
@@ -39,9 +39,9 @@ export const signupUser = createAsyncThunk<User, any, { rejectValue: ErrorPayloa
   }
 )
 
-export const verifyOtp = createAsyncThunk<verifyOtpResponse,verifyOtpRequest,{rejectValue: ErrorPayload}>(
+export const verifyOtp = createAsyncThunk<verifyOtpResponse, verifyOtpRequest, { rejectValue: ErrorPayload }>(
   'user/verify-otp',
-  async (req:verifyOtpRequest, { rejectWithValue }) => {
+  async (req: verifyOtpRequest, { rejectWithValue }) => {
     try {
       console.log(req)
       const { data } = await AXIOS_INSTANCE_AUTH.post('/verify-otp', req)
@@ -65,7 +65,7 @@ export const login = createAsyncThunk<User, Login, { rejectValue: ErrorPayload }
   }
 )
 
-export const googleLoginAndSignup = createAsyncThunk<any,any,{rejectValue:ErrorPayload}>(
+export const googleLoginAndSignup = createAsyncThunk<any, any, { rejectValue: ErrorPayload }>(
   'user/google',
   async (payload: any, { rejectWithValue }) => {
     try {
@@ -88,7 +88,38 @@ export const logout = createAsyncThunk<any, any, { rejectValue: ErrorPayload }>(
       const { data } = await AXIOS_INSTANCE_AUTH.post('/logout', {}, { withCredentials: true })
       return data
     } catch (error: any | Error) {
-      return rejectWithValue(error)
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+
+//$ this function is mainly used to validate the email and sending
+//$ the otp to the respective email given in the input
+
+export const verifyEmail = createAsyncThunk<string, IVerifyEmail, { rejectValue: ErrorPayload }>(
+  'user/verify-email',
+  async (req: IVerifyEmail, { rejectWithValue }) => {
+    try {
+      console.log(req)
+      const { data } = await AXIOS_INSTANCE_AUTH.post('/verify-email', req)
+      console.log(data)
+      return data
+    } catch (error: Error | any) {
+      return rejectWithValue(error.response.data)
+    }
+  }
+)
+
+export const forgotPassword = createAsyncThunk(
+  'user/forgotPassword',
+  async (req, { rejectWithValue }) => {
+    try {
+      const { data } = AXIOS_INSTANCE_AUTH.put('/forgot-password',req);
+      console.log(data)
+      return data
+    } catch (error: any | Error) {
+      return rejectWithValue(error.reponse.data)
     }
   }
 )
