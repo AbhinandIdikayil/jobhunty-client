@@ -102,7 +102,6 @@ const userSlice = createSlice({
                 state.loading = true
                 state.err = false
                 state.role = null
-                state.user = null
             })
             .addCase(verifyOtp.fulfilled, (state, { payload }) => {
                 state.loading = false
@@ -114,13 +113,13 @@ const userSlice = createSlice({
                 state.loading = false
                 state.err = payload?.message || 'error occured'
                 state.role = null
-                state.user = null
             })
             .addCase(verifyEmail.pending, (state) => {
                 state.err = false
                 state.loading = true
             })
-            .addCase(verifyEmail.fulfilled, (state) => {
+            .addCase(verifyEmail.fulfilled, (state,{payload}) => {
+                state.user = payload
                 state.err = false
                 state.loading = false
             })

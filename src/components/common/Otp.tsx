@@ -12,8 +12,15 @@ function Otp() {
     const state = useSelector((state: RootState) => state.user)
     const navigate = useNavigate()
     async function handleOtp(values: FormikValues) {
+        console.log(values)
         try {
-            const data = await dispath(verifyOtp(values)).unwrap()
+            let value = {
+                ...values,
+                email:state.user.email,
+                intention: true
+            }
+            const data = await dispath(verifyOtp(value)).unwrap()
+            console.log(data)
             if (data) {
                 return navigate('/forgot-password')
             }

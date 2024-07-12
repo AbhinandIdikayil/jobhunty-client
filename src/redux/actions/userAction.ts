@@ -115,7 +115,7 @@ export const forgotPassword = createAsyncThunk(
   'user/forgotPassword',
   async (req, { rejectWithValue }) => {
     try {
-      const { data } = AXIOS_INSTANCE_AUTH.put('/forgot-password',req);
+      const { data } = await AXIOS_INSTANCE_AUTH.put('/forgot-password',req);
       console.log(data)
       return data
     } catch (error: any | Error) {

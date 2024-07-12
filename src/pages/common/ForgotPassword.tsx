@@ -1,8 +1,9 @@
 import { Navbar } from "@nextui-org/react"
-import { Field, Form, Formik } from "formik"
-import { useSelector } from "react-redux"
-import { Link } from "react-router-dom"
-import { RootState } from "src/redux/store"
+import { Field, Form, Formik, FormikValues } from "formik"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { forgotPassword } from "src/redux/actions/userAction"
+import { AppDispatch, RootState } from "src/redux/store"
 import { forgotPasswordValidation } from "src/validation/common/signup-validation"
 
 const initialValues = {
@@ -12,9 +13,24 @@ const initialValues = {
 
 function ForgotPassword() {
 
-  const state = useSelector((state:RootState) => state.user)
+  const dispath: AppDispatch = useDispatch()
+  const state = useSelector((state: RootState) => state.user)
+  const navigate = useNavigate()
 
-  function handleSubmit () {
+  async function handleSubmit(values: FormikValues) {
+    try {
+      const value = {
+        ...values,
+        email:state.user?.email
+      }
+      const data = await dispath(forgotPassword(value)).unwrap()
+      console.log(data)
+      if (data) {
+        navigate('/login')
+      }
+    } catch (error) {
+      console.log(error)
+    }
 
   }
 
