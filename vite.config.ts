@@ -1,11 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import {createHtmlPlugin} from 'vite-plugin-html'
 import { config } from 'dotenv'
 import path from "path"
 config();
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    createHtmlPlugin({
+      inject: {
+        data: {
+          googleMapsApiKey: process.env.VITE_GOOGLE
+        }
+      }
+    }),
+  ],
   define: {
     'process.env': process.env
   },

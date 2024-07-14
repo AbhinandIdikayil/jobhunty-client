@@ -38,14 +38,17 @@ export const otpInitialValues = {
 }
 
 
+
 export const forgotPasswordValidation = Yup.object().shape({
     newPassword: Yup
         .string()
         .required('password is required')
-        .min(4,'Atleast 4 characher'),
+        .min(4, 'Atleast 4 characher'),
     confirmPassword: Yup
         .string()
         .required('confirm password is required')
-        .oneOf([Yup.ref('newPassword')],'Passwords must match')
-        .min(4,'Atleast 4 character')
+        .oneOf([Yup.ref('newPassword')], 'Passwords must match')
+        .min(4, 'Atleast 4 character')
 })
+
+

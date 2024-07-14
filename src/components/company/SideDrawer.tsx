@@ -18,6 +18,8 @@ import Header from './Header';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
+import { TbNumber1Small } from "react-icons/tb";
+
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -55,7 +57,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 interface props {
   handleDrawerOpen: () => void,
-  handleDrawerClose:() => void,
+  handleDrawerClose: () => void,
   navLinks: [],
   open: boolean
 }
@@ -90,7 +92,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton sx={{width: drawerWidth}}>
+                <ListItemButton sx={{ width: drawerWidth }}>
                   <ListItemIcon>
                     {
                       text == 'Dashboard' && <RiHome2Line size={30} /> ||
@@ -111,12 +113,15 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         <List>
           {['Settings'].map((text) => (
             <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <IoSettingsOutline size={30} />
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
+              <NavLink to={'settings'}>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <IoSettingsOutline size={30} />
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                  <TbNumber1Small size={30} />
+                </ListItemButton>
+              </NavLink>
             </ListItem>
           ))}
         </List>

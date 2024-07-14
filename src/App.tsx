@@ -10,6 +10,9 @@ import AdminHome from './pages/admin/AdminHome'
 import UsersListing from './pages/admin/UsersListing'
 import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
 import ForgotPassword from './pages/common/ForgotPassword'
+import Settings from './pages/company/Settings'
+import Overview from './components/company/Overview'
+import SocialLinks from './components/company/SocialLinks'
 
 function App() {
 
@@ -41,6 +44,10 @@ function App() {
           <Route path='applicants' element={<h1>applicants</h1>} />
           <Route path='job-list' element={<h1>job list</h1>} />
           <Route path='schedules' element={<h1>schedules</h1>} />
+          <Route path='settings' element={<Settings />}>
+            <Route path='' element={<Overview />} />
+            <Route path='social-links' element={<SocialLinks />} />
+          </Route>
         </Route>
       </Route>
 
