@@ -29,8 +29,9 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
 
     };
 
-    const removeLocation = () => {
-        setLocation()
+    const removeLocation = (data:any) => {
+        console.log('hiii',location,data)
+        setLocation(location.filter((dat) => dat._id != data._id))
     }
 
     const fetchLocation = useCallback(
@@ -60,7 +61,7 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
                         }
                     }
 
-                    setSuggestions(response.data.results || response.data.results.cities);
+                    setSuggestions(response.data.results || response.data.results);
                     console.log(response.data.results || response.data);
                     console.log(suggestions)
                 } catch (error) {
@@ -90,7 +91,7 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
                         location?.length && location.map((data) => (
                             <div className="flex gap-2 justify-center items-center py-1 pr-1 pl-3 bg-slate-50 ">
                                 {data.csc}
-                                <IoCloseCircle onClick={(data) => removeLocation()} size={20} />
+                                <IoCloseCircle onClick={() => removeLocation(data)} size={20} />
                             </div>
                         ))
                     }
