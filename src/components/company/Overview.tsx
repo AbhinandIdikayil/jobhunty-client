@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import TypeDate from '../common/TypeDate'
-import {LocationInput} from '../common/LocationInput'
-import {companyProfile, companyProfileInitialState} from '../../validation/company/index'
+import { LocationInput } from '../common/LocationInput'
+import { companyProfile, companyProfileInitialState } from '../../validation/company/index'
+import { BiDownArrowAlt } from 'react-icons/bi'
+import { ArrowBigDown } from 'lucide-react'
+import TechStackInput from '../common/TechStackInput'
 
 function Overview() {
 
-    const [locations, setLocation] = useState<any[]>([]); 
+    const [locations, setLocation] = useState<any[]>([]);
+    const [stacks,setStacks] = useState<any[]>([]);
 
     function handleSubmit() {
 
@@ -77,21 +81,20 @@ function Overview() {
                     </div>
                     <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
                         <Formik
-                        initialValues={companyProfileInitialState}
-                        onSubmit={handleSubmit}
-                        validationSchema={companyProfile}
+                            initialValues={companyProfileInitialState}
+                            onSubmit={handleSubmit}
+                            validationSchema={companyProfile}
                         >
                             <Form>
                                 <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10 max-md:max-w-full">
                                     <div className="font-semibold max-md:max-w-full">
                                         Company Name
                                     </div>
-                                    <Field className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
+                                    <Field name='name' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
                                     <div className="mt-6 font-semibold max-md:max-w-full">
                                         Website
                                     </div>
-                                    <Field className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
-
+                                    <Field name='website' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
 
 
                                     <LocationInput label='location' name='location' location={locations} setLocation={setLocation} />
@@ -113,48 +116,25 @@ function Overview() {
                                         <div className="flex flex-col whitespace-nowrap">
                                             <div className="font-semibold">Industry</div>
                                             <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
-                                                <div>Technology</div>
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c2cbc77a9e47cd5264c4cb39f8e4e24c8f7f5c131a37388012a72e9cc92af6f?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 my-auto w-5 aspect-square"
-                                                />
+                                                <select name="" id="" className='w-[110px]'>
+                                                    <option>Technology</option>
+                                                    <option>Technology</option>
+                                                    <option>Technology</option>
+                                                    <option>Technology</option>
+                                                    <option>Technology</option>
+                                                    <option>Technology</option>
+                                                </select>
                                             </div>
+
                                         </div>
                                     </div>
                                     {/* <TypeDate label='founded-date' date='date' /> */}
-                                   
+
                                     <div className="mt-6 font-semibold max-md:max-w-full">
                                         Tech Stack
                                     </div>
-                                    <div className="flex gap-4 justify-between py-2 pr-4 pl-2 mt-1 w-full text-indigo-600 bg-white border border-solid border-zinc-200 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
-                                        <div className="flex gap-2">
-                                            <div className="flex gap-2 justify-center py-1 pr-1 pl-3 bg-slate-50">
-                                                <div>HTML 5</div>
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/1859abf7f3470b37c0a63be98e1295b54416633457ba5c2a1714cab6094149dd?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 my-auto w-5 aspect-square"
-                                                />
-                                            </div>
-                                            <div className="flex gap-2 justify-center py-1 pr-1 pl-3 bg-slate-50">
-                                                <div>CSS 3</div>
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/1859abf7f3470b37c0a63be98e1295b54416633457ba5c2a1714cab6094149dd?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 my-auto w-5 aspect-square"
-                                                />
-                                            </div>
-                                            <div className="justify-center items-start py-1 pr-1 pl-3 whitespace-nowrap bg-slate-50">
-                                                Javascript
-                                            </div>
-                                        </div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a4c9b6ac0519af150be98b3ffc93bcf7538c334904ecc263e2a764604b22305?apiKey=bf80438c4595450788b907771330b274&"
-                                            className="shrink-0 my-auto w-6 aspect-square"
-                                        />
-                                    </div>
+                                    <TechStackInput label='stack' name='stack' stacks={stacks} setStacks={setStacks} />
+                                    
                                 </div>
                             </Form>
                         </Formik>

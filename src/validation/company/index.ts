@@ -2,7 +2,7 @@ import * as Yup from 'yup'
 
 
 export const companyProfileInitialState = {
-    webiste:'',
+    website:'',
     location:[''],
     date:'',
     // techStacks:['']
