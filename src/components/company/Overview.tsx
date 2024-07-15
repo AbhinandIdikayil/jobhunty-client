@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Form, Field } from 'formik'
 import TypeDate from '../common/TypeDate'
-import LocationInput from '../common/LocationInput'
+import {LocationInput} from '../common/LocationInput'
+import {companyProfile, companyProfileInitialState} from '../../validation/company/index'
 
 function Overview() {
+
+    const [locations, setLocation] = useState<any[]>([]); 
+
+    function handleSubmit() {
+
+    }
     return (
         <div className="flex flex-col justify-center p-3 w-full bg-white max-md:px-5 max-md:max-w-full">
             <div className="self-start text-lg font-semibold leading-7 text-slate-800 max-md:max-w-full">
@@ -70,7 +77,9 @@ function Overview() {
                     </div>
                     <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
                         <Formik
-
+                        initialValues={companyProfileInitialState}
+                        onSubmit={handleSubmit}
+                        validationSchema={companyProfile}
                         >
                             <Form>
                                 <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10 max-md:max-w-full">
@@ -85,7 +94,7 @@ function Overview() {
 
 
 
-                                    <LocationInput />
+                                    <LocationInput label='location' name='location' location={locations} setLocation={setLocation} />
 
 
 
@@ -113,7 +122,7 @@ function Overview() {
                                             </div>
                                         </div>
                                     </div>
-                                    <TypeDate label='founded date' date='date' />
+                                    {/* <TypeDate label='founded-date' date='date' /> */}
                                    
                                     <div className="mt-6 font-semibold max-md:max-w-full">
                                         Tech Stack

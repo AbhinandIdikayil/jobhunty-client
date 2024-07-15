@@ -5,7 +5,7 @@ export const companyProfileInitialState = {
     webiste:'',
     location:[''],
     date:'',
-    techStacks:['']
+    // techStacks:['']
 }
 
 export const companyProfile = Yup.object().shape({
