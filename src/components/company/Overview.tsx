@@ -3,14 +3,12 @@ import { Formik, Form, Field } from 'formik'
 import TypeDate from '../common/TypeDate'
 import { LocationInput } from '../common/LocationInput'
 import { companyProfile, companyProfileInitialState } from '../../validation/company/index'
-import { BiDownArrowAlt } from 'react-icons/bi'
-import { ArrowBigDown } from 'lucide-react'
 import TechStackInput from '../common/TechStackInput'
 
 function Overview() {
 
     const [locations, setLocation] = useState<any[]>([]);
-    const [stacks,setStacks] = useState<any[]>([]);
+    const [stacks, setStacks] = useState<any[]>([]);
 
     function handleSubmit() {
 
@@ -85,58 +83,75 @@ function Overview() {
                             onSubmit={handleSubmit}
                             validationSchema={companyProfile}
                         >
-                            <Form>
-                                <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10 max-md:max-w-full">
-                                    <div className="font-semibold max-md:max-w-full">
-                                        Company Name
-                                    </div>
-                                    <Field name='name' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
-                                    <div className="mt-6 font-semibold max-md:max-w-full">
-                                        Website
-                                    </div>
-                                    <Field name='website' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
-
-
-                                    <LocationInput label='location' name='location' location={locations} setLocation={setLocation} />
-
-
-
-                                    <div className="flex gap-5 justify-between mt-6 max-md:flex-wrap">
-                                        <div className="flex flex-col">
-                                            <div className="font-semibold">Employee</div>
-                                            <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
-                                                <div>1 - 50</div>
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c2cbc77a9e47cd5264c4cb39f8e4e24c8f7f5c131a37388012a72e9cc92af6f?apiKey=bf80438c4595450788b907771330b274&"
-                                                    className="shrink-0 my-auto w-5 aspect-square"
-                                                />
+                            {
+                                () => (
+                                    <Form>
+                                        <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10 max-md:max-w-full">
+                                            <div className="font-semibold max-md:max-w-full">
+                                                Company Name
                                             </div>
-                                        </div>
-                                        <div className="flex flex-col whitespace-nowrap">
-                                            <div className="font-semibold">Industry</div>
-                                            <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
-                                                <select name="" id="" className='w-[110px]'>
-                                                    <option>Technology</option>
-                                                    <option>Technology</option>
-                                                    <option>Technology</option>
-                                                    <option>Technology</option>
-                                                    <option>Technology</option>
-                                                    <option>Technology</option>
-                                                </select>
+                                            <Field name='name' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
+                                            <div className="mt-6 font-semibold max-md:max-w-full">
+                                                Website
                                             </div>
+                                            <Field name='website' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
 
+
+                                            <LocationInput label='location' name='location' location={locations} setLocation={setLocation} />
+
+
+
+                                            <div className="flex gap-5 justify-between mt-6 max-md:flex-wrap">
+                                                <div className="flex flex-col">
+                                                    <div className="font-semibold">Employee</div>
+                                                    <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
+                                                        <div>1 - 50</div>
+                                                        <img
+                                                            loading="lazy"
+                                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c2cbc77a9e47cd5264c4cb39f8e4e24c8f7f5c131a37388012a72e9cc92af6f?apiKey=bf80438c4595450788b907771330b274&"
+                                                            className="shrink-0 my-auto w-5 aspect-square"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col whitespace-nowrap">
+                                                    <div className="font-semibold">Industry</div>
+                                                    <div className="flex gap-4 justify-between px-4 py-3 mt-1 bg-white border border-solid border-zinc-200 max-md:pr-5">
+                                                        <select name="" id="" className='w-[110px]'>
+                                                            <option>Technology</option>
+                                                            <option>Technology</option>
+                                                            <option>Technology</option>
+                                                            <option>Technology</option>
+                                                            <option>Technology</option>
+                                                            <option>Technology</option>
+                                                        </select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            {/* <TypeDate label='founded-date' date='date' /> */}
+
+                                            <div className="mt-6 font-semibold max-md:max-w-full">
+                                                Tech Stack
+                                            </div>
+                                            <TechStackInput label='stack' name='stack' stacks={stacks} setStacks={setStacks} />
+
+                                            <div className="text-base font-semibold leading-6 text-slate-600 max-md:max-w-full">
+                                                Description
+                                            </div>
+                                            <Field type='textarea' cols='30'
+                                                as='textarea'
+                                                rows='5' name='description'
+                                                label='description'
+                                                className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full"
+                                            />
                                         </div>
-                                    </div>
-                                    {/* <TypeDate label='founded-date' date='date' /> */}
+                                        <div className="justify-center self-end px-10 py-3.5 mt-12 text-lg font-bold leading-7 text-center text-white bg-indigo-600 max-md:px-5 max-md:mt-10">
+                                            Save Changes
+                                        </div>
+                                    </Form>
+                                )
+                            }
 
-                                    <div className="mt-6 font-semibold max-md:max-w-full">
-                                        Tech Stack
-                                    </div>
-                                    <TechStackInput label='stack' name='stack' stacks={stacks} setStacks={setStacks} />
-                                    
-                                </div>
-                            </Form>
                         </Formik>
                     </div>
                 </div>
@@ -153,60 +168,9 @@ function Overview() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col ml-5 w-[72%] max-md:ml-0 max-md:w-full">
-                        <div className="flex flex-col grow max-md:mt-10 max-md:max-w-full">
-                            <div className="text-base font-semibold leading-6 text-slate-600 max-md:max-w-full">
-                                Description
-                            </div>
-                            <div className="justify-center p-4 mt-1 text-base leading-7 bg-white border border-solid border-zinc-200 text-slate-600 max-md:max-w-full">
-                                Nomad is part of the Information Technology Industry. We
-                                believe travellers want to experience real life and meet local
-                                people. Nomad has 30 total employees across all of its
-                                locations and generates $1.50 million in sales.
-                            </div>
-                            <div className="flex gap-3 py-3 pr-20 pl-4 bg-white border border-solid border-zinc-200 max-md:flex-wrap max-md:pr-5">
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/8fc51e62dbf4c28ec2fa65989d4fa97ddbdcbea34f933ccca00a8b55ad86fbe0?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/6a68093d3612ab7c54b37c2b0caf4a756cd0f551824f057942d08926758a0c71?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/fffa9ccd12a9924b79397bd87e5ebc071d567eba6b47a644e54abf60479614fb?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/d7a4ac7c80003fda742fa6bb254d83a33466e32e640e103867f4f5708ae64d32?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/a38f313a09b47529aa7877e9f90dc184c0e79ca90351c4ca99d7e67f42e11719?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                                <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/ffce6b4823f33b39cd097a22e9db8456b7d7a5ceb1d8769a13dbe6850947ab06?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 w-6 aspect-square"
-                                />
-                            </div>
-                            <div className="flex gap-5 justify-between py-0.5 text-base leading-6 max-md:flex-wrap max-md:max-w-full">
-                                <div className="text-gray-400">Maximum 500 characters</div>
-                                <div className="text-right text-slate-600">0 / 500</div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-            <div className="justify-center self-end px-10 py-3.5 mt-12 text-lg font-bold leading-7 text-center text-white bg-indigo-600 max-md:px-5 max-md:mt-10">
-                Save Changes
-            </div>
+
         </div>
     )
 }

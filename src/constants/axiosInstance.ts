@@ -8,3 +8,8 @@ export const AXIOS_INSTANCE_AUTH = axios.create({
     withCredentials:true
 })
 
+export const CLOUDINARY_INSTANCE = axios.create({
+    baseURL:process.env.CLOUDINARY,
+    withCredentials: true
+})
+

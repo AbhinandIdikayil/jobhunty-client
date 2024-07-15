@@ -4,3 +4,7 @@
 .sidebar-link.active > div > div> span {
     font-weight: bolder;
 }
+.settings.active {
+    color:blue;
+    text-decoration: underline;
+}

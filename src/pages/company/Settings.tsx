@@ -12,8 +12,8 @@ function Settings() {
                     <button className="ml-2 bg-indigo-600 text-white font-bold  py-1 px-2 rounded-sm">send</button>
                 </span>
                 <div className="flex gap-5  mt-6 text-base leading-6 bg-white shadow-sm">
-                    <NavLink to={''}>Overview</NavLink>
-                    <NavLink to={'social-links'} className="text-slate-500 shrink-0">Social Links</NavLink>
+                    <NavLink to={''} end className="settings">Overview</NavLink>
+                    <NavLink to={'social-links'} className="settings">Social Links</NavLink>
                 </div>
             </div>
             <hr />
