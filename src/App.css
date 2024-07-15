@@ -1,10 +1,18 @@
 .sidebar-link.active {
     color: blue;
 }
-.sidebar-link.active > div > div> span {
+
+.sidebar-link.active>div>div>span {
     font-weight: bolder;
 }
+
 .settings.active {
-    color:blue;
+    color: blue;
     text-decoration: underline;
+}
+
+[data-slot="helper-wrapper"] {
+    color: red;
+    font-size: 0.75rem;
+    display: flex !important;
 }

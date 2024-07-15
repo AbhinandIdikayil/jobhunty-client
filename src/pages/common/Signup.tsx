@@ -2,7 +2,7 @@ import { Form, Formik, Field, FormikValues } from 'formik'
 import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress'
 import Backdrop from '@mui/material/Backdrop';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { googleLoginAndSignup, signupUser, verifyOtp } from '../../redux/actions/userAction';
 import { AppDispatch, RootState } from '../../redux/store';
@@ -27,7 +27,7 @@ function Signup() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isExpired, setIsExpired] = useState(false);
-    
+    const location = useLocation()
 
     const handleClose = () => {
         setOpen(false);
@@ -59,6 +59,18 @@ function Signup() {
 
     const responseMessage = (response: Object) => {
         console.log(response);
+        let data;
+        if(location.pathname === '/company/signup') {
+            data = {
+                ...response,
+                role:'company'
+            }
+        } else {
+            data = {
+                ...response,
+                role:'user'
+            }
+        }
         handleGoogleAuth(response)
     };
     const errorMessage = () => {

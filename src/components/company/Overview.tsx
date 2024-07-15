@@ -4,11 +4,29 @@ import TypeDate from '../common/TypeDate'
 import { LocationInput } from '../common/LocationInput'
 import { companyProfile, companyProfileInitialState } from '../../validation/company/index'
 import TechStackInput from '../common/TechStackInput'
+import { CalendarDate } from '@internationalized/date'
 
 function Overview() {
 
     const [locations, setLocation] = useState<any[]>([]);
     const [stacks, setStacks] = useState<any[]>([]);
+    const [imagePreview, setImagePreview] = useState('')
+    const [date,setDate] = useState(new CalendarDate(2024, 7, 15))
+    const handleFileChange = (event:React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target?.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                if (typeof reader.result === 'string') {
+                  setImagePreview(reader.result);
+                } else {
+                  console.error('FileReader result is not a string');
+                }
+              };
+        
+            reader.readAsDataURL(file);
+        }
+    }
 
     function handleSubmit() {
 
@@ -34,30 +52,25 @@ function Overview() {
                     <div className="flex flex-col ml-5 w-[66%] max-md:ml-0 max-md:w-full">
                         <div className="grow max-md:mt-10 max-md:max-w-full">
                             <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                                <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/11820a214d8cab5f08595f3c6ad821268446b30b28cb1402f29c4119bd72b8ff?apiKey=bf80438c4595450788b907771330b274&"
-                                        className="shrink-0 max-w-full aspect-square w-[124px] max-md:mt-8"
-                                    />
-                                </div>
-                                <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
-                                    <div className="flex flex-col grow px-11 py-6 w-full text-base leading-6 rounded-lg border-2 border-indigo-600 border-dashed bg-slate-50 max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/776b59e6aed4d611c0a3f2a07b852243f43e5aa92384ed3f583b9ce65bbaa19c?apiKey=bf80438c4595450788b907771330b274&"
-                                            className="self-center w-8 aspect-square"
-                                        />
-                                        <div className="mx-5 mt-2 text-slate-600 max-md:mx-2.5">
-                                            <span className="font-medium text-indigo-600">
-                                                Click to replace
-                                            </span>{" "}
-                                            <span className="text-slate-600">or drag and drop</span>
+                                <div className="flex items-center justify-center w-full">
+                                    <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                            {imagePreview ? (
+                                                <img src={imagePreview} alt="Preview" className="w-full h-full object-contain" />
+                                            ) : (
+                                                <>
+                                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                                    </svg>
+                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                        <span className="font-semibold">Click to upload</span> or drag and drop
+                                                    </p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                </>
+                                            )}
                                         </div>
-                                        <div className="mt-1 text-slate-500">
-                                            SVG, PNG, JPG or GIF (max. 400 x 400px)
-                                        </div>
-                                    </div>
+                                        <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +97,7 @@ function Overview() {
                             validationSchema={companyProfile}
                         >
                             {
-                                () => (
+                                ({errors}) => (
                                     <Form>
                                         <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10 max-md:max-w-full">
                                             <div className="font-semibold max-md:max-w-full">
@@ -93,6 +106,9 @@ function Overview() {
                                             <Field name='name' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
                                             <div className="mt-6 font-semibold max-md:max-w-full">
                                                 Website
+                                                {
+                                                    errors?.website && <span className='text-red-600'> {errors?.website} </span>
+                                                }
                                             </div>
                                             <Field name='website' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
 
@@ -128,7 +144,7 @@ function Overview() {
 
                                                 </div>
                                             </div>
-                                            {/* <TypeDate label='founded-date' date='date' /> */}
+                                            <TypeDate label='founded-date' name='date' date={date} setDate={setDate} />
 
                                             <div className="mt-6 font-semibold max-md:max-w-full">
                                                 Tech Stack
@@ -137,6 +153,9 @@ function Overview() {
 
                                             <div className="text-base font-semibold leading-6 text-slate-600 max-md:max-w-full">
                                                 Description
+                                                {
+                                                    errors?.description && <span className='text-red-600'> {errors?.description} </span>
+                                                }
                                             </div>
                                             <Field type='textarea' cols='30'
                                                 as='textarea'
