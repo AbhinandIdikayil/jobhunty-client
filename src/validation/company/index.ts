@@ -11,38 +11,53 @@ export const companyProfile = Yup.object().shape({
     location: Yup
         .array()
         .of(Yup.string()),
-        // .required('location sdsdis required'),
+    // .required('location sdsdis required'),
     date: Yup
         .string(),
-        // .required('Date is required'),
+    // .required('Date is required'),
     description: Yup
         .string()
         .min(6, 'min 5 char needed')
         .required('desciption is required'),
-    employee: Yup 
+    employee: Yup
         .string()
-        .min(2,'min 2 employee is required')
+        .min(2, 'min 2 employee is required')
 })
 
 
 
-export const socialLinks = {
-    instagram: '',
-    twitter: '',
-    facebook: '',
-    linkedIn: '',
-    youtube: ''
-}
+
 
 export const socialLinksValidation = Yup.object().shape({
     instagram: Yup
-        .string(),
+        .string()
+        .matches(
+            /^https:\/\/www\.instagram\.com\/in\//,
+            'instagram link must start with "https://www.instagram.com/in/"'
+        ),
     twitter: Yup
-        .string(),
+        .string()
+        .matches(
+            /^https:\/\/www\.twitter\.com\/in\//,
+            'Twitter link must start with "https://www.twitter.com/in/"'
+        ),
     facebook: Yup
-        .string(),
-    linkedIn: Yup
-        .string(),
+        .string()
+        .matches(
+            /^https:\/\/www\.facebook\.com\/in\//,
+            'Facebook link must start with "https://www.facebook.com/in/"'
+        ),
+    LinkedInLink: Yup
+        .string()
+        .matches(
+            /^https:\/\/www\.linkedin\.com\/in\//,
+            'LinkedIn link must start with "https://www.linkedin.com/in/"'
+        )
+        .required('Linkedin link is required'),
     youtube: Yup
         .string()
+        .matches(
+            /^https:\/\/www\.youtube\.com\/in\//,
+            'Youtube link must start with "https://www.youtube.com/in/"'
+        )
 })

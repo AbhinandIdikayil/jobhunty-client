@@ -5,7 +5,7 @@ function Settings() {
     const { open } = useOutletContext<prop>()
 
     return (
-        <div className={`flex flex-col ml-5 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
+        <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
             <div className="flex flex-col px-3 pt-3 max-w-full font-semibold w-3/4 max-md:px-5">
                 <div className="text-3xl leading-10 text-slate-800">Settings</div>
                 <span>Complete the profile and send request
