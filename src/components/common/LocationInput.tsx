@@ -15,14 +15,12 @@ interface PasswordInputProps {
 
 
 export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, location, setLocation }) => {
-
-    const [field, meta, helpers] = useField(name)
-
     const [suggestions, setSuggestions] = useState([])
-
+    const [field,setField] = useState('')
 
     const handleSuggestionClick = (suggestion: any) => {
-        setLocation((prevLocation) => [...prevLocation, suggestion]);
+        console.log(location)
+        setLocation((prevLocation) => [...prevLocation, suggestion.csc]);
 
     };
 
@@ -72,9 +70,7 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
     );
 
     async function handleSubmit() {
-        console.log(field)
-        await fetchLocation(field.value)
-        console.log(location)
+        await fetchLocation(field)
     }
 
 
@@ -87,8 +83,8 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
                         <div className="flex flex-wrap gap-2">
                             {
                                 location?.length && location.map((data) => (
-                                    <div className="flex gap-2 justify-center items-center py-1 pr-1 pl-3 bg-slate-50">
-                                        {data.csc}
+                                    <div key={data} className="flex gap-2 justify-center items-center py-1 pr-1 pl-3 bg-slate-50">
+                                        {data}
                                         <IoCloseCircle onClick={() => removeLocation(data)} size={20} />
                                     </div>
                                 ))
@@ -99,11 +95,10 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
             }
 
             <div>
-                <div htmlFor={name}>{label}</div>
-                <Field
-                    id={name}
+                <div>{label}</div>
+                <input
+                    onChange={(e) => setField(e.target.value)}
                     name={name}
-                    {...field}
                     className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full"
                 />
                 <button type='submit' onClick={handleSubmit} className='px-5 py-3 ml-2 rounded text-white font-bold bg-indigo-600'>GO</button>

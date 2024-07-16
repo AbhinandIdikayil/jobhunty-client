@@ -20,8 +20,14 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { IoCloseCircle } from 'react-icons/io5';
 import fonts from '../../assets/techstacks.json'
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
 
 export const TechStackInput: React.FC<Techstack> = ({ label, name, stacks, setStacks }) => {
+
+
+    const state = useSelector((state:RootState) => state.user)
+
     function handleClick(data: any) {
         setStacks((prev) => [...prev, data.name])
         console.log(stacks)
@@ -40,8 +46,8 @@ export const TechStackInput: React.FC<Techstack> = ({ label, name, stacks, setSt
                     <ScrollArea className='h-36' onClick={() => console.log('afaf')}>
                         <CommandGroup heading="Suggestions">
                             {
-                                fonts.map((data) => (
-                                    <div key={data.name} className='flex justify-center items-center' onClick={() => handleClick(data)}>
+                                fonts.map((data,i) => (
+                                    <div key={i} className='flex justify-center items-center' onClick={() => handleClick(data)}>
                                         <CommandItem  className='w-full border-2'>
                                             <picture>
                                                 <source

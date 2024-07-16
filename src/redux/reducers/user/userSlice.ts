@@ -1,6 +1,7 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
 import { forgotPassword, googleLoginAndSignup, login, logout, signupUser, verifyEmail, verifyOtp } from '../../actions/userAction'
+import { getCompany, updateProfile } from 'src/redux/actions/companyAction'
 
 const initialState: UserReducer = {
     loading: false,
@@ -148,6 +149,34 @@ const userSlice = createSlice({
                 } else {
                     state.err = action.error.message || 'An unknown error occured'
                 }
+            })
+            .addCase(getCompany.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(getCompany.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = false
+                state.user = payload
+            })
+            .addCase(getCompany.rejected, (state) => {
+                state.loading = false
+                state.err = false
+                // state.user = null
+                // state.role = null
+            })
+            .addCase(updateProfile.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(updateProfile.fulfilled, (state,{payload}) => {
+                state.loading = false
+                state.err = false
+                state.user = payload
+            })
+            .addCase(updateProfile.rejected, (state) => {
+                state.loading = false
+                state.err = false
             })
     }
 })

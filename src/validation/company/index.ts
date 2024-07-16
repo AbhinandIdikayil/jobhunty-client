@@ -2,27 +2,26 @@
 import * as Yup from 'yup'
 
 
-export const companyProfileInitialState = {
-    website: '',
-    location: [''],
-    date: '06/11/1995',
-    description: ''
-    // techStacks:['']
-}
+
 
 export const companyProfile = Yup.object().shape({
     website: Yup
-        .string(),
+        .string()
+        .required('website is required'),
     location: Yup
         .array()
-        .of(Yup.string().matches(/[a-zA-Z]/, 'only char allowed'))
-        .required('location is required'),
+        .of(Yup.string()),
+        // .required('location sdsdis required'),
     date: Yup
-        .string()
-        .required('Date is required'),
+        .string(),
+        // .required('Date is required'),
     description: Yup
         .string()
         .min(6, 'min 5 char needed')
+        .required('desciption is required'),
+    employee: Yup 
+        .string()
+        .min(2,'min 2 employee is required')
 })
 
 

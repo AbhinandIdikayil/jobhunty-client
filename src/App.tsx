@@ -10,16 +10,20 @@ import AdminLogin from './pages/admin/Login'
 import AdminHome from './pages/admin/AdminHome'
 const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
-import ForgotPassword from './pages/common/ForgotPassword'
+const ForgotPassword = lazy(() => import('./pages/common/ForgotPassword'))
 const Settings = lazy(() => import('./pages/company/Settings'))
 const Overview = lazy(() => import('./components/company/Overview'))
-import { Backdrop } from '@mui/material'
-import SocialLinks from './components/company/SocialLinks'
+import { Backdrop, CircularProgress } from '@mui/material'
+const SocialLinks = lazy(() => import('./components/company/SocialLinks')) 
 
 function App() {
 
   return (
-    <Suspense fallback={<Backdrop open={true} />}>
+    <Suspense fallback={
+      <Backdrop open={true} sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    }>
       <Routes>
 
       ////! routes for user
