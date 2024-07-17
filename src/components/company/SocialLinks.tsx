@@ -11,10 +11,10 @@ function SocialLinks() {
 
 
   const socialLinks = {
-    instagram: state?.user?.socialLinks[0] ?? '',
-    twitter: state?.user?.socialLinks[1] ?? '',
+    twitter: state?.user?.socialLinks[0] ?? '',
+    youtube: state?.user?.socialLinks[1] ?? '',
     facebook: state?.user?.socialLinks[2] ?? '',
-    youtube: state?.user?.socialLinks[3] ?? '',
+    instagram: state?.user?.socialLinks[3] ?? '',
     LinkedInLink: state?.user?.LinkedInLink ?? '',
   }
 
