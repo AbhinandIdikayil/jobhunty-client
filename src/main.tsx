@@ -8,6 +8,8 @@ import store, { persistor } from './redux/store.ts'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { PersistGate } from 'redux-persist/integration/react'
 import { NextUIProvider } from '@nextui-org/react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 const clientId = process.env.CLIENT_ID as string
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -17,6 +19,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <PersistGate loading={null} persistor={persistor}>
           <GoogleOAuthProvider clientId={clientId}>
             <NextUIProvider>
+              <ToastContainer />
               <App />
             </NextUIProvider>
           </GoogleOAuthProvider>

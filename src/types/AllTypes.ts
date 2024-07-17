@@ -1,3 +1,4 @@
+import { ReactNode } from "react"
 
 
 export type UserReducer = {
@@ -41,11 +42,14 @@ export type ErrorPayload = {
 }
 
 export interface prop {
-    open:boolean
+    open: boolean
 }
 
 export interface IVerifyEmail {
     email: string
 }
 
+export interface Children {
+    children: ReactNode;
+}
 

@@ -1,6 +1,8 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
 import { forgotPassword, googleLoginAndSignup, login, logout, signupUser, verifyEmail, verifyOtp } from '../../actions/userAction'
+import { getAllusers, getCompany, sendRequest, updateProfile, updateSocialLinks } from 'src/redux/actions/companyAction'
+import { adminLogin } from 'src/redux/actions/adminAction'
 
 const initialState: UserReducer = {
     loading: false,
@@ -148,6 +150,87 @@ const userSlice = createSlice({
                 } else {
                     state.err = action.error.message || 'An unknown error occured'
                 }
+            })
+            .addCase(getCompany.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(getCompany.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = false
+                state.user = payload
+            })
+            .addCase(getCompany.rejected, (state) => {
+                state.loading = false
+                state.err = false
+                // state.user = null
+                // state.role = null
+            })
+            .addCase(updateProfile.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(updateProfile.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = false
+                state.user = payload
+            })
+            .addCase(updateProfile.rejected, (state) => {
+                state.loading = false
+                state.err = false
+            })
+            .addCase(updateSocialLinks.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(updateSocialLinks.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = false
+                state.user = payload
+            })
+            .addCase(updateSocialLinks.rejected, (state) => {
+                state.loading = false
+                state.err = false
+            })
+            .addCase(sendRequest.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(sendRequest.fulfilled, (state) => {
+                state.loading = false
+                state.err = false
+            })
+            .addCase(sendRequest.rejected, (state, { payload }) => {
+                state.loading = false
+                state.err = payload
+            })
+            .addCase(adminLogin.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(adminLogin.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.user = payload
+                state.role = payload?.role
+                state.err = false
+            })
+            .addCase(adminLogin.rejected, (state, { payload }) => {
+                state.loading = false
+                state.user = null
+                state.role = null
+                state.err = payload
+            })
+            .addCase(getAllusers.pending,(state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(getAllusers.fulfilled,(state) => {
+                state.loading = false
+                state.err = false
+            })
+            .addCase(getAllusers.rejected,(state,{payload}) => {
+                state.loading = false
+                state.err = payload
             })
     }
 })

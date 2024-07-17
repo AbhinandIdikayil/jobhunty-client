@@ -1,12 +1,9 @@
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { RootState } from '../../redux/store'
-import { ReactNode } from 'react'
+import { Children } from 'src/types/AllTypes'
 
 
-interface Children {
-    children: ReactNode;
-  }
 
 function CompnanyPrivateRoute({children}:Children) {
     const state = useSelector((state: RootState) => state?.user)
