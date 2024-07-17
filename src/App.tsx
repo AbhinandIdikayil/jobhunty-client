@@ -8,13 +8,15 @@ import CompanyHome from './pages/company/CompanyHome'
 import Dashboard from './pages/company/Dashboard'
 import AdminLogin from './pages/admin/Login'
 import AdminHome from './pages/admin/AdminHome'
-const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
 const ForgotPassword = lazy(() => import('./pages/common/ForgotPassword'))
 const Settings = lazy(() => import('./pages/company/Settings'))
 const Overview = lazy(() => import('./components/company/Overview'))
+const SocialLinks = lazy(() => import('./components/company/SocialLinks'))
 import { Backdrop, CircularProgress } from '@mui/material'
-const SocialLinks = lazy(() => import('./components/company/SocialLinks')) 
+import AdminPrivateRoute from './components/admin/AdminPrivateRoute'
+const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
+const Companies =  lazy(() => import('./pages/admin/Companies')) 
 
 function App() {
 
@@ -62,10 +64,14 @@ function App() {
       ////! routes for admin
         <Route path='/admin'>
           <Route path='' element={<AdminLogin />} />
-          <Route path='home' element={<AdminHome />}>
+          <Route path='home' element={
+            <AdminPrivateRoute>
+              <AdminHome />
+            </AdminPrivateRoute>
+          }>
             <Route path='' />
             <Route path='requests' element={<h1>users</h1>} />
-            <Route path='companies' element={<h1>companies</h1>} />
+            <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />
           </Route>
         </Route>

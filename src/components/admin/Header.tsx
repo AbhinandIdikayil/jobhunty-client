@@ -44,7 +44,7 @@ function Header({ open, func }: props) {
                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"
                         className="shrink-0 self-start w-6 aspect-square"
                     />
-                    <div>Post a job</div>
+                    <div>Add category</div>
                 </div>
             </div>
         </div>

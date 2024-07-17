@@ -2,6 +2,7 @@ import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
 import { forgotPassword, googleLoginAndSignup, login, logout, signupUser, verifyEmail, verifyOtp } from '../../actions/userAction'
 import { getCompany, sendRequest, updateProfile, updateSocialLinks } from 'src/redux/actions/companyAction'
+import { adminLogin } from 'src/redux/actions/adminAction'
 
 const initialState: UserReducer = {
     loading: false,
@@ -169,7 +170,7 @@ const userSlice = createSlice({
                 state.loading = true
                 state.err = false
             })
-            .addCase(updateProfile.fulfilled, (state,{payload}) => {
+            .addCase(updateProfile.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = false
                 state.user = payload
@@ -178,29 +179,45 @@ const userSlice = createSlice({
                 state.loading = false
                 state.err = false
             })
-            .addCase(updateSocialLinks.pending,(state) => {
+            .addCase(updateSocialLinks.pending, (state) => {
                 state.loading = true
                 state.err = false
             })
-            .addCase(updateSocialLinks.fulfilled,(state,{payload}) => {
+            .addCase(updateSocialLinks.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = false
                 state.user = payload
             })
-            .addCase(updateSocialLinks.rejected,(state) => {
+            .addCase(updateSocialLinks.rejected, (state) => {
                 state.loading = false
                 state.err = false
             })
-            .addCase(sendRequest.pending,(state) => {
+            .addCase(sendRequest.pending, (state) => {
                 state.loading = true
                 state.err = false
             })
-            .addCase(sendRequest.fulfilled,(state) => {
+            .addCase(sendRequest.fulfilled, (state) => {
                 state.loading = false
                 state.err = false
             })
-            .addCase(sendRequest.rejected,(state,{payload}) => {
+            .addCase(sendRequest.rejected, (state, { payload }) => {
                 state.loading = false
+                state.err = payload
+            })
+            .addCase(adminLogin.pending, (state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(adminLogin.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.user = payload
+                state.role = payload?.role
+                state.err = false
+            })
+            .addCase(adminLogin.rejected, (state, { payload }) => {
+                state.loading = false
+                state.user = null
+                state.role = null
                 state.err = payload
             })
     }
