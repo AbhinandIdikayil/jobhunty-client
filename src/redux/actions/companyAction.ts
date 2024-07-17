@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AXIOS_INSTANCE_COMPANY } from "src/constants/axiosInstance";
+import { AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
 
 
 
@@ -51,6 +51,20 @@ export const sendRequest = createAsyncThunk(
             return data
         } catch (error: any) {
             return rejectWithValue(error.response)
+        }
+    }
+)
+
+
+export const getAllusers = createAsyncThunk(
+    'company/get-all-users',
+    async(_,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_USER.get('/get-allusers')
+            console.log(data)
+            return data 
+        } catch (error) {
+            return rejectWithValue(error)
         }
     }
 )

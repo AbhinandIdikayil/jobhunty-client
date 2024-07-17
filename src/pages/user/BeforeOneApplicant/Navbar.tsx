@@ -54,7 +54,7 @@ function Navbar() {
                 </div>
                 <div className="flex gap-4 justify-between py-3.5 pl-6 text-base font-bold leading-6 text-center">
                     {
-                        user?.user?.token ? (
+                        user?.user ? (
                             <button onClick={handleLogout} className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">Logout</button>
                         ) : (
                             <>

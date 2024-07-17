@@ -1,7 +1,7 @@
 import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
 import { forgotPassword, googleLoginAndSignup, login, logout, signupUser, verifyEmail, verifyOtp } from '../../actions/userAction'
-import { getCompany, sendRequest, updateProfile, updateSocialLinks } from 'src/redux/actions/companyAction'
+import { getAllusers, getCompany, sendRequest, updateProfile, updateSocialLinks } from 'src/redux/actions/companyAction'
 import { adminLogin } from 'src/redux/actions/adminAction'
 
 const initialState: UserReducer = {
@@ -218,6 +218,18 @@ const userSlice = createSlice({
                 state.loading = false
                 state.user = null
                 state.role = null
+                state.err = payload
+            })
+            .addCase(getAllusers.pending,(state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(getAllusers.fulfilled,(state) => {
+                state.loading = false
+                state.err = false
+            })
+            .addCase(getAllusers.rejected,(state,{payload}) => {
+                state.loading = false
                 state.err = payload
             })
     }

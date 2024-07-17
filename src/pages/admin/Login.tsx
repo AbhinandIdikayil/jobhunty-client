@@ -1,4 +1,5 @@
 import { Field, Form, Formik, FormikValues } from "formik"
+import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { adminLogin } from "src/redux/actions/adminAction"
@@ -20,6 +21,12 @@ function Login() {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    if(state.role == 'admin' && state.user){
+      return navigate('/admin/home')
+    }
+  }, [])
 
   return (
 

@@ -18,45 +18,48 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "src/redux/store"
+import { getAllusers } from "src/redux/actions/companyAction"
 
-const data: Payment[] = [
-    {
-        id: "m5gr84i9",
-        amount: 316,
-        status: "success",
-        email: "ken99@yahoo.com",
-    },
-    {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "Monserrat44@gmail.com",
-    },
-    {
-        id: "5kma53ae",
-        amount: 874,
-        status: "success",
-        email: "Silas22@gmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        amount: 721,
-        status: "failed",
-        email: "carmella@hotmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        amount: 721,
-        status: "failed",
-        email: "carmella@hotmail.com",
-    },
-]
+// const data: Payment[] = [
+//     {
+//         id: "m5gr84i9",
+//         amount: 316,
+//         status: "success",
+//         email: "ken99@yahoo.com",
+//     },
+//     {
+//         id: "derv1ws0",
+//         amount: 837,
+//         status: "processing",
+//         email: "Monserrat44@gmail.com",
+//     },
+//     {
+//         id: "5kma53ae",
+//         amount: 874,
+//         status: "success",
+//         email: "Silas22@gmail.com",
+//     },
+//     {
+//         id: "bhqecj4p",
+//         amount: 721,
+//         status: "failed",
+//         email: "carmella@hotmail.com",
+//     },
+//     {
+//         id: "bhqecj4p",
+//         amount: 721,
+//         status: "failed",
+//         email: "carmella@hotmail.com",
+//     },
+// ]
 
 export type Payment = {
     id: string
-    amount: number
-    status: "pending" | "processing" | "success" | "failed"
+    name: string
+    blocked: boolean
     email: string
 }
 
@@ -84,10 +87,10 @@ export const columns: ColumnDef<Payment>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "status",
-        header: "Status",
+        accessorKey: "isBlocked",
+        header: "IsBlocked",
         cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
+            <div className="capitalize">{row.getValue("isBlocked")}</div>
         ),
     },
     {
@@ -106,18 +109,18 @@ export const columns: ColumnDef<Payment>[] = [
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
     {
-        accessorKey: "amount",
-        header: () => <div className="text-right">Amount</div>,
+        accessorKey: "name",
+        header: () => <div className="text-right">Name</div>,
         cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("amount"))
+            const name = row.getValue("name")
 
-            // Format the amount as a dollar amount
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-            }).format(amount)
+            // Format the name as a dollar amount
+            // const formatted = new Intl.NumberFormat("en-US", {
+            //     style: "currency",
+            //     currency: "USD",
+            // }).format(amount)
 
-            return <div className="text-right font-medium">{formatted}</div>
+            return <div className="text-right font-medium">{name}</div>
         },
     },
     {
@@ -155,6 +158,8 @@ export const columns: ColumnDef<Payment>[] = [
 function UsersListing() {
     const { open } = useOutletContext<prop>()
 
+    const dispatch: AppDispatch = useDispatch()
+    const [data, setData] = useState([])
 
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
@@ -163,6 +168,22 @@ function UsersListing() {
     const [columnVisibility, setColumnVisibility] =
         useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
+
+
+    async function fetchUsers() {
+        try {
+            const data = await dispatch(getAllusers()).unwrap()
+            if(data){
+                setData(data)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [])
 
     const table = useReactTable({
         data,
