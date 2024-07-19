@@ -8,7 +8,7 @@ interface props {
 function Header({ func, open }: props) {
 
     return (
-        <div className="flex gap-5 justify-between px-8 py-4 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+        <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{borderBottom:'.5px solid black',paddingBlock:'16px'}}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />

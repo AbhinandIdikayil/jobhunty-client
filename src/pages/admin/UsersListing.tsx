@@ -21,8 +21,7 @@ import {
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "src/redux/store"
-import { getAllusers } from "src/redux/actions/companyAction"
-
+import { getAllusers } from "src/redux/actions/adminAction"
 // const data: Payment[] = [
 //     {
 //         id: "m5gr84i9",
@@ -174,6 +173,7 @@ function UsersListing() {
         try {
             const data = await dispatch(getAllusers()).unwrap()
             if(data){
+                console.log(data)
                 setData(data)
             }
         } catch (error) {

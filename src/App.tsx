@@ -69,7 +69,7 @@ function App() {
               <AdminHome />
             </AdminPrivateRoute>
           }>
-            <Route path='' />
+            <Route path='' element={<h1>sadfsdf</h1>} />
             <Route path='requests' element={<h1>users</h1>} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />

@@ -78,13 +78,14 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            borderRight:'1px solid black'
           },
         }}
         variant="persistent"
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+        <DrawerHeader sx={{borderBottom:'1px solid black'}}>
           <MdOutlineArrowBackIos onClick={handleDrawerClose} />
         </DrawerHeader>
         <Divider />
@@ -92,7 +93,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton sx={{ width: drawerWidth }}>
+                <ListItemButton sx={{ width: drawerWidth-2 }}>
                   <ListItemIcon>
                     {
                       text == 'Dashboard' && <RiHome2Line size={30} /> ||
@@ -109,7 +110,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
             </ListItem>
           ))}
         </List>
-        <Divider />
+        <Divider sx={{borderBottom:'.5px solid black'}} />
         <List>
           {['Settings'].map((text) => (
             <ListItem key={text} disablePadding>
