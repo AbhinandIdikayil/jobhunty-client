@@ -2,8 +2,8 @@ import { useOutletContext } from "react-router-dom"
 import { prop } from "../../types/AllTypes"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { ArrowUpDown, ChevronDown } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
@@ -21,39 +21,7 @@ import {
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "src/redux/store"
-import { getAllusers } from "src/redux/actions/adminAction"
-// const data: Payment[] = [
-//     {
-//         id: "m5gr84i9",
-//         amount: 316,
-//         status: "success",
-//         email: "ken99@yahoo.com",
-//     },
-//     {
-//         id: "derv1ws0",
-//         amount: 837,
-//         status: "processing",
-//         email: "Monserrat44@gmail.com",
-//     },
-//     {
-//         id: "5kma53ae",
-//         amount: 874,
-//         status: "success",
-//         email: "Silas22@gmail.com",
-//     },
-//     {
-//         id: "bhqecj4p",
-//         amount: 721,
-//         status: "failed",
-//         email: "carmella@hotmail.com",
-//     },
-//     {
-//         id: "bhqecj4p",
-//         amount: 721,
-//         status: "failed",
-//         email: "carmella@hotmail.com",
-//     },
-// ]
+import { blockUser, getAllusers } from "src/redux/actions/adminAction"
 
 export type Payment = {
     id: string
@@ -62,120 +30,33 @@ export type Payment = {
     email: string
 }
 
-export const columns: ColumnDef<Payment>[] = [
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
-    {
-        accessorKey: "isBlocked",
-        header: "IsBlocked",
-        cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("isBlocked")}</div>
-        ),
-    },
-    {
-        accessorKey: "email",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Email
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-    },
-    {
-        accessorKey: "name",
-        header: () => <div className="text-right">Name</div>,
-        cell: ({ row }) => {
-            const name = row.getValue("name")
 
-            // Format the name as a dollar amount
-            // const formatted = new Intl.NumberFormat("en-US", {
-            //     style: "currency",
-            //     currency: "USD",
-            // }).format(amount)
-
-            return <div className="text-right font-medium">{name}</div>
-        },
-    },
-    {
-        id: "actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-            const payment = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
-    },
-]
 
 
 function UsersListing() {
     const { open } = useOutletContext<prop>()
 
     const dispatch: AppDispatch = useDispatch()
-    const [data, setData] = useState([])
+    const state = useSelector((state: RootState) => state.admin)
 
     const [sorting, setSorting] = useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        useState<VisibilityState>({})
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
 
 
     async function fetchUsers() {
         try {
-            const data = await dispatch(getAllusers()).unwrap()
-            if(data){
-                console.log(data)
-                setData(data)
-            }
+            await dispatch(getAllusers()).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function handleUserBlock(data: any) {
+        try {
+            await dispatch(blockUser({ email: data?.email })).unwrap();
+            await dispatch(getAllusers()).unwrap()
         } catch (error) {
             console.log(error)
         }
@@ -185,8 +66,65 @@ function UsersListing() {
         fetchUsers()
     }, [])
 
+    const columns: ColumnDef<Payment>[] = [
+        {
+            id: "select",
+            header: ({ table }) => (
+                <Checkbox
+                    checked={
+                        table.getIsAllPageRowsSelected() ||
+                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                    }
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            ),
+            cell: ({ row }) => (
+                <Checkbox
+                    checked={row.getIsSelected()}
+                    onCheckedChange={(value) => row.toggleSelected(!!value)}
+                    aria-label="Select row"
+                />
+            ),
+            enableSorting: false,
+            enableHiding: false,
+        },
+        {
+            accessorKey: "email",
+            header: ({ column }) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Email
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                )
+            },
+            cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+        },
+        {
+            accessorKey: "name",
+            header: () => <div className="text-left">Name</div>,
+            cell: ({ row }) => {
+                const name = row.getValue("name")
+                return <div className="text-left font-medium capitalize">{name}</div>
+            },
+        },
+        {
+            accessorKey: "isBlocked",
+            header: "IsBlocked",
+            cell: ({ row }) => (
+                <div className="" onClick={() => handleUserBlock(row.original)}>
+                    {row.getValue("isBlocked") ? (<span className="bg-red-600 p-2 rounded">unblock</span>) : <span className="bg-green-500 p-2 rounded">block</span>}
+                </div>
+            ),
+        },
+    ]
+
     const table = useReactTable({
-        data,
+        data: state.users,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -202,6 +140,7 @@ function UsersListing() {
             columnVisibility,
             rowSelection,
         },
+        autoResetPageIndex: true
     })
 
     return (
@@ -243,7 +182,7 @@ function UsersListing() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <div className="rounded-md border">
+                <div className="rounded-md border" >
                     <Table>
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (

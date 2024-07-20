@@ -220,18 +220,6 @@ const userSlice = createSlice({
                 state.role = null
                 state.err = payload
             })
-            .addCase(getAllusers.pending,(state) => {
-                state.loading = true
-                state.err = false
-            })
-            .addCase(getAllusers.fulfilled,(state) => {
-                state.loading = false
-                state.err = false
-            })
-            .addCase(getAllusers.rejected,(state,{payload}) => {
-                state.loading = false
-                state.err = payload
-            })
     }
 })
 

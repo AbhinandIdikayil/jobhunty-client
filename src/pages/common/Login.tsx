@@ -14,7 +14,7 @@ import Otp from "src/components/common/Otp"
 const Login: React.FC = () => {
 
 
-    const user = useSelector((state: RootState) => state.user)
+    const user = useSelector((state: RootState) => state?.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate();
     const [otpPage, setOtpPage] = useState(false);
@@ -158,7 +158,7 @@ const Login: React.FC = () => {
                                                         <span className="text-red-600">
                                                             {
                                                                 errors?.email && '(' + errors.email + ')' ||
-                                                                user?.err && (user?.err as string).includes('user') && '(' + user?.err + ")"
+                                                                user?.err && (user?.err as string)?.includes('user') && '(' + user?.err + ")"
                                                             }
                                                         </span>
                                                     </div>
@@ -174,7 +174,7 @@ const Login: React.FC = () => {
                                                         <span className="text-red-600">
                                                             {
                                                                 errors?.password && '(' + errors.password + ')' ||
-                                                                user?.err && (user?.err as string).includes('password') && '(' + user?.err + ")"
+                                                                user?.err && (user?.err as string)?.includes('password') && '(' + user?.err + ")"
                                                             }
                                                         </span>
                                                     </div>

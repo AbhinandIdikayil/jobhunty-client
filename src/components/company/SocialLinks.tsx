@@ -11,11 +11,11 @@ function SocialLinks() {
 
 
   const socialLinks = {
-    twitter: state?.user?.socialLinks[0] ?? '',
-    youtube: state?.user?.socialLinks[1] ?? '',
-    facebook: state?.user?.socialLinks[2] ?? '',
-    instagram: state?.user?.socialLinks[3] ?? '',
-    LinkedInLink: state?.user?.LinkedInLink ?? '',
+    twitter: state?.user?.socialLinks?.[0] || '',
+    youtube: state?.user?.socialLinks?.[1] || '',
+    facebook: state?.user?.socialLinks?.[2] || '',
+    instagram: state?.user?.socialLinks?.[3] || '',
+    LinkedInLink: state?.user?.LinkedInLink || '',
   }
 
   async function handleSubmit(values: FormikValues) {
@@ -53,7 +53,7 @@ function SocialLinks() {
                   <div className="max-md:max-w-full">
                     Instagram
                     {
-                      errors?.instagram && <span className="text-red-600"> {errors?.instagram} </span>
+                      typeof errors?.instagram == 'string' && <span className="text-red-600"> {errors?.instagram} </span>
                     }
                   </div>
                   <Field name='instagram' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
@@ -61,7 +61,7 @@ function SocialLinks() {
                   <div className="mt-6 max-md:max-w-full">
                     Twitter
                     {
-                      errors?.twitter && <span className="text-red-600"> {errors?.twitter} </span>
+                     typeof errors?.twitter == 'string' && <span className="text-red-600"> {errors?.twitter} </span>
                     }
                   </div>
                   <Field name='twitter' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
@@ -69,7 +69,7 @@ function SocialLinks() {
                   <div className="mt-6 max-md:max-w-full">
                     Facebook
                     {
-                      errors?.facebook && <span className="text-red-600"> {errors?.facebook} </span>
+                     typeof errors?.facebook == 'string' && <span className="text-red-600"> {errors?.facebook} </span>
                     }
                   </div>
                   <Field name='facebook' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
@@ -77,7 +77,7 @@ function SocialLinks() {
                   <div className="mt-6 max-md:max-w-full">
                     LinkedIn
                     {
-                      errors?.LinkedInLink && <span className="text-red-600"> ( {errors?.LinkedInLink} ) </span>
+                      typeof errors?.LinkedInLink == 'string' && <span className="text-red-600"> ( {errors?.LinkedInLink} ) </span>
                     }
                   </div>
                   <Field name='LinkedInLink' className="justify-center items-start px-4 py-3 mt-1 text-gray-400 bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
@@ -85,7 +85,7 @@ function SocialLinks() {
                   <div className="mt-6 max-md:max-w-full">
                     Youtube
                     {
-                      errors?.youtube && <span className="text-red-600"> {errors?.youtube} </span>
+                      typeof errors?.youtube == 'string' && <span className="text-red-600"> {errors?.youtube} </span>
                     }
                   </div>
                   <Field name='youtube' className="justify-center items-start px-4 py-3 mt-1 text-gray-400 bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />

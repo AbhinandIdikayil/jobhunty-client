@@ -1,5 +1,10 @@
 import { HiMenuAlt3 } from "react-icons/hi";
 import DropDown from "./DropDown";
+import { useSocket } from "src/context/SocketConext";
+import { useEffect } from "react";
+import { toast } from 'react-toastify'
+import { RootState } from "src/redux/store";
+import { useSelector } from "react-redux";
 interface props {
     func: () => void,
     open: boolean
@@ -7,8 +12,36 @@ interface props {
 
 function Header({ func, open }: props) {
 
+    const socket = useSocket();
+    const state = useSelector((state: RootState) => state?.user)
+    useEffect(() => {
+        const handleRequestUpdate = ({ email }: { email: string }) => {
+            if (state?.user?.email === email) {
+                toast.success('Request has been accepted', {
+                    position: "top-center"
+                });
+                return;
+            } else {
+                console.log(state);
+                console.log(email);
+            }
+        };
+
+        if (socket) {
+            console.log("Adding event listener for request_update");
+            socket.on('request_update', handleRequestUpdate);
+        }
+
+        return () => {
+            if (socket) {
+                console.log("Removing event listener for request_update");
+                socket.off('request_update', handleRequestUpdate);
+            }
+        };
+    }, [socket, state])
+
     return (
-        <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{borderBottom:'.5px solid black',paddingBlock:'16px'}}>
+        <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />
