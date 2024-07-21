@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
+import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
 
 
 export const adminLogin = createAsyncThunk(
@@ -36,6 +36,20 @@ export const blockUser = createAsyncThunk(
         } catch (error) {
             console.log(error)
             return rejectWithValue(error)
+        }
+    }
+)
+
+
+export const listRequest = createAsyncThunk(
+    'admin/list-request',
+    async(req: any , {rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_COMPANY.get('/list-request')
+            console.log(data)
+            return data
+        } catch (error) {
+            rejectWithValue(error)
         }
     }
 )

@@ -8,3 +8,13 @@ export type adminReducer = {
     err: null | any,
     role: 'admin' | null
 }
+
+
+export type CompanyRequest = {
+    companyId:{
+        _id: string,
+        name: string,
+        email: string,
+        approvalStatus: string
+    }
+}

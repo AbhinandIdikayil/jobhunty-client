@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
-import { blockUser, getAllusers } from "src/redux/actions/adminAction";
+import { blockUser, getAllusers, listRequest } from "src/redux/actions/adminAction";
 import { adminReducer } from "src/types/Admin";
 
 
@@ -48,6 +48,19 @@ const adminSlice = createSlice({
             .addCase(getAllusers.rejected, (state, { payload }) => {
                 state.loading = false
                 state.users = []
+                state.err = payload
+            })
+            .addCase(listRequest.pending,(state) => {
+                state.loading = true;
+                state.err = false
+            })
+            .addCase(listRequest.fulfilled,(state,{payload}) => {
+                state.loading = false
+                state.request = payload
+                state.err = false
+            })
+            .addCase(listRequest.rejected,(state,{payload}) => {
+                state.loading = false
                 state.err = payload
             })
     }

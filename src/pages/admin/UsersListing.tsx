@@ -47,7 +47,7 @@ function UsersListing() {
 
     async function fetchUsers() {
         try {
-            await dispatch(getAllusers()).unwrap()
+            dispatch(getAllusers()).unwrap()
         } catch (error) {
             console.log(error)
         }
@@ -55,8 +55,8 @@ function UsersListing() {
 
     async function handleUserBlock(data: any) {
         try {
-            await dispatch(blockUser({ email: data?.email })).unwrap();
-            await dispatch(getAllusers()).unwrap()
+            dispatch(blockUser({ email: data?.email })).unwrap();
+            dispatch(getAllusers()).unwrap()
         } catch (error) {
             console.log(error)
         }
