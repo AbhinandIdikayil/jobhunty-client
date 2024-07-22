@@ -5,12 +5,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { RiHome2Line } from "react-icons/ri";
-import { BiMessageDetail } from "react-icons/bi";
-import { TbBuildingSkyscraper } from "react-icons/tb";
-import { PiUsersThreeDuotone } from "react-icons/pi";
-import { LuClipboardList } from "react-icons/lu";
-import { AiOutlineSchedule } from "react-icons/ai";
 import { IoSettingsOutline } from "react-icons/io5";
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,7 +13,8 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { TbNumber1Small } from "react-icons/tb";
-
+import { Building2Icon, ClipboardListIcon, LayoutGrid, MessageSquareText, NotebookPen, Users } from 'lucide-react'
+import { inherits } from 'util';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -66,7 +61,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
   return (
     <>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} style={{zIndex:90}}>
 
         <Header open={open} func={handleDrawerOpen} />
 
@@ -78,13 +73,27 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            borderRight: '1px solid black'
           },
         }}
         variant="persistent"
         anchor="left"
         open={open}
       >
-        <DrawerHeader>
+
+        <DrawerHeader sx={{ borderBottom: '1px solid black', display: 'flex', gap:2,height:'81px' }}>
+          <div className='flex items-center justify-center text-left'>
+            <div className="flex overflow-hidden relative flex-col justify-center items-center w-8 aspect-square">
+              <img
+                loading="lazy"
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/40550eadec7bbc460f9ee4be4291e780f8963001faa5df2daa66f0614767c8b9?"
+                className="shrink-0 aspect-[1.35] w-[43px]"
+              />
+            </div>
+            <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
+              JobHuntly
+            </div>
+          </div>
           <MdOutlineArrowBackIos onClick={handleDrawerClose} />
         </DrawerHeader>
         <Divider />
@@ -92,15 +101,15 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton sx={{ width: drawerWidth }}>
+                <ListItemButton sx={{ width: drawerWidth - 2 }}>
                   <ListItemIcon>
                     {
-                      text == 'Dashboard' && <RiHome2Line size={30} /> ||
-                      text == 'Messages' && <BiMessageDetail size={30} /> ||
-                      text == 'Company profiles' && <TbBuildingSkyscraper size={30} /> ||
-                      text == 'All applicants' && <PiUsersThreeDuotone size={30} /> ||
-                      text == 'Job listing' && <LuClipboardList size={30} /> ||
-                      text == 'My schedule' && <AiOutlineSchedule size={30} />
+                      text == 'Dashboard' && <LayoutGrid /> ||
+                      text == 'Messages' && <MessageSquareText /> ||
+                      text == 'Company profiles' && <Building2Icon /> ||
+                      text == 'All applicants' && <Users /> ||
+                      text == 'Job listing' && <ClipboardListIcon /> ||
+                      text == 'My schedule' && <NotebookPen />
                     }
                   </ListItemIcon>
                   <ListItemText primary={text} />
@@ -109,7 +118,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
             </ListItem>
           ))}
         </List>
-        <Divider />
+        <Divider sx={{ borderBottom: '.5px solid black' }} />
         <List>
           {['Settings'].map((text) => (
             <ListItem key={text} disablePadding>

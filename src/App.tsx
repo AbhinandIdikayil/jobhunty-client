@@ -15,6 +15,7 @@ const Overview = lazy(() => import('./components/company/Overview'))
 const SocialLinks = lazy(() => import('./components/company/SocialLinks'))
 import { Backdrop, CircularProgress } from '@mui/material'
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute'
+import Requests from './pages/admin/Requests'
 const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 const Companies =  lazy(() => import('./pages/admin/Companies')) 
 
@@ -69,8 +70,8 @@ function App() {
               <AdminHome />
             </AdminPrivateRoute>
           }>
-            <Route path='' />
-            <Route path='requests' element={<h1>users</h1>} />
+            <Route path='' element={<h1>sadfsdf</h1>} />
+            <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />
           </Route>

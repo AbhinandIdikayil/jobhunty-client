@@ -45,6 +45,7 @@ function Signup() {
 
 
     useEffect(() => {
+        dispath(resetErr())
         if(user.role == 'company'){
             return navigate('/company')
         } else if (user.role == 'user') {
@@ -63,15 +64,17 @@ function Signup() {
         if(location.pathname === '/company/signup') {
             data = {
                 ...response,
-                role:'company'
+                role:'company',
+                page:'signup'
             }
         } else {
             data = {
                 ...response,
-                role:'user'
+                role:'user',
+                page:'signup'
             }
         }
-        handleGoogleAuth(response)
+        handleGoogleAuth(data)
     };
     const errorMessage = () => {
         console.log('auth failed');

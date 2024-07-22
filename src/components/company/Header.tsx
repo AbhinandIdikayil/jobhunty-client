@@ -1,5 +1,14 @@
 import { HiMenuAlt3 } from "react-icons/hi";
 import DropDown from "./DropDown";
+import { useSocket } from "src/context/SocketConext";
+import { useEffect } from "react";
+import { toast } from 'react-toastify'
+import { RootState } from "src/redux/store";
+import { useSelector } from "react-redux";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 interface props {
     func: () => void,
     open: boolean
@@ -7,8 +16,42 @@ interface props {
 
 function Header({ func, open }: props) {
 
+    const socket = useSocket();
+    const state = useSelector((state: RootState) => state?.user)
+    useEffect(() => {
+        const handleRequestUpdate = ({ email, status }: { email: string, status: string }) => {
+            if (state?.user?.email === email) {
+                if (status == 'Accepted') {
+                    toast.success(`Request has been ${status}`, {
+                        position: "top-center"
+                    });
+                } else if (status == 'Rejected') {
+                    toast.error(`Request has been ${status}`, {
+                        position: "top-center"
+                    });
+                }
+                return;
+            } else {
+                console.log(state);
+                console.log(email);
+            }
+        };
+
+        if (socket) {
+            console.log("Adding event listener for request_update");
+            socket.on('request_update', handleRequestUpdate);
+        }
+
+        return () => {
+            if (socket) {
+                console.log("Removing event listener for request_update");
+                socket.off('request_update', handleRequestUpdate);
+            }
+        };
+    }, [socket, state])
+
     return (
-        <div className="flex gap-5 justify-between px-8 py-4 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+        <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />
@@ -34,11 +77,62 @@ function Header({ func, open }: props) {
                 </div>
             </div>
             <div className="flex gap-5 justify-center text-base font-bold leading-6 text-center text-white">
-                <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/22cc243b4b17eb6822f1aae2f96ecac59c86787ba7154d9a5282f66481ba231f?apiKey=bf80438c4595450788b907771330b274&"
-                    className="shrink-0 my-auto w-10 aspect-square"
-                />
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <img
+                            loading="lazy"
+                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/22cc243b4b17eb6822f1aae2f96ecac59c86787ba7154d9a5282f66481ba231f?apiKey=bf80438c4595450788b907771330b274&"
+                            className="shrink-0 my-auto w-10 aspect-square"
+                        />
+                    </PopoverTrigger>
+                    <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
+                        <ScrollArea className="h-40 sm:h-48 rounded-md ">
+
+                            <div className="grid gap-4">
+                                <div className="space-y-2">
+                                    <h4 className="font-medium leading-none">Dimensions</h4>
+                                    <p className="text-sm text-muted-foreground">
+                                        Set the dimensions for the layer.
+                                    </p>
+                                </div>
+                                <div className="grid gap-2">
+                                    <div className="grid grid-cols-3 items-center gap-4">
+                                        <Label htmlFor="width">Width</Label>
+                                        <Input
+                                            id="width"
+                                            defaultValue="100%"
+                                            className="col-span-2 h-8"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-3 items-center gap-4">
+                                        <Label htmlFor="maxWidth">Max. width</Label>
+                                        <Input
+                                            id="maxWidth"
+                                            defaultValue="300px"
+                                            className="col-span-2 h-8"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-3 items-center gap-4">
+                                        <Label htmlFor="height">Height</Label>
+                                        <Input
+                                            id="height"
+                                            defaultValue="25px"
+                                            className="col-span-2 h-8"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-3 items-center gap-4">
+                                        <Label htmlFor="maxHeight">Max. height</Label>
+                                        <Input
+                                            id="maxHeight"
+                                            defaultValue="none"
+                                            className="col-span-2 h-8"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </ScrollArea>
+                    </PopoverContent>
+                </Popover>
                 <div className="flex gap-2.5 justify-center px-6 py-3 bg-indigo-600 max-md:px-5">
                     <img
                         loading="lazy"
