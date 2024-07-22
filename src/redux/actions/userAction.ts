@@ -69,7 +69,7 @@ export const googleLoginAndSignup = createAsyncThunk<any, any, { rejectValue: Er
   'user/google',
   async (payload: any, { rejectWithValue }) => {
     try {
-      const { data } = await AXIOS_INSTANCE_AUTH.post('/google', { token: payload?.credential as string , email:payload.email }, {
+      const { data } = await AXIOS_INSTANCE_AUTH.post('/google', { token: payload?.credential as string , role:payload.role,page:payload.page }, {
         withCredentials: true
       })
       return data

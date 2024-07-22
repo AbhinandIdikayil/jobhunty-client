@@ -4,11 +4,14 @@ import { Formik, Field, FormikValues, Form } from 'formik'
 import { Link, useNavigate } from "react-router-dom"
 import { AppDispatch, RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
-import { login } from "../../redux/actions/userAction"
+import { googleLoginAndSignup, login } from "../../redux/actions/userAction"
 import Navbar from "../user/BeforeOneApplicant/Navbar"
 import { ForgotPSConfirm } from "../../components/common/ForgotPSConfirm"
 import { LoginvalidationSchema } from "src/validation/common/signup-validation"
 import Otp from "src/components/common/Otp"
+import { GoogleLogin } from '@react-oauth/google'
+import { resetErr } from "src/redux/reducers/user/userSlice"
+
 
 
 const Login: React.FC = () => {
@@ -22,6 +25,7 @@ const Login: React.FC = () => {
     const [isCompanyLogin, setIsCompanyLogin] = useState(false);
 
     useEffect(() => {
+        dispath(resetErr())
         if (user.role == 'company') {
             return navigate('/company')
         } else if (user.role == 'user') {
@@ -32,6 +36,43 @@ const Login: React.FC = () => {
     useEffect(() => {
         setIsCompanyLogin(window.location.pathname.includes('/company/login'))
     }, [user])
+
+
+    const responseMessage = (response: Object) => {
+        console.log(response);
+        let data;
+        if (location.pathname === '/company/login') {
+            data = {
+                ...response,
+                role: 'company',
+                page:'login'
+            }
+        } else {
+            data = {
+                ...response,
+                role: 'user',
+                page:'login'
+            }
+        }
+        console.log(data)
+        handleGoogleAuth(data)
+    };
+    const errorMessage = () => {
+        console.log('auth failed');
+    };
+
+
+    async function handleGoogleAuth(data: any) {
+        try {
+            let result = await dispath(googleLoginAndSignup(data)).unwrap()
+            console.log(result)
+            if (result) {
+                navigate('/home')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
 
@@ -127,20 +168,14 @@ const Login: React.FC = () => {
                                     <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
                                         Welcome back dude{" "}
                                     </div>
-                                    <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600 border border-indigo-200 border-solid leading-[160%] max-md:px-5">
-                                        <div className="flex gap-2.5">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/2019ff383b243dae561ad6a469db084ba563760d8f4bb4a2722edf42f5a32861?"
-                                                className="shrink-0 my-auto w-5 aspect-square"
-                                            />
-                                            <div>Login with Google</div>
-                                        </div>
+                                    <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600 leading-[160%] max-md:px-5">
+                                        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />
+
                                     </div>
                                     <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
                                         <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[109px]" />
                                         <div className="flex-auto self-stretch">
-                                            Or login up with email
+                                            Or login with email
                                         </div>
                                         <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[104px]" />
                                     </div>

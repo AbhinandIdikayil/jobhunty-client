@@ -55,6 +55,7 @@ function Requests() {
             }
         },
         {
+            id:'email',
             accessorKey: 'companyId.email',
             header: () => <div className="text-left">Email</div>,
             cell: ({ row }) => {
@@ -68,15 +69,6 @@ function Requests() {
                 return <div>{row.original.companyId.approvalStatus}</div>
             }
         },
-        // {
-        //     accessorKey: 'action',
-        //     header: "Action",
-        //     cell: ({ row }) => (
-        //         <div className="">
-        //             {row.original.companyId.approvalStatus == 'Rejected' ? (<span className="bg-red-600 p-2 rounded">unblock</span>) : <span className="bg-green-500 p-2 rounded">block</span>}
-        //         </div>
-        //     )
-        // },
         {
             id: "actions",
             header: 'Actions',
@@ -94,7 +86,7 @@ function Requests() {
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {
                                 row.original.companyId.approvalStatus == 'Rejected'
-                                    ? (
+                                    && (
                                         <DropdownMenuItem
                                             className='
                                         border
@@ -104,15 +96,7 @@ function Requests() {
                                         >
                                             Accept request
                                         </DropdownMenuItem>
-                                    ) : (
-                                        <DropdownMenuItem
-                                            className='border
-                                        font-bold'
-                                            onClick={() => handleRejectRequest(row.original.companyId._id)}
-                                        >
-                                            Deny request
-                                        </DropdownMenuItem>
-                                    )
+                                    ) 
                             }
 
                             <DropdownMenuSeparator />
