@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useOutletContext } from 'react-router-dom';
-import { listRequest } from 'src/redux/actions/adminAction';
+import { listRequest, updateApproval } from 'src/redux/actions/adminAction';
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes';
 import {
@@ -22,16 +22,28 @@ function Requests() {
 
     const state = useSelector((state: RootState) => state?.admin);
     const dispatch: AppDispatch = useDispatch()
+
+
     useEffect(() => {
         dispatch(listRequest(undefined)).unwrap()
     }, [])
 
 
-    function handleAcceptRequest(id: string, status: string) {
-        console.log(id,status)
+    async function handleAcceptRequest(id: string) {
+        const req = {
+            id,
+            status: 'Accepted'
+        }
+        await dispatch(updateApproval(req)).unwrap()
+        await dispatch(listRequest(undefined)).unwrap()
     }
-    function handleRejectRequest(id: string, status: string) {
-
+    async function handleRejectRequest(id: string) {
+        const req = {
+            id,
+            status: 'Rejected'
+        }
+        await dispatch(updateApproval(req)).unwrap()
+        await dispatch(listRequest(undefined)).unwrap()
     }
 
     const columns: ColumnDef<CompanyRequest>[] = [
@@ -70,8 +82,6 @@ function Requests() {
             header: 'Actions',
             enableHiding: false,
             cell: ({ row }) => {
-                const payment = row.original
-
                 return (
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -86,14 +96,19 @@ function Requests() {
                                 row.original.companyId.approvalStatus == 'Rejected'
                                     ? (
                                         <DropdownMenuItem
-                                        className='bg-green-600'
-                                            onClick={() => handleAcceptRequest(row.original.companyId._id, row.original.companyId.approvalStatus)}
+                                            className='
+                                        border
+                                        font-bold
+                                        '
+                                            onClick={() => handleAcceptRequest(row.original.companyId._id)}
                                         >
                                             Accept request
                                         </DropdownMenuItem>
                                     ) : (
                                         <DropdownMenuItem
-                                            onClick={() => handleRejectRequest(row.original.companyId._id, row.original.companyId.approvalStatus)}
+                                            className='border
+                                        font-bold'
+                                            onClick={() => handleRejectRequest(row.original.companyId._id)}
                                         >
                                             Deny request
                                         </DropdownMenuItem>
@@ -101,7 +116,7 @@ function Requests() {
                             }
 
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Message and block</DropdownMenuItem>
+                            <DropdownMenuItem className='font-bold bg-[#011aff] text-white'>Message and block</DropdownMenuItem>
                             <DropdownMenuItem>View company details</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

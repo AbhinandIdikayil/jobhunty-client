@@ -61,7 +61,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
   return (
     <>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} style={{zIndex:90}}>
 
         <Header open={open} func={handleDrawerOpen} />
 

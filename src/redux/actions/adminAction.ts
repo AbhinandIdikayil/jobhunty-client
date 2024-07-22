@@ -31,7 +31,7 @@ export const blockUser = createAsyncThunk(
     'admin/block-user',
     async (req: any, { rejectWithValue }) => {
         try {
-            const { data } = await AXIOS_INSTANCE_USER.put('/block-user',req);
+            const { data } = await AXIOS_INSTANCE_USER.put('/block-user', req);
             return data
         } catch (error) {
             console.log(error)
@@ -43,13 +43,28 @@ export const blockUser = createAsyncThunk(
 
 export const listRequest = createAsyncThunk(
     'admin/list-request',
-    async(req: any , {rejectWithValue}) => {
+    async (req: any, { rejectWithValue }) => {
         try {
-            const {data} = await AXIOS_INSTANCE_COMPANY.get('/list-request')
+            const { data } = await AXIOS_INSTANCE_COMPANY.get('/list-request')
             console.log(data)
             return data
         } catch (error) {
             rejectWithValue(error)
+        }
+    }
+)
+
+
+export const updateApproval = createAsyncThunk(
+    'admin/company-approval',
+    async (req:any, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_COMPANY.put('/update-request', req);
+            console.log(data)
+            return data
+        } catch (error: Error | any) {
+            console.log(error)
+            return rejectWithValue(error)
         }
     }
 )
