@@ -2,22 +2,29 @@ import { lazy, Suspense } from 'react'
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
+import { Backdrop, CircularProgress } from '@mui/material'
 import { Navigate, Route, Routes } from 'react-router-dom'
-import Home from './pages/user/BeforeOneApplicant/Home'
-import CompanyHome from './pages/company/CompanyHome'
-import Dashboard from './pages/company/Dashboard'
 import AdminLogin from './pages/admin/Login'
-import AdminHome from './pages/admin/AdminHome'
+
+
+import Home from './pages/user/BeforeOneApplicant/Home'
+const CompanyHome = lazy(() => import('./pages/company/CompanyHome'))
+const Dashboard = lazy(() => import('./pages/company/Dashboard'))
+const AdminHome = lazy(() => import('./pages/admin/AdminHome'))
 import CompnanyPrivateRoute from './components/company/CompnanyPrivateRoute'
 const ForgotPassword = lazy(() => import('./pages/common/ForgotPassword'))
 const Settings = lazy(() => import('./pages/company/Settings'))
 const Overview = lazy(() => import('./components/company/Overview'))
 const SocialLinks = lazy(() => import('./components/company/SocialLinks'))
-import { Backdrop, CircularProgress } from '@mui/material'
 import AdminPrivateRoute from './components/admin/AdminPrivateRoute'
-import Requests from './pages/admin/Requests'
+import UserLayout from './pages/layouts/UserLayout'
+import CompanyList from './components/user/common/CompanyList'
+const Jobs = lazy(() => import('./components/user/common/Jobs'))
+const Requests = lazy(() => import('./pages/admin/Requests'))
 const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
-const Companies =  lazy(() => import('./pages/admin/Companies')) 
+const Companies = lazy(() => import('./pages/admin/Companies'))
+const UserDashboardHome = lazy(() => import('./components/user/dashboard/Home'));
+import UserDashboard from './components/user/dashboard/Dashboard'
 
 function App() {
 
@@ -30,10 +37,18 @@ function App() {
       <Routes>
 
       ////! routes for user
-        <Route path='' element={<Navigate to='/home' />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/home' element={<Home />} />
+        <Route path='/' element={<Navigate to='home' />} />
+        <Route path='login' element={<Login />} />
+        <Route path='signup' element={<Signup />} />
+        <Route path='home' element={<UserLayout />} >
+          <Route index element={<Home />} />
+          <Route path='jobs' element={<Jobs />} />
+          <Route path='companies' element={<CompanyList />} />
+        </Route>
+        <Route path='/Dashboard' element={<UserDashboardHome />}>
+          <Route path='' element={<UserDashboard />} />
+        </Route>
+
 
 
 
@@ -77,7 +92,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </Suspense>
+    </Suspense >
   )
 }
 

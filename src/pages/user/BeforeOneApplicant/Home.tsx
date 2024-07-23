@@ -5,39 +5,11 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import InputBase from '@mui/material/InputBase';
 import Button from '@mui/material/Button'
-import Navbar from './Navbar';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
         marginTop: theme.spacing(3),
     },
-    // '& .MuiInputBase-input': {
-    //     borderRadius: 4,
-    //     position: 'relative',
-    //     backgroundColor: theme.palette.background.paper,
-    //     border: '1px solid #ced4da',
-    //     fontSize: 16,
-    //     padding: '10px 26px 10px 12px',
-    //     transition: theme.transitions.create(['border-color', 'box-shadow']),
-    //     // Use the system font instead of the default Roboto font.
-    //     fontFamily: [
-    //         '-apple-system',
-    //         'BlinkMacSystemFont',
-    //         '"Segoe UI"',
-    //         'Roboto',
-    //         '"Helvetica Neue"',
-    //         'Arial',
-    //         'sans-serif',
-    //         '"Apple Color Emoji"',
-    //         '"Segoe UI Emoji"',
-    //         '"Segoe UI Symbol"',
-    //     ].join(','),
-    //     '&:focus': {
-    //         borderRadius: 4,
-    //         borderColor: '#80bdff',
-    //         boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
-    //     },
-    // },
     '& .MuiInputBase-input': {
         // ... other styles
         overflow: 'hidden',
@@ -82,29 +54,25 @@ function Home() {
 
     return (
         <>
-            <div className="flex flex-col items-start pb-20 bg-slate-50 w-full">
+            <div className="pl-7 pr-5 sm:pl-32 w-full">
 
-                <Navbar />
-
-                <div className="pl-7 pr-5 sm:pl-32 w-full">
-
-                    <div className="mt-20  text-2xl sm:text-7xl font-semibold text-sky-400 leading-[79px] w-1/2 max-md:mt-10 max-md:max-w-full max-md:text-4xl max-md:leading-[49px]">
-                        <span className="text-slate-800">Discover more than</span>{" "}
-                        <span className="text-sky-400">5000+ Jobs</span>
-                    </div>
-                    <img
-                        loading="lazy"
-                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1a38b1853b642b4e50d197e06cb214ecb60c40ff995fac8f96165b129c8411c?"
-                        className="hidden sm:flex mt-7 max-w-full aspect-[16.67] w-1/2"
-                    />
-                    <div className="mt-6  text-base sm:text-xl leading-8 text-slate-600 w-full sm:w-1/2 max-md:max-w-full">
-                        Great platform for the job seeker that searching for new career heights
-                        and passionate about startups.
-                    </div>
+                <div className="mt-20  text-2xl sm:text-7xl font-semibold text-sky-400 leading-[79px] w-1/2 max-md:mt-10 max-md:max-w-full max-md:text-4xl max-md:leading-[49px]">
+                    <span className="text-slate-800">Discover more than</span>{" "}
+                    <span className="text-sky-400">5000+ Jobs</span>
+                </div>
+                <img
+                    loading="lazy"
+                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/b1a38b1853b642b4e50d197e06cb214ecb60c40ff995fac8f96165b129c8411c?"
+                    className="hidden sm:flex mt-7 max-w-full aspect-[16.67] w-1/2"
+                />
+                <div className="mt-6  text-base sm:text-xl leading-8 text-slate-600 w-full sm:w-1/2 max-md:max-w-full">
+                    Great platform for the job seeker that searching for new career heights
+                    and passionate about startups.
+                </div>
 
 
-                    {/* <div className="flex bg-gray-100 w-1/2 justify-evenly items-center py-2 px-"> */}
-                    {/* <div className="w-3/4 flex  gap-2">
+                {/* <div className="flex bg-gray-100 w-1/2 justify-evenly items-center py-2 px-"> */}
+                {/* <div className="w-3/4 flex  gap-2">
                         <div className="w-1/2 ">
                         <input className="bg-gray-100  border-b-2 border-zinc-600 py-3 h-full w-full" type="text " />
                         </div>
@@ -116,48 +84,45 @@ function Home() {
                             search my job
                             </button> */}
 
-                    <FormControl sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
-                        {/* <InputLabel htmlFor="">Age</InputLabel> */}
-                        {/* <FormHelperText>Age</FormHelperText> */}
-                        <BootstrapInput id="demo-customized-textbox" />
-                    </FormControl>
-                    <FormControl sx={{ m: 1 }} variant="standard">
-                        <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
+                <FormControl sx={{ m: 1 }} variant="standard">
+                    <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
+                    {/* <InputLabel htmlFor="">Age</InputLabel> */}
+                    {/* <FormHelperText>Age</FormHelperText> */}
+                    <BootstrapInput id="demo-customized-textbox" />
+                </FormControl>
+                <FormControl sx={{ m: 1 }} variant="standard">
+                    <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
 
-                        <NativeSelect
+                    <NativeSelect
 
-                            sx={{ minWidth: 200 }}
-                            id="demo-customized-select-native"
-                            value={age}
-                            onChange={handleChange}
-                            input={<BootstrapInput />}
-                        >
-                            <option aria-label="None" value="" />
-                            <option value={10}>company name</option>
-                            <option value={20}>company name</option>
-                            <option value={30}>company companay company</option>
-                        </NativeSelect>
+                        sx={{ minWidth: 200 }}
+                        id="demo-customized-select-native"
+                        value={age}
+                        onChange={handleChange}
+                        input={<BootstrapInput />}
+                    >
+                        <option aria-label="None" value="" />
+                        <option value={10} className='font-bold border-solid px-2'>company name</option>
+                        <option value={20}>company name</option>
+                        <option value={30}>company companay company</option>
+                    </NativeSelect>
 
-                    </FormControl>
-                    <Button sx={{
-                        m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white',borderRadius:'0px', fontWeight: '600', '&:hover': {
-                            backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
-                        }
-                    }} variant="outlined">search my job</Button>
+                </FormControl>
+                <Button sx={{
+                    m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
+                        backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
+                    }
+                }} variant="outlined">search my job</Button>
 
-                    {/* </div> */}
+                {/* </div> */}
 
-                    <div className="mt-2 text-base leading-6 text-gray-800 max-md:max-w-full">
-                        Popular :{" "}
-                        <span className="font-medium">
-                            UI Designer, UX Researcher, Android, Admin
-                        </span>
-                    </div>
+                <div className="mt-2 text-base leading-6 text-gray-800 max-md:max-w-full">
+                    Popular :{" "}
+                    <span className="font-medium">
+                        UI Designer, UX Researcher, Android, Admin
+                    </span>
                 </div>
             </div>
-
-
 
 
             <div className="flex flex-col justify-end items-center px-16 pt-2 sm:pt-20 bg-white max-md:px-5">
