@@ -14,6 +14,8 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { Checkbox } from '@/components/ui/checkbox';
+import { prop } from 'src/types/AllTypes';
+import { useOutletContext } from 'react-router-dom';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -55,29 +57,34 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 }));
 
 function Jobs() {
+    const context = useOutletContext<prop>() || {};
+    const { open } = context;
     return (
         <>
 
             {/* // <div className="flex flex-col justify-center self-stretch"> */}
-            <div className="flex flex-col items-center w-full bg-slate-50 max-md:max-w-full px-3">
-                <div className="hidden sm:flex gap-4 mt-16 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:mt-10 max-md:text-4xl">
-                    <div className="self-start text-slate-800 max-md:text-4xl">
-                        Find your
+            {/* <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}> */}
+            <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+                <div className={`${open && open ? 'hidden' : ''} `}>
+                    <div className={`hidden sm:flex gap-4 mt-16 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:mt-10 max-md:text-4xl`}>
+                        <div className="self-start text-slate-800 max-md:text-4xl">
+                            Find your
+                        </div>
+                        <div className={`flex-col text-sky-400 max-md:text-4xl`}>
+                            <div className="max-md:text-4xl">dream job</div>
+                            <img
+                                loading="lazy"
+                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c5387d8afcfab9fd00e94a5a0ff7e7093a6a80b56f15adaf6cecf8274992e61?"
+                                className="self-center aspect-[16.67] w-[241px]"
+                            />
+                        </div>
                     </div>
-                    <div className="flex flex-col text-sky-400 max-md:text-4xl">
-                        <div className="max-md:text-4xl">dream job</div>
-                        <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c5387d8afcfab9fd00e94a5a0ff7e7093a6a80b56f15adaf6cecf8274992e61?"
-                            className="self-center aspect-[16.67] w-[241px]"
-                        />
+                    <div className={`hidden sm:block mt-6 text-lg leading-7 text-center text-slate-600 max-md:max-w-full`}>
+                        Find your next career at companies like HubSpot, Nike, and Dropbox
                     </div>
                 </div>
-                <div className="hidden sm:block mt-6 text-lg leading-7 text-center text-slate-600 max-md:max-w-full">
-                    Find your next career at companies like HubSpot, Nike, and Dropbox
-                </div>
-                <div className="p-6 mt-10 w-full bg-white shadow-2xl max-w-[800px] max-md:px-5 max-md:max-w-full">
-                    <div className="flex gap-5  max-md:flex-col">
+                <div className="p-6 mt-10 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
+                    <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
                             {/* <InputLabel htmlFor="">Age</InputLabel> */}
@@ -109,19 +116,16 @@ function Jobs() {
                         }} variant="outlined">search my job</Button>
                     </div>
                 </div>
-                <div className="hidden sm:block mt-4 text-base leading-6 text-slate-600 max-md:max-w-full">
-                    Popular : UI Designer, UX Researcher, Android, Admin
-                </div>
             </div>
             {/* // </div> */}
-            <div className="flex justify-center items-center self-stretch px-16 py-20 bg-white max-md:px-5">
+            <div className="flex justify-center items-center self-stretch px-16 py-10 bg-white max-md:px-5">
                 <div className="w-full max-w-[1193px] max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10">
 
 
-                                <Accordion type="multiple"  className="w-full">
+                                <Accordion type="multiple" className="w-full">
 
                                     <AccordionItem value="item-1">
                                         <AccordionTrigger>Types Of Employment</AccordionTrigger>
@@ -207,7 +211,7 @@ function Jobs() {
                                     <AccordionItem value="item-4">
                                         <AccordionTrigger>Salary Range</AccordionTrigger>
                                         <AccordionContent>
-                                        <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                                                 <Checkbox id="terms2" />
                                                 <label
                                                     htmlFor="terms2"

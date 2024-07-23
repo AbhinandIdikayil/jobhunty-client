@@ -55,7 +55,6 @@ function Home() {
     return (
         <>
             <div className="pl-7 pr-5 sm:pl-32 w-full">
-
                 <div className="mt-20  text-2xl sm:text-7xl font-semibold text-sky-400 leading-[79px] w-1/2 max-md:mt-10 max-md:max-w-full max-md:text-4xl max-md:leading-[49px]">
                     <span className="text-slate-800">Discover more than</span>{" "}
                     <span className="text-sky-400">5000+ Jobs</span>
@@ -117,18 +116,17 @@ function Home() {
                 {/* </div> */}
 
                 <div className="mt-2 text-base leading-6 text-gray-800 max-md:max-w-full">
-                    Popular :{" "}
-                    <span className="font-medium">
-                        UI Designer, UX Researcher, Android, Admin
-                    </span>
+                   
                 </div>
             </div>
 
 
-            <div className="flex flex-col justify-end items-center px-16 pt-2 sm:pt-20 bg-white max-md:px-5">
+
+
+            <div className="flex flex-col w-full justify-end items-center px-32 pt-20 bg-white">
                 <div className="flex flex-col w-full max-w-[1192px] max-md:max-w-full">
                     <div className="flex gap-2.5 justify-between w-full font-semibold max-md:flex-wrap max-md:max-w-full">
-                        <div className="text-xl sm:text-5xl text-sky-400 leading-[52.8px] max-md:max-w-full max-md:text-4xl">
+                        <div className="text-5xl text-sky-400 leading-[52.8px] max-md:max-w-full max-md:text-4xl">
                             Explore by <span className="text-sky-400">category</span>
                         </div>
                         <div className="flex gap-4 self-end mt-7 text-base leading-6 text-center text-indigo-600">
@@ -141,12 +139,12 @@ function Home() {
                         </div>
                     </div>
                     <div className="mt-12 max-md:mt-10 max-md:max-w-full">
-                        <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+                        <div className="flex gap-5 max-md:flex-col">
                             <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
                                 <div className="flex flex-col grow p-8 mx-auto w-full bg-white border border-solid border-zinc-200 max-md:px-5 max-md:mt-8">
                                     <img
                                         loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/776a402f8317174b8782476b18b5b8a8aeefcedffab2ad56f8c5c5d7443f7e34?"
+                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/63c8189458ac5f21b05be8bf89f4950a86b8f74a7de1a844d806a44770027777?"
                                         className="w-12 aspect-square"
                                     />
                                     <div className="mt-8 text-2xl font-semibold leading-7 text-slate-800">
@@ -224,8 +222,8 @@ function Home() {
                             </div>
                         </div>
                     </div>
-                    {/* <div className="mt-8 max-md:max-w-full">
-                        <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+                    <div className="mt-8 max-md:max-w-full">
+                        <div className="flex gap-5 max-md:flex-col">
                             <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
                                 <div className="flex flex-col grow p-8 mx-auto w-full bg-white border border-solid border-zinc-200 max-md:px-5 max-md:mt-8">
                                     <img
@@ -307,7 +305,7 @@ function Home() {
                                 </div>
                             </div>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
             </div>
 
@@ -316,12 +314,3 @@ function Home() {
 }
 
 export default Home
-
-
-{/* <img
-                        loading="lazy"
-                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/9db8721803ed71131c4d5c1e115a2d6411773ea62c6811959594b4f4d9acc901?"
-                        className="shrink-0 my-auto w-6 aspect-square"
-                    />
-                    
-                     */}

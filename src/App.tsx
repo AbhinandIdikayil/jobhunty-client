@@ -47,6 +47,8 @@ function App() {
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
+          <Route path='jobs' element={<Jobs />} />
+          <Route path='companies' element={<CompanyList />} />
         </Route>
 
 

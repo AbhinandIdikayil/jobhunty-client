@@ -16,22 +16,11 @@ function Header({func, open}:props) {
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />
                 </div>
-                <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/28fcac72ebb7d51aabcc8a2e42dcfd241ea63b6ee352291d3a8ebc64ceae3826?apiKey=bf80438c4595450788b907771330b274&"
-                    className="shrink-0 self-start w-12 aspect-square"
-                />
-                <div className="flex flex-col">
-                    <div className="text-base leading-6 text-slate-600">
-                        Company
-                    </div>
-                    <div className="flex gap-2 text-xl font-semibold leading-6 text-slate-800">
-                        <div>Nomad</div>
-                        {/* <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/11e2517998516c181ac04025690221ae22f5c4e4eb4dee7f65d6fdbaf2f88a9b?apiKey=bf80438c4595450788b907771330b274&"
-                            className="shrink-0 w-6 aspect-square"
-                        /> */}
+                <div className="flex flex-col justify-center items-center">
+                    <div className="flex gap-2">
+                    <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
+                            Dashboard
+                        </div>
                         {/* <DropDown /> */}
                     </div>
                 </div>
