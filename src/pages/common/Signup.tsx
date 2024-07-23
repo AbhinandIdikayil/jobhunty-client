@@ -304,7 +304,8 @@ function Signup() {
                                                     <span className='text-red-600'>
                                                         {
                                                             errors?.name && errors?.name ||
-                                                            user?.err && (user?.err as string).includes('user') && '(' + user?.err + ')'
+                                                            user?.err?.message && '(' + user?.err?.message + ')' ||
+                                                            user?.err && (user?.err as string).includes('user') && '(' + user?.err + ')' 
                                                         }
                                                     </span>
                                                 </div>

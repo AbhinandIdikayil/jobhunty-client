@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IVerifyEmail, Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
-import { AXIOS_INSTANCE_AUTH } from "../../constants/axiosInstance";
+import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_USER } from "../../constants/axiosInstance";
+import { AxiosError } from "axios";
 
 // interface SignupRequest {
 //   name: string,
@@ -69,7 +70,7 @@ export const googleLoginAndSignup = createAsyncThunk<any, any, { rejectValue: Er
   'user/google',
   async (payload: any, { rejectWithValue }) => {
     try {
-      const { data } = await AXIOS_INSTANCE_AUTH.post('/google', { token: payload?.credential as string , role:payload.role,page:payload.page }, {
+      const { data } = await AXIOS_INSTANCE_AUTH.post('/google', { token: payload?.credential as string, role: payload.role, page: payload.page }, {
         withCredentials: true
       })
       return data
@@ -111,15 +112,30 @@ export const verifyEmail = createAsyncThunk<string, IVerifyEmail, { rejectValue:
   }
 )
 
-export const forgotPassword = createAsyncThunk<any,any>(
+export const forgotPassword = createAsyncThunk<any, any>(
   'user/forgotPassword',
-  async (req:any, { rejectWithValue }) => {
+  async (req: any, { rejectWithValue }) => {
     try {
-      const { data } = await AXIOS_INSTANCE_AUTH.put('/forgot-password',req);
+      const { data } = await AXIOS_INSTANCE_AUTH.put('/forgot-password', req);
       console.log(data)
       return data
     } catch (error: any | Error) {
       return rejectWithValue(error.reponse.data)
+    }
+  }
+)
+
+export const getUser = createAsyncThunk(
+  'user/get-user',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await AXIOS_INSTANCE_USER.get('/user')
+      return data
+    } catch (error) {
+      if(error instanceof AxiosError ){
+        console.log(error.response)
+      }
+      return rejectWithValue('hai')
     }
   }
 )
