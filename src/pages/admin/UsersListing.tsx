@@ -56,7 +56,7 @@ function UsersListing() {
     async function handleUserBlock(data: any) {
         try {
             dispatch(blockUser({ email: data?.email })).unwrap();
-            dispatch(getAllusers()).unwrap()
+            await dispatch(getAllusers()).unwrap()
         } catch (error) {
             console.log(error)
         }
@@ -117,7 +117,7 @@ function UsersListing() {
             header: "IsBlocked",
             cell: ({ row }) => (
                 <div className="" onClick={() => handleUserBlock(row.original)}>
-                    {row.getValue("isBlocked") ? (<span className="bg-red-600 p-2 rounded">unblock</span>) : <span className="bg-green-500 p-2 rounded">block</span>}
+                    {row.getValue("isBlocked") ? (<span className="bg-red-600 p-2 rounded hover:cursor-pointer">unblock</span>) : <span className="bg-green-500 p-2 rounded hover:cursor-pointer">block</span>}
                 </div>
             ),
         },

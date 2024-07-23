@@ -78,6 +78,7 @@ const adminSlice = createSlice({
                 state.loading = false
                 state.err = payload
             })
+
     }
 })
 

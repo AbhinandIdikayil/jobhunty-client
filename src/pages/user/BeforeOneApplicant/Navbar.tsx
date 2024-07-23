@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { resetState } from '../../../redux/reducers/user/userSlice';
-import { logout } from '../../../redux/actions/userAction';
+import { getUser, logout } from '../../../redux/actions/userAction';
 import { useEffect } from 'react';
 
 function Navbar() {
@@ -12,9 +12,10 @@ function Navbar() {
 
 
     useEffect(() => {
-        if(user.role == 'user') {
+        dispatch(getUser()).unwrap()
+        if (user.role == 'user') {
             return navigate('/home')
-        }else if(user.role == 'company'){
+        } else if (user.role == 'company') {
             return navigate('/company')
         }
     }, [])
@@ -48,16 +49,20 @@ function Navbar() {
                         </div>
                     </div>
                     <div className="flex gap-4 justify-center pt-1 items-center text-base font-medium leading-6 text-slate-600">
-                        <div className="">Find Jobs</div>
-                        <div className="">Browse Companies</div>
+                        <NavLink to={'/home/jobs'}>Find Jobs</NavLink>
+                        <NavLink to={'/home/companies'}>Browse Companies</NavLink>
                     </div>
                 </div>
                 <div className="flex gap-4 justify-between py-3.5 pl-6 text-base font-bold leading-6 text-center">
                     {
                         user?.user ? (
-                            <button onClick={handleLogout} className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">Logout</button>
+                            <>
+                                <button onClick={handleLogout} className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">Logout</button>
+                                <NavLink to='/Dashboard' className="my-auto text-indigo-600">Dashboard</NavLink>
+                            </>
                         ) : (
                             <>
+                                <NavLink to='/Dashboard' className="my-auto text-indigo-600">Dashboard</NavLink>
                                 <NavLink to='/login' className="my-auto text-indigo-600">Login</NavLink>
                                 <NavLink to='/signup' className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">
                                     Sign Up

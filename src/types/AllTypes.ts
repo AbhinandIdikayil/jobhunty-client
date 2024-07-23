@@ -42,7 +42,7 @@ export type ErrorPayload = {
 }
 
 export interface prop {
-    open: boolean
+    open: boolean | null
 }
 
 export interface IVerifyEmail {
