@@ -22,7 +22,7 @@ export const AXIOS_INSTANCE_USER = axios.create({
 
 export const CLOUDINARY_INSTANCE = axios.create({
     baseURL:CLOUDINARY,
-    withCredentials: true
+    withCredentials: false
 })
 
 

@@ -25,6 +25,8 @@ const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 const Companies = lazy(() => import('./pages/admin/Companies'))
 const UserDashboardHome = lazy(() => import('./components/user/dashboard/Home'));
 import UserDashboard from './components/user/dashboard/Dashboard'
+import Profile from './components/user/dashboard/Profile'
+const PostJob = lazy(() => import('./components/company/PostJob')) 
 
 function App() {
 
@@ -47,8 +49,10 @@ function App() {
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
+          
           <Route path='jobs' element={<Jobs />} />
           <Route path='companies' element={<CompanyList />} />
+          <Route path='profile' element={<Profile />} />
         </Route>
 
 
@@ -66,6 +70,7 @@ function App() {
             </CompnanyPrivateRoute>
           }>
             <Route path='' element={<Dashboard />} />
+            <Route path='post' element={<PostJob />} />
             <Route path='messages' element={<h1>messages</h1>} />
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<h1>applicants</h1>} />

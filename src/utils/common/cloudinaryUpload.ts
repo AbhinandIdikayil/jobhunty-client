@@ -8,7 +8,7 @@ export const uploadToCloudinary = async (imageFile: any ) => {
     formData.append('file',imageFile)
     formData.append('upload_preset','jobhunty')
     try {
-        const {data} = await CLOUDINARY_INSTANCE.post('',formData)
+        const {data} = await CLOUDINARY_INSTANCE.post('',formData,{withCredentials:false})
         console.log(data);
         return data.url
     } catch (error) {

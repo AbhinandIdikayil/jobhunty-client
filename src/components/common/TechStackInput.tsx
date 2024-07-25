@@ -70,17 +70,13 @@ export const TechStackInput: React.FC<Techstack> = ({ label, name, stacks, setSt
             <div className="flex gap-4 justify-between py-2 pr-4 pl-2 mt-1 w-full text-indigo-600 bg-white border border-solid border-zinc-200 max-md:flex-wrap max-md:pr-5 max-md:max-w-full">
                 <div className="flex flex-wrap gap-2">
                     {
-                        stacks?.length && stacks?.map((val: any) => (
+                        stacks?.length > 0 && stacks?.map((val: any) => (
                             <div className="flex gap-2 items-center justify-center py-1 pr-1 pl-3 bg-slate-50">
                                 <div>{val}</div>
                                 <IoCloseCircle onClick={() => handleRemove(val)} />
                             </div>
                         ))
                     }
-                    <div className="flex gap-2 items-center justify-center py-1 pr-1 pl-3 bg-slate-50">
-                        <div>CSS 3</div>
-                        <IoCloseCircle />
-                    </div>
                 </div>
             </div>
         </>
