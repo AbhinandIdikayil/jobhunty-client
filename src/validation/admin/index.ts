@@ -20,3 +20,16 @@ export const adminLoginValidationSchema = Yup.object().shape({
         .strict(true)
         .required('password is required')
 })
+
+
+export const AddCategoryValidation = Yup.object().shape({
+    name: Yup
+        .string()
+        .required('name is required')
+        .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
+    description: Yup
+        .string()
+        .required('description is required')
+        .matches(/^[^0-9]*$/,'Numbers are not allowed')
+        .min(10,'atleast 10 character'),
+})

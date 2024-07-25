@@ -26,7 +26,11 @@ const Companies = lazy(() => import('./pages/admin/Companies'))
 const UserDashboardHome = lazy(() => import('./components/user/dashboard/Home'));
 import UserDashboard from './components/user/dashboard/Dashboard'
 import Profile from './components/user/dashboard/Profile'
+import Categories from './pages/admin/Categories'
+import AddCategory from './pages/admin/AddCategory'
 const PostJob = lazy(() => import('./components/company/PostJob')) 
+import 'react-profile/themes/default'
+
 
 function App() {
 
@@ -93,6 +97,8 @@ function App() {
             </AdminPrivateRoute>
           }>
             <Route path='' element={<h1>sadfsdf</h1>} />
+            <Route path='add-category' element={<AddCategory />} />
+            <Route path='category' element={<Categories />} />
             <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />
