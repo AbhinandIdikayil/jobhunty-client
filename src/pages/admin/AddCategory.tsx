@@ -1,15 +1,22 @@
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { prop } from 'src/types/AllTypes';
 import { openEditor } from 'react-profile'
 import { ChangeEvent, useState } from 'react';
-import { Field, Form, Formik, FormikValues } from 'formik';
+import { Field, Form, Formik, FormikHandlers, FormikValues } from 'formik';
 import { AddCategoryValidation } from 'src/validation/admin';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/redux/store';
+import { addCategory } from 'src/redux/actions/adminAction';
+import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 
 function AddCategory() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
 
-    const [dataUrl, setDataUrl] =  useState<string | undefined>(undefined);
+    const dispatch: AppDispatch = useDispatch();
+    const navigate = useNavigate()
+    const [dataUrl, setDataUrl] = useState<string | undefined>(undefined);
+    const [image, setImage] = useState<string | undefined>(undefined);
 
     const categoryInitialValue = {
         name: '',
@@ -26,11 +33,31 @@ function AddCategory() {
             if (image && image.editedImage) {
                 const dataUrl = image.editedImage.getDataURL();
                 setDataUrl(dataUrl); // Call the function to get the URL and then set it
-              }
+            }
         }
     }
-    function handleSubmit(values: FormikValues) {
-        console.log(values)
+    async function handleSubmit(values: FormikValues, helpers: FormikHandlers<FormikValues>) {
+        const { setSubmitting, setFieldError } = helpers
+        if (!dataUrl) {
+            setFieldError('image', 'Image is required')
+            setSubmitting(false);
+            console.log('hiiii')
+            return
+
+        }
+        const imageUrl = await uploadToCloudinary(dataUrl)
+        let data = {
+            ...values,
+            image: imageUrl
+        }
+        try {
+            const res = await dispatch(addCategory({ data })).unwrap()
+            if (res) {
+                navigate('/admin/home/category')
+            }
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -40,7 +67,7 @@ function AddCategory() {
                 validationSchema={AddCategoryValidation}
                 onSubmit={handleSubmit}
             >
-                {({ errors ,isSubmitting }) => (
+                {({ errors, isSubmitting }) => (
                     <Form>
 
                         <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center '>
@@ -48,13 +75,13 @@ function AddCategory() {
                                 <span className='font-bold text-xl'>Category name</span>
                             </div>
                             <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                            <span className='text-red-600'>
-                                {
-                                    errors?.name && (
-                                        errors?.name
-                                    )
-                                }
-                            </span>
+                                <span className='text-red-600'>
+                                    {
+                                        errors?.name && (
+                                            errors?.name
+                                        )
+                                    }
+                                </span>
                                 <Field name='name' type="text" className='w-full border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
                                 <span className='font-sans'>atleast 50 character</span>
                             </div>
@@ -65,13 +92,13 @@ function AddCategory() {
                                 <span className='font-bold text-xl'>Category description</span>
                             </div>
                             <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                            <span className='text-red-600'>
-                                {
-                                    errors?.description && (
-                                        errors?.description
-                                    )
-                                }
-                            </span>
+                                <span className='text-red-600'>
+                                    {
+                                        errors?.description && (
+                                            errors?.description
+                                        )
+                                    }
+                                </span>
                                 <Field as='textarea' name="description" id="description" className='w-full border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2'>
 
                                 </Field>
@@ -84,6 +111,13 @@ function AddCategory() {
                                 <span className='font-bold text-xl'>Upload image</span>
                             </div>
                             <div className='w-1/2 flex flex-col items-start'>
+                                <span className='text-red-600'>
+                                    {
+                                        errors?.image && (
+                                            errors?.image
+                                        )
+                                    }
+                                </span>
                                 <input
                                     type="file"
                                     onChange={handleFileChange}

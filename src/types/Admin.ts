@@ -11,10 +11,16 @@ export type adminReducer = {
 
 
 export type CompanyRequest = {
-    companyId:{
+    companyId: {
         _id: string,
         name: string,
         email: string,
         approvalStatus: string
     }
+}
+
+export type AddCategory = {
+    name: string,
+    description: string,
+    image: string
 }

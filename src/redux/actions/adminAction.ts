@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
+import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_JOB, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
+import { AddCategory } from "src/types/Admin";
 
 
 export const adminLogin = createAsyncThunk(
@@ -69,3 +70,13 @@ export const updateApproval = createAsyncThunk(
     }
 )
 
+export const addCategory = createAsyncThunk(
+    'admin/add-category',
+    async (req:AddCategory,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.post('/add-category',req)
+        } catch (error) {
+            return rejectWithValue(error)  
+        }
+    }
+)
