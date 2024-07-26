@@ -30,6 +30,7 @@ import Categories from './pages/admin/Categories'
 import AddCategory from './pages/admin/AddCategory'
 const PostJob = lazy(() => import('./components/company/PostJob')) 
 import 'react-profile/themes/default'
+import EditCategory from './components/admin/EditCategory'
 
 
 function App() {
@@ -99,6 +100,7 @@ function App() {
             <Route path='' element={<h1>sadfsdf</h1>} />
             <Route path='add-category' element={<AddCategory />} />
             <Route path='category' element={<Categories />} />
+            <Route path='update' element={<EditCategory />} />
             <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />

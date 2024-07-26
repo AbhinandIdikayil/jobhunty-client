@@ -7,7 +7,7 @@ import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginat
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useOutletContext } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import { deleteCategory, listCategory } from 'src/redux/actions/adminAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { ICategories } from 'src/types/Admin'
@@ -21,6 +21,7 @@ function Categories() {
 
     const state = useSelector((state: RootState) => state?.admin)
     const context = useOutletContext<prop>() || {};
+    const navigate = useNavigate()
     const { open } = context;
     const dispatch: AppDispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false)
@@ -104,7 +105,7 @@ function Categories() {
                                       bg-indigo-600
                                       text-white
                                       '
-                                    onClick={() => handleRemove(row.original._id)}
+                                        onClick={() => handleRemove(row.original._id)}
                                     >
                                         undo
                                     </DropdownMenuItem>
@@ -119,9 +120,29 @@ function Categories() {
                                     >
                                         remove
                                     </DropdownMenuItem>
+
                                 )
                             }
 
+                            <DropdownMenuItem
+                                className='
+                                      border
+                                      font-bold
+                                      '
+                                onClick={() => navigate(
+                                    '/admin/home/update',
+                                    {
+                                        state: {
+                                            _id: row.original._id,
+                                            name: row.original.name,
+                                            description: row.original.description,
+                                            image: row.original.image
+                                        }
+                                    }
+                                )}
+                            >
+                                Edit
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
                     </DropdownMenu>
