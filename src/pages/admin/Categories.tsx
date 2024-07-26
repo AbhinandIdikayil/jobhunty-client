@@ -2,12 +2,13 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { Backdrop, CircularProgress } from '@mui/material'
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useOutletContext } from 'react-router-dom'
-import { listCategory } from 'src/redux/actions/adminAction'
+import { deleteCategory, listCategory } from 'src/redux/actions/adminAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { ICategories } from 'src/types/Admin'
 import { prop } from 'src/types/AllTypes'
@@ -22,6 +23,30 @@ function Categories() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const dispatch: AppDispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const fetchCategories = async () => {
+        setLoading(true)
+        try {
+            let data = await dispatch(listCategory(undefined)).unwrap()
+            if (data || !data) {
+                setLoading(false)
+            }
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    }
+
+    async function handleRemove(id: string) {
+        setLoading(true)
+        try {
+            dispatch(deleteCategory({ id })).unwrap()
+            await fetchCategories()
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const columns: ColumnDef<ICategories>[] = [
         {
@@ -48,6 +73,14 @@ function Categories() {
             }
         },
         {
+            id: 'status',
+            accessorKey: 'status',
+            header: () => <div className="text-left">deleted</div>,
+            cell: ({ row }) => {
+                return <div>{row.original.status ? "true" : "false"}</div>
+            }
+        },
+        {
             id: "actions",
             header: 'Actions',
             enableHiding: false,
@@ -68,10 +101,12 @@ function Categories() {
                                         className='
                                       border
                                       font-bold
+                                      bg-indigo-600
+                                      text-white
                                       '
-                                    // onClick={() => handleAcceptRequest(row.original.companyId._id)}
+                                    onClick={() => handleRemove(row.original._id)}
                                     >
-
+                                        undo
                                     </DropdownMenuItem>
                                 ) : (
                                     <DropdownMenuItem
@@ -80,7 +115,7 @@ function Categories() {
                                       font-bold
                                       bg-red-600
                                       '
-                                    // onClick={() => handleAcceptRequest(row.original.companyId._id)}
+                                        onClick={() => handleRemove(row.original._id)}
                                     >
                                         remove
                                     </DropdownMenuItem>
@@ -105,13 +140,6 @@ function Categories() {
     });
 
     useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                await dispatch(listCategory(undefined)).unwrap()
-            } catch (error) {
-                console.log(error)
-            }
-        }
         fetchCategories()
     }, [])
 
@@ -123,7 +151,7 @@ function Categories() {
                         placeholder="Filter emails..."
                         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("email")?.setFilterValue(event.target.value)
+                            table.getColumn("name")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />
@@ -205,6 +233,12 @@ function Categories() {
                     </Table>
                 </div>
             </div>
+            <Backdrop
+                open={loading}
+                sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div>
     )
 }

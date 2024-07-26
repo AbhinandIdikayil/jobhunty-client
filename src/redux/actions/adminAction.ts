@@ -82,13 +82,25 @@ export const addCategory = createAsyncThunk(
     }
 )
 
-export const listCategory = createAsyncThunk<IListCategory[],any, { rejectValue: ErrorPayload }>(
+export const listCategory = createAsyncThunk<IListCategory[], any, { rejectValue: ErrorPayload }>(
     'admin/list-category',
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.get('/category')
             return data
-        } catch (error:Error | any) {
+        } catch (error: Error | any) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+export const deleteCategory = createAsyncThunk(
+    'admin/delete-category',
+    async (req: {id:string}, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.put('/delete-category',req);
+            return data;
+        } catch (error) {
             return rejectWithValue(error)
         }
     }

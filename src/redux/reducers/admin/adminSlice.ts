@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
-import { addCategory, blockUser, getAllusers, listCategory, listRequest, updateApproval } from "src/redux/actions/adminAction";
+import { addCategory, blockUser, deleteCategory, getAllusers, listCategory, listRequest, updateApproval } from "src/redux/actions/adminAction";
 import { adminReducer } from "src/types/Admin";
 
 
@@ -101,6 +101,21 @@ const adminSlice = createSlice({
                 state.category = payload
             })
             .addCase(listCategory.rejected, (state,{payload}) => {
+                state.loading = false
+                state.err = payload
+            })
+            .addCase(deleteCategory.pending,(state) => {
+                state.loading = true
+                state.err = false
+            })
+            .addCase(deleteCategory.fulfilled,(state,{payload}) => {
+                state.loading = false
+                state.err = null
+                state.category = state.category.map(data => {
+                    return data._id == payload?._id ? {...data,status:payload?.status} : data
+                })
+            })
+            .addCase(deleteCategory.rejected,(state,{payload}) => {
                 state.loading = false
                 state.err = payload
             })
