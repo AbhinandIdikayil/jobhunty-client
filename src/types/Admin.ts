@@ -2,6 +2,7 @@
 
 export type adminReducer = {
     loading: boolean,
+    category: IListCategory[],
     request: any[],
     companies: any[],
     users: any[],
@@ -23,4 +24,19 @@ export type AddCategory = {
     name: string,
     description: string,
     image: string
+}
+export type IListCategory = {
+    _id: string,
+    name: string,
+    description: string,
+    image: string,
+    status?:boolean
+}
+
+export type ICategories = {
+    _id: string,
+    name: string,
+    description: string,
+    image: string,
+    status?: boolean
 }
