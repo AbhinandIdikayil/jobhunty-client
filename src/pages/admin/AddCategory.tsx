@@ -6,9 +6,9 @@ import { Field, Form, Formik, FormikHandlers, FormikValues } from 'formik';
 import { AddCategoryValidation } from 'src/validation/admin';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/redux/store';
-import { addCategory } from 'src/redux/actions/adminAction';
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { IAddCategory } from 'src/types/Admin';
+import { addCategory } from 'src/redux/actions/commonAction';
 
 function AddCategory() {
     const context = useOutletContext<prop>() || {};

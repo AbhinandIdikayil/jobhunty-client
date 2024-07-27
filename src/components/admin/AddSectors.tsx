@@ -2,13 +2,13 @@ import { Field, Form, Formik } from 'formik';
 import { ChangeEvent, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { addSector } from 'src/redux/actions/adminAction';
 import { AppDispatch } from 'src/redux/store';
 import { IAddSector } from 'src/types/Admin';
 import { prop } from 'src/types/AllTypes';
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { addSectorValidationSchema } from 'src/validation/admin';
 import { openEditor } from 'react-profile'
+import { addSector } from 'src/redux/actions/commonAction';
 
 
 function AddSectors() {

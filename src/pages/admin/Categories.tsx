@@ -8,10 +8,10 @@ import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
-import { deleteCategory, listCategory } from 'src/redux/actions/adminAction'
+import { deleteCategory, listCategory } from 'src/redux/actions/commonAction'
 import { AppDispatch, RootState } from 'src/redux/store'
-import { ICategories } from 'src/types/Admin'
 import { prop } from 'src/types/AllTypes'
+import { ICategory } from 'src/types/category'
 
 
 
@@ -19,7 +19,7 @@ import { prop } from 'src/types/AllTypes'
 
 function Categories() {
 
-    const state = useSelector((state: RootState) => state?.admin)
+    const state = useSelector((state: RootState) => state?.category)
     const context = useOutletContext<prop>() || {};
     const navigate = useNavigate()
     const { open } = context;
@@ -49,7 +49,7 @@ function Categories() {
         }
     }
 
-    const columns: ColumnDef<ICategories>[] = [
+    const columns: ColumnDef<ICategory>[] = [
         {
             accessorKey: 'image',
             header: () => <div>Image</div>,

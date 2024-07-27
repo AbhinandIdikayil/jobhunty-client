@@ -1,15 +1,12 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
-import { addCategory, addSector, blockUser, deleteCategory, getAllusers, listCategory, listRequest, updateApproval, updateCategory } from "src/redux/actions/adminAction";
-import { listSectors } from "src/redux/actions/commonAction";
+import {  blockUser, getAllusers, listRequest, updateApproval } from "src/redux/actions/adminAction";
 import { adminReducer } from "src/types/Admin";
 
 
 const initialState: adminReducer = {
     loading: false,
-    category: [],
     request: [],
     companies: [],
-    sectors: [],
     users: [],
     err: null,
     role: null,
@@ -78,86 +75,6 @@ const adminSlice = createSlice({
                 })
             })
             .addCase(updateApproval.rejected, (state, { payload }) => {
-                state.loading = false
-                state.err = payload
-            })
-            .addCase(addCategory.pending, (state) => {
-                state.loading = true
-                state.err = false
-            })
-            .addCase(addCategory.fulfilled, (state) => {
-                state.loading = false
-                state.err = false
-            })
-            .addCase(addCategory.rejected, (state, { payload }) => {
-                state.loading = false
-                state.err = payload
-            })
-            .addCase(listCategory.pending, (state) => {
-                state.loading = true
-                state.err = false;
-            })
-            .addCase(listCategory.fulfilled, (state, { payload }) => {
-                state.loading = false
-                state.err = false
-                state.category = payload
-            })
-            .addCase(listCategory.rejected, (state, { payload }) => {
-                state.loading = false
-                state.err = payload
-            })
-            .addCase(deleteCategory.pending, (state) => {
-                state.loading = true
-                state.err = false
-            })
-            .addCase(deleteCategory.fulfilled, (state, { payload }) => {
-                state.loading = false
-                state.err = null
-                state.category = state.category.map(data => {
-                    return data._id == payload?._id ? { ...data, status: payload?.status } : data
-                })
-            })
-            .addCase(deleteCategory.rejected, (state, { payload }) => {
-                state.loading = false
-                state.err = payload
-            })
-            .addCase(updateCategory.pending, (state) => {
-                state.loading = true
-                state.err = null
-            })
-            .addCase(updateCategory.fulfilled, (state, { payload }) => {
-                state.loading = false
-                state.err = null
-                state.category = state.category.map(data => {
-                    return data._id = payload._id ? { ...data, ...payload } : data
-                })
-            })
-            .addCase(updateCategory.rejected, (state, { payload }) => {
-                state.loading = false
-                state.err = payload
-            })
-            .addCase(listSectors.pending, (state) => {
-                state.loading = true
-                state.err = null
-            })
-            .addCase(listSectors.fulfilled, (state, { payload }) => {
-                state.sectors = payload
-                state.loading = false
-                state.err = null
-            })
-            .addCase(listSectors.rejected, (state, { payload }) => {
-                state.err = payload
-                state.loading = false
-            })
-            .addCase(addSector.pending, (state) => {
-                state.loading = true
-                state.err = false
-            })
-            .addCase(addSector.fulfilled, (state) => {
-                state.loading = false
-                state.err = false
-            })
-            .addCase(addSector.rejected, (state, { payload }) => {
                 state.loading = false
                 state.err = payload
             })

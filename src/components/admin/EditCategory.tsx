@@ -1,7 +1,7 @@
 import { Field, Form, Formik, FormikValues } from 'formik'
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom'
-import { updateCategory } from 'src/redux/actions/adminAction';
+import { updateCategory } from 'src/redux/actions/commonAction';
 import { AppDispatch } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { AddCategoryValidation } from 'src/validation/admin'
@@ -14,7 +14,7 @@ function EditCategory() {
     const navigate = useNavigate()
     const { state } = location
     const dispatch:AppDispatch = useDispatch()
-    async function handleSubmit(values) {
+    async function handleSubmit(values:FormikValues) {
         try {
             let data = {
                 ...state,

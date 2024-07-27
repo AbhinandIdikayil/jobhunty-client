@@ -5,18 +5,18 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Backdrop, CircularProgress } from '@mui/material';
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { listSectors } from 'src/redux/actions/commonAction';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { Sector } from 'src/types/Admin';
 import { prop } from 'src/types/AllTypes';
+import { ISectors } from 'src/types/category';
 
 function ListSector() {
 
     const navigate = useNavigate();
-    const state = useSelector((state:RootState) => state?.admin)
+    const state = useSelector((state:RootState) => state?.category)
     const dispatch:AppDispatch = useDispatch()
     const context = useOutletContext<prop>() || {};
     const { open } = context;
@@ -41,7 +41,7 @@ function ListSector() {
 
     }
 
-    const columns: ColumnDef<Sector>[] = [
+    const columns: ColumnDef<ISectors>[] = [
         {
             accessorKey: 'image',
             header: () => <div>Image</div>,
