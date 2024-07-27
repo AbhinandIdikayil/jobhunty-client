@@ -33,3 +33,10 @@ export const AddCategoryValidation = Yup.object().shape({
         .matches(/^[^0-9]*$/,'Numbers are not allowed')
         .min(10,'atleast 10 character'),
 })
+
+export const addSectorValidationSchema = Yup.object().shape({
+    name: Yup
+        .string()
+        .required('name is required')
+        .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
+})

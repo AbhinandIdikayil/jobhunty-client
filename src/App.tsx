@@ -32,6 +32,7 @@ const PostJob = lazy(() => import('./components/company/PostJob'))
 import 'react-profile/themes/default'
 import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
+import AddSectors from './components/admin/AddSectors'
 
 
 function App() {
@@ -102,6 +103,7 @@ function App() {
             <Route path='add-category' element={<AddCategory />} />
             <Route path='category' element={<Categories />} />
             <Route path='sector' element={<ListSector />} />
+            <Route path='add-sector' element={<AddSectors />} />
             <Route path='update' element={<EditCategory />} />
             <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />

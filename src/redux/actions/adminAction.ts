@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_JOB, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
-import { AddCategory, ICategories, IListCategory } from "src/types/Admin";
+import { AddCategory, IAddSector, ICategories, IListCategory } from "src/types/Admin";
 import { ErrorPayload } from "src/types/AllTypes";
 
 
@@ -110,6 +110,18 @@ export const updateCategory = createAsyncThunk(
     async (req: ICategories, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.put('/update-category', { data: req });
+            return data;
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+export const addSector = createAsyncThunk(
+    'admin/add-sector',
+    async(req:IAddSector,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.post('/add-sector',{data:req})
             return data;
         } catch (error) {
             return rejectWithValue(error)

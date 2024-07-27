@@ -7,7 +7,7 @@ import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginat
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Link, useNavigate, useOutletContext } from 'react-router-dom';
 import { listSectors } from 'src/redux/actions/commonAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { Sector } from 'src/types/Admin';
@@ -46,7 +46,7 @@ function ListSector() {
             accessorKey: 'image',
             header: () => <div>Image</div>,
             cell: ({ row }) => {
-                return <div className='w-16 h-16'> <img src={row.original.image} className='rounded-full' alt="" /> </div>
+                return <div className='w-16 h-16'> <img src={row.original.image} className='rounded-full bg-transparent' alt="" /> </div>
             }
         },
         {
@@ -151,6 +151,7 @@ function ListSector() {
     return (
         <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0 sm:px-10 py-5 max-md:w-full text-zinc-800 `}>
             <div className="w-full">
+                <Link className='bg-indigo-600 p-2 rounded text-white font-bold' to={'/admin/home/add-sector'}>add sectors</Link>
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Filter emails..."

@@ -54,9 +54,14 @@ export interface IAddCategory  {
     description: string,
     image?: string,
 }
-export type Sector = {
+export interface Sector {
     _id: string,
     name: string,
     image?:string,
     status?:boolean
+}
+
+export interface IAddSector {
+    name: string,
+    image?: string
 }
