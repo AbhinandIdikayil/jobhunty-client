@@ -4,6 +4,9 @@ import { prop } from 'src/types/AllTypes';
 function PostJob() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
+
+
+
     return (
         <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0 sm:px-10 py-5 max-md:w-full text-zinc-600`}>
             <div className='w-full flex justify-between items-center '>
@@ -40,7 +43,8 @@ function PostJob() {
                     </label>
                 </div>
                 <div className='w-1/2 flex flex-col items-start'>
-                   
+                    <input type="text" className='border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' /> <br />
+                    <input type="text" className='border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
                     <span className='font-sans'>atleast 50 character</span>
                 </div>
             </div>

@@ -6,6 +6,7 @@ export type adminReducer = {
     request: any[],
     companies: any[],
     users: any[],
+    sectors:ISectors[]
     err: null | any,
     role: 'admin' | null
 }
@@ -33,6 +34,13 @@ export type IListCategory = {
     status?:boolean
 }
 
+export type ISectors ={
+    _id: string,
+    name: string,
+    image:string,
+    status:boolean
+}
+
 export type ICategories = {
     _id: string,
     name: string,
@@ -45,4 +53,10 @@ export interface IAddCategory  {
     name: string,
     description: string,
     image?: string,
+}
+export type Sector = {
+    _id: string,
+    name: string,
+    image?:string,
+    status?:boolean
 }
