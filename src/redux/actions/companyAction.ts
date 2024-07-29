@@ -8,7 +8,6 @@ export const getCompany = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_COMPANY.get('/company')
-            console.log(data)
             return data
         } catch (error) {
             return rejectWithValue(error)

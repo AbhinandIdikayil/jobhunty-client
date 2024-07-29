@@ -20,7 +20,7 @@ function SocialLinks() {
 
   async function handleSubmit(values: FormikValues) {
     try {
-      const data = await dispatch(updateSocialLinks(values)).unwrap()
+      await dispatch(updateSocialLinks(values)).unwrap()
     } catch (error) {
       console.log(error)
     }

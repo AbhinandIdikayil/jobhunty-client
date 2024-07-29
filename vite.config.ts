@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import {createHtmlPlugin} from 'vite-plugin-html'
+import tailwindcss from "tailwindcss";
 import { config } from 'dotenv'
 import path from "path"
 config();
@@ -8,14 +8,12 @@ config();
 export default defineConfig({
   plugins: [
     react(),
-    createHtmlPlugin({
-      inject: {
-        data: {
-          googleMapsApiKey: process.env.VITE_GOOGLE
-        }
-      }
-    }),
   ],
+  css: {
+    postcss: {
+      plugins: [tailwindcss()],
+    },
+  },
   define: {
     'process.env': process.env
   },

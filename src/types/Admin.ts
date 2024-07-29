@@ -11,10 +11,43 @@ export type adminReducer = {
 
 
 export type CompanyRequest = {
-    companyId:{
+    companyId: {
         _id: string,
         name: string,
         email: string,
         approvalStatus: string
     }
+}
+
+export type AddCategory = {
+    name: string,
+    description: string,
+    image: string
+}
+export type IListCategory = {
+    _id: string,
+    name: string,
+    description: string,
+    image: string,
+    status?:boolean
+}
+
+export type ISectors ={
+    _id: string,
+    name: string,
+    image:string,
+    status:boolean
+}
+
+
+export interface IAddCategory  {
+    name: string,
+    description: string,
+    image?: string,
+}
+
+
+export interface IAddSector {
+    name: string,
+    image?: string
 }

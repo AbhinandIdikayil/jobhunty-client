@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, FormikValues, FormikHandlers } from 'formik'
 import TypeDate from '../common/TypeDate'
 import { LocationInput } from '../common/LocationInput'
 import { companyProfile } from '../../validation/company/index'
@@ -9,31 +9,34 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { getCompany, updateProfile } from 'src/redux/actions/companyAction'
 import { Backdrop, CircularProgress } from '@mui/material'
+import { toast } from 'react-toastify'
+import { IoCloseCircle } from 'react-icons/io5'
+import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload'
+
 
 function Overview() {
 
     const dispatch: AppDispatch = useDispatch()
-    const state = useSelector((state: RootState) => state.user)
-    const companyProfileInitialState = {
-        name: state.user?.name,
-        website: state.user?.website ?? '',
-        locations: state.user?.location ?? [''],
-        industry: state.user?.industry ?? '',
-        employees: state.user?.employees ?? '',
-        foundedDate: state.user?.foundedDate ?? '06/11/1995',
-        description: state.user?.description ?? '',
-        techStack: state.user?.techStack ?? ['']
+    const state = useSelector((state: RootState) => state?.user)
+    let companyProfileInitialState = {
+        name: state.user?.name || '',
+        website: state.user?.website || '',
+        locations: state.user?.location || [''],
+        industry: state.user?.industry || '',
+        employees: state.user?.employees || '',
+        foundedDate: state.user?.foundedDate || '06/11/1995',
+        description: state.user?.description || '',
+        techStack: state.user?.techStack || ['']
     }
 
-
-
-    const [locations, setLocation] = useState<any[]>(state.user?.locations ?? []);
-    const [stacks, setStacks] = useState<any[]>(state.user?.techStack ?? []);
+    const [locations, setLocation] = useState<any[]>(state.user?.locations || []);
+    const [stacks, setStacks] = useState<any[]>(state?.user?.techStack || []);
     const [imagePreview, setImagePreview] = useState('')
-    const [date, setDate] = useState(state.user?.foundedDate ?? new CalendarDate(2024, 7, 15));
-    const [employee, setEmployee] = useState(state.user?.employees ?? '1-5')
-    const [industry, setIndustry] = useState(state.user?.industry ?? 'technology')
+    const [date, setDate] = useState(state.user?.foundedDate || new CalendarDate(2024, 7, 15));
+    const [employee, setEmployee] = useState(state.user?.employees || '1-5')
+    const [industry, setIndustry] = useState(state.user?.industry || 'technology')
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true)
 
     //$ to list the number of employees array
     const allOptions = ['1-5', '5-15', '15-30', '30-40', '40-65', '65-100'];
@@ -42,16 +45,43 @@ function Overview() {
 
     const fetchData = async () => {
         try {
-            const data = await dispatch(getCompany()).unwrap()
+            await dispatch(getCompany()).unwrap()
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
     useEffect(() => {
         fetchData()
+        console.log('hi from overview -----')
     }, [])
 
+    useEffect(() => {
+        if (state.user) {
+            companyProfileInitialState = {
+                ...companyProfileInitialState,
+                name: state.user?.name || '',
+                website: state.user?.website || '',
+                locations: state.user?.location || [''],
+                industry: state.user?.industry || '',
+                employees: state.user?.employees || '',
+                foundedDate: state.user?.foundedDate || '06/11/1995',
+                description: state.user?.description || '',
+                techStack: state.user?.techStack || ['']
+            }
+
+            setLocation(state.user?.locations ?? []);
+            setStacks(state.user?.techStack ?? []);
+            setDate(state.user?.foundedDate ?? new CalendarDate(2024, 7, 15));
+            setEmployee(state.user?.employees ?? '1-5');
+            setIndustry(state.user?.industry ?? 'technology');
+        }
+    }, [state?.user])
+
+
+   
 
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,7 +99,8 @@ function Overview() {
         }
     }
 
-    async function handleSubmit(values, { setSubmitting , setFieldError }) {
+    async function handleSubmit(values: FormikValues, helpers: FormikHandlers<FormikValues>) {
+        const { setSubmitting, setFieldError } = helpers
         if (!locations?.length || !stacks?.length) {
             console.log('Locations or tech stacks are missing');
             setFieldError('asdfad')
@@ -81,13 +112,17 @@ function Overview() {
         const month = date.month - 1; // JavaScript Date months are 0-based
         const day = date.day;
         const newDate = new Date(Date.UTC(year, month, day));
+
+        let images = await uploadToCloudinary(imagePreview)
+
         let request = {
             ...values,
             employees: employee,
             techStack: stacks,
             locations,
             industry,
-            foundedDate: newDate
+            foundedDate: newDate,
+            images
         }
         try {
             const data = await dispatch(updateProfile(request)).unwrap()
@@ -99,6 +134,12 @@ function Overview() {
         }
     }
 
+
+    if (loading) {
+        return (
+            <h1>Loading....</h1>
+        )
+    }
 
     return (
         <>
@@ -125,9 +166,23 @@ function Overview() {
                                 <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                                     <div className="flex items-center justify-center w-full">
                                         <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                                                 {imagePreview ? (
-                                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-contain" />
+                                                    // <ReactCrop
+                                                    //     crop={crop}
+                                                    //     keepSelection
+                                                    //     aspect={1}
+                                                    //     minWidth={150}
+                                                    //     className='w-80'
+                                                    //     onChange={(percentCrop) => setCrop(percentCrop)}
+                                                    // >
+                                                    <>
+                                                        <IoCloseCircle onClick={() => setImagePreview('')} size={30} />
+                                                        <img src={imagePreview} alt="Preview"
+                                                            // onLoad={imageLoad}
+                                                            className="h-full w-full object-contain" />
+                                                    </>
+                                                    // </ReactCrop>
                                                 ) : (
                                                     <>
                                                         <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -136,11 +191,11 @@ function Overview() {
                                                         <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                                                             <span className="font-semibold">Click to upload</span>
                                                         </p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF</p>
+                                                        <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
                                                     </>
                                                 )}
                                             </div>
-                                            <input id="dropzone-file" type="file" onChange={handleFileChange} className="hidden" />
                                         </label>
                                     </div>
                                 </div>
