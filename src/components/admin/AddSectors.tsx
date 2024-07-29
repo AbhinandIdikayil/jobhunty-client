@@ -69,6 +69,7 @@ function AddSectors() {
                     const image = await openEditor({ src: dataUrl });
                     if (image && image.editedImage) {
                         const dataUrl = await convertToWhiteOpaque(image.editedImage.getDataURL())
+                        
                         setImage(dataUrl); // Call the function to get the URL and then set it
                     }
                     // setImage(dataUrl);
@@ -77,7 +78,7 @@ function AddSectors() {
             reader.readAsDataURL(file);
         }
     }
-
+    console.log(image)
     async function handleSubmit(values: IAddSector, helpers: any) {
         const { setSubmitting, setFieldError } = helpers
         if (!image) {

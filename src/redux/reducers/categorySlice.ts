@@ -31,6 +31,7 @@ const categorySlice = createSlice({
             .addCase(listCategory.rejected, (state, { payload }) => {
                 state.err = payload
                 state.loading = false
+                state.category = []
             })
             .addCase(addCategory.pending, (state) => {
                 state.loading = true
@@ -86,6 +87,7 @@ const categorySlice = createSlice({
             .addCase(listSectors.rejected, (state, { payload }) => {
                 state.err = payload
                 state.loading = false
+                state.sectors = []
             })
             .addCase(addSector.pending, (state) => {
                 state.loading = true
