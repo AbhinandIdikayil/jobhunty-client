@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 interface props {
     func: () => void,
     open: boolean
@@ -58,7 +59,9 @@ function Header({ func, open }: props) {
                 </div>
                 <img
                     loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/28fcac72ebb7d51aabcc8a2e42dcfd241ea63b6ee352291d3a8ebc64ceae3826?apiKey=bf80438c4595450788b907771330b274&"
+                    // https://cdn.builder.io/api/v1/image/assets/TEMP/28fcac72ebb7d51aabcc8a2e42dcfd241ea63b6ee352291d3a8ebc64ceae3826?apiKey=bf80438c4595450788b907771330b274&
+                    src={state.user.images}
+                    alt="hai"
                     className="shrink-0 self-start w-12 aspect-square"
                 />
                 <div className="flex flex-col">
@@ -139,7 +142,7 @@ function Header({ func, open }: props) {
                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"
                         className="shrink-0 self-start w-6 aspect-square"
                     />
-                    <div>Post a job</div>
+                    <Link to={'/company/post'}>Post a job</Link>
                 </div>
             </div>
         </div>

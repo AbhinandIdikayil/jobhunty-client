@@ -25,6 +25,15 @@ const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 const Companies = lazy(() => import('./pages/admin/Companies'))
 const UserDashboardHome = lazy(() => import('./components/user/dashboard/Home'));
 import UserDashboard from './components/user/dashboard/Dashboard'
+import Profile from './components/user/dashboard/Profile'
+import Categories from './pages/admin/Categories'
+import AddCategory from './pages/admin/AddCategory'
+const PostJob = lazy(() => import('./components/company/PostJob')) 
+import 'react-profile/themes/default'
+import EditCategory from './components/admin/EditCategory'
+import ListSector from './components/admin/ListSector'
+import AddSectors from './components/admin/AddSectors'
+
 
 function App() {
 
@@ -47,8 +56,10 @@ function App() {
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
+          
           <Route path='jobs' element={<Jobs />} />
           <Route path='companies' element={<CompanyList />} />
+          <Route path='profile' element={<Profile />} />
         </Route>
 
 
@@ -66,6 +77,7 @@ function App() {
             </CompnanyPrivateRoute>
           }>
             <Route path='' element={<Dashboard />} />
+            <Route path='post' element={<PostJob />} />
             <Route path='messages' element={<h1>messages</h1>} />
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<h1>applicants</h1>} />
@@ -88,6 +100,11 @@ function App() {
             </AdminPrivateRoute>
           }>
             <Route path='' element={<h1>sadfsdf</h1>} />
+            <Route path='add-category' element={<AddCategory />} />
+            <Route path='category' element={<Categories />} />
+            <Route path='sector' element={<ListSector />} />
+            <Route path='add-sector' element={<AddSectors />} />
+            <Route path='update' element={<EditCategory />} />
             <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />

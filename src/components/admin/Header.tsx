@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Link } from "react-router-dom";
 
 
 interface props {
@@ -104,7 +105,7 @@ function Header({ open, func }: props) {
                             src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"
                             className="hidden sm:block shrink-0 self-start w-6 aspect-square"
                         />
-                        <div>Add category</div>
+                        <Link to={'/admin/home/add-category'}>Add category</Link>
                     </div>
                 </div>
             </div >

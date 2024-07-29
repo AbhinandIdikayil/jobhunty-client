@@ -7,8 +7,9 @@ import { prop } from 'src/types/AllTypes';
 function CompanyList() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
+    console.log(open)
     return (
-        <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
+        <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-white'} px-3`}>
             <div className="flex justify-center items-center px-1 py-10 sm:py-20 bg-white max-md:px-5">
                 <div className="w-full max-w-[1192px] max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">

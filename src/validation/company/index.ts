@@ -61,3 +61,72 @@ export const socialLinksValidation = Yup.object().shape({
             'Youtube link must start with "https://www.youtube.com/in/"'
         )
 })
+
+
+export const postJobValidationSchema = Yup.object().shape({
+    jobTitle: Yup
+        .string()
+        .required('Title is required')
+        .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
+    description: Yup
+        .string()
+        .required('Description is required')
+        .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
+    employment: Yup
+        .string()
+        .required('Employment type is required'),
+    category: Yup
+        .string()
+        .required('Category is required'),
+    // joblocation: Yup
+    //     .string(),
+    salaryrange: Yup.object().shape({
+        from: Yup
+            .number()
+            .typeError('From must be a number')
+            .required('From is requrid')
+            .min(0, 'From must be atleast 0'),
+        to: Yup
+            .number()
+            .typeError('To must be a number')
+            .required('To is required')
+            .min(Yup.ref('from'), 'To must be greater than or equal to From'),
+    }),
+    // experince: Yup
+    //     .number()
+    //     .required('Experience is required')
+    //     .min(0, 'Experience must be at least 0'),
+    companyId: Yup
+        .string(),
+    expiry: Yup
+        .date()
+        .required('Expiry date is required')
+        .min(new Date(), 'Expiry date must be in the future'),
+    responsibilities: Yup.array()
+        .of(
+            Yup.string()
+                .trim()
+                .strict(true)
+                .min(3, 'min 3 character')
+        )
+        .min(2, 'At least one responsibilities is required')
+        .required('resonsibilities are required'),
+    skills: Yup.array()
+        .of(
+            Yup.string()
+                .trim()
+                .strict(true)
+                .min(3, 'min 3 character')
+        )
+        .min(2, 'At least one skill is required')
+        .required('Skills are required'),
+    qualification: Yup.array()
+        .of(
+            Yup.string()
+                .trim()
+                .strict(true)
+                .min(3, 'min 3 character')
+        )
+        .min(2, 'At least one qualification is required')
+        .required('qualification are required'),
+})
