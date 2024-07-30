@@ -1,9 +1,9 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ErrorMessage, Field, FieldArray, Form, Formik, FormikValues } from 'formik';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
-import { RootState } from 'src/redux/store';
+import { postJob } from 'src/redux/actions/jobAction';
+import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { postJobValidationSchema } from 'src/validation/company';
 
@@ -11,9 +11,8 @@ function PostJob() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state?.category);
-    const [category, setCategory] = useState<string | undefined>(undefined);
-    const [sector, setSector] = useState<string | undefined>(undefined);
-    const [requiredSkills, setRequiredSkills] = useState<string[] | undefined>(undefined)
+    const company = useSelector((state:RootState) => state?.user)
+    const dispatch: AppDispatch = useDispatch()
 
     let PostJobInitialValues = {
         jobTitle: '',
@@ -25,7 +24,7 @@ function PostJob() {
             to: '',
         },
         // experince: '',
-        companyId: '',
+        // companyId: '',
         expiry: '',
         responsibilities: [''],
         skills: [''],
@@ -33,7 +32,13 @@ function PostJob() {
     }
 
     function handleSubmit(values: FormikValues) {
-        console.log(values)
+        try {
+            console.log(values)
+            const data = dispatch(postJob(values)).unwrap()
+            return data;
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -45,10 +50,7 @@ function PostJob() {
             >
 
                 {({ errors, setFieldValue, isSubmitting, values }) => {
-                    console.log(values)
-                    console.log(errors)
                     return (
-
                         <Form>
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>

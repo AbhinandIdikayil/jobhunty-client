@@ -3,22 +3,26 @@ import { prop } from 'src/types/AllTypes';
 import UserSocialLinkUpdate from './UserSocialLinkUpdate';
 import UserAddtionalDetailsUpdate from './UserAddtionalDetailsUpdate';
 import UserAboutMeUpdate from './UserAboutMeUpdate';
+import { Avatar } from '@mui/material';
+import { deepOrange } from '@mui/material/colors';
+import UserEditProfile from './EditProfile';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
+import { Globe, Instagram, Languages, LinkedinIcon, Mail, Smartphone, Twitter } from 'lucide-react';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
+    const state = useSelector((state: RootState) => state.user);
+
     return (
         <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
             <div className="justify-between">
                 <div className="flex gap-5 max-md:flex-col">
                     <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
-                            <div className="flex flex-col justify-center pb-6 bg-white border border-solid border-zinc-200 max-md:max-w-full">
-                                <img
-                                    loading="lazy"
-                                    srcSet="..."
-                                    className="w-full aspect-[5.26] max-md:max-w-full"
-                                />
+                            <div className="flex justify-center items-center gap-3 pb-6 bg-white border border-gray-500 rounded max-md:max-w-full">
+                                <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
                                 <div className="justify-between self-end mt-6 max-w-full w-[524px] max-md:pr-5">
                                     <div className="flex gap-5 max-md:flex-col">
                                         <div className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full">
@@ -51,36 +55,37 @@ function Profile() {
                                             </div>
                                         </div>
                                         <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
-                                            <div className="px-6 py-3 text-base font-bold leading-6 text-center text-indigo-600 border border-indigo-200 border-solid max-md:px-5 max-md:mt-10">
-                                                Edit Profile
-                                            </div>
+                                            <UserEditProfile />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-6 mt-6 bg-white border border-solid border-zinc-200 max-md:px-5 max-md:max-w-full">
+                            <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
                                 <div className="flex gap-4 justify-between max-md:flex-wrap max-md:max-w-full">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         About Me
                                     </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
                                         <UserAboutMeUpdate />
                                     </div>
                                 </div>
                                 <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                    I’m a product designer + filmmaker currently working remotely at
+                                    {/* I’m a product designer + filmmaker currently working remotely at
                                     Twitter from beautiful Manchester, United Kingdom. I’m
                                     passionate about designing digital products that have a positive
-                                    impact on the world.
+                                    impact on the world. */}
+                                    {
+                                        state?.user?.about
+                                    }
                                 </div>
                                 <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                    For 10 years, I’ve specialised in interface, experience &
+                                    {/* For 10 years, I’ve specialised in interface, experience &
                                     interaction design as well as working in user research and
                                     product strategy for product agencies, big tech companies &
-                                    start-ups.
+                                    start-ups. */}
                                 </div>
                             </div>
-                            <div className="flex flex-col px-px py-6 mt-6 bg-white border border-solid border-zinc-200 max-md:max-w-full">
+                            <div className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
                                 <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Experiences
@@ -165,7 +170,7 @@ function Profile() {
                                     Show 3 more experiences
                                 </div>
                             </div>
-                            <div className="flex flex-col p-6 mt-6 bg-white border border-solid border-zinc-200 max-md:px-5 max-md:max-w-full">
+                            <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
                                 <div className="flex gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Skills
@@ -201,94 +206,82 @@ function Profile() {
                                     Community Manager
                                 </div>
                             </div>
+                            <div className='flex mt-3'>
+                                <button className='bg-indigo-600 w-full text-white font-bold p-2'>
+                                    save
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col max-md:mt-6">
-                            <div className="flex flex-col p-6 w-full bg-white border border-solid border-zinc-200 max-md:px-5">
+                            <div className="flex flex-col p-6 w-full bg-white border border-gray-500 rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Additional Details
                                     </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
 
                                         {/* //!  A MODAL WILL POPUP IF THE EDIT ICON IS CLICKED */}
                                         <UserAddtionalDetailsUpdate />
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/b0670868732ae275da7e10a4c3ae31088983c5106cc66cb09ceca9215b39cbff?"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
+                                    <Mail />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Email</div>
-                                        <div className="text-slate-800">jakegyll@email.com</div>
+                                        <div className="text-slate-800">{state?.user?.email}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/060ca0b3bd0c9c7b5863e6428825693d71e72563962a30f587ff78a8bb815a2c?"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
+                                    <Smartphone />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Phone</div>
-                                        <div className="text-slate-800">+44 1245 572 135</div>
+                                        <div className="text-slate-800">{state.user.phonenumber || 'none'}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/6fb878d1eae792629ab7177b5c47f54d1299f0749aed8795dfc0d0fcdf6c9529?"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
+                                    <Languages />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Languages</div>
                                         <div className="text-slate-800">English, French</div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-6 mt-6 w-full bg-white border border-solid border-zinc-200 max-md:px-5">
+                            <div className="flex flex-col p-6 mt-6 w-full bg-white border border-gray-500 rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Social Links
                                     </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
 
-                                    {/* //!  A MODAL WILL POPUP IF THE EDIT ICON IS CLICKED */}
+                                        {/* //!  A MODAL WILL POPUP IF THE EDIT ICON IS CLICKED */}
                                         <UserSocialLinkUpdate />
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/3af69ab8a7a99a28c1cf29b8278f3551a2cf792ec17da29edc104eca897a333a?"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
+                                    <Instagram />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Instagram</div>
                                         <div className="text-indigo-600">instagram.com/jakegyll</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/6ba6645c962d59e4bafbbbd59600a1c2b969f8c37da263d6eb16740b57ad4099?"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
+                                    <Twitter />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Twitter</div>
                                         <div className="text-indigo-600">twitter.com/jakegyll</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/e579c02e97efcc2f382bb6c1038620d5df4b9d04214e2d656bf59df40774097a?"
-                                        className="shrink-0 self-start w-6 aspect-square"
-                                    />
+                                    <Globe />
+                                    <div className="flex flex-col">
+                                        <div className="text-slate-500">Website</div>
+                                        <div className="text-indigo-600">www.jakegyll.com</div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
+                                    <LinkedinIcon />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Website</div>
                                         <div className="text-indigo-600">www.jakegyll.com</div>

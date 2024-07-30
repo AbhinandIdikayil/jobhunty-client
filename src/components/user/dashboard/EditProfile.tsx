@@ -2,31 +2,33 @@ import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, 
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from '@hookform/resolvers/zod'
 import { SquarePen } from 'lucide-react'
-import { useForm } from "react-hook-form"
-import { useDispatch } from 'react-redux'
-import { updateUserProfile } from 'src/redux/actions/userAction'
-import { AppDispatch } from 'src/redux/store'
-import { z } from "zod"
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 
 const formSchema = z.object({
-    about: z.string().min(20, { message: 'Atleast 20 character' }),
+    name: z.string().min(5, { message: 'Atleast 20 character' }),
+    location: z.string({ required_error: 'location is required' })
 })
 
-function UserAboutMeUpdate() {
+
+function UserEditProfile() {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <SquarePen />
+                <div className="px-6 py-3 text-base font-bold leading-6 text-center text-indigo-600 border border-indigo-200 border-solid max-md:px-5 max-md:mt-10 hover:cursor-pointer">
+                    Edit Profile
+                </div>
             </AlertDialogTrigger >
             <AlertDialogContent>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Social links </AlertDialogTitle>
+                    <AlertDialogTitle>Edit profile</AlertDialogTitle>
 
                     {/* ////! Here is the form component that is under this component */}
-                    <AddDescriptionForm />
+                    <EditProfile />
 
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -36,23 +38,18 @@ function UserAboutMeUpdate() {
     )
 }
 
-export default UserAboutMeUpdate
+export default UserEditProfile
 
-function AddDescriptionForm() {
-    const dispatch: AppDispatch = useDispatch();
+function EditProfile() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            about: ""
+            name: ""
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            await dispatch(updateUserProfile(values)).unwrap()
-        } catch (error) {
-            console.log(error);
-        }
+        console.log(values)
     }
 
     return (
@@ -60,7 +57,7 @@ function AddDescriptionForm() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
                 <FormField
                     control={form.control}
-                    name="about"
+                    name="name"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Description
@@ -87,5 +84,4 @@ function AddDescriptionForm() {
             </form>
         </Form>
     )
-
 }
