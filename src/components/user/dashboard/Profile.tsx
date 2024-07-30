@@ -14,20 +14,25 @@ function Profile() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state.user);
-
     return (
-        <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
+        <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full '}max-md:ml-0`}>
             <div className="justify-between">
                 <div className="flex gap-5 max-md:flex-col">
                     <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
-                            <div className="flex justify-center items-center gap-3 pb-6 bg-white border border-gray-500 rounded max-md:max-w-full">
-                                <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
-                                <div className="justify-between self-end mt-6 max-w-full w-[524px] max-md:pr-5">
+                            <div className="flex flex-col sm:flex-row justify-center items-center gap-0 sm:gap-3 pb-6 py-3 sm:pt-0 bg-white border border-gray-500 rounded max-md:max-w-full">
+                                {/* //! AVATAR */}
+                                <div className='hidden sm:block'>
+                                    <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
+                                </div>
+                                <div className='block sm:hidden'>
+                                    <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 126, height: 126 }}>N</Avatar>
+                                </div>
+                                <div className="justify-between self-end sm:mt-6 max-w-full w-[524px] max-md:pr-5">
                                     <div className="flex gap-5 max-md:flex-col">
                                         <div className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow text-lg font-semibold leading-7 text-slate-800 max-md:mt-10">
-                                                <div className="text-2xl leading-7">Jake Gyll</div>
+                                            <div className="flex flex-col items-center grow text-lg font-semibold leading-7 text-slate-800 max-md:mt-10">
+                                                <div className="text-2xl leading-7 capitalize"> {state?.user?.name} </div>
                                                 <div className="mt-2">
                                                     <span className="text-slate-500">
                                                         Product Designer at
@@ -54,8 +59,8 @@ function Profile() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex flex-col ml-5 w-[31%] max-md:ml-0 max-md:w-full">
-                                            <UserEditProfile />
+                                        <div className="flex flex-col ml-5 w-[31%] items-center max-md:ml-0 max-md:w-full">
+                                            <UserEditProfile name={state?.user?.name} />
                                         </div>
                                     </div>
                                 </div>
@@ -132,7 +137,7 @@ function Profile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="shrink-0 max-w-full h-px bg-zinc-200 w-[680px] max-md:mr-1" />
+                                <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
                                 <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
                                     <img
                                         loading="lazy"
@@ -263,28 +268,28 @@ function Profile() {
                                     <Instagram />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Instagram</div>
-                                        <div className="text-indigo-600">instagram.com/jakegyll</div>
+                                        <div className="text-indigo-600">{state?.user?.socialLink?.[0]}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
                                     <Twitter />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Twitter</div>
-                                        <div className="text-indigo-600">twitter.com/jakegyll</div>
+                                        <div className="text-indigo-600">{state?.user?.socialLink?.[1]}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
                                     <Globe />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Website</div>
-                                        <div className="text-indigo-600">www.jakegyll.com</div>
+                                        <div className="text-indigo-600">{state?.user?.socialLink?.[2]}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
                                     <LinkedinIcon />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Website</div>
-                                        <div className="text-indigo-600">www.jakegyll.com</div>
+                                        <div className="text-indigo-600">{state?.user?.personalsite}</div>
                                     </div>
                                 </div>
                             </div>
