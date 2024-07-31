@@ -10,12 +10,22 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/redux/store';
 import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
-import {FaUniversity} from 'react-icons/fa'
+import { FaUniversity } from 'react-icons/fa'
+import { differenceInMonths, format } from 'date-fns';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state.user);
+
+
+    function formatDateRange(dateStr: string) {
+        const date = new Date(dateStr);
+
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
     return (
         <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full '}max-md:ml-0`}>
             <div className="justify-between">
@@ -195,41 +205,41 @@ function Profile() {
                                         <AddEducation />
                                     </div>
                                 </div>
-                                <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-                                    {/* <img
-                                        loading="lazy"
-                                        srcSet="..."
-                                        className="shrink-0 self-start w-20 aspect-square"
-                                    /> */}
-                                    <FaUniversity size={80} />
-                                    <div className="flex flex-col max-md:max-w-full">
-                                        <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                            <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
-                                                Harvard university
+                                {
+                                    state?.user?.education?.map((data,index) => (
+                                        <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
+
+                                            <FaUniversity size={80} />
+                                            <div className="flex flex-col max-md:max-w-full">
+                                                <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
+                                                    <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
+                                                        {data.university}
+                                                    </div>
+                                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                                        <img
+                                                            loading="lazy"
+                                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
+                                                            className="w-5 aspect-square"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
+                                                    <div> {data?.course} </div>
+                                                </div>
+                                                <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
+                                                    {formatDateRange(state?.user?.education[index].year?.from) + ' - ' + formatDateRange(state?.user?.education[index]?.year?.to)} 
+                                                </div>
+                                                <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
+                                                    {
+                                                        data?.description
+                                                    }
+                                                </div>
                                             </div>
-                                            <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
-                                                    className="w-5 aspect-square"
-                                                />
-                                            </div>
                                         </div>
-                                        <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                            <div>post graduate degree, applied psychology</div>
-                                        </div>
-                                        <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
-                                        Jun 2011 - May 2019 (8y)
-                                        </div>
-                                        <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
-                                            Created and executed social media plan for 10 brands
-                                            utilizing multiple features and content types to increase
-                                            brand outreach, engagement, and leads.
-                                        </div>
-                                    </div>
-                                </div>
+                                    ))
+                                }
                                 <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
-                                
+
                                 <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
                                     Show 3 more experiences
                                 </div>
