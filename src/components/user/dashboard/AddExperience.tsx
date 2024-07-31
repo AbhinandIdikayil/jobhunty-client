@@ -4,7 +4,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus } from 'lucide-react'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { title } from 'process'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserProfile } from 'src/redux/actions/userAction'
@@ -12,10 +13,10 @@ import { AppDispatch, RootState } from 'src/redux/store'
 import { z } from 'zod'
 
 
-
-const educationSchema = z.object({
-    university: z.string().nonempty({ message: 'University name is required' }),
-    course: z.string().nonempty({ message: 'Course is required' }),
+const experienceSchema = z.object({
+    title: z.string().nonempty({ message: 'title is required' }),
+    company: z.string(),
+    description: z.string(),
     year: z.object({
         from: z.date({ required_error: 'Start date is required' }).refine(date => date <= new Date(), {
             message: 'Start date must be in the past'
@@ -27,20 +28,19 @@ const educationSchema = z.object({
         message: 'Start date must be before or equal to the end date',
         path: ['from']  // Specify the path to indicate where the error should be applied
     }),
-    description: z.string(),
 })
 
 const formSchema = z.object({
-    education: z.array(educationSchema)
+    experiences: z.array(experienceSchema)
 })
 
-interface UserAddEducation {
+interface UserAddExperience {
     setOpen: Dispatch<SetStateAction<boolean>>
 }
 
 
-function AddEducation() {
-    const [open,setOpen] = useState<boolean>(false)
+function AddExperience() {
+    const [open, setOpen] = useState<boolean>(false)
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild >
@@ -51,7 +51,7 @@ function AddEducation() {
                     <AlertDialogTitle>Social links </AlertDialogTitle>
 
                     {/* ////! Here is the form component that is under this component */}
-                    <AddEducationForm setOpen={setOpen} />
+                    <AddExperienceForm setOpen={setOpen} />
 
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -61,49 +61,48 @@ function AddEducation() {
     )
 }
 
-export default AddEducation
+export default AddExperience
 
-function AddEducationForm({setOpen}:UserAddEducation) {
+function AddExperienceForm({ setOpen }: UserAddExperience) {
+
     const state = useSelector((state: RootState) => state?.user);
     const dispatch: AppDispatch = useDispatch()
-    let len = state.user.education?.length - 1;
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            education: [
+            experiences: [
                 {
-                    university: "",
-                    course: "",
+                    title: "",
+                    company: "",
+                    description: "",
                     year: {
                         from: undefined,
                         to: undefined
                     },
-                    description: ""
                 }
             ]
         },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        try {
-            const updatedEducation = values.education.map(ed => ({
-                ...ed,
-                year: {
-                    from: ed.year.from?.toISOString(),
-                    to: ed.year.to?.toISOString()
-                }
-            }));
-        
-            // Merge with existing education data
-            const payload = {
-                education: [
-                    ...state.user.education,
-                    ...updatedEducation
-                ]
-            };
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        const updatedExperience = values.experiences.map(ed => ({
+            ...ed,
+            year: {
+                from: ed.year.from?.toISOString(),
+                to: ed.year.to?.toISOString()
+            }
+        }));
 
-            console.log('Payload:', payload);
-            await dispatch(updateUserProfile(payload)).unwrap()
+        const payload = {
+            experiences: [
+                ...state.user.experiences,
+                ...updatedExperience
+            ]
+        };
+        console.log(payload);
+        try {
+            dispatch(updateUserProfile(payload)).unwrap()
             setOpen(false)
         } catch (error) {
             setOpen(false)
@@ -117,10 +116,10 @@ function AddEducationForm({setOpen}:UserAddEducation) {
 
                 <FormField
                     control={form.control}
-                    name={`education.${len}.university`}
+                    name={`experiences.${0}.title`}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>university
+                            <FormLabel>title
                             </FormLabel>
                             <FormControl>
                                 <Input  {...field} />
@@ -131,10 +130,10 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                 />
                 <FormField
                     control={form.control}
-                    name={`education.${len}.course`}
+                    name={`experiences.${0}.company`}
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>course
+                            <FormLabel>company name
 
                             </FormLabel>
                             <FormControl>
@@ -146,7 +145,7 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                 />
                 <FormField
                     control={form.control}
-                    name={`education.${len}.description`}
+                    name={`experiences.${0}.description`}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>description
@@ -162,7 +161,7 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                 <div className='flex gap-2'>
                     <FormField
                         control={form.control}
-                        name={`education.${len}.year.from`}
+                        name={`experiences.${0}.year.from`}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>from
@@ -186,7 +185,7 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                     />
                     <FormField
                         control={form.control}
-                        name={`education.${len}.year.to`}
+                        name={`experiences.${0}.year.to`}
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>to

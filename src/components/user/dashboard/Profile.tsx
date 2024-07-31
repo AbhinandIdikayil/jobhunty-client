@@ -10,8 +10,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from 'src/redux/store';
 import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
-import { FaUniversity } from 'react-icons/fa'
+import { FaAward, FaUniversity } from 'react-icons/fa'
 import { differenceInMonths, format } from 'date-fns';
+import AddExperience from './AddExperience';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
@@ -114,55 +115,41 @@ function Profile() {
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Experiences
                                     </div>
-                                    <div className="flex justify-center items-center p-2 border border-solid border-zinc-200">
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/8ceba105eff85df46b7b79f3292e6cdff2486d0dcdbb379f49fb81a1b8d831e8?"
-                                            className="w-6 aspect-square"
-                                        />
+                                    <div className="flex justify-center items-center p-2  border border-gray-500 rounded">
+                                        <AddExperience />
                                     </div>
                                 </div>
                                 <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-                                    <img
-                                        loading="lazy"
-                                        srcSet="..."
-                                        className="shrink-0 self-start w-20 aspect-square"
-                                    />
+                                    <FaAward size={60} />
                                     <div className="flex flex-col max-md:max-w-full">
                                         <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
                                             <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
-                                                Product Designer
+                                                Growth Marketing Designer
                                             </div>
                                             <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
                                                 <img
                                                     loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
+                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/112686944eefea14f6fb1632e47edea906d7aa4c1077c5fb335d9f1e4ed5bea1?"
                                                     className="w-5 aspect-square"
                                                 />
                                             </div>
                                         </div>
                                         <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                            <div className="font-medium text-slate-800">Twitter</div>
+                                            <div className="font-medium text-slate-800">GoDaddy</div>
                                             <div>Full-Time</div>
-                                            <div>Jun 2019 - Present (1y 1m)</div>
+                                            <div>Jun 2011 - May 2019 (8y)</div>
                                         </div>
                                         <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
                                             Manchester, UK
                                         </div>
-                                        <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
-                                            Created and executed social media plan for 10 brands
-                                            utilizing multiple features and content types to increase
-                                            brand outreach, engagement, and leads.
+                                        <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
+                                            Developed digital marketing strategies, activation plans,
+                                            proposals, contests and promotions for client initiatives
                                         </div>
                                     </div>
                                 </div>
-                                <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
                                 <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-                                    <img
-                                        loading="lazy"
-                                        srcSet="..."
-                                        className="shrink-0 self-start w-20 aspect-square"
-                                    />
+                                    <FaAward size={60} />
                                     <div className="flex flex-col max-md:max-w-full">
                                         <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
                                             <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
@@ -206,43 +193,46 @@ function Profile() {
                                     </div>
                                 </div>
                                 {
-                                    state?.user?.education?.map((data,index) => (
-                                        <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
+                                    state?.user?.education?.map((data, index) => (
+                                        <>
 
-                                            <FaUniversity size={80} />
-                                            <div className="flex flex-col max-md:max-w-full">
-                                                <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                                    <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
-                                                        {data.university}
+                                            <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
+
+                                                <FaUniversity size={80} />
+                                                <div className="flex flex-col max-md:max-w-full">
+                                                    <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
+                                                        <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
+                                                            {data.university}
+                                                        </div>
+                                                        <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                                            <img
+                                                                loading="lazy"
+                                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
+                                                                className="w-5 aspect-square"
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                        <img
-                                                            loading="lazy"
-                                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
-                                                            className="w-5 aspect-square"
-                                                        />
+                                                    <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
+                                                        <div> {data?.course} </div>
                                                     </div>
-                                                </div>
-                                                <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                                    <div> {data?.course} </div>
-                                                </div>
-                                                <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
-                                                    {formatDateRange(state?.user?.education[index].year?.from) + ' - ' + formatDateRange(state?.user?.education[index]?.year?.to)} 
-                                                </div>
-                                                <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
-                                                    {
-                                                        data?.description
-                                                    }
+                                                    <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
+                                                        {formatDateRange(state?.user?.education[index].year?.from) + ' - ' + formatDateRange(state?.user?.education[index]?.year?.to)}
+                                                    </div>
+                                                    <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
+                                                        {
+                                                            data?.description
+                                                        }
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                            <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
+                                        </>
                                     ))
                                 }
-                                <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
 
-                                <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
+                                {/* <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
                                     Show 3 more experiences
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
