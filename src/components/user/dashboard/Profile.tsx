@@ -8,7 +8,9 @@ import { deepOrange } from '@mui/material/colors';
 import UserEditProfile from './EditProfile';
 import { useSelector } from 'react-redux';
 import { RootState } from 'src/redux/store';
-import { Globe, Instagram, Languages, LinkedinIcon, Mail, Smartphone, Twitter } from 'lucide-react';
+import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Twitter } from 'lucide-react';
+import AddEducation from './addEducation';
+import {FaUniversity} from 'react-icons/fa'
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
@@ -23,7 +25,14 @@ function Profile() {
                             <div className="flex flex-col sm:flex-row justify-center items-center gap-0 sm:gap-3 pb-6 py-3 sm:pt-0 bg-white border border-gray-500 rounded max-md:max-w-full">
                                 {/* //! AVATAR */}
                                 <div className='hidden sm:block'>
-                                    <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
+                                    {
+                                        state?.user?.coverImage ? (
+                                            <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }} />
+
+                                        ) : (
+                                            <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
+                                        )
+                                    }
                                 </div>
                                 <div className='block sm:hidden'>
                                     <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 126, height: 126 }}>N</Avatar>
@@ -175,6 +184,57 @@ function Profile() {
                                     Show 3 more experiences
                                 </div>
                             </div>
+
+
+                            <div className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
+                                <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                        Education
+                                    </div>
+                                    <div className="flex justify-center items-center p-2 border border-gray-500 rounded">
+                                        <AddEducation />
+                                    </div>
+                                </div>
+                                <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
+                                    {/* <img
+                                        loading="lazy"
+                                        srcSet="..."
+                                        className="shrink-0 self-start w-20 aspect-square"
+                                    /> */}
+                                    <FaUniversity size={80} />
+                                    <div className="flex flex-col max-md:max-w-full">
+                                        <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
+                                            <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
+                                                Harvard university
+                                            </div>
+                                            <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                                <img
+                                                    loading="lazy"
+                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
+                                                    className="w-5 aspect-square"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
+                                            <div>post graduate degree, applied psychology</div>
+                                        </div>
+                                        <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
+                                        Jun 2011 - May 2019 (8y)
+                                        </div>
+                                        <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
+                                            Created and executed social media plan for 10 brands
+                                            utilizing multiple features and content types to increase
+                                            brand outreach, engagement, and leads.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
+                                
+                                <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
+                                    Show 3 more experiences
+                                </div>
+                            </div>
+
                             <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
                                 <div className="flex gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">

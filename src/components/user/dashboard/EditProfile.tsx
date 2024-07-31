@@ -7,9 +7,9 @@ import { Avatar } from '@mui/material'
 import { deepOrange } from '@mui/material/colors'
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateUserProfile } from 'src/redux/actions/userAction'
-import { AppDispatch } from 'src/redux/store'
+import { AppDispatch, RootState } from 'src/redux/store'
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload'
 import { z } from 'zod'
 
@@ -23,9 +23,12 @@ interface UserEditProfileProps {
     name: string;
     setOpen: Dispatch<SetStateAction<boolean>>
 }
+interface UserEditProfileProps2 {
+    name: string;
+}
 
-function UserEditProfile({ name }: UserEditProfileProps) {
-    const [open,setOpen] = useState<boolean>(false)
+function UserEditProfile({ name }: UserEditProfileProps2) {
+    const [open, setOpen] = useState<boolean>(false)
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild>
@@ -52,8 +55,9 @@ export default UserEditProfile
 
 function EditProfile({ name, setOpen }: UserEditProfileProps) {
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [image, setImage] = useState<string | null>(null);
     const dispatch: AppDispatch = useDispatch()
+    const state = useSelector((state: RootState) => state.user)
+    const [image, setImage] = useState<string | null>(state.user?.coverImage);
 
     function handleAvatarClick() {
         if (fileInputRef.current) {
@@ -86,15 +90,16 @@ function EditProfile({ name, setOpen }: UserEditProfileProps) {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             let imageUrl
-            if (image) {
-                imageUrl = await uploadToCloudinary(image);
+            if (!state.user?.coverImage) {
+                if (image) {
+                    imageUrl = await uploadToCloudinary(image);
+                }
             }
-            console.log(imageUrl)
             let req = {
                 coverImage: imageUrl,
                 ...values
             }
-            console.log(req)
+            console.log(req,imageUrl)
             dispatch(updateUserProfile(req)).unwrap()
             setOpen(false)
         } catch (error) {
@@ -109,8 +114,8 @@ function EditProfile({ name, setOpen }: UserEditProfileProps) {
                 <div className='flex flex-col justify-center items-center relative'>
                     <div className='w-1/2 z-40 flex items-center justify-center' style={{ borderRadius: '500px' }} onClick={handleAvatarClick}>
                         {
-                            image ? (
-                                <Avatar src={image} className='bg-transparent bg-white' sx={{ width: 86, height: 86 }} />
+                            state?.user?.coverImage ? (
+                                <Avatar src={state?.user?.coverImage} className='bg-transparent bg-white' sx={{ width: 86, height: 86 }} />
                             ) : (
                                 <Avatar sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
                             )

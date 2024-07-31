@@ -12,11 +12,11 @@ export interface aboutEdit {
     resumes?: string[],
     education?: [
         {
-            image: string,
+            image?: string,
             university: string,
             course: string,
             year: { from: Date, to: Date },
-            description: string,
+            description?: string,
         },
     ],
     experiences?: [

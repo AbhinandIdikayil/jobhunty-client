@@ -5,9 +5,9 @@ import { Input } from '@/components/ui/input'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SquarePen } from 'lucide-react'
 import { useForm } from "react-hook-form"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { updateUserProfile } from 'src/redux/actions/userAction'
-import { AppDispatch } from 'src/redux/store'
+import { AppDispatch, RootState } from 'src/redux/store'
 import { z } from "zod"
 
 
@@ -40,10 +40,11 @@ export default UserAboutMeUpdate
 
 function AddDescriptionForm() {
     const dispatch: AppDispatch = useDispatch();
+    const state = useSelector((state:RootState) => state.user)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            about: ""
+            about: state.user.about || ""
         },
     })
 
