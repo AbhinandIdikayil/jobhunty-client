@@ -6,25 +6,70 @@ import UserAboutMeUpdate from './UserAboutMeUpdate';
 import { Avatar } from '@mui/material';
 import { deepOrange } from '@mui/material/colors';
 import UserEditProfile from './EditProfile';
-import { useSelector } from 'react-redux';
-import { RootState } from 'src/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/redux/store';
 import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
 import { FaAward, FaUniversity } from 'react-icons/fa'
-import { differenceInMonths, format } from 'date-fns';
 import AddExperience from './AddExperience';
+import { useRef, useState } from 'react';
+import { handleFileChange } from 'src/utils/validatePdf';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
+import { updateUserProfile } from 'src/redux/actions/userAction';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state.user);
+    const dispatch: AppDispatch = useDispatch()
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [pdf, setPdf] = useState()
+    const [pdfUrl, setPdfUrl] = useState()
+    const [modal, setModal] = useState<boolean>(false)
 
+
+    function handleClick() {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+            setModal(true)
+        }
+    }
 
     function formatDateRange(dateStr: string) {
         const date = new Date(dateStr);
 
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
+    }
+
+    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+        let image = handleFileChange(e);
+        if (image) {
+            setPdfUrl(image)
+            let url = URL.createObjectURL(image)
+            setPdf(url)
+        }
+    }
+
+    async function handleResume() {
+        try {
+            let image = await uploadToCloudinary(pdfUrl);
+            const payload = {
+                resumes: [
+                    ...state.user.resumes,
+                    image
+                ]
+            }
+            console.log(payload);
+            dispatch(updateUserProfile(payload)).unwrap();
+            setModal(false)
+        } catch (error) {
+            setModal(false)
+            console.log(error)
+        }
     }
 
     return (
@@ -46,7 +91,14 @@ function Profile() {
                                     }
                                 </div>
                                 <div className='block sm:hidden'>
-                                    <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 126, height: 126 }}>N</Avatar>
+                                    {
+                                        state?.user?.coverImage ? (
+                                            <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 126, height: 126 }} />
+
+                                        ) : (
+                                            <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
+                                        )
+                                    }
                                 </div>
                                 <div className="justify-between self-end sm:mt-6 max-w-full w-[524px] max-md:pr-5">
                                     <div className="flex gap-5 max-md:flex-col">
@@ -119,35 +171,39 @@ function Profile() {
                                         <AddExperience />
                                     </div>
                                 </div>
-                                <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-                                    <FaAward size={60} />
-                                    <div className="flex flex-col max-md:max-w-full">
-                                        <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                            <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
-                                                Growth Marketing Designer
+                                {
+                                    state?.user?.experiences?.map((data, ind) => (
+                                        <div key={ind} className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
+                                            <FaAward size={60} />
+                                            <div className="flex flex-col max-md:max-w-full">
+                                                <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
+                                                    <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
+                                                        {data?.title}
+                                                    </div>
+                                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
+                                                        <img
+                                                            loading="lazy"
+                                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/112686944eefea14f6fb1632e47edea906d7aa4c1077c5fb335d9f1e4ed5bea1?"
+                                                            className="w-5 aspect-square"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
+                                                    <div className="font-medium text-slate-800">GoDaddy</div>
+                                                    <div>Full-Time</div>
+                                                    <div>Jun 2011 - May 2019 (8y)</div>
+                                                </div>
+                                                <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
+                                                    Manchester, UK
+                                                </div>
+                                                <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
+                                                    Developed digital marketing strategies, activation plans,
+                                                    proposals, contests and promotions for client initiatives
+                                                </div>
                                             </div>
-                                            <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/112686944eefea14f6fb1632e47edea906d7aa4c1077c5fb335d9f1e4ed5bea1?"
-                                                    className="w-5 aspect-square"
-                                                />
-                                            </div>
                                         </div>
-                                        <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                            <div className="font-medium text-slate-800">GoDaddy</div>
-                                            <div>Full-Time</div>
-                                            <div>Jun 2011 - May 2019 (8y)</div>
-                                        </div>
-                                        <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
-                                            Manchester, UK
-                                        </div>
-                                        <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                            Developed digital marketing strategies, activation plans,
-                                            proposals, contests and promotions for client initiatives
-                                        </div>
-                                    </div>
-                                </div>
+                                    ))
+                                }
                                 <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
                                     <FaAward size={60} />
                                     <div className="flex flex-col max-md:max-w-full">
@@ -312,6 +368,62 @@ function Profile() {
                                         <div className="text-slate-800">English, French</div>
                                     </div>
                                 </div>
+                            </div>
+                            <div className="flex flex-col p-6 w-full mt-6 bg-white border border-gray-500 rounded max-md:px-5">
+                                <div className="flex gap-4 justify-between">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                        Add resume
+                                    </div>
+                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
+
+                                        <Plus onClick={handleClick} />
+                                        <input ref={fileInputRef} onChange={handleChange} type='file' style={{ display: 'none' }} />
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
+                                    {/* <div className=""> */}
+                                    <Accordion type="single" collapsible className="w-full">
+                                        {
+                                            state?.user?.resumes?.map((data, index) => (
+                                                <AccordionItem value={`item-${index + 1}`}>
+                                                    <AccordionTrigger>resume 1</AccordionTrigger>
+                                                    <AccordionContent>
+                                                        <iframe height={400} src={state?.user?.resumes[index]} className='w-full sm:w-auto'>
+
+                                                        </iframe>
+                                                    </AccordionContent>
+                                                </AccordionItem>
+                                            ))
+                                        }
+                                    </Accordion>
+                                    {/* </div> */}
+                                </div>
+                                <hr className='mt-1' />
+                                {
+                                    pdf && (
+                                        <>
+                                            <AlertDialog open={modal}>
+                                                <AlertDialogTrigger asChild>
+                                                </AlertDialogTrigger >
+                                                <AlertDialogContent className='max-w-fit'>
+                                                    <AlertDialogHeader>
+                                                        <iframe width="320" className='w-fit' height="360"
+                                                            // URL.createObjectURL(file)
+                                                            src={pdf}
+                                                        >
+
+                                                        </iframe>
+                                                    </AlertDialogHeader>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel onClick={() => setModal(false)} className="">Cancel</AlertDialogCancel>
+                                                        <Button type="submit" onClick={handleResume} className='ml-2 bg-indigo-700'>Submit</Button>
+                                                    </AlertDialogFooter>
+                                                </AlertDialogContent>
+                                            </AlertDialog >
+
+                                        </>
+                                    )
+                                }
                             </div>
                             <div className="flex flex-col p-6 mt-6 w-full bg-white border border-gray-500 rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
