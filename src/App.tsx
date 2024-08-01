@@ -33,6 +33,8 @@ import 'react-profile/themes/default'
 import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
+import CompanyJobListing from './components/company/CompanyJobListing'
+import SingleJobDetails from './components/user/common/SingleJobDetails'
 
 
 function App() {
@@ -46,23 +48,24 @@ function App() {
       <Routes>
 
       ////! routes for user
-        <Route path='/' element={<Navigate to='home' />} />
+      <Route path='/' element={<Navigate to='home' />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='home' element={<UserLayout />} >
           <Route index element={<Home />} />
           <Route path='jobs' element={<Jobs />} />
+          <Route path='hia' element={<SingleJobDetails />} />
           <Route path='companies' element={<CompanyList />} />
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
-          
           <Route path='jobs' element={<Jobs />} />
+          <Route path='jobs/details' element={<SingleJobDetails />} />
           <Route path='companies' element={<CompanyList />} />
           <Route path='profile' element={<Profile />} />
         </Route>
 
-
+        
 
 
         <Route path='/forgot-password' element={<ForgotPassword />} />
@@ -81,7 +84,7 @@ function App() {
             <Route path='messages' element={<h1>messages</h1>} />
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<h1>applicants</h1>} />
-            <Route path='job-list' element={<h1>job list</h1>} />
+            <Route path='job-list' element={<CompanyJobListing />} />
             <Route path='schedules' element={<h1>schedules</h1>} />
             <Route path='settings' element={<Settings />}>
               <Route path='' element={<Overview />} />

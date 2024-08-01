@@ -398,7 +398,6 @@ function Profile() {
                                     </Accordion>
                                     {/* </div> */}
                                 </div>
-                                <hr className='mt-1' />
                                 {
                                     pdf && (
                                         <>

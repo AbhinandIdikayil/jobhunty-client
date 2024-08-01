@@ -18,7 +18,7 @@ export const listSectors = createAsyncThunk(
 
 
 
-export const listCategory = createAsyncThunk<IListCategory[], any, { rejectValue: ErrorPayload }>(
+export const listCategory = createAsyncThunk<IListCategory[], null, { rejectValue: ErrorPayload }>(
     'admin/list-category',
     async (_, { rejectWithValue }) => {
         try {

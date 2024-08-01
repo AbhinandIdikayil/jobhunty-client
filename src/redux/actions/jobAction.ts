@@ -13,3 +13,15 @@ export const postJob = createAsyncThunk(
         }
     }
 )
+
+export const getAllJob = createAsyncThunk(
+    'list-job',
+    async (req,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.get('/all-job')
+            return data
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data)
+        }
+    }
+)
