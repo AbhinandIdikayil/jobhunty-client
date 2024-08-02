@@ -53,6 +53,7 @@ export interface IAddSector {
 }
 
 interface Company {
+    _id: string,
     email:  string,
     name: string,
     password: string,

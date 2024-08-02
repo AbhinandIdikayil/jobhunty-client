@@ -27,7 +27,7 @@ export type Company = {
     techStack: string[],
     website: string,
     coverImage: string,
-    approvelStatus: {
+    approvalStatus: {
         status: string;
         description: string;
     },
