@@ -29,7 +29,7 @@ function Categories() {
     const fetchCategories = async () => {
         setLoading(true)
         try {
-            let data = await dispatch(listCategory(undefined)).unwrap()
+            let data = await dispatch(listCategory(null)).unwrap()
             if (data || !data) {
                 setLoading(false)
             }

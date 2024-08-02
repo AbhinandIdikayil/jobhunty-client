@@ -8,7 +8,7 @@ export type Company = {
     password: string,
     description: string,
     contact: string,
-    officeLocations: string[],
+    locations: string[],
     joinDate: Date,
     industry: string,
     images: string[],

@@ -178,7 +178,7 @@ function Profile() {
                                             <div className="flex flex-col max-md:max-w-full">
                                                 <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
                                                     <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
-                                                        {data?.title}
+                                                        {data.title}
                                                     </div>
                                                     <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
                                                         <img

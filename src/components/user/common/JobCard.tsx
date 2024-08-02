@@ -12,7 +12,7 @@ function JobCard({data}:{data:IListJob}) {
                 />
                 <div className="flex flex-col">
                     <div className="text-xl leading-6 text-slate-800">
-                        {data?.jobTitle || ''}
+                        {data?.jobTitle || 'asdf'}
                     </div>
                     <div className="flex gap-2 justify-between py-px mt-2 text-base text-slate-500">
                         <div>Terraform</div>

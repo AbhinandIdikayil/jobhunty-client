@@ -1,5 +1,6 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
-import {  blockUser, getAllusers, listRequest, updateApproval } from "src/redux/actions/adminAction";
+import { blockUser, getAllusers, listRequest, updateApproval } from "src/redux/actions/adminAction";
+import { listAllCompanies } from "src/redux/actions/commonAction";
 import { adminReducer } from "src/types/Admin";
 
 
@@ -76,6 +77,20 @@ const adminSlice = createSlice({
             })
             .addCase(updateApproval.rejected, (state, { payload }) => {
                 state.loading = false
+                state.err = payload
+            })
+            .addCase(listAllCompanies.pending, (state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(listAllCompanies.fulfilled, (state,{payload}) => {
+                state.loading = false
+                state.err = null
+                state.companies = payload
+            })
+            .addCase(listAllCompanies.rejected, (state,{payload}) => {
+                state.loading = false
+                state.companies = []
                 state.err = payload
             })
     }

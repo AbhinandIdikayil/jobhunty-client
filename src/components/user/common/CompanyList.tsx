@@ -1,13 +1,21 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Checkbox } from '@/components/ui/checkbox'
-import React from 'react'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
+import { listAllCompanies } from 'src/redux/actions/commonAction';
+import { AppDispatch } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 
 function CompanyList() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
-    console.log(open)
+    const dispatch:AppDispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(listAllCompanies()).unwrap()
+    },[])
+
     return (
         <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-white'} px-3`}>
             <div className="flex justify-center items-center px-1 py-10 sm:py-20 bg-white max-md:px-5">
@@ -112,7 +120,7 @@ function CompanyList() {
                                                 <div className="flex gap-5 justify-between text-base text-indigo-600">
                                                     <img
                                                         loading="lazy"
-                                                        srcSet="..."
+                                                        srcSet="http://res.cloudinary.com/dghv07eag/image/upload/v1722314502/jobhunty/knqfodgopfwy9u4wveep.png"
                                                         className="shrink-0 aspect-square w-[88px]"
                                                     />
                                                     <div className="self-start px-3 py-1 bg-slate-50">
@@ -142,7 +150,7 @@ function CompanyList() {
                                                 <div className="flex gap-5 justify-between text-base text-indigo-600">
                                                     <img
                                                         loading="lazy"
-                                                        srcSet="..."
+                                                        srcSet="http://res.cloudinary.com/dghv07eag/image/upload/v1722314502/jobhunty/knqfodgopfwy9u4wveep.png"
                                                         className="shrink-0 aspect-square w-[88px]"
                                                     />
                                                     <div className="self-start px-3 py-1 bg-slate-50">
