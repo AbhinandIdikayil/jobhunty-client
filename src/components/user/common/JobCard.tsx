@@ -1,8 +1,8 @@
 import { IListJob } from "src/types/Job"
 
-function JobCard({data}:{data:IListJob}) {
+function JobCard({data , apply}:{data:IListJob,apply:(id:string) => void}) {
     return (
-        <div className="flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
+        <div className="hover:cursor-default flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
             <div className="flex gap-5 justify-between font-semibold">
                 <img
                     loading="lazy"
@@ -33,9 +33,11 @@ function JobCard({data}:{data:IListJob}) {
                 </div>
             </div>
             <div className="flex flex-col justify-between text-center">
-                <div className="px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
+                <button 
+                onClick={() => apply(data?._id)}
+                className="hover:cursor-pointer px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
                     Apply
-                </div>
+                </button>
                 <img
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/98f64b305f12c671b14db57bd5c042df5e706b2094a78a5b493aef4524773937?"

@@ -11,7 +11,7 @@ export type Company = {
     locations: string[],
     joinDate: Date,
     industry: string,
-    images: string[],
+    images: string,
     employees: String,
     benefits: {
         icon: string;

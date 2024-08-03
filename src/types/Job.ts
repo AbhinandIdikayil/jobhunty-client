@@ -5,6 +5,7 @@ export type JobReducer = {
     err: null | any,
     jobs: Job[],
     job: Job | null,
+    applicants: an[]
 }
 
 

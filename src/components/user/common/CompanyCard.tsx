@@ -6,7 +6,7 @@ function CompanyCard({data}:{data:Company}) {
             <div className="flex gap-5 justify-between text-base text-indigo-600">
                 <img
                     loading="lazy"
-                    srcSet="http://res.cloudinary.com/dghv07eag/image/upload/v1722314502/jobhunty/knqfodgopfwy9u4wveep.png"
+                    src={data?.images || ''}
                     className="shrink-0 aspect-square w-[88px]"
                 />
                 <div className="self-start px-3 py-1 bg-slate-50">
@@ -14,12 +14,13 @@ function CompanyCard({data}:{data:Company}) {
                 </div>
             </div>
             <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                Truebill
+                {data?.name}
             </div>
-            <div className="mt-4 text-lg leading-7 text-slate-600">
-                Take control of your money. Truebill develops a mobile
-                app that helps consumers take control of their
-                financial...
+            <div className="company-desc mt-4 text-lg leading-7 text-slate-600">
+                {
+                    data?.description
+                }
+                
             </div>
             <div className="self-start px-2.5 py-1.5 mt-4 text-sm font-semibold text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
                 Business

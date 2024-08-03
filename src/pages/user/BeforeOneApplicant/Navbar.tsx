@@ -10,7 +10,8 @@ function Navbar() {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
 
-
+    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmE4NjkwMjdhMzAxOTBjODRhOWUzMzYiLCJlbWFpbCI6ImFyanVuQGdtYWlsLmNvbSIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzIyNjEyMTA1LCJleHAiOjE3MjI2OTg1MDV9.f_uInX664gOP9JyMP5-R6xCT30dlAOJqSC0qvZ4G7vE
+    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmE4NjkwMjdhMzAxOTBjODRhOWUzMzYiLCJlbWFpbCI6ImFyanVuQGdtYWlsLmNvbSIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzIyNjEyMTA1LCJleHAiOjE3MjI2OTg1MDV9.f_uInX664gOP9JyMP5-R6xCT30dlAOJqSC0qvZ4G7vE
     useEffect(() => {
         dispatch(getUser()).unwrap()
         // if (user.role == 'user') {

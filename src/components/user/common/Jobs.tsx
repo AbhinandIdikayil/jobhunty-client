@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -19,7 +19,8 @@ import { useOutletContext } from 'react-router-dom';
 import UserJobCard from './JobCard'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { getAllJob } from 'src/redux/actions/jobAction';
+import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -63,12 +64,31 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 function Jobs() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
-    const jobState = useSelector((state:RootState) => state.job);
+    const jobState = useSelector((state: RootState) => state.job);
+    const userState = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch()
-
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [pdf, setPdf] = useState([])
+    const [jobid, setJobId] = useState()
     useEffect(() => {
         dispatch(getAllJob()).unwrap()
     }, [])
+
+    function applyForJob(id: string) {
+        if (userState?.user.resumes.length > 1) {
+            setModalOpen(true)
+            setJobId(id)
+            setPdf(userState?.user.resumes)
+            // handleResume(pdf)
+        }
+    }
+
+    function handleResume(data: string) {
+        let userid = userState?.user._id;
+        dispatch(applyJob({ userid, jobid, resume:data })).unwrap()
+        setModalOpen(false)
+    }
+
     return (
         <>
 
@@ -269,12 +289,41 @@ function Jobs() {
                                     </div>
                                 </div>
                                 {
-                                    jobState.jobs.map((data,ind) => (
-                                        <UserJobCard key={ind} data={data} />
+                                    jobState.jobs.map((data, ind) => (
+                                        <UserJobCard key={ind} data={data} apply={applyForJob} />
                                     ))
                                 }
-                                {/* <UserJobCard /> */}
-                        
+                                <AlertDialog open={modalOpen}>
+
+                                    <AlertDialogTrigger asChild>
+                                    </AlertDialogTrigger >
+                                    <AlertDialogContent className='max-w-fit'>
+                                        <AlertDialogHeader>
+                                            <div className='flex w-72 overflow-x-scroll'>
+                                                {
+                                                    pdf.map(data => (
+                                                        <div>
+                                                            <iframe width="320" className='hover:cursor-grab w-fit' height="360"
+                                                                // URL.createObjectURL(file)
+                                                                src={data}
+                                                            >
+                                                            </iframe>
+                                                            <button className='p-2 bg-green-400' onClick={() => handleResume(data)}>
+                                                                asdfsd
+                                                            </button>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <span>select resume</span>
+                                            <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
+                                            <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog >
+
                             </div>
                         </div>
                     </div>

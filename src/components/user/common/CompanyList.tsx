@@ -115,7 +115,7 @@ function CompanyList() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='company  grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
+                                <div className='company grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
                                     {
                                         state.companies.map((data, index) => (
                                             <CompanyCard key={index} data={data} />

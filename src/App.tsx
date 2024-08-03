@@ -35,6 +35,7 @@ import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
 import CompanyJobListing from './components/company/CompanyJobListing'
 import SingleJobDetails from './components/user/common/SingleJobDetails'
+import Chat from './pages/company/Chat'
 
 
 function App() {
@@ -81,7 +82,7 @@ function App() {
           }>
             <Route path='' element={<Dashboard />} />
             <Route path='post' element={<PostJob />} />
-            <Route path='messages' element={<h1>messages</h1>} />
+            <Route path='messages' element={<Chat />} />
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<h1>applicants</h1>} />
             <Route path='job-list' element={<CompanyJobListing />} />
