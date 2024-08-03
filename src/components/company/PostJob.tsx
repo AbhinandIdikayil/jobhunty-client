@@ -1,9 +1,11 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ErrorMessage, Field, FieldArray, Form, Formik, FormikValues } from 'formik';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
-import { RootState } from 'src/redux/store';
+import { Field, FieldArray, Form, Formik, FormikValues } from 'formik';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { listCategory, listSectors } from 'src/redux/actions/commonAction';
+import { postJob } from 'src/redux/actions/jobAction';
+import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { postJobValidationSchema } from 'src/validation/company';
 
@@ -11,9 +13,14 @@ function PostJob() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state?.category);
-    const [category, setCategory] = useState<string | undefined>(undefined);
-    const [sector, setSector] = useState<string | undefined>(undefined);
-    const [requiredSkills, setRequiredSkills] = useState<string[] | undefined>(undefined)
+    const company = useSelector((state: RootState) => state?.user)
+    const dispatch: AppDispatch = useDispatch()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        dispatch(listCategory(null)).unwrap()
+        dispatch(listSectors()).unwrap()
+    }, [])
 
     let PostJobInitialValues = {
         jobTitle: '',
@@ -25,15 +32,21 @@ function PostJob() {
             to: '',
         },
         // experince: '',
-        companyId: '',
+        companyId: company?.user?._id || '',
         expiry: '',
         responsibilities: [''],
         skills: [''],
         qualification: [''],
     }
 
-    function handleSubmit(values: FormikValues) {
-        console.log(values)
+    async function handleSubmit(values: FormikValues) {
+        try {
+            console.log(values)
+            dispatch(postJob(values)).unwrap()
+            return navigate('/company/job-list')
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     return (
@@ -45,10 +58,7 @@ function PostJob() {
             >
 
                 {({ errors, setFieldValue, isSubmitting, values }) => {
-                    console.log(values)
-                    console.log(errors)
                     return (
-
                         <Form>
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
@@ -74,7 +84,7 @@ function PostJob() {
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
                                     <span className='font-bold text-xl'>Job descriptions</span>
                                     <label htmlFor="" className='font-sans'>
-                                        select single type of employment
+                                        Enter job description
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
@@ -235,7 +245,7 @@ function PostJob() {
                                                     className="font-sans bg-indigo-600  text-white font-bold px-2 mt-2"
                                                     onClick={() => push('')}
                                                 >
-                                                    Add 
+                                                    Add
                                                 </button>
                                                 {typeof errors.skills === 'string' && (
                                                     <div className="text-red-600 text-xs">
@@ -293,7 +303,7 @@ function PostJob() {
                                                     className="font-sans bg-indigo-600  text-white font-bold px-2 mt-2"
                                                     onClick={() => push('')}
                                                 >
-                                                    Add 
+                                                    Add
                                                 </button>
                                                 {typeof errors.responsibilities === 'string' && (
                                                     <div className="text-red-600 text-xs">
@@ -351,7 +361,7 @@ function PostJob() {
                                                         className="font-sans bg-indigo-600  text-white font-bold px-2 mt-2"
                                                         onClick={() => push('')}
                                                     >
-                                                        Add 
+                                                        Add
                                                     </button>
                                                     {typeof errors.qualification === 'string' && (
                                                         <div className="text-red-600 text-xs">
@@ -374,7 +384,7 @@ function PostJob() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <Field type="date" name='expiry' className='w-full sm:w-auto  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' /> <br />
+                                    <Field type="date" min='2024-07-31' name='expiry' className='w-full sm:w-auto  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' /> <br />
                                     <span className='text-red-600 text-xs'>   {
                                         errors?.expiry && (
                                             errors?.expiry

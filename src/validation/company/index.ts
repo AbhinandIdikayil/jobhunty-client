@@ -96,8 +96,8 @@ export const postJobValidationSchema = Yup.object().shape({
     //     .number()
     //     .required('Experience is required')
     //     .min(0, 'Experience must be at least 0'),
-    companyId: Yup
-        .string(),
+    // companyId: Yup
+    //     .string(),
     expiry: Yup
         .date()
         .required('Expiry date is required')

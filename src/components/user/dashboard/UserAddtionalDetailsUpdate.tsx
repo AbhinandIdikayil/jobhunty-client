@@ -9,9 +9,9 @@ import { z } from "zod"
 
 
 const formSchema = z.object({
-    email: z.string().email({ message: 'Invalid email' }),
+    // email: z.string().email({ message: 'Invalid email' }),
     phone: z.string().regex(/^\d+$/, { message: 'Invalid phone number' }),
-    language: z.string({ required_error: 'Language is required' }),
+    // language: z.string({ required_error: 'Language is required' }),
 })
 
 
@@ -59,18 +59,12 @@ function AdditionalDetailsForm() {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="email"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Email
-                                <span className="text-red-600">
-
-                                    {/* {
-                                        state.err && '(' + state.err + ')'
-                                    } */}
-                                </span>
                             </FormLabel>
                             <FormControl>
                                 <Input placeholder="shadcn" {...field} />
@@ -78,7 +72,7 @@ function AdditionalDetailsForm() {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <FormField
                     control={form.control}
                     name="phone"
@@ -99,18 +93,12 @@ function AdditionalDetailsForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="language"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Language
-                                <span className="text-red-600">
-
-                                    {/* {
-                                        state.err && '(' + state.err + ')'
-                                    } */}
-                                </span>
                             </FormLabel>
                             <FormControl>
                                 <Input placeholder="shadcn" {...field} />
@@ -118,7 +106,7 @@ function AdditionalDetailsForm() {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <AlertDialogCancel className="">Cancel</AlertDialogCancel>
                 {/* <AlertDialogAction> */}
                 <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>

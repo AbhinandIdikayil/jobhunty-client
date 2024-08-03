@@ -4,81 +4,84 @@ import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
+import { format } from 'date-fns'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useOutletContext } from 'react-router-dom'
-import { deleteCategory, listCategory } from 'src/redux/actions/commonAction'
+import { useOutletContext } from 'react-router-dom'
+import { getAllJob } from 'src/redux/actions/jobAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes'
-import { ICategory } from 'src/types/category'
+import { IListJob } from 'src/types/Job'
 
+function CompanyJobListing() {
 
-
-
-
-function Categories() {
-
-    const state = useSelector((state: RootState) => state?.category)
     const context = useOutletContext<prop>() || {};
-    const navigate = useNavigate()
     const { open } = context;
-    const dispatch: AppDispatch = useDispatch();
-    const [loading, setLoading] = useState<boolean>(false)
+    const jobState = useSelector((state: RootState) => state?.job)
+    const dispatch: AppDispatch = useDispatch()
 
-    const fetchCategories = async () => {
-        setLoading(true)
-        try {
-            let data = await dispatch(listCategory(null)).unwrap()
-            if (data || !data) {
-                setLoading(false)
-            }
-        } catch (error) {
-            setLoading(false)
-            console.log(error)
-        }
+    function handleRemove(id: string) {
+
     }
+    useEffect(() => {
+        dispatch(getAllJob()).unwrap()
+    }, [])
 
-    async function handleRemove(id: string) {
-        setLoading(true)
-        try {
-            dispatch(deleteCategory({ id })).unwrap()
-            await fetchCategories()
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const columns: ColumnDef<ICategory>[] = [
+    const columns: ColumnDef<IListJob>[] = [
         {
-            accessorKey: 'image',
-            header: () => <div>Image</div>,
+            id: 'jobTitle',
+            accessorKey: 'jobTitle',
+            header: () => <div>Role</div>,
             cell: ({ row }) => {
-                return <div className='w-16 h-16'> <img src={row.original.image} className='rounded-full' alt="" /> </div>
-            }
-        },
-        {
-            id: 'name',
-            accessorKey: 'name',
-            header: () => <div className="text-left">Name</div>,
-            cell: ({ row }) => {
-                return <div>{row.original.name}</div>
-            }
-        },
-        {
-            id: 'description',
-            accessorKey: 'description',
-            header: () => <div className="text-left">Email</div>,
-            cell: ({ row }) => {
-                return <div>{row.original.description}</div>
+                return <div className='text-left capitalize'> {row?.original?.jobTitle}  </div>
             }
         },
         {
             id: 'status',
-            accessorKey: 'status',
-            header: () => <div className="text-left">deleted</div>,
+            accessorKey: 'expiry',
+            header: () => <div className="text-left">status</div>,
             cell: ({ row }) => {
-                return <div>{row.original.status ? "true" : "false"}</div>
+                let date = new Date(row.original.expiry)
+                let now = new Date()
+                let status = date > now ? true : false;
+                return <span className={`border border-solid px-2 py-1 rounded-full ${status ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{status ? 'Live' : 'Closed'}</span>
+            }
+        },
+        {
+            id: 'expriry',
+            accessorKey: `expiry`,
+            header: () => <div className="text-left">due date</div>,
+            cell: ({ row }) => {
+                const givenDate = new Date(row.original.expiry);
+                const formattedDate = format(givenDate, 'dd-MMM-yy');
+                return <div>{formattedDate}</div>
+            }
+        },
+        {
+            id: 'createdAt',
+            accessorKey: `createdAt`,
+            header: () => <div className="text-left">Date posted</div>,
+            cell: ({ row }) => {
+                const givenDate = new Date(row.original.createdAt);
+                const formattedDate = format(givenDate, 'dd-MMM-yy');
+                return <div>{formattedDate}</div>
+            }
+        },
+        {
+            id: 'name',
+            accessorKey: `category`,
+            header: () => <div className="text-left">category</div>,
+            cell: ({ row }) => {
+                return <div className='capitalize'>{row.original?.category?.name}</div>
+            }
+        },
+        {
+            id: 'status',
+            accessorKey: 'employment',
+            header: () => <div className="text-left">job type</div>,
+            cell: ({ row }) => {
+                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original.employment?.name}</span>
             }
         },
         {
@@ -129,17 +132,6 @@ function Categories() {
                                       border
                                       font-bold
                                       '
-                                onClick={() => navigate(
-                                    '/admin/home/update',
-                                    {
-                                        state: {
-                                            _id: row.original._id,
-                                            name: row.original.name,
-                                            description: row.original.description,
-                                            image: row.original.image
-                                        }
-                                    }
-                                )}
                             >
                                 Edit
                             </DropdownMenuItem>
@@ -152,7 +144,7 @@ function Categories() {
     ]
 
     const table = useReactTable({
-        data: state?.category ?? [],
+        data: jobState?.jobs,
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -160,19 +152,15 @@ function Categories() {
         getFilteredRowModel: getFilteredRowModel(),
     });
 
-    useEffect(() => {
-        fetchCategories()
-    }, [])
-
     return (
-        <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
+        <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
             <div className="w-full">
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Filter emails..."
-                        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                        value={(table.getColumn("jobTitle")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("name")?.setFilterValue(event.target.value)
+                            table.getColumn("jobTitle")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />
@@ -255,7 +243,7 @@ function Categories() {
                 </div>
             </div>
             <Backdrop
-                open={loading}
+                open={false}
                 sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
             >
                 <CircularProgress color="inherit" />
@@ -264,4 +252,4 @@ function Categories() {
     )
 }
 
-export default Categories
+export default CompanyJobListing

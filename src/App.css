@@ -1,18 +1,74 @@
 .sidebar-link.active {
-    color: blue;
+  color: blue;
 }
 
 .sidebar-link.active>div>div>span {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 
 .settings.active {
-    color: blue;
-    text-decoration: underline;
+  color: blue;
+  text-decoration: underline;
 }
 
 [data-slot="helper-wrapper"] {
-    color: red;
-    font-size: 0.75rem;
-    display: flex !important;
+  color: red;
+  font-size: 0.75rem;
+  display: flex !important;
 }
+
+.company-card {
+  height: 370px;
+  /* Set the fixed height */
+  overflow: hidden;
+}
+
+.company-desc {
+  height: 90px;
+  overflow: hidden;
+  /* Hide overflow text */
+  text-overflow: ellipsis;
+  /* Add ellipsis (...) */
+  display: -webkit-box;
+  /* Needed for WebKit browsers */
+  -webkit-line-clamp: 3;
+  /* Number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.chat::-webkit-scrollbar {
+  width: 1px;
+  height: 10px;
+}
+
+/* Define the thumb style */
+.chat::-webkit-scrollbar-thumb {
+  background: #000000;
+  /* #4d7fff */
+  border-radius: 5px;
+}
+
+/* Define the track style */
+.chat::-webkit-scrollbar-track {
+  background-color: #ddd;
+  border: 5px solid #ccc;
+  border-radius: 10px;
+}
+
+/* Define the button style */
+.chat::-webkit-scrollbar-button {
+  /* background-color: #4d7fff; */
+  border-radius: 5px;
+}
+
+/* Define the button style when being hovered over */
+.chat::-webkit-scrollbar-button:hover {
+  background-color: #999999;
+}
+
+.list-chat {
+  align-self: flex-end;
+  border-radius: 0.5rem;
+  border-bottom-right-radius: 0;
+}
+

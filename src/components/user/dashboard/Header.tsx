@@ -2,15 +2,32 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useEffect } from 'react'
 import { HiMenuAlt3 } from 'react-icons/hi'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { getUser } from 'src/redux/actions/userAction'
+import { AppDispatch } from 'src/redux/store'
 
 interface props {
     func: () => void,
     open: boolean
 }
 
-function Header({func, open}:props) {
+function Header({ func, open }: props) {
+    const dispatch: AppDispatch = useDispatch()
+
+
+
+    useEffect(() => {
+        dispatch(getUser()).unwrap()
+        // if (user.role == 'user') {
+        //     return navigate('/home')
+        // } else if (user.role == 'company') {
+        //     return navigate('/company')
+        // }
+    }, [])
+
     return (
         <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
             <div className="flex gap-4 whitespace-nowrap">
@@ -19,7 +36,7 @@ function Header({func, open}:props) {
                 </div>
                 <div className="flex flex-col justify-center items-center">
                     <div className="flex gap-2">
-                    <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
+                        <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
                             Dashboard
                         </div>
                         {/* <DropDown /> */}

@@ -8,10 +8,10 @@ export type Company = {
     password: string,
     description: string,
     contact: string,
-    officeLocations: string[],
+    locations: string[],
     joinDate: Date,
     industry: string,
-    images: string[],
+    images: string,
     employees: String,
     benefits: {
         icon: string;
@@ -27,7 +27,7 @@ export type Company = {
     techStack: string[],
     website: string,
     coverImage: string,
-    approvelStatus: {
+    approvalStatus: {
         status: string;
         description: string;
     },

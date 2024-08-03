@@ -1,13 +1,23 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Checkbox } from '@/components/ui/checkbox'
-import React from 'react'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
+import { listAllCompanies } from 'src/redux/actions/commonAction';
+import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
+import CompanyCard from './CompanyCard';
 
 function CompanyList() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
-    console.log(open)
+    const dispatch: AppDispatch = useDispatch()
+    const state = useSelector((state: RootState) => state.admin)
+
+    useEffect(() => {
+        dispatch(listAllCompanies()).unwrap()
+    }, [])
+
     return (
         <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-white'} px-3`}>
             <div className="flex justify-center items-center px-1 py-10 sm:py-20 bg-white max-md:px-5">
@@ -105,262 +115,12 @@ function CompanyList() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mt-8 max-md:max-w-full">
-                                    <div className="flex gap-5 max-md:flex-col">
-                                        <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Stripe
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Stripe is a software platform for starting and running
-                                                    internet businesses. Millions of businesses rely on
-                                                    Stripe’s software tools...
-                                                </div>
-                                                <div className="flex gap-4 mt-4 text-sm font-semibold">
-                                                    <div className="px-2.5 py-1.5 text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
-                                                        Business
-                                                    </div>
-                                                    <div className="px-2.5 py-1.5 text-indigo-600 bg-indigo-600 bg-opacity-10 rounded-[80px]">
-                                                        Payment gateway
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Truebill
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Take control of your money. Truebill develops a mobile
-                                                    app that helps consumers take control of their
-                                                    financial...
-                                                </div>
-                                                <div className="self-start px-2.5 py-1.5 mt-4 text-sm font-semibold text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
-                                                    Business
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mt-8 max-md:max-w-full">
-                                    <div className="flex gap-5 max-md:flex-col">
-                                        <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Square
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Square builds common business tools in unconventional
-                                                    ways so more people can start, run, and grow their
-                                                    businesses.
-                                                </div>
-                                                <div className="flex gap-4 self-start mt-4 text-sm font-semibold whitespace-nowrap">
-                                                    <div className="px-2.5 py-1.5 text-emerald-300 border border-emerald-300 border-solid rounded-[80px]">
-                                                        Business
-                                                    </div>
-                                                    <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                        Blockchain
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Coinbase
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Coinbase is a digital currency wallet and platform where
-                                                    merchants and consumers can transact with new digital
-                                                    currencies.
-                                                </div>
-                                                <div className="flex gap-4 self-start mt-4 text-sm font-semibold whitespace-nowrap">
-                                                    <div className="px-2.5 py-1.5 text-emerald-300 border border-emerald-300 border-solid rounded-[80px]">
-                                                        Business
-                                                    </div>
-                                                    <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                        Blockchain
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mt-8 max-md:max-w-full">
-                                    <div className="flex gap-5 max-md:flex-col">
-                                        <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Robinhood
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Robinhood is lowering barriers, removing fees, and
-                                                    providing greater access to financial information.
-                                                </div>
-                                                <div className="self-start px-2.5 py-1.5 mt-4 text-sm font-semibold text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
-                                                    Business
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Kraken
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Based in San Francisco, Kraken is the world’s largest
-                                                    global bitcoin exchange in euro volume and liquidity.
-                                                </div>
-                                                <div className="flex gap-4 self-start mt-4 text-sm font-semibold whitespace-nowrap">
-                                                    <div className="px-2.5 py-1.5 text-emerald-300 border border-emerald-300 border-solid rounded-[80px]">
-                                                        Business
-                                                    </div>
-                                                    <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                        Blockchain
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mt-8 max-md:max-w-full">
-                                    <div className="flex gap-5 max-md:flex-col">
-                                        <div className="flex flex-col w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Revolut
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    When Revolut was founded in 2015, we had a vision to
-                                                    build a sustainable, digital alternative to traditional
-                                                    big banks.
-                                                </div>
-                                                <div className="self-start px-2.5 py-1.5 mt-4 text-sm font-semibold text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
-                                                    Business
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col ml-5 w-6/12 max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col grow p-6 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 max-md:max-w-full">
-                                                <div className="flex gap-5 justify-between text-base text-indigo-600">
-                                                    <img
-                                                        loading="lazy"
-                                                        srcSet="..."
-                                                        className="shrink-0 aspect-square w-[88px]"
-                                                    />
-                                                    <div className="self-start px-3 py-1 bg-slate-50">
-                                                        7 Jobs
-                                                    </div>
-                                                </div>
-                                                <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                                                    Divvy
-                                                </div>
-                                                <div className="mt-4 text-lg leading-7 text-slate-600">
-                                                    Divvy is a secure financial platform for businesses to
-                                                    manage payments and subscriptions.
-                                                </div>
-                                                <div className="flex gap-4 self-start mt-4 text-sm font-semibold whitespace-nowrap">
-                                                    <div className="px-2.5 py-1.5 text-emerald-300 border border-emerald-300 border-solid rounded-[80px]">
-                                                        Business
-                                                    </div>
-                                                    <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                        Blockchain
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-5 justify-center items-center self-center mt-8 text-base leading-6 whitespace-nowrap text-slate-500">
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/130f749b4940af607695a5066fca8241730a9817e416703e7222a696d8c88d48?"
-                                        className="shrink-0 self-stretch my-auto w-6 aspect-square"
-                                    />
-                                    <div className="self-stretch my-auto text-center">1</div>
-                                    <div className="self-stretch px-4 py-2 font-semibold text-white bg-indigo-600 rounded leading-[150%]">
-                                        2
-                                    </div>
-                                    <div className="self-stretch my-auto">3</div>
-                                    <div className="self-stretch my-auto">•••</div>
-                                    <div className="self-stretch my-auto">10</div>
-                                    <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/f46bb1d92b4d4a05204ccc69aefad5c987fabde5ba80547269dd589c2b511126?"
-                                        className="shrink-0 self-stretch my-auto w-6 aspect-square"
-                                    />
+                                <div className='company grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
+                                    {
+                                        state.companies.map((data, index) => (
+                                            <CompanyCard key={index} data={data} />
+                                        ))
+                                    }
                                 </div>
                             </div>
                         </div>

@@ -39,7 +39,7 @@ export function ForgotPSConfirm({ setOtpPage }: func) {
 
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="link" className="text-red-600">Forgot password?</Button >
+        <Button variant="link" className="text-gray-700">Forgot password?</Button >
       </AlertDialogTrigger >
       <AlertDialogContent>
         <AlertDialogHeader>

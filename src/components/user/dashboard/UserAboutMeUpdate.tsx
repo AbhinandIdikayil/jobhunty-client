@@ -5,11 +5,14 @@ import { Input } from '@/components/ui/input'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SquarePen } from 'lucide-react'
 import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUserProfile } from 'src/redux/actions/userAction'
+import { AppDispatch, RootState } from 'src/redux/store'
 import { z } from "zod"
 
 
 const formSchema = z.object({
-    description: z.string().min(20,{ message: 'Atleast 20 character' }),
+    about: z.string().min(20, { message: 'Atleast 20 character' }),
 })
 
 function UserAboutMeUpdate() {
@@ -35,17 +38,22 @@ function UserAboutMeUpdate() {
 
 export default UserAboutMeUpdate
 
-function AddDescriptionForm () {
-
+function AddDescriptionForm() {
+    const dispatch: AppDispatch = useDispatch();
+    const state = useSelector((state:RootState) => state.user)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            description:""
+            about: state.user.about || ""
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+        try {
+            await dispatch(updateUserProfile(values)).unwrap()
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
@@ -53,7 +61,7 @@ function AddDescriptionForm () {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
                 <FormField
                     control={form.control}
-                    name="description"
+                    name="about"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Description
@@ -71,7 +79,7 @@ function AddDescriptionForm () {
                         </FormItem>
                     )}
                 />
-            
+
                 <AlertDialogCancel className="">Cancel</AlertDialogCancel>
                 {/* <AlertDialogAction> */}
                 <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>

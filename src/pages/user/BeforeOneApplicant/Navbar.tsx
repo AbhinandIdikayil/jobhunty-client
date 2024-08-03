@@ -10,12 +10,14 @@ function Navbar() {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
 
-
+    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmE4NjkwMjdhMzAxOTBjODRhOWUzMzYiLCJlbWFpbCI6ImFyanVuQGdtYWlsLmNvbSIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzIyNjEyMTA1LCJleHAiOjE3MjI2OTg1MDV9.f_uInX664gOP9JyMP5-R6xCT30dlAOJqSC0qvZ4G7vE
+    // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmE4NjkwMjdhMzAxOTBjODRhOWUzMzYiLCJlbWFpbCI6ImFyanVuQGdtYWlsLmNvbSIsInJvbGUiOiJjb21wYW55IiwiaWF0IjoxNzIyNjEyMTA1LCJleHAiOjE3MjI2OTg1MDV9.f_uInX664gOP9JyMP5-R6xCT30dlAOJqSC0qvZ4G7vE
     useEffect(() => {
         dispatch(getUser()).unwrap()
-        if (user.role == 'user') {
-            return navigate('/home')
-        } else if (user.role == 'company') {
+        // if (user.role == 'user') {
+        //     return navigate('/home')
+        // } 
+         if (user.role == 'company') {
             return navigate('/company')
         }
     }, [])
@@ -62,7 +64,6 @@ function Navbar() {
                             </>
                         ) : (
                             <>
-                                <NavLink to='/Dashboard' className="my-auto text-indigo-600">Dashboard</NavLink>
                                 <NavLink to='/login' className="my-auto text-indigo-600">Login</NavLink>
                                 <NavLink to='/signup' className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">
                                     Sign Up

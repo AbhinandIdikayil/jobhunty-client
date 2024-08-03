@@ -1,14 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AXIOS_INSTANCE_JOB } from "src/constants/axiosInstance";
-import { AddCategory, IAddSector, ICategories, IListCategory } from "src/types/Admin";
+import { AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_JOB } from "src/constants/axiosInstance";
+import { AddCategory, IAddSector, IListCategory } from "src/types/Admin";
 import { ErrorPayload } from "src/types/AllTypes";
+import { ICategory } from "src/types/category";
 
 
 export const listSectors = createAsyncThunk(
     '/sector-list',
-    async (req, {rejectWithValue}) => {
+    async (_, {rejectWithValue}) => {
         try {
-            const {data} = await AXIOS_INSTANCE_JOB.get('/sector')
+            const {data} = await AXIOS_INSTANCE_COMPANY.get('/sector')
+            console.log(data)
             return data
         } catch (error) {
             throw rejectWithValue(error)
@@ -18,9 +20,9 @@ export const listSectors = createAsyncThunk(
 
 
 
-export const listCategory = createAsyncThunk<IListCategory[], any, { rejectValue: ErrorPayload }>(
+export const listCategory = createAsyncThunk<IListCategory[], null, { rejectValue: ErrorPayload }>(
     'admin/list-category',
-    async (_, { rejectWithValue }) => {
+    async (req, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.get('/category')
             return data
@@ -45,7 +47,7 @@ export const addCategory = createAsyncThunk(
 
 export const updateCategory = createAsyncThunk(
     'admin/update-category',
-    async (req: ICategories, { rejectWithValue }) => {
+    async (req: ICategory, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.put('/update-category', { data: req });
             return data;
@@ -74,6 +76,18 @@ export const addSector = createAsyncThunk(
         try {
             const {data} = await AXIOS_INSTANCE_JOB.post('/add-sector',{data:req})
             return data;
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+export const listAllCompanies = createAsyncThunk(
+    '/list-companies',
+    async (_,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_COMPANY.get('/all-company')
+            return data
         } catch (error) {
             return rejectWithValue(error)
         }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -17,6 +17,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { prop } from 'src/types/AllTypes';
 import { useOutletContext } from 'react-router-dom';
 import UserJobCard from './JobCard'
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/redux/store';
+import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -60,14 +64,37 @@ const BootstrapInput = styled(InputBase)(({ theme }) => ({
 function Jobs() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
+    const jobState = useSelector((state: RootState) => state.job);
+    const userState = useSelector((state: RootState) => state.user)
+    const dispatch: AppDispatch = useDispatch()
+    const [modalOpen, setModalOpen] = useState<boolean>(false)
+    const [pdf, setPdf] = useState([])
+    const [jobid, setJobId] = useState()
+    useEffect(() => {
+        dispatch(getAllJob()).unwrap()
+    }, [])
+
+    function applyForJob(id: string) {
+        if (userState?.user.resumes.length > 1) {
+            setModalOpen(true)
+            setJobId(id)
+            setPdf(userState?.user.resumes)
+            // handleResume(pdf)
+        }
+    }
+
+    function handleResume(data: string) {
+        let userid = userState?.user._id;
+        dispatch(applyJob({ userid, jobid, resume:data })).unwrap()
+        setModalOpen(false)
+    }
+
     return (
         <>
 
-            {/* // <div className="flex flex-col justify-center self-stretch"> */}
-            {/* <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}> */}
-            <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
-                    <div className={`hidden sm:flex gap-4 mt-16 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:mt-10 max-md:text-4xl`}>
+                    <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
                         <div className="self-start text-slate-800 max-md:text-4xl">
                             Find your
                         </div>
@@ -84,7 +111,7 @@ function Jobs() {
                         Find your next career at companies like HubSpot, Nike, and Dropbox
                     </div>
                 </div>
-                <div className="p-6 mt-10 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
+                <div className="p-6 mt-5 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
@@ -119,32 +146,20 @@ function Jobs() {
                 </div>
             </div>
             {/* // </div> */}
-            <div className="flex justify-center items-center self-stretch px-16 py-10 bg-white max-md:px-5">
+            <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
                 <div className="w-full max-w-[1193px] max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10">
-
-
                                 <Accordion type="multiple" className="w-full">
-
                                     <AccordionItem value="item-1">
-                                        <AccordionTrigger>Types Of Employment</AccordionTrigger>
+                                        <AccordionTrigger className='text-sm text-black'>Types Of Employment</AccordionTrigger>
                                         <AccordionContent>
                                             <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                                                 <Checkbox id="terms2" />
                                                 <label
                                                     htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    Accept terms and conditions
-                                                </label>
-                                            </div>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                    className="text-xs text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                                 >
                                                     Internship
                                                 </label>
@@ -153,7 +168,7 @@ function Jobs() {
                                                 <Checkbox id="terms2" />
                                                 <label
                                                     htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                    className="text-xs text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                                 >
                                                     Contract
                                                 </label>
@@ -161,7 +176,7 @@ function Jobs() {
                                         </AccordionContent>
                                     </AccordionItem>
 
-                                    <AccordionItem value="item-2">
+                                    <AccordionItem className='text-sm text-black' value="item-2">
                                         <AccordionTrigger>Categories</AccordionTrigger>
                                         <AccordionContent>
                                             <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
@@ -185,7 +200,7 @@ function Jobs() {
                                         </AccordionContent>
                                     </AccordionItem>
 
-                                    <AccordionItem value="item-3">
+                                    <AccordionItem className='text-sm text-black' value="item-3">
                                         <AccordionTrigger>Job Level</AccordionTrigger>
                                         <AccordionContent>
                                             <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
@@ -209,7 +224,7 @@ function Jobs() {
                                         </AccordionContent>
                                     </AccordionItem>
 
-                                    <AccordionItem value="item-4">
+                                    <AccordionItem className='text-sm text-black' value="item-4">
                                         <AccordionTrigger>Salary Range</AccordionTrigger>
                                         <AccordionContent>
                                             <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
@@ -273,101 +288,42 @@ function Jobs() {
                                         </div>
                                     </div>
                                 </div>
-                                <UserJobCard />
-                                <UserJobCard />
-                               
-                                <div className="flex gap-5 justify-between p-6 mt-4 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                    <div className="flex gap-5 justify-between font-semibold">
-                                        <img
-                                            loading="lazy"
-                                            srcSet="..."
-                                            className="shrink-0 self-start w-16 aspect-square"
-                                        />
-                                        <div className="flex flex-col">
-                                            <div className="text-xl leading-6 text-slate-800">
-                                                Product Designer
+                                {
+                                    jobState.jobs.map((data, ind) => (
+                                        <UserJobCard key={ind} data={data} apply={applyForJob} />
+                                    ))
+                                }
+                                <AlertDialog open={modalOpen}>
+
+                                    <AlertDialogTrigger asChild>
+                                    </AlertDialogTrigger >
+                                    <AlertDialogContent className='max-w-fit'>
+                                        <AlertDialogHeader>
+                                            <div className='flex w-72 overflow-x-scroll'>
+                                                {
+                                                    pdf.map(data => (
+                                                        <div>
+                                                            <iframe width="320" className='hover:cursor-grab w-fit' height="360"
+                                                                // URL.createObjectURL(file)
+                                                                src={data}
+                                                            >
+                                                            </iframe>
+                                                            <button className='p-2 bg-green-400' onClick={() => handleResume(data)}>
+                                                                asdfsd
+                                                            </button>
+                                                        </div>
+                                                    ))
+                                                }
                                             </div>
-                                            <div className="flex gap-2 justify-between py-px mt-2 text-base text-slate-500">
-                                                <div>ClassPass</div>
-                                                <div>Berlin, Germany</div>
-                                            </div>
-                                            <div className="flex gap-2 mt-2 text-sm whitespace-nowrap">
-                                                <div className="px-2.5 py-1.5 text-emerald-300 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                                                    Full-Time
-                                                </div>
-                                                <div className="shrink-0 w-px bg-zinc-200 h-[34px]" />
-                                                <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                    Marketing
-                                                </div>
-                                                <div className="px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                                                    Design
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col justify-between text-center">
-                                        <div className="px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
-                                            Apply
-                                        </div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3323d71f02121e6bb3c2e07b5abed2b1bab5b12b6360582b910b4105aecbef80?"
-                                            className="self-center mt-4 aspect-[25] w-[164px]"
-                                        />
-                                        <div className="mt-2 text-sm text-slate-500">
-                                            <span className="font-semibold text-slate-800">
-                                                5 applied
-                                            </span>{" "}
-                                            <span className="text-slate-500">of 10 capacity</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-5 justify-between p-6 mt-4 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                    <div className="flex gap-5 justify-between font-semibold">
-                                        <img
-                                            loading="lazy"
-                                            srcSet="..."
-                                            className="shrink-0 self-start w-16 aspect-square"
-                                        />
-                                        <div className="flex flex-col">
-                                            <div className="text-xl leading-6 text-slate-800">
-                                                Customer Manager
-                                            </div>
-                                            <div className="flex gap-2 justify-between py-px mt-2 text-base text-slate-500">
-                                                <div>Pitch</div>
-                                                <div>Berlin, Germany</div>
-                                            </div>
-                                            <div className="flex gap-2 mt-2 text-sm whitespace-nowrap">
-                                                <div className="px-2.5 py-1.5 text-emerald-300 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                                                    Full-Time
-                                                </div>
-                                                <div className="shrink-0 w-px bg-zinc-200 h-[34px]" />
-                                                <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                                                    Marketing
-                                                </div>
-                                                <div className="px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                                                    Design
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col justify-between text-center">
-                                        <div className="px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
-                                            Apply
-                                        </div>
-                                        <img
-                                            loading="lazy"
-                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/3323d71f02121e6bb3c2e07b5abed2b1bab5b12b6360582b910b4105aecbef80?"
-                                            className="self-center mt-4 aspect-[25] w-[164px]"
-                                        />
-                                        <div className="mt-2 text-sm text-slate-500">
-                                            <span className="font-semibold text-slate-800">
-                                                5 applied
-                                            </span>{" "}
-                                            <span className="text-slate-500">of 10 capacity</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <span>select resume</span>
+                                            <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
+                                            <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog >
+
                             </div>
                         </div>
                     </div>

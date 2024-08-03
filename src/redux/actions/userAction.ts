@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IVerifyEmail, Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
 import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_USER } from "../../constants/axiosInstance";
 import { AxiosError } from "axios";
+import { aboutEdit } from "src/types/profile";
 
 // interface SignupRequest {
 //   name: string,
@@ -132,10 +133,22 @@ export const getUser = createAsyncThunk(
       const { data } = await AXIOS_INSTANCE_USER.get('/user')
       return data
     } catch (error) {
-      if(error instanceof AxiosError ){
+      if (error instanceof AxiosError) {
         console.log(error.response)
       }
       return rejectWithValue('hai')
+    }
+  }
+)
+
+export const updateUserProfile = createAsyncThunk(
+  'user/update-profile',
+  async (req:aboutEdit, { rejectWithValue }) => {
+    try {
+      const {data} = await AXIOS_INSTANCE_USER.post('/update-profile',req);
+      return data
+    } catch (error) {
+      return rejectWithValue(error)
     }
   }
 )

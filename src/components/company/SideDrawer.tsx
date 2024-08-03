@@ -52,7 +52,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 interface props {
   handleDrawerOpen: () => void,
   handleDrawerClose: () => void,
-  navLinks: [],
+  navLinks: string[],
   open: boolean
 }
 

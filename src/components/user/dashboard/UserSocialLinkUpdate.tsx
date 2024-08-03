@@ -4,28 +4,37 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SquarePen } from 'lucide-react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUserProfile } from 'src/redux/actions/userAction'
+import { AppDispatch, RootState } from 'src/redux/store'
 import { z } from "zod"
 
 const formSchema = z.object({
-    instagram: z.string().startsWith('https://www.instagram.com', { message: 'invalid url' }),
-    twitter: z.string().startsWith('https://www.twitter.com', { message: 'invalid url' }),
-    webisite: z.string().startsWith('https://www.', { message: 'invalid url' }),
+    instagram: z.string().startsWith('https://www.instagram.com', { message: 'start with https://www.instagram.com' }).optional(),
+    twitter: z.string().startsWith('https://www.twitter.com', { message: 'start with https://www.twitter.com' }).optional(),
+    personalsite: z.string().startsWith('https://www.', { message: 'start with https://www.' }).optional(),
+    linkedin: z.string().startsWith('https://www.linkedin.com', { message: 'start with https://www.linkedin.com' }),
 })
 
+interface func {
+    setOpen: Dispatch<SetStateAction<boolean>>
+}
 
 function UserSocialLinkUpdate() {
+    const [open,setOpen] = useState<boolean>(false)
     return (
-        <AlertDialog>
+        <AlertDialog open={open}>
             <AlertDialogTrigger asChild>
-                <SquarePen />
+                <SquarePen onClick={() => setOpen(true)} />
             </AlertDialogTrigger >
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Social links </AlertDialogTitle>
 
                     {/* ////! Here is the form component that is under this component */}
-                    <SocialLinkForm />
+                    <SocialLinkForm setOpen={setOpen} />
 
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -38,19 +47,30 @@ function UserSocialLinkUpdate() {
 export default UserSocialLinkUpdate
 
 
-export function SocialLinkForm() {
 
+export function SocialLinkForm({setOpen}:func) {
+
+    const dispatch: AppDispatch = useDispatch();
+    const state = useSelector((state: RootState) => state?.user);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            instagram: "",
-            twitter: "",
-            webisite: "",
+            instagram: state?.user?.socialLink?.[0] || "",
+            twitter: state?.user?.socialLink?.[1] || "",
+            linkedin: state?.user?.socialLink?.[2] || "",
+            personalsite: state?.user?.personalSite || "",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+        try {
+            console.log(values)
+            await dispatch(updateUserProfile(values)).unwrap()
+            setOpen(false);
+        } catch (error) {
+            setOpen(false);
+            console.log(error)
+        }
     }
 
     return (
@@ -70,7 +90,7 @@ export function SocialLinkForm() {
                                 </span>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="https://www.instagram.com" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -90,7 +110,7 @@ export function SocialLinkForm() {
                                 </span>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="https://www.twitter.com" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -98,7 +118,7 @@ export function SocialLinkForm() {
                 />
                 <FormField
                     control={form.control}
-                    name="webisite"
+                    name="personalsite"
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Website
@@ -110,13 +130,33 @@ export function SocialLinkForm() {
                                 </span>
                             </FormLabel>
                             <FormControl>
-                                <Input placeholder="shadcn" {...field} />
+                                <Input placeholder="https://www.webiste.com" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
-                <AlertDialogCancel className="">Cancel</AlertDialogCancel>
+                <FormField
+                    control={form.control}
+                    name="linkedin"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>linkedin
+                                <span className="text-red-600">
+
+                                    {/* {
+                                        state.err && '(' + state.err + ')'
+                                    } */}
+                                </span>
+                            </FormLabel>
+                            <FormControl>
+                                <Input placeholder="https://www.linkedin.com" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <AlertDialogCancel onClick={() => setOpen(false)}  className="">Cancel</AlertDialogCancel>
                 {/* <AlertDialogAction> */}
                 <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
                 {/* </AlertDialogAction> */}
