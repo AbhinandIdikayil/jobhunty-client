@@ -30,7 +30,19 @@ export const applyJob = createAsyncThunk(
     'user/apply',
     async (req, { rejectWithValue }) => {
         try {
-            const { data } = await AXIOS_INSTANCE_JOB.post('/apply-job',req)
+            const { data } = await AXIOS_INSTANCE_JOB.post('/apply-job', req)
+            return data
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+export const getJobDetails = createAsyncThunk(
+    'job/details',
+    async (req: string, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.get(`/details/${req}`)
             return data
         } catch (error) {
             return rejectWithValue(error)

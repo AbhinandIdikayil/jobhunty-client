@@ -4,8 +4,8 @@ export type JobReducer = {
     loading: boolean,
     err: null | any,
     jobs: Job[],
-    job: Job | null,
-    applicants: an[]
+    job: Job | [],
+    applicants: any[]
 }
 
 
@@ -61,7 +61,10 @@ export interface IListJob {
         to: number,
     },
     vacancies: { status: boolean, available: number, filled: number },
-    companyId?: string,
+    companyId?:{
+        _id: string,
+        images: string,
+    },
     expiry: Date,
     experience: number,
     responsibilities: [string],
@@ -103,7 +106,29 @@ export interface IListJob {
 //             updatedAt: 2024-07 - 27T09: 30: 50.978Z,
 //             __v: 0
 //         },
-//         companyId: new ObjectId('66a869027a30190c84a9e336'),
+//          companyId: {
+//          _id: new ObjectId('66a869027a30190c84a9e336'),
+//          email: 'arjun@gmail.com',
+//          name: 'arjun',
+//          password: '$2b$10$xSM.SXRP2FB3vSsuNWROTOALQLxupnAvEJ/e/yjJKAYkAfAZSi.MS',
+//          description: 'hai how are you doing askjweiujn',
+//          locations: [Array],
+//          industry: 'technology',
+//          images: 'http://res.cloudinary.com/dghv07eag/image/upload/v1722314502/jobhunty/knqfodgopfwy9u4wveep.png',
+//          benefits: [],
+//          foundedDate: null,
+//          teams: [],
+//          techStack: [Array],
+//          website: 'https://www.arjun.com',
+//          employees: '1-5',
+//          approvalStatus: 'Rejected',
+//          socialLinks: [Array],
+//          isBlocked: false,
+//          createdAt: 2024-07-30T04:16:02.473Z,
+//          updatedAt: 2024-07-30T05:15:36.291Z,
+//          LinkedInLink: 'https://www.linkedin.com/in/abhinand',
+//          profileCompletionStatus: '1%'
+//          },
 //         expiry: 2024 -08-03T00:00:00.000Z,
 //         responsibilities: ['deploying application', ''],
 //         skills: ['communication', ''],

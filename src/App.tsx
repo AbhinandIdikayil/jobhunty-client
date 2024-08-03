@@ -34,8 +34,8 @@ import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
 import CompanyJobListing from './components/company/CompanyJobListing'
-import SingleJobDetails from './components/user/common/SingleJobDetails'
 import Chat from './pages/company/Chat'
+import JobDetails from './pages/user/JobDetails'
 
 
 function App() {
@@ -55,13 +55,13 @@ function App() {
         <Route path='home' element={<UserLayout />} >
           <Route index element={<Home />} />
           <Route path='jobs' element={<Jobs />} />
-          <Route path='hia' element={<SingleJobDetails />} />
+          <Route path='jobs/:id' element={<JobDetails />} />
           <Route path='companies' element={<CompanyList />} />
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
           <Route path='jobs' element={<Jobs />} />
-          <Route path='jobs/details' element={<SingleJobDetails />} />
+          <Route path='jobs/:id' element={<JobDetails />} />
           <Route path='companies' element={<CompanyList />} />
           <Route path='profile' element={<Profile />} />
         </Route>

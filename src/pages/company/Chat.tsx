@@ -15,7 +15,7 @@ function Chat() {
 
     return (
         <div className='flex gap-1 w-full'>
-            <div className='w-1/3'>
+            <div className='w-1/3 hidden md:block'>
                 <Listbox
                     classNames={{
                         base: "max-w-xs",
@@ -41,14 +41,14 @@ function Chat() {
                     )}
                 </Listbox>
             </div>
-            <div className="relative flex w-full min-h-[82vh] flex-col rounded-xl bg-muted/50 px-4 lg:col-span-2">
+            <div className="relative flex w-full min-h-[82vh] flex-col rounded-xl bg-muted/50 px-1 lg:col-span-2">
 
                 <Badge variant="outline" className="absolute right-3 top-3">
                     Output
                 </Badge>
 
                 <div className="flex-1" />
-                <div className='chat w-full max-h-[63vh] overflow-y-scroll pb-2 flex flex-col scroll-smooth'>
+                <div className='chat w-full max-h-[63vh] overflow-y-scroll pb-2 flex flex-col scroll-smooth px-1'>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
                         joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
                     </div>
@@ -115,7 +115,7 @@ function Chat() {
                         id="message"
                         placeholder="Type your message here..."
                         disableAutosize
-                        className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
+                        className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0 chat"
                     />
                     <div className="flex items-center p-3 pt-0">
                         <Button variant="ghost" size="icon">

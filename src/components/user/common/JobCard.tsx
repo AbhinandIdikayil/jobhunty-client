@@ -1,19 +1,30 @@
+import { Link, useLocation } from "react-router-dom"
 import { IListJob } from "src/types/Job"
 
-function JobCard({data , apply}:{data:IListJob,apply:(id:string) => void}) {
+function JobCard({ data, apply }: { data: IListJob, apply: (id: string) => void }) {
+    const location = useLocation()
+    console.log('hiiiiiiiiii---')
     return (
         <div className="hover:cursor-default flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
             <div className="flex gap-5 justify-between font-semibold">
                 <img
                     loading="lazy"
                     // https://cdn.builder.io/api/v1/image/assets/TEMP/b94d9fdee77350452c2ebee502002cd2043b1ec89123ecc33a11b01ceaf9ba73?
-                    src={data.companyId.images}
+                    src={data?.companyId?.images}
                     className="shrink-0 self-start w-16 aspect-square"
                 />
                 <div className="flex flex-col">
-                    <div className="text-xl leading-6 text-slate-800">
-                        {data?.jobTitle || 'asdf'}
-                    </div>
+                    {
+                        location.pathname == '/home/jobs' ? (
+                            <Link to={`/home/jobs/${data?.companyId?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">
+                                {data?.jobTitle || 'asdf'}
+                            </Link>
+                        ) : (
+                            <Link to={`/Dashboard/jobs/${data?.companyId?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">
+                                {data?.jobTitle || 'asdf'}
+                            </Link>
+                        )
+                    }
                     <div className="flex gap-2 justify-between py-px mt-2 text-base text-slate-500">
                         <div>Terraform</div>
                         <div>Hamburg, Germany</div>
@@ -33,9 +44,9 @@ function JobCard({data , apply}:{data:IListJob,apply:(id:string) => void}) {
                 </div>
             </div>
             <div className="flex flex-col justify-between text-center">
-                <button 
-                onClick={() => apply(data?._id)}
-                className="hover:cursor-pointer px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
+                <button
+                    onClick={() => apply(data?._id)}
+                    className="hover:cursor-pointer px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
                     Apply
                 </button>
                 <img
@@ -50,7 +61,7 @@ function JobCard({data , apply}:{data:IListJob,apply:(id:string) => void}) {
                     <span className="text-slate-500">of 12 capacity</span>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

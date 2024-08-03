@@ -14,7 +14,6 @@ import { SocketProvider } from './context/SocketConext.tsx'
 const clientId = process.env.CLIENT_ID as string
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -29,5 +28,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </PersistGate>
       </Provider>
     </BrowserRouter>
-  </React.StrictMode>,
 )
