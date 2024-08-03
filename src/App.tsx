@@ -36,6 +36,7 @@ import AddSectors from './components/admin/AddSectors'
 import CompanyJobListing from './components/company/CompanyJobListing'
 import Chat from './pages/company/Chat'
 import JobDetails from './pages/user/JobDetails'
+import CompanyDetails from './pages/user/CompanyDetails'
 
 
 function App() {
@@ -57,12 +58,14 @@ function App() {
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
           <Route path='companies' element={<CompanyList />} />
+          <Route path='companies/details' element={<CompanyDetails />} />
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
           <Route path='companies' element={<CompanyList />} />
+          <Route path='companies/:id' element={<CompanyDetails />} />
           <Route path='profile' element={<Profile />} />
         </Route>
 

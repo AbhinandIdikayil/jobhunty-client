@@ -1,8 +1,13 @@
+import { useNavigate } from "react-router-dom"
 import { Company } from "src/types/Company"
 
 function CompanyCard({data}:{data:Company}) {
+    const navigate = useNavigate()
+    function handleNavigation (sss : any) {
+        navigate(`/Dashboard/companies/${data?._id}`,{state:sss})
+    }
     return (
-        <div className="company-card flex flex-col grow p-6 bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 ">
+        <div  onClick={() => handleNavigation(data)} className="company-card flex flex-col grow p-6 bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 ">
             <div className="flex gap-5 justify-between text-base text-indigo-600">
                 <img
                     loading="lazy"

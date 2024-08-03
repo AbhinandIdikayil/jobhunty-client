@@ -5,6 +5,7 @@ import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import { getJobDetails } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
+import { formatSalary } from 'src/utils/formatSalary';
 
 function JobDetails() {
 
@@ -208,7 +209,8 @@ function JobDetails() {
                                         <div className="font-semibold text-gray-800 text-sm">
                                             {/* $75k-$85k USD */}
                                             {
-                                                state.job?.[0]?.salaryrange?.from + '-' + state.job?.[0]?.salaryrange?.to
+                                                formatSalary(Number(state?.job?.[0]?.salaryrange?.from),Number(state.job?.[0]?.salaryrange?.to))
+                                                // state.job?.[0]?.salaryrange?.from + '-' + state.job?.[0]?.salaryrange?.to
                                             }
                                         </div>
                                     </div>

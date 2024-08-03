@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Checkbox } from '@/components/ui/checkbox'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { listAllCompanies } from 'src/redux/actions/commonAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
@@ -82,7 +82,7 @@ function CompanyList() {
                                 <div className="flex gap-5 justify-between px-px w-full max-md:flex-wrap max-md:max-w-full">
                                     <div className="flex flex-col text-slate-800">
                                         <div className="text-3xl font-semibold leading-10">
-                                            All Jobs
+                                            All Companies
                                         </div>
                                         <div className="mt-1 text-base leading-6">
                                             Showing 73 results
