@@ -54,7 +54,7 @@ export const removeJob = createAsyncThunk(
     'job/remove',
     async (req: string, { rejectWithValue }) => {
         try {
-            const {data} = await AXIOS_INSTANCE_JOB.delete(`/post-job/${req}`)
+            const { data } = await AXIOS_INSTANCE_JOB.delete(`/post-job/${req}`)
             return data
         } catch (error) {
             return rejectWithValue(error)
@@ -64,13 +64,37 @@ export const removeJob = createAsyncThunk(
 
 export const updateJob = createAsyncThunk(
     'job/edit',
-    async (req:any,{rejectWithValue}) => {
+    async (req: any, { rejectWithValue }) => {
         try {
             console.log(req)
-            const {data} = await AXIOS_INSTANCE_JOB.put(`/post-job/${req.id}`,req)
+            const { data } = await AXIOS_INSTANCE_JOB.put(`/post-job/${req.id}`, req)
             return data
         } catch (error) {
-           return rejectWithValue(error) 
+            return rejectWithValue(error)
+        }
+    }
+)
+
+export const listApplications = createAsyncThunk(
+    'applications/list',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.get(`/application`)
+            return data
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)
+
+export const listApplicants = createAsyncThunk(
+    'applicants/list',
+    async (_, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.get('/applicant')
+            return data
+        } catch (error) {
+            return rejectWithValue(error)
         }
     }
 )

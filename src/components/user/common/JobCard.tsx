@@ -1,9 +1,8 @@
 import { Link, useLocation } from "react-router-dom"
 import { IListJob } from "src/types/Job"
 
-function JobCard({ data, apply }: { data: IListJob, apply: (id: string) => void }) {
+function JobCard({ data, apply }: { data: IListJob, apply: (data:any) => void }) {
     const location = useLocation()
-    console.log('hiiiiiiiiii---')
     return (
         <div className="hover:cursor-default flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
             <div className="flex gap-5 justify-between font-semibold">
@@ -45,7 +44,7 @@ function JobCard({ data, apply }: { data: IListJob, apply: (id: string) => void 
             </div>
             <div className="flex flex-col justify-between text-center">
                 <button
-                    onClick={() => apply(data?._id)}
+                    onClick={() => apply({jobId:data?._id,companyId:data?.companyId})}
                     className="hover:cursor-pointer px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
                     Apply
                 </button>

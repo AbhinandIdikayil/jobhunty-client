@@ -38,6 +38,8 @@ import Chat from './pages/company/Chat'
 import JobDetails from './pages/user/JobDetails'
 import CompanyDetails from './pages/user/CompanyDetails'
 import JobEdting from './pages/company/JobEdting'
+import Applicants from './pages/company/Applicants'
+import Applications from './pages/user/Applications'
 
 
 function App() {
@@ -63,6 +65,7 @@ function App() {
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
+          <Route path='applications' element={<Applications />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
           <Route path='companies' element={<CompanyList />} />
@@ -88,7 +91,7 @@ function App() {
             <Route path='post' element={<PostJob />} />
             <Route path='messages' element={<Chat />} />
             <Route path='profile' element={<h1>profile</h1>} />
-            <Route path='applicants' element={<h1>applicants</h1>} />
+            <Route path='applicants' element={<Applicants />} />
             <Route path='job-list' element={<CompanyJobListing />} />
             <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='schedules' element={<h1>schedules</h1>} />

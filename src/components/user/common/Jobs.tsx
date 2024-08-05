@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { toast } from 'react-toastify';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -70,14 +71,16 @@ function Jobs() {
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [pdf, setPdf] = useState([])
     const [jobid, setJobId] = useState()
+    const [companyId,setCompanyId] = useState()
     useEffect(() => {
         dispatch(getAllJob()).unwrap()
     }, [])
 
-    function applyForJob(id: string) {
+    function applyForJob(data:any) {
         if (userState?.user.resumes.length > 1) {
             setModalOpen(true)
-            setJobId(id)
+            setJobId(data.jobId)
+            setCompanyId(data.companyId)
             setPdf(userState?.user.resumes)
             // handleResume(pdf)
         }
@@ -85,8 +88,9 @@ function Jobs() {
 
     function handleResume(data: string) {
         let userid = userState?.user._id;
-        dispatch(applyJob({ userid, jobid, resume:data })).unwrap()
+        dispatch(applyJob({ userid, jobid, resume:data , companyId})).unwrap()
         setModalOpen(false)
+        toast.success('applied succesfully',{position:"top-center"})
     }
 
     return (

@@ -1,3 +1,4 @@
+import { JobApplication } from "./applicationApplicants"
 
 
 export type JobReducer = {
@@ -5,7 +6,8 @@ export type JobReducer = {
     err: null | any,
     jobs: Job[],
     job: Job | [],
-    applicants: any[]
+    applicants: JobApplication[]
+    applications: JobApplication[]
 }
 
 
