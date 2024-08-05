@@ -61,3 +61,16 @@ export const removeJob = createAsyncThunk(
         }
     }
 )
+
+export const updateJob = createAsyncThunk(
+    'job/edit',
+    async (req:any,{rejectWithValue}) => {
+        try {
+            console.log(req)
+            const {data} = await AXIOS_INSTANCE_JOB.put(`/post-job/${req.id}`,req)
+            return data
+        } catch (error) {
+           return rejectWithValue(error) 
+        }
+    }
+)

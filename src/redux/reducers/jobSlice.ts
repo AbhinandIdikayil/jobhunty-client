@@ -1,6 +1,6 @@
-import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JobReducer } from "src/types/Job";
-import { applyJob, getAllJob, getJobDetails, postJob, removeJob } from "../actions/jobAction";
+import { applyJob, getAllJob, getJobDetails, postJob, removeJob, updateJob } from "../actions/jobAction";
 
 const initialState: JobReducer = {
     loading: false,
@@ -14,7 +14,11 @@ const jobSlice = createSlice({
     name: 'job',
     initialState,
     reducers: {
-
+        setJobById(state, action: PayloadAction<string>) {
+            const id = action.payload;
+            const foundJob = state.jobs.find(job => job._id === id);
+            state.job = foundJob || []; // Set to null if no job is found
+        },
     },
     extraReducers: (builder: ActionReducerMapBuilder<JobReducer>) => {
         builder
@@ -87,8 +91,23 @@ const jobSlice = createSlice({
                 state.loading = false
                 state.err = payload
             })
+            .addCase(updateJob.pending, (state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(updateJob.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.jobs = state.jobs.map(job => {
+                    return job._id == payload?._id ? { ...job, ...payload } : job
+                })
+                state.err = null
+            })
+            .addCase(updateJob.rejected, (state, { payload }) => {
+                state.loading = false
+                state.err = payload
+            })
     }
 })
 
-
+export const { setJobById } = jobSlice.actions;
 export default jobSlice.reducer

@@ -8,8 +8,9 @@ import { format } from 'date-fns'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useOutletContext } from 'react-router-dom'
+import { Link, useNavigate, useOutletContext } from 'react-router-dom'
 import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
+import { setJobById } from 'src/redux/reducers/jobSlice'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes'
 import { IListJob } from 'src/types/Job'
@@ -20,14 +21,21 @@ function CompanyJobListing() {
     const { open } = context;
     const jobState = useSelector((state: RootState) => state?.job)
     const dispatch: AppDispatch = useDispatch()
+    const navigate = useNavigate()
 
-     function handleRemove(id: string) {
+    function handleRemove(id: string) {
         try {
-             dispatch(removeJob(id)).unwrap()
+            dispatch(removeJob(id)).unwrap()
         } catch (error) {
             console.log(error)
         }
     }
+
+    function handleEdit (id: string) {
+        dispatch(setJobById(id))
+        navigate(`/company/job-list/${id}`)
+    }
+
     useEffect(() => {
         dispatch(getAllJob()).unwrap()
     }, [])
@@ -104,7 +112,7 @@ function CompanyJobListing() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {
-                                 (
+                                (
                                     // <DropdownMenuItem
                                     //     className='
                                     //   border
@@ -135,6 +143,7 @@ function CompanyJobListing() {
                                       border
                                       font-bold
                                       '
+                                onClick={() => handleEdit(row.original?._id)}
                             >
                                 Edit
                             </DropdownMenuItem>

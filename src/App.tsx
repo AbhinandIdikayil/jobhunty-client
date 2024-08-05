@@ -37,6 +37,7 @@ import CompanyJobListing from './components/company/CompanyJobListing'
 import Chat from './pages/company/Chat'
 import JobDetails from './pages/user/JobDetails'
 import CompanyDetails from './pages/user/CompanyDetails'
+import JobEdting from './pages/company/JobEdting'
 
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<h1>applicants</h1>} />
             <Route path='job-list' element={<CompanyJobListing />} />
+            <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='schedules' element={<h1>schedules</h1>} />
             <Route path='settings' element={<Settings />}>
               <Route path='' element={<Overview />} />
