@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
 import { JobReducer } from "src/types/Job";
-import { applyJob, getAllJob, getJobDetails, postJob } from "../actions/jobAction";
+import { applyJob, getAllJob, getJobDetails, postJob, removeJob } from "../actions/jobAction";
 
 const initialState: JobReducer = {
     loading: false,
@@ -70,6 +70,21 @@ const jobSlice = createSlice({
             .addCase(getJobDetails.rejected, (state, { payload }) => {
                 state.loading = false
                 state.job = []
+                state.err = payload
+            })
+            .addCase(removeJob.pending, (state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(removeJob.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = null
+                state.jobs = state.jobs.map(job =>
+                    job?._id === payload?._id ? { ...job, ...payload } : job
+                );
+            })
+            .addCase(removeJob.rejected, (state, { payload }) => {
+                state.loading = false
                 state.err = payload
             })
     }

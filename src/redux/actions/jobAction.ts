@@ -49,3 +49,15 @@ export const getJobDetails = createAsyncThunk(
         }
     }
 )
+
+export const removeJob = createAsyncThunk(
+    'job/remove',
+    async (req: string, { rejectWithValue }) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.delete(`/post-job/${req}`)
+            return data
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)

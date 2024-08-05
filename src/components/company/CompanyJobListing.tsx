@@ -9,7 +9,7 @@ import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useOutletContext } from 'react-router-dom'
-import { getAllJob } from 'src/redux/actions/jobAction'
+import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes'
 import { IListJob } from 'src/types/Job'
@@ -21,8 +21,12 @@ function CompanyJobListing() {
     const jobState = useSelector((state: RootState) => state?.job)
     const dispatch: AppDispatch = useDispatch()
 
-    function handleRemove(id: string) {
-
+     function handleRemove(id: string) {
+        try {
+             dispatch(removeJob(id)).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
     }
     useEffect(() => {
         dispatch(getAllJob()).unwrap()
@@ -44,8 +48,8 @@ function CompanyJobListing() {
             cell: ({ row }) => {
                 let date = new Date(row.original.expiry)
                 let now = new Date()
-                let status = date > now ? true : false;
-                return <span className={`border border-solid px-2 py-1 rounded-full ${status ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{status ? 'Live' : 'Closed'}</span>
+                let data = date > now ? true : false;
+                return <span className={`border border-solid px-2 py-1 rounded-full ${data ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{status ? 'Live' : 'Closed'}</span>
             }
         },
         {
@@ -100,30 +104,29 @@ function CompanyJobListing() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {
-                                row.original.status ? (
-                                    <DropdownMenuItem
-                                        className='
-                                      border
-                                      font-bold
-                                      bg-indigo-600
-                                      text-white
-                                      '
-                                        onClick={() => handleRemove(row.original._id)}
-                                    >
-                                        undo
-                                    </DropdownMenuItem>
-                                ) : (
+                                 (
+                                    // <DropdownMenuItem
+                                    //     className='
+                                    //   border
+                                    //   font-bold
+                                    //   bg-indigo-600
+                                    //   text-white
+                                    //   '
+                                    //     onClick={() => handleRemove(row.original._id)}
+                                    // >
+                                    //     undo
+                                    // </DropdownMenuItem>
                                     <DropdownMenuItem
                                         className='
                                       border
                                       font-bold
                                       bg-red-600
+                                      text-white
                                       '
                                         onClick={() => handleRemove(row.original._id)}
                                     >
                                         remove
                                     </DropdownMenuItem>
-
                                 )
                             }
 
@@ -213,21 +216,38 @@ function CompanyJobListing() {
                         </TableHeader>
                         <TableBody>
                             {table.getRowModel().rows?.length ? (
-                                table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
+                                table.getRowModel().rows
+                                    .filter(row => row.original.status === false)
+                                    .length > 0 ? (
+                                    table.getRowModel().rows
+                                        .map((row) => (
+                                            <TableRow
+                                                key={row.id}
+                                                data-state={row.getIsSelected() && "selected"}
+                                            >
+                                                {row.getVisibleCells().map((cell) =>
+                                                (
+                                                    <TableCell key={cell.id}>
+                                                        {flexRender(
+                                                            cell.column.columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </TableCell>
+                                                )
                                                 )}
-                                            </TableCell>
-                                        ))}
+                                            </TableRow>
+                                        )
+                                        )
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={columns.length}
+                                            className="h-24 text-center"
+                                        >
+                                            No results.
+                                        </TableCell>
                                     </TableRow>
-                                ))
+                                )
                             ) : (
                                 <TableRow>
                                     <TableCell
