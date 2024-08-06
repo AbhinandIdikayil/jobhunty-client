@@ -5,4 +5,5 @@ export const formatDate = (data: string) => {
         const date = new Date(data)
         return format(date, 'yyyy-MM-dd');
     }
+    return null
 }

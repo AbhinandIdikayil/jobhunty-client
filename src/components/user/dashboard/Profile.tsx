@@ -21,6 +21,8 @@ import { removeExperienceAndUpdateUserProfile, updateUserProfile } from 'src/red
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AddSkills from './AddSkills';
 import { removeExperienceState } from 'src/redux/reducers/user/userSlice';
+import { formatDate } from 'src/utils/formateDate';
+import EditEducation from './EditEducation';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
@@ -192,12 +194,15 @@ function Profile() {
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                                    <div className="font-medium text-slate-800">GoDaddy</div>
-                                                    <div>Full-Time</div>
-                                                    <div>Jun 2011 - May 2019 (8y)</div>
-                                                </div>
-                                                <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
-                                                    Manchester, UK
+                                                    <div className="font-medium text-slate-800"> {data?.company} </div>
+                                                    <div>
+                                                        {
+                                                            formatDate(data?.year?.from) || +
+                                                            ' - '
+                                                            +
+                                                            formatDate(data?.year?.to)
+                                                        }
+                                                    </div>
                                                 </div>
                                                 <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
                                                     Developed digital marketing strategies, activation plans,
@@ -224,20 +229,17 @@ function Profile() {
                                     state?.user?.education?.map((data, index) => (
                                         <>
 
-                                            <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-
-                                                <FaUniversity size={80} />
+                                            <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap ">
+                                                <div className=''>
+                                                    <FaUniversity size={50} />
+                                                </div>
                                                 <div className="flex flex-col max-md:max-w-full">
                                                     <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
                                                         <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
                                                             {data.university}
                                                         </div>
                                                         <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                            <img
-                                                                loading="lazy"
-                                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
-                                                                className="w-5 aspect-square"
-                                                            />
+                                                            <EditEducation ind={index} />
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
