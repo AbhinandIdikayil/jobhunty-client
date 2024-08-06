@@ -8,7 +8,7 @@ import { deepOrange } from '@mui/material/colors';
 import UserEditProfile from './EditProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Twitter } from 'lucide-react';
+import { Edit, Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, PlusIcon, Smartphone, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
 import { FaAward, FaUniversity } from 'react-icons/fa'
 import AddExperience from './AddExperience';
@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button';
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { updateUserProfile } from 'src/redux/actions/userAction';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import AddSkills from './AddSkills';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
@@ -297,35 +298,21 @@ function Profile() {
                                         Skills
                                     </div>
                                     <div className="flex gap-2">
-                                        <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/f05b3cf58607a025c3b4ce0904c939ba20980eaf9e9e0c1084676d03b8286e0e?"
-                                                className="w-5 aspect-square"
-                                            />
-                                        </div>
-                                        <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/cc911093a297f6cfc0af9b9326fab3816df85b14159212cf915bba39f20c8195?"
-                                                className="w-5 aspect-square"
-                                            />
+                                        <div className="flex justify-center items-center p-2.5 rounded border border-gray-400">
+                                            <AddSkills />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
-                                    <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
-                                        Communication
-                                    </div>
-                                    <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
-                                        Analytics
-                                    </div>
-                                    <div className="px-3 py-1 bg-slate-50">Facebook Ads</div>
-                                    <div className="px-3 py-1 bg-slate-50">Content Planning</div>
+                                <div className="flex flex-wrap gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
+                                    {
+                                        state?.user?.skills?.map((data: string) => (
+                                            <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
+                                                {data}
+                                            </div>
+                                        ))
+                                    }
                                 </div>
-                                <div className="self-start px-3 py-1 mt-4 text-base leading-6 text-indigo-600 bg-slate-50">
-                                    Community Manager
-                                </div>
+
                             </div>
                             <div className='flex mt-3'>
                                 <button className='bg-indigo-600 w-full text-white font-bold p-2'>
@@ -381,7 +368,6 @@ function Profile() {
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    {/* <div className=""> */}
                                     <Accordion type="single" collapsible className="w-full">
                                         {
                                             state?.user?.resumes?.map((data, index) => (
@@ -396,7 +382,6 @@ function Profile() {
                                             ))
                                         }
                                     </Accordion>
-                                    {/* </div> */}
                                 </div>
                                 {
                                     pdf && (

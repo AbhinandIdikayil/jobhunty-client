@@ -4,6 +4,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SquarePen } from 'lucide-react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserProfile } from 'src/redux/actions/userAction'
@@ -15,18 +16,23 @@ const formSchema = z.object({
     about: z.string().min(20, { message: 'Atleast 20 character' }),
 })
 
+interface func {
+    setOpen: Dispatch<SetStateAction<boolean>>
+}
+
 function UserAboutMeUpdate() {
+    const [open,setOpen] = useState<boolean>(false)
     return (
-        <AlertDialog>
+        <AlertDialog open={open}>
             <AlertDialogTrigger asChild>
-                <SquarePen />
+                <SquarePen onClick={() => setOpen(true)} />
             </AlertDialogTrigger >
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Social links </AlertDialogTitle>
 
                     {/* ////! Here is the form component that is under this component */}
-                    <AddDescriptionForm />
+                    <AddDescriptionForm setOpen={setOpen} />
 
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -38,7 +44,7 @@ function UserAboutMeUpdate() {
 
 export default UserAboutMeUpdate
 
-function AddDescriptionForm() {
+function AddDescriptionForm({setOpen}:func) {
     const dispatch: AppDispatch = useDispatch();
     const state = useSelector((state:RootState) => state.user)
     const form = useForm<z.infer<typeof formSchema>>({
@@ -51,8 +57,10 @@ function AddDescriptionForm() {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
             await dispatch(updateUserProfile(values)).unwrap()
+            setOpen(false)
         } catch (error) {
             console.log(error);
+            setOpen(false)
         }
     }
 
@@ -80,7 +88,7 @@ function AddDescriptionForm() {
                     )}
                 />
 
-                <AlertDialogCancel className="">Cancel</AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setOpen(false)} className="">Cancel</AlertDialogCancel>
                 {/* <AlertDialogAction> */}
                 <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
                 {/* </AlertDialogAction> */}

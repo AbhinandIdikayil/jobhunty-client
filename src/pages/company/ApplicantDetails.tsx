@@ -1,17 +1,32 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
-import { ArrowLeft } from 'lucide-react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { ArrowLeft, Globe, Instagram, Linkedin, Mail, Phone, Twitter } from 'lucide-react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import ResumeTab from 'src/components/company/ResumeTab';
+import { getSpecificApplicantDetails } from 'src/redux/actions/jobAction';
+import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 
 function ApplicantDetails() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
+    const dispatch: AppDispatch = useDispatch()
+    const state = useSelector((state: RootState) => state?.job)
     const navigate = useNavigate()
+    const params = useParams()
+    const { id } = params
 
-    function handleGoBack () {
+    function handleGoBack() {
         navigate(-1)
     }
+
+    useEffect(() => {
+        if (id) {
+            dispatch(getSpecificApplicantDetails(id))
+        }
+    }, [])
 
     return (
         <div className={`flex flex-col`}>
@@ -39,7 +54,7 @@ function ApplicantDetails() {
                         />
                         <div className="flex flex-col">
                             <div className="text-2xl font-semibold leading-tight">
-                                Jerome Bell
+                                {state?.applicant?.userId?.name}
                             </div>
                             <div className="mt-2 text-slate-500">Product Designer</div>
                             <div className="flex gap-2 justify-center items-center self-start mt-2 font-medium whitespace-nowrap">
@@ -101,55 +116,48 @@ function ApplicantDetails() {
                             Contact
                         </div>
                         <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/ce4e153fef003417b37576cdd21acc46307576334f2d7f9f0d0469ba4d2eb98a?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                className="object-contain shrink-0 w-6 aspect-square"
-                            />
+                            <Mail />
                             <div className="flex flex-col">
                                 <div className="text-slate-500">Email</div>
-                                <div className="text-slate-800">jeromeBell45@email.com</div>
+                                <div className="text-slate-800">{state?.applicant?.userId?.email}</div>
                             </div>
                         </div>
                         <div className="flex gap-4 items-start mt-4">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/676eb1579da8a29e02f92d0a6075e3a3b3d3c832dfff5329ea1ed68a00c8ec49?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                className="object-contain shrink-0 w-6 aspect-square"
-                            />
+                            <Phone />
                             <div className="flex flex-col">
                                 <div className="text-slate-500">Phone</div>
                                 <div className="text-slate-800">+44 1245 572 135</div>
                             </div>
                         </div>
                         <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/863fb74e0a18337a6ac664e783718fab8ad79b05ebb83d34b2c2550a8d53f4a2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                className="object-contain shrink-0 w-6 aspect-square"
-                            />
-                            <div className="flex flex-col">
-                                <div className="text-slate-500">Instagram</div>
-                                <div className="text-indigo-600">instagram.com/jeromebell</div>
-                            </div>
+                            {
+                                state?.applicant?.userId?.socialLink?.[0] && (
+                                    <>
+                                        <Instagram />
+                                        <div className="flex flex-col">
+                                            <div className="text-slate-500">Instagram</div>
+                                            <div className="text-indigo-600"> {state?.applicant?.userId?.socialLink[0].substr(12)} </div>
+                                        </div>
+                                    </>
+                                )
+                            }
                         </div>
                         <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/7b0e4d577ea1b32d17e94efaee7352e47b99eb6cbd31eaf251b1eb25bdfec809?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                className="object-contain shrink-0 w-6 aspect-square"
-                            />
+                            <Twitter />
                             <div className="flex flex-col">
                                 <div className="text-slate-500">Twitter</div>
-                                <div className="text-indigo-600">twitter.com/jeromebell</div>
+                                <div className="text-indigo-600"> {state.applicant?.userId?.socialLink?.[1].substr(12)} </div>
                             </div>
                         </div>
                         <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/423c7546c6ddfef4e8ea4270f395d504168622808b3ee9bbd9771758a8077b6a?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                className="object-contain shrink-0 w-6 aspect-square"
-                            />
+                            <Linkedin />
+                            <div className="flex flex-col">
+                                <div className="text-slate-500">Linked in </div>
+                                <div className="text-indigo-600"> {state?.applicant?.userId?.socialLink?.[2].substr(12)} </div>
+                            </div>
+                        </div>
+                        <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
+                            <Globe />
                             <div className="flex flex-col">
                                 <div className="text-slate-500">Website</div>
                                 <div className="text-indigo-600">www.jeromebell.com</div>
@@ -235,7 +243,6 @@ function ApplicantDetails() {
                                     </div>
                                 </div>
                                 <div className="flex mt-6 w-full bg-zinc-200 min-h-[1px] max-md:max-w-full" />
-                                {/* <TabsContent value='profile'> */}
                                 <div className="flex flex-col mt-6 w-full max-w-2xl max-md:max-w-full">
                                     <div className="text-lg font-semibold leading-relaxed text-slate-800">
                                         Professional Info
@@ -296,9 +303,13 @@ function ApplicantDetails() {
                                         </div>
                                     </div>
                                 </div>
-                                {/* </TabsContent> */}
                             </div>
                         </TabsContent>
+                        {
+                            state?.applicant?.resume && (
+                                <ResumeTab resume={state?.applicant?.resume} />
+                            )
+                        }
                     </Tabs>
                 </div>
             </div>
