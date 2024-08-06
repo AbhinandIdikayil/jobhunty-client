@@ -1,5 +1,22 @@
 export interface JobApplication {
     _id: string;
+    companyId: {
+        images?: string,
+        _id?:string,
+        email?: string,
+        name?: string,
+        description?: string,
+        locations?: string[],
+        benefits?: [],
+        foundedDate?: string,
+        teams?: [],
+        techStack?: string[],
+        website?: string,
+        employees?: string,
+        socialLinks?: string[],
+        isBlocked?: false,
+        LinkedInLink?: string,
+    }
     jobId: {
         _id: string,
         jobTitle?: string,

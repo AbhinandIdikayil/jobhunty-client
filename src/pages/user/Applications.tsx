@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Backdrop, CircularProgress } from '@mui/material';
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
@@ -23,11 +23,19 @@ function Applications() {
 
     const columns: ColumnDef<JobApplication>[] = [
         {
+            id: 'image',
+            accessorKey: 'companyId?.images',
+            header: () => <div>Image</div>,
+            cell: ({ row }) => {
+                return <div className='w-16 h-16'> <img src={row.original?.companyId?.images} className='rounded-full bg-transparent' alt="" /> </div>
+            }
+        },
+        {
             id: 'name',
-            accessorKey: 'userId?.name',
+            accessorKey: 'companyId?.name',
             header: () => <div>Name</div>,
             cell: ({ row }) => {
-                return <div className='text-left capitalize'> {row?.original?.userId?.name}  </div>
+                return <div className='text-left capitalize'> {row?.original?.companyId?.name}  </div>
             }
         },
         {
@@ -60,9 +68,9 @@ function Applications() {
             id: "actions",
             header: 'Actions',
             enableHiding: false,
-            cell: ({ row }) => {
+            cell: () => {
                 return (
-                    <Button>See application</Button>
+                    <MoreHorizontal />
                 )
             },
         },

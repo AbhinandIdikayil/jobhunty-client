@@ -8,7 +8,7 @@ import { format } from 'date-fns'
 import { ChevronDown } from 'lucide-react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useOutletContext } from 'react-router-dom'
+import { Link, useOutletContext } from 'react-router-dom'
 import { listApplicants } from 'src/redux/actions/jobAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes'
@@ -17,8 +17,8 @@ import { JobApplication } from 'src/types/applicationApplicants'
 function Applicants() {
 
     const state = useSelector((state: RootState) => state?.job)
-    const context = useOutletContext<prop>() || {};
     const dispatch: AppDispatch = useDispatch()
+    const context = useOutletContext<prop>() || {};
     const { open } = context;
 
     const columns: ColumnDef<JobApplication>[] = [
@@ -27,7 +27,19 @@ function Applicants() {
             accessorKey: 'userId?.name',
             header: () => <div>Name</div>,
             cell: ({ row }) => {
-                return <div className='text-left capitalize'> {row?.original?.userId?.name}  </div>
+                return <div className='text-left w-16 h-16'>
+                    <img className='rounded-full bg-transparent' src={row?.original?.userId?.coverImage} />
+                </div>
+            }
+        },
+        {
+            id: 'name',
+            accessorKey: 'userId?.name',
+            header: () => <div>Name</div>,
+            cell: ({ row }) => {
+                return <div className='text-left capitalize'>
+                    {row?.original?.userId?.name}
+                </div>
             }
         },
         {
@@ -62,7 +74,12 @@ function Applicants() {
             enableHiding: false,
             cell: ({ row }) => {
                 return (
-                    <Button>See application</Button>
+                    <Link to={`/company/applicants/${row.original._id}`}>
+                        <Button
+                            className='rounded-none hover:bg-white bg-gray-50 font-bold text-indigo-600 border-2 border-indigo-600'>
+                            See application
+                        </Button>
+                    </Link>
                 )
             },
         },
@@ -70,7 +87,7 @@ function Applicants() {
 
 
     const table = useReactTable({
-        data: state?.applicants ||[],
+        data: state?.applicants || [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -80,7 +97,7 @@ function Applicants() {
 
     useEffect(() => {
         dispatch(listApplicants())
-    },[])
+    }, [])
 
 
     return (
@@ -103,24 +120,24 @@ function Applicants() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             {
-                                
-                            table
-                                .getAllColumns()
-                                .filter((column) => column.getCanHide())
-                                .map((column) => {
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            key={column.id}
-                                            className="capitalize"
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) =>
-                                                column.toggleVisibility(!!value)
-                                            }
-                                        >
-                                            {column.id}
-                                        </DropdownMenuCheckboxItem>
-                                    )
-                                })}
+
+                                table
+                                    .getAllColumns()
+                                    .filter((column) => column.getCanHide())
+                                    .map((column) => {
+                                        return (
+                                            <DropdownMenuCheckboxItem
+                                                key={column.id}
+                                                className="capitalize"
+                                                checked={column.getIsVisible()}
+                                                onCheckedChange={(value) =>
+                                                    column.toggleVisibility(!!value)
+                                                }
+                                            >
+                                                {column.id}
+                                            </DropdownMenuCheckboxItem>
+                                        )
+                                    })}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

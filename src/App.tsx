@@ -40,6 +40,7 @@ import CompanyDetails from './pages/user/CompanyDetails'
 import JobEdting from './pages/company/JobEdting'
 import Applicants from './pages/company/Applicants'
 import Applications from './pages/user/Applications'
+import ApplicantDetails from './pages/company/ApplicantDetails'
 
 
 function App() {
@@ -92,6 +93,7 @@ function App() {
             <Route path='messages' element={<Chat />} />
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<Applicants />} />
+            <Route path='applicants/:id' element={<ApplicantDetails />} />
             <Route path='job-list' element={<CompanyJobListing />} />
             <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='schedules' element={<h1>schedules</h1>} />
