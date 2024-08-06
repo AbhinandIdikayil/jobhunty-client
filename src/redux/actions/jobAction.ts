@@ -110,3 +110,4 @@ export const getSpecificApplicantDetails = createAsyncThunk(
         }
     }
 )
+

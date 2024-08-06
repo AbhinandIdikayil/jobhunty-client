@@ -57,7 +57,7 @@ function AddSkillsForm({ setOpen }: func) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             skills: state?.user?.skills || ['']
-        }
+        },
     });
 
     const { fields, append, remove } = useFieldArray({

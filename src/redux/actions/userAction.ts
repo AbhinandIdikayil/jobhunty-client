@@ -3,6 +3,8 @@ import { IVerifyEmail, Login, verifyOtpRequest, verifyOtpResponse } from "../../
 import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_USER } from "../../constants/axiosInstance";
 import { AxiosError } from "axios";
 import { aboutEdit } from "src/types/profile";
+import { removeExperienceState } from "../reducers/user/userSlice";
+import { RootState } from "../store";
 
 // interface SignupRequest {
 //   name: string,
@@ -150,5 +152,16 @@ export const updateUserProfile = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error)
     }
+  }
+)
+
+export const removeExperienceAndUpdateUserProfile = createAsyncThunk(
+  'updateprofile/remove-experience',
+  async (ind, { dispatch, getState }) => {
+      dispatch(removeExperienceState(ind))
+      const updatedUserState = getState() as RootState;
+      // Dispatch the updateUserProfile action
+      await dispatch(updateUserProfile(updatedUserState?.user?.user)).unwrap();
+      return updatedUserState?.user?.user; 
   }
 )

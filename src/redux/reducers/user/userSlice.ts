@@ -24,6 +24,19 @@ const userSlice = createSlice({
         },
         resetErr: (state) => {
             state.err = false
+        },
+        removeExperienceState: (state, { payload }) => {
+            console.log(payload)
+            if (state.user && state.user.experiences ) {
+                return {
+                    ...state,
+                    user: {
+                        ...state.user,
+                        experiences: state.user.experiences.filter((data, index) => index !== payload && data)
+                    }
+                };
+            }
+            return state;
         }
     },
     extraReducers: (builder: ActionReducerMapBuilder<UserReducer>) => {
@@ -243,7 +256,7 @@ const userSlice = createSlice({
                 state.user = { ...state.user, ...payload }
                 state.err = false
             })
-            .addCase(updateUserProfile.rejected, (state,{payload}) => {
+            .addCase(updateUserProfile.rejected, (state, { payload }) => {
                 state.loading = false
                 state.err = payload
             })
@@ -251,6 +264,6 @@ const userSlice = createSlice({
 })
 
 
-export const { resetState, resetErr } = userSlice.actions
+export const { resetState, resetErr, removeExperienceState } = userSlice.actions
 
 export default userSlice.reducer

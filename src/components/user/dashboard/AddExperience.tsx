@@ -1,5 +1,6 @@
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -14,6 +15,7 @@ import { z } from 'zod'
 
 
 const experienceSchema = z.object({
+    working: z.boolean().default(false),
     title: z.string().nonempty({ message: 'title is required' }),
     company: z.string(),
     description: z.string(),
@@ -23,12 +25,25 @@ const experienceSchema = z.object({
         }),
         to: z.date({ required_error: 'End date is required' }).refine(date => date <= new Date(), {
             message: 'End date must be in the past'
-        })
-    }).refine(data => data.from <= data.to, {
+        }).optional()
+    }).refine(data => {
+        if (data.to) {
+            return data.from <= data.to;
+        }
+        return true;
+    }, {
         message: 'Start date must be before or equal to the end date',
-        path: ['from']  // Specify the path to indicate where the error should be applied
-    }),
-})
+        path: ['from']
+    })
+}).refine(data => {
+    if (data.working) {
+        return true; // If working is true, no need to check 'to' date
+    }
+    return data.year.to !== undefined; // If not working, 'to' date must be provided
+}, {
+    message: 'End date is required when not currently working',
+    path: ['year', 'to']
+});
 
 const formSchema = z.object({
     experiences: z.array(experienceSchema)
@@ -48,7 +63,7 @@ function AddExperience() {
             </AlertDialogTrigger >
             <AlertDialogContent className='max-x-fit max-h-fit'>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Social links </AlertDialogTitle>
+                    <AlertDialogTitle>Add experience </AlertDialogTitle>
 
                     {/* ////! Here is the form component that is under this component */}
                     <AddExperienceForm setOpen={setOpen} />
@@ -153,6 +168,32 @@ function AddExperienceForm({ setOpen }: UserAddExperience) {
                             </FormLabel>
                             <FormControl>
                                 <Input  {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name={`experiences.${0}.working`}
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>description
+
+                            </FormLabel>
+                            <FormControl>
+                                <div>
+                                    <Checkbox
+                                        checked={field.value}
+                                        onCheckedChange={field.onChange}
+                                        id="terms" />
+                                    <label
+                                        htmlFor="terms"
+                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Currently working in this role
+                                    </label>
+                                </div>
                             </FormControl>
                             <FormMessage />
                         </FormItem>
