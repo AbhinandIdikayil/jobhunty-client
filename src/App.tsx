@@ -41,6 +41,7 @@ import JobEdting from './pages/company/JobEdting'
 import Applicants from './pages/company/Applicants'
 import Applications from './pages/user/Applications'
 import ApplicantDetails from './pages/company/ApplicantDetails'
+import ApplicantsOfJob from './pages/company/ApplicantsOfJob'
 
 
 function App() {
@@ -96,6 +97,7 @@ function App() {
             <Route path='applicants/:id' element={<ApplicantDetails />} />
             <Route path='job-list' element={<CompanyJobListing />} />
             <Route path='job-list/:id' element={<JobEdting />} />
+            <Route path='job-list/applicants/:id' element={<ApplicantsOfJob />} />
             <Route path='schedules' element={<h1>schedules</h1>} />
             <Route path='settings' element={<Settings />}>
               <Route path='' element={<Overview />} />

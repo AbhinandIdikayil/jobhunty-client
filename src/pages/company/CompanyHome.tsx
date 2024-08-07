@@ -5,8 +5,11 @@ import Box from '@mui/material/Box';
 
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import SideDrawer from '../../components/company/SideDrawer';
+import { getCompany } from 'src/redux/actions/companyAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/redux/store';
 
 
 const drawerWidth = 240;
@@ -62,7 +65,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function CompanyHome() {
+
     const [open, setOpen] = React.useState(true);
+    const dispatch: AppDispatch = useDispatch()
+    const [loading, setLoading] = React.useState<boolean>(false)
+    const user = useSelector((state:RootState) => state?.user)
+    const navigate = useNavigate()
+
 
     const handleDrawerOpen = React.useCallback(() => {
         setOpen(true);
@@ -71,6 +80,33 @@ export default function CompanyHome() {
     const handleDrawerClose = React.useCallback(() => {
         setOpen(false);
     }, []);
+
+    const fetchCompany = async () => {
+        try {
+            await dispatch(getCompany()).unwrap();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    React.useEffect(() => {
+        const checkUserRole = async () => {
+            try {
+                await fetchCompany();
+            } catch (error) {
+                // Optionally handle any errors here
+            }
+            //  finally {
+            //     if (!user.role) {
+            //         navigate('/login');
+            //     }
+            // }
+        };
+
+        checkUserRole();
+    }, [])
 
     const navLinks = ['', 'messages', 'profile', 'applicants', 'job-list', 'schedules']
 

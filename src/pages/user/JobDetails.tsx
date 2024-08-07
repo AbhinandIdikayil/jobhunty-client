@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
-import { getJobDetails } from 'src/redux/actions/jobAction';
+import { setJobById } from 'src/redux/reducers/jobSlice';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { formatSalary } from 'src/utils/formatSalary';
@@ -13,25 +13,17 @@ function JobDetails() {
     const location = useLocation()
     const dispatch: AppDispatch = useDispatch();
     const state = useSelector((state: RootState) => state.job)
-    const [states, setStates] = useState<string>('')
+    // const [states, setStates] = useState<string>('')
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     useEffect(() => {
         if (id) {
-            fetchJob(id)
-        }
-    }, [id,location])
-    console.log(id,location.pathname)
+            dispatch(setJobById(id))
 
-    async function fetchJob(id: string) {
-        try {
-            setStates('loading');
-            await dispatch(getJobDetails(id)).unwrap();
-            setStates('loaded'); // Update state to 'loaded' after successful fetch
-        } catch (error) {
-            setStates('error');
+            console.log(state.job)
         }
-    }
+    }, [id, location])
+    console.log(id, location.pathname)
 
     function formatDate(date: string) {
         if (date) {
@@ -40,13 +32,13 @@ function JobDetails() {
         }
     }
 
-    if (states === 'loading') {
-        return <h1>loading.....</h1>;
-    }
+    // if (states === 'loading') {
+    //     return <h1>loading.....</h1>;
+    // }
 
-    if (states === 'error') {
-        return <h1>Error loading data</h1>;
-    }
+    // if (states === 'error') {
+    //     return <h1>Error loading data</h1>;
+    // }
 
     return (
         <>
@@ -56,17 +48,17 @@ function JobDetails() {
                     <div className="flex gap-5 justify-center max-md:flex-wrap">
                         <img
                             loading="lazy"
-                            srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/6fb974e8542f64ab89ff2208f80a789de6f92f3c2a0a65fcd9f22cba416493ed?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
+                            srcSet={state?.job?.company?.images}
                             className="shrink-0 aspect-[0.97] w-[88px]"
                         />
                         <div className="flex flex-col my-auto">
                             <div className="text-lg sm:text-2xl font-semibold leading-10 text-gray-700">
-                                {state?.job?.[0]?.jobTitle}
+                                {state?.job?.jobTitle}
                             </div>
                             <div className="flex gap-2 justify-between mt-2 text-xl leading-8 text-slate-600">
-                                <div>Stripe</div>
+                                <div>{state?.job?.company?.name}</div>
                                 <div>Paris, France</div>
-                                <div>Full-Time</div>
+                                <div> {state?.job?.employmentDetails?.name} </div>
                             </div>
                         </div>
                     </div>
@@ -88,7 +80,7 @@ function JobDetails() {
                                         Description
                                     </div>
                                     <div className="mt-4 leading-7 max-md:max-w-full">
-                                        {state?.job?.[0]?.description}
+                                        {/* {state?.job?.description} */}
                                         {/* Stripe is looking for Social Media Marketing expert to help
                                         manage our online networks. You will be responsible for
                                         monitoring our social media channels, creating content, finding
@@ -100,7 +92,7 @@ function JobDetails() {
                                     </div>
                                     <div className="flex flex-col">
                                         {
-                                            state?.job?.[0]?.responsibilities.map((data, index) => {
+                                            state?.job?.responsibilities?.map((data, index) => {
                                                 if (typeof data === 'string' && data.length > 0) {
                                                     return (
                                                         <div key={index} className='flex gap-2 mt-1 sm:mt-4'>
@@ -137,7 +129,7 @@ function JobDetails() {
                                     </div>
                                     <div className="flex flex-col">
                                         {
-                                            state?.job?.[0]?.qualification.map((data,ind) => {
+                                            state?.job?.qualification?.map((data, ind) => {
                                                 if (typeof data === 'string' && data.length > 0) {
                                                     return (
                                                         <div key={ind} className='flex gap-2 self-start mt-4 '>
@@ -190,27 +182,34 @@ function JobDetails() {
                                         <div className="text-slate-600">Apply Before</div>
                                         <div className="font-semibold text-gray-700">
                                             {
-                                                formatDate(state.job?.[0]?.expiry)
+                                                state?.job?.expiry && (
+                                                    formatDate(state?.job?.expiry)
+                                                )
                                             }
                                         </div>
                                     </div>
                                     <div className="flex gap-5 justify-between mt-6 text-base leading-6">
                                         <div className="text-slate-600">Job Posted On</div>
-                                        <div className="font-semibold text-gray-700">  {
-                                            formatDate(state.job?.[0]?.createdAt)
-                                        } </div>
+                                        <div className="font-semibold text-gray-700">
+                                            {
+                                                state?.job?.createdAt && (
+                                                    formatDate(state?.job?.createdAt)
+                                                )
+                                            }
+                                        </div>
                                     </div>
                                     <div className="flex gap-5 justify-between mt-6 text-base leading-6">
                                         <div className="text-slate-600">Job Type</div>
-                                        <div className="font-semibold text-gray-700"> {state.job?.[0]?.employment?.name} </div>
+                                        <div className="font-semibold text-gray-700">
+                                            {state.job?.employmentDetails?.name}
+                                        </div>
                                     </div>
                                     <div className="flex gap-5 justify-between mt-6 text-base leading-6">
                                         <div className="text-slate-600">Salary</div>
                                         <div className="font-semibold text-gray-800 text-sm">
-                                            {/* $75k-$85k USD */}
                                             {
-                                                formatSalary(Number(state?.job?.[0]?.salaryrange?.from),Number(state.job?.[0]?.salaryrange?.to))
-                                                // state.job?.[0]?.salaryrange?.from + '-' + state.job?.[0]?.salaryrange?.to
+                                                formatSalary(Number(state?.job?.salaryrange?.from), Number(state.job?.salaryrange?.to))
+                                                // state.job?.salaryrange?.from + '-' + state.job?.salaryrange?.to
                                             }
                                         </div>
                                     </div>
@@ -220,9 +219,11 @@ function JobDetails() {
                                     </div>
                                     <div className="flex flex-wrap gap-2 mt-6 text-sm font-semibold leading-6 whitespace-nowrap">
                                         <div className='flex border'>
-                                            <img className='w-8 h-8' src={state?.job[0]?.category?.image} />
+                                            <img className='w-8 h-8'
+                                                src={state?.job?.categoryDetails?.image}
+                                            />
                                             <div className="px-2.5 py-1.5 text-amber-400 bg-orange-400 bg-opacity-10 rounded-[80px] flex">
-                                                {state?.job[0]?.category?.name}
+                                                {state?.job?.categoryDetails?.name}
                                             </div>
                                         </div>
                                     </div>
@@ -230,18 +231,13 @@ function JobDetails() {
                                     <div className="mt-12 text-3xl font-semibold leading-10 text-gray-700 max-md:mt-10">
                                         Required Skills
                                     </div>
-                                    {/* <div className="flex gap-2.5 mt-5 text-base leading-6 text-indigo-600">
-                                        <div className="px-3 py-1 bg-slate-50">Project Management</div>
-                                        <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
-                                            Copywriting
-                                        </div>
-                                    </div> */}
+
                                     <div className='flex flex-wrap gap-1'>
                                         <span className="px-3 py-1 mt-2.5 text-base leading-6 text-indigo-600 bg-slate-50">
                                             Copy Editing
                                         </span>
                                         {
-                                            state.job?.[0]?.skills.map((data,ind) => {
+                                            state.job?.skills?.map((data, ind) => {
                                                 if (typeof data === 'string' && data.length > 0) {
                                                     return (
                                                         <span key={ind} className="px-3 py-1 mt-2.5 text-base leading-6 text-indigo-600 bg-slate-50">

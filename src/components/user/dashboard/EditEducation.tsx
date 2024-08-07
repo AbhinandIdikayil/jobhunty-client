@@ -7,6 +7,7 @@ import { Edit } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { updateUserProfile } from 'src/redux/actions/userAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { formatDate } from 'src/utils/formateDatetoDateinput'
@@ -104,9 +105,12 @@ function EditEducationForm({ setOpen, ind }: UserEditEducation) {
         try {
             dispatch(updateUserProfile(payload)).unwrap()
             setOpen(false)
-        } catch (error) {
+            toast.success('Education updated succesfully',{position:'top-center'})
+        } catch (error: any) {
             setOpen(false)
             console.log(error)
+            toast.error(error?.message,{position:'top-center'})
+
         }
     }
 

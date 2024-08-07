@@ -5,7 +5,7 @@ import { applyJob, getAllJob, getJobDetails, getSpecificApplicantDetails, listAp
 const initialState: JobReducer = {
     loading: false,
     err: null,
-    job: [],
+    job: null,
     jobs: [],
     applicant: null,
     applicants: [],
@@ -19,7 +19,7 @@ const jobSlice = createSlice({
         setJobById(state, action: PayloadAction<string>) {
             const id = action.payload;
             const foundJob = state.jobs.find(job => job._id === id);
-            state.job = foundJob || []; // Set to null if no job is found
+            state.job = foundJob || null // Set to null if no job is found
         },
     },
     extraReducers: (builder: ActionReducerMapBuilder<JobReducer>) => {
@@ -75,7 +75,7 @@ const jobSlice = createSlice({
             })
             .addCase(getJobDetails.rejected, (state, { payload }) => {
                 state.loading = false
-                state.job = []
+                state.job = null
                 state.err = payload
             })
             .addCase(removeJob.pending, (state) => {

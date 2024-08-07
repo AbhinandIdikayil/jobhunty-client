@@ -69,9 +69,11 @@ function AddSkillsForm({ setOpen }: func) {
         try {
             dispatch(updateUserProfile(data)).unwrap()
             setOpen(false)
+            toast.success('skills updated succesfully',{position:'top-center'})
         } catch (error: any) {
             toast.error(error?.message,{position:'top-center'})
             setOpen(false)
+            toast.error(error?.message,{position:'top-center'})
         }
     };
 

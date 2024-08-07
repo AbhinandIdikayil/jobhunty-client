@@ -3,6 +3,8 @@ import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
 import { forgotPassword, getUser, googleLoginAndSignup, login, logout, signupUser, updateUserProfile, verifyEmail, verifyOtp } from '../../actions/userAction'
 import { getCompany, sendRequest, updateProfile, updateSocialLinks } from 'src/redux/actions/companyAction'
 import { adminLogin, getAllusers } from 'src/redux/actions/adminAction'
+import { toast } from 'react-toastify'
+import { handleAuthError } from 'src/utils/HandleAuthError'
 
 const initialState: UserReducer = {
     loading: false,
@@ -173,11 +175,10 @@ const userSlice = createSlice({
                 state.err = false
                 state.user = payload
             })
-            .addCase(getCompany.rejected, (state) => {
+            .addCase(getCompany.rejected, (state,{payload}) => {
                 state.loading = false
                 state.err = false
-                // state.user = null
-                // state.role = null
+                handleAuthError(state,payload)
             })
             .addCase(updateProfile.pending, (state) => {
                 state.loading = true
@@ -216,6 +217,7 @@ const userSlice = createSlice({
             .addCase(sendRequest.rejected, (state, { payload }) => {
                 state.loading = false
                 state.err = payload
+                handleAuthError(state,payload)
             })
             .addCase(adminLogin.pending, (state) => {
                 state.loading = true
@@ -246,12 +248,16 @@ const userSlice = createSlice({
             .addCase(getUser.rejected, (state, { payload }) => {
                 state.loading = false
                 state.err = payload.message
+                handleAuthError(state,payload)
             })
             .addCase(updateUserProfile.pending, (state) => {
                 state.loading = true
                 state.err = false
             })
             .addCase(updateUserProfile.fulfilled, (state, { payload }) => {
+                if(payload?.profileCompleted){
+                    toast.success('start applying for job',{position:"top-center"})
+                }
                 state.loading = false
                 state.user = { ...state.user, ...payload }
                 state.err = false
@@ -259,6 +265,7 @@ const userSlice = createSlice({
             .addCase(updateUserProfile.rejected, (state, { payload }) => {
                 state.loading = false
                 state.err = payload
+                handleAuthError(state,payload)
             })
     }
 })

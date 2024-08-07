@@ -116,7 +116,6 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
         return index == ind ? updatedEducation[0] : data
       })
     };
-    console.log(payload)
     try {
       dispatch(updateUserProfile(payload)).unwrap()
       toast.success('experience updated succesfully',{position:'top-center'})

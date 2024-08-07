@@ -1,26 +1,37 @@
+import { Avatar } from "@mui/material"
+import { deepOrange } from "@mui/material/colors"
 import { Link, useLocation } from "react-router-dom"
-import { IListJob } from "src/types/Job"
+import {   getAllJobsUser} from "src/types/Job"
 
-function JobCard({ data, apply }: { data: IListJob, apply: (data:any) => void }) {
+function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => void }) {
     const location = useLocation()
     return (
         <div className="hover:cursor-default flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
             <div className="flex gap-5 justify-between font-semibold">
-                <img
-                    loading="lazy"
-                    // https://cdn.builder.io/api/v1/image/assets/TEMP/b94d9fdee77350452c2ebee502002cd2043b1ec89123ecc33a11b01ceaf9ba73?
-                    src={data?.companyId?.images}
-                    className="shrink-0 self-start w-16 aspect-square"
-                />
+                {
+                    data?.company?.images ? (
+                        <img
+                            loading="lazy"
+                            src={data?.company?.images}
+                            className="shrink-0 self-start w-16 aspect-square"
+                        />
+                    ) : (
+                        <Avatar sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>
+                            { data?.company?.name?.charAt(1) }
+                            
+                        </Avatar>
+                    )
+                }
+
                 <div className="flex flex-col">
                     {
                         location.pathname == '/home/jobs' ? (
-                            <Link to={`/home/jobs/${data?.companyId?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">
-                                {data?.jobTitle || 'asdf'}
+                            <Link to={`/home/jobs/${data?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">
+                                {data?.jobTitle || ''}
                             </Link>
                         ) : (
-                            <Link to={`/Dashboard/jobs/${data?.companyId?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">
-                                {data?.jobTitle || 'asdf'}
+                            <Link to={`/Dashboard/jobs/${data?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">
+                                {data?.jobTitle || ''}
                             </Link>
                         )
                     }
@@ -30,7 +41,7 @@ function JobCard({ data, apply }: { data: IListJob, apply: (data:any) => void })
                     </div>
                     <div className="flex gap-2 mt-2 text-sm whitespace-nowrap">
                         <div className="px-2.5 py-1.5 text-emerald-300 bg-emerald-300 bg-opacity-10 rounded-[80px]">
-                            {data?.employment?.name}
+                            {data?.employmentDetails?.name}
                         </div>
                         <div className="shrink-0 w-px bg-zinc-200 h-[34px]" />
                         <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
@@ -44,7 +55,7 @@ function JobCard({ data, apply }: { data: IListJob, apply: (data:any) => void })
             </div>
             <div className="flex flex-col justify-between text-center">
                 <button
-                    onClick={() => apply({jobId:data?._id,companyId:data?.companyId})}
+                    onClick={() => apply({ jobId: data?._id, companyId: data?.job?.companyId })}
                     className="hover:cursor-pointer px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
                     Apply
                 </button>

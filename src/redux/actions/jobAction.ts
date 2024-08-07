@@ -16,9 +16,15 @@ export const postJob = createAsyncThunk(
 
 export const getAllJob = createAsyncThunk(
     'list-job',
-    async (_, { rejectWithValue }) => {
+    async (req?: string, { rejectWithValue }) => {
         try {
-            const { data } = await AXIOS_INSTANCE_JOB.get('/all-job')
+            let res
+            if (req) {
+                res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req}`)
+            } else {
+                res = await AXIOS_INSTANCE_JOB.get(`/jobs`)
+            }
+            const { data } = res
             return data
         } catch (error: any) {
             return rejectWithValue(error?.response?.data)
@@ -28,12 +34,12 @@ export const getAllJob = createAsyncThunk(
 
 export const applyJob = createAsyncThunk(
     'user/apply',
-    async (req, { rejectWithValue }) => {
+    async (req:any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/apply-job', req)
             return data
-        } catch (error) {
-            return rejectWithValue(error)
+        } catch (error: any) {
+            return rejectWithValue(error?.response?.data)
         }
     }
 )

@@ -1,10 +1,11 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import { IVerifyEmail, Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
 import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_USER } from "../../constants/axiosInstance";
 import { AxiosError } from "axios";
 import { aboutEdit } from "src/types/profile";
 import { removeExperienceState } from "../reducers/user/userSlice";
 import { RootState } from "../store";
+import { handleTokenError } from "src/utils/HandleError";
 
 // interface SignupRequest {
 //   name: string,
@@ -135,19 +136,16 @@ export const getUser = createAsyncThunk(
       const { data } = await AXIOS_INSTANCE_USER.get('/user')
       return data
     } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error.response)
-      }
-      return rejectWithValue('hai')
+      return rejectWithValue(handleTokenError(error))
     }
   }
 )
 
 export const updateUserProfile = createAsyncThunk(
   'user/update-profile',
-  async (req:aboutEdit, { rejectWithValue }) => {
+  async (req: aboutEdit, { rejectWithValue }) => {
     try {
-      const {data} = await AXIOS_INSTANCE_USER.post('/update-profile',req);
+      const { data } = await AXIOS_INSTANCE_USER.post('/update-profile', req);
       return data
     } catch (error) {
       return rejectWithValue(error)
@@ -158,10 +156,10 @@ export const updateUserProfile = createAsyncThunk(
 export const removeExperienceAndUpdateUserProfile = createAsyncThunk(
   'updateprofile/remove-experience',
   async (ind, { dispatch, getState }) => {
-      dispatch(removeExperienceState(ind))
-      const updatedUserState = getState() as RootState;
-      // Dispatch the updateUserProfile action
-      await dispatch(updateUserProfile(updatedUserState?.user?.user)).unwrap();
-      return updatedUserState?.user?.user; 
+    dispatch(removeExperienceState(ind))
+    const updatedUserState = getState() as RootState;
+    // Dispatch the updateUserProfile action
+    await dispatch(updateUserProfile(updatedUserState?.user?.user)).unwrap();
+    return updatedUserState?.user?.user;
   }
 )

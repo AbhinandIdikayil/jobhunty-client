@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Backdrop, CircularProgress } from '@mui/material'
+import { Avatar, Backdrop, CircularProgress } from '@mui/material'
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ChevronDown } from 'lucide-react'
@@ -28,7 +28,13 @@ function Applicants() {
             header: () => <div>Name</div>,
             cell: ({ row }) => {
                 return <div className='text-left w-16 h-16'>
-                    <img className='rounded-full bg-transparent' src={row?.original?.userId?.coverImage} />
+                    {
+                        row?.original?.userId?.coverImage ? (
+                            <img className='rounded-full bg-transparent' src={row?.original?.userId?.coverImage} />
+                        ) : (
+                            <Avatar sx={{width:60,height:60}}> {row.original?.userId?.name?.charAt(0)} </Avatar>
+                        )
+                    }
                 </div>
             }
         },

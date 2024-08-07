@@ -71,26 +71,33 @@ function Jobs() {
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [pdf, setPdf] = useState([])
     const [jobid, setJobId] = useState()
-    const [companyId,setCompanyId] = useState()
+    const [companyId, setCompanyId] = useState()
     useEffect(() => {
         dispatch(getAllJob()).unwrap()
     }, [])
 
-    function applyForJob(data:any) {
-        if (userState?.user.resumes.length > 1) {
+    function applyForJob(data: any) {
+        if (userState?.user.resumes.length > 0) {
             setModalOpen(true)
             setJobId(data.jobId)
             setCompanyId(data.companyId)
             setPdf(userState?.user.resumes)
-            // handleResume(pdf)
+        } else {
+            toast.error('pleae provide a resume')
         }
     }
 
-    function handleResume(data: string) {
+    async function handleResume(data: string) {
         let userid = userState?.user._id;
-        dispatch(applyJob({ userid, jobid, resume:data , companyId})).unwrap()
-        setModalOpen(false)
-        toast.success('applied succesfully',{position:"top-center"})
+        try {
+            console.log({ userid, jobid, resume: data, companyId })
+            await dispatch(applyJob({ userid, jobid, resume: data, companyId })).unwrap()
+            setModalOpen(false)
+            toast.success('applied succesfully', { position: "top-center" })
+        } catch (error) {
+            console.log(error)
+            toast.error(jobState?.err?.message, { position: "top-center" })
+        }
     }
 
     return (
@@ -293,7 +300,7 @@ function Jobs() {
                                     </div>
                                 </div>
                                 {
-                                    jobState.jobs.map((data, ind) => (
+                                    jobState.jobs.map((data: any, ind) => (
                                         <UserJobCard key={ind} data={data} apply={applyForJob} />
                                     ))
                                 }
@@ -312,8 +319,8 @@ function Jobs() {
                                                                 src={data}
                                                             >
                                                             </iframe>
-                                                            <button className='p-2 bg-green-400' onClick={() => handleResume(data)}>
-                                                                asdfsd
+                                                            <button className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
+                                                                select
                                                             </button>
                                                         </div>
                                                     ))
@@ -323,7 +330,7 @@ function Jobs() {
                                         <AlertDialogFooter>
                                             <span>select resume</span>
                                             <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
-                                            <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
+                                            {/* <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button> */}
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog >

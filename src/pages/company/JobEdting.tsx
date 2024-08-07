@@ -21,20 +21,20 @@ function JobEdting() {
     const navigate = useNavigate()
 
     const PostJobInitialValues = {
-        jobTitle: state?.job?.jobTitle || '',
-        description: state?.job?.description || '',
-        employment: state?.job?.employment?._id || '',
-        category: state?.job?.category?._id || '',
+        jobTitle: state?.job?.job?.jobTitle || '',
+        description: state?.job?.job?.description || '',
+        employment: state?.job?.job?.employmentDetails?._id || '',
+        category: state?.job?.job?.categoryDetails?._id || '',
         salaryrange: {
-            from: state?.job?.salaryrange?.from || '',
-            to: state?.job?.salaryrange?.to || '',
+            from: state?.job?.job?.salaryrange?.from || '',
+            to: state?.job?.job?.salaryrange?.to || '',
         },
         // experince: '',
-        companyId: state?.job?.companyId?._id || '',
-        expiry: formatDate(state?.job?.expiry) || '',
-        responsibilities: state?.job?.responsibilities || [''],
-        skills: state?.job?.skills || [''],
-        qualification: state?.job?.qualification || [''],
+        companyId: state?.job?.job?.company?._id || '',
+        expiry: formatDate(state?.job?.job?.expiry) || '',
+        responsibilities: state?.job?.job?.responsibilities || [''],
+        skills: state?.job?.job?.skills || [''],
+        qualification: state?.job?.job?.qualification || [''],
     }
     console.log(PostJobInitialValues)
     function handleSubmit(values: FormikValues) {
@@ -107,14 +107,14 @@ function JobEdting() {
 
                                     <Select onValueChange={(e) => setFieldValue('employment', e)}>
                                         <SelectTrigger className="w-[200px]">
-                                            <SelectValue placeholder={state?.job?.employment?.name} />
+                                            <SelectValue placeholder={state?.job?.job?.employmentDetails?.name} />
                                         </SelectTrigger>
                                         <SelectContent className='border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2'>
                                             {
                                                 categoryState?.category.length > 0
                                                     ? (
                                                         categoryState?.category.map(data => {
-                                                            if (data.name !== values.employment) {
+                                                            if (data._id !== values.employment) {
                                                                 return (
                                                                     <SelectItem value={data._id}>{data.name}</SelectItem>
                                                                 )
@@ -160,14 +160,14 @@ function JobEdting() {
 
                                     <Select onValueChange={(e) => setFieldValue('category', e)}>
                                         <SelectTrigger className="w-[200px]">
-                                            <SelectValue placeholder={state?.job?.category?.name} />
+                                            <SelectValue placeholder={state?.job?.job?.categoryDetails?.name} />
                                         </SelectTrigger>
                                         <SelectContent className='border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2'>
                                             {
                                                 categoryState?.sectors.length > 0
                                                     ? (
                                                         categoryState.sectors.map(data => {
-                                                            if (data.name != values.category) {
+                                                            if (data._id != values.category) {
                                                                 return (
                                                                     <SelectItem value={data._id}>{data.name}</SelectItem>
                                                                 )
