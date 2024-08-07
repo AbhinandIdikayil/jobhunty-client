@@ -23,6 +23,7 @@ import AddSkills from './AddSkills';
 import { removeExperienceState } from 'src/redux/reducers/user/userSlice';
 import { formatDate } from 'src/utils/formateDate';
 import EditEducation from './EditEducation';
+import EditExperience from './EditExperience';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
@@ -189,7 +190,7 @@ function Profile() {
                                                             <Trash2 onClick={() => removeExperience(ind)} />
                                                         </div>
                                                         <div className='px-2 border py-2 border-solid border-gray-400'>
-                                                            <Edit />
+                                                            <EditExperience ind={ind} />
                                                         </div>
                                                     </div>
                                                 </div>
