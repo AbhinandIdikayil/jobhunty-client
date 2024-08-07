@@ -8,80 +8,105 @@ import { format } from 'date-fns'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useOutletContext } from 'react-router-dom'
-import { getAllJob } from 'src/redux/actions/jobAction'
+import { useNavigate, useOutletContext } from 'react-router-dom'
+import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
+import { setJobById } from 'src/redux/reducers/jobSlice'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes'
-import { IListJob } from 'src/types/Job'
+import { getAllJobsEntity } from 'src/types/Job'
 
 function CompanyJobListing() {
 
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const jobState = useSelector((state: RootState) => state?.job)
+    const userState = useSelector((state:RootState) => state?.user )
     const dispatch: AppDispatch = useDispatch()
+    const navigate = useNavigate()
 
     function handleRemove(id: string) {
-
+        try {
+            dispatch(removeJob(id)).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+    function handleEdit(id: string) {
+        dispatch(setJobById(id))
+        navigate(`/company/job-list/${id}`)
+    }
+
     useEffect(() => {
-        dispatch(getAllJob()).unwrap()
+        dispatch(getAllJob(userState?.user?._id)).unwrap()
     }, [])
 
-    const columns: ColumnDef<IListJob>[] = [
+    function handleNavigation (id: string) {
+        navigate('applicants/'+id)
+    }
+
+    const columns: ColumnDef<getAllJobsEntity>[] = [
         {
             id: 'jobTitle',
-            accessorKey: 'jobTitle',
+            accessorKey: 'job?.jobTitle',
             header: () => <div>Role</div>,
             cell: ({ row }) => {
-                return <div className='text-left capitalize'> {row?.original?.jobTitle}  </div>
+                return <div className='text-left capitalize'> {row?.original?.job?.jobTitle}  </div>
             }
         },
         {
             id: 'status',
-            accessorKey: 'expiry',
+            accessorKey: 'job?.expiry',
             header: () => <div className="text-left">status</div>,
             cell: ({ row }) => {
-                let date = new Date(row.original.expiry)
+                let date = new Date(row?.original?.job?.expiry)
                 let now = new Date()
-                let status = date > now ? true : false;
-                return <span className={`border border-solid px-2 py-1 rounded-full ${status ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{status ? 'Live' : 'Closed'}</span>
+                let data = date > now ? true : false;
+                return <span className={`border border-solid px-2 py-1 rounded-full ${data ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{data ? 'Live' : 'Closed'}</span>
             }
         },
         {
             id: 'expriry',
-            accessorKey: `expiry`,
+            accessorKey: `job?.expiry`,
             header: () => <div className="text-left">due date</div>,
             cell: ({ row }) => {
-                const givenDate = new Date(row.original.expiry);
+                const givenDate = new Date(row.original?.job?.expiry);
                 const formattedDate = format(givenDate, 'dd-MMM-yy');
                 return <div>{formattedDate}</div>
             }
         },
         {
             id: 'createdAt',
-            accessorKey: `createdAt`,
+            accessorKey: `job?.createdAt`,
             header: () => <div className="text-left">Date posted</div>,
             cell: ({ row }) => {
-                const givenDate = new Date(row.original.createdAt);
+                const givenDate = new Date(row.original?.job?.createdAt);
                 const formattedDate = format(givenDate, 'dd-MMM-yy');
                 return <div>{formattedDate}</div>
             }
         },
         {
             id: 'name',
-            accessorKey: `category`,
+            accessorKey: `job?.category`,
             header: () => <div className="text-left">category</div>,
             cell: ({ row }) => {
-                return <div className='capitalize'>{row.original?.category?.name}</div>
+                return <div className='capitalize'>{row.original?.job?.categoryDetails?.name}</div>
             }
         },
         {
             id: 'status',
-            accessorKey: 'employment',
+            accessorKey: 'job?.employment',
             header: () => <div className="text-left">job type</div>,
             cell: ({ row }) => {
-                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original.employment?.name}</span>
+                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original?.job?.employmentDetails?.name}</span>
+            }
+        },
+        {
+            id: 'count',
+            accessorKey: 'applicantCount',
+            header: () => <div className="text-left">applicants</div>,
+            cell: ({ row }) => {
+                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original?.applicantCount}</span>
             }
         },
         {
@@ -100,30 +125,18 @@ function CompanyJobListing() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {
-                                row.original.status ? (
-                                    <DropdownMenuItem
-                                        className='
-                                      border
-                                      font-bold
-                                      bg-indigo-600
-                                      text-white
-                                      '
-                                        onClick={() => handleRemove(row.original._id)}
-                                    >
-                                        undo
-                                    </DropdownMenuItem>
-                                ) : (
+                                (
                                     <DropdownMenuItem
                                         className='
                                       border
                                       font-bold
                                       bg-red-600
+                                      text-white
                                       '
-                                        onClick={() => handleRemove(row.original._id)}
+                                        onClick={() => handleRemove(row.original?._id)}
                                     >
                                         remove
                                     </DropdownMenuItem>
-
                                 )
                             }
 
@@ -132,9 +145,21 @@ function CompanyJobListing() {
                                       border
                                       font-bold
                                       '
+                                onClick={() => handleEdit(row.original?._id)}
                             >
                                 Edit
                             </DropdownMenuItem>
+                            {/* <Link to={`applicants/${row.original._id}`}> */}
+                                <DropdownMenuItem
+                                    className='
+                                      border
+                                      font-bold
+                                      '
+                                onClick={() => handleNavigation(row.original?._id)}
+                                >
+                                    details
+                                </DropdownMenuItem>
+                            {/* </Link> */}
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
                     </DropdownMenu>
@@ -213,21 +238,38 @@ function CompanyJobListing() {
                         </TableHeader>
                         <TableBody>
                             {table.getRowModel().rows?.length ? (
-                                table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
+                                table.getRowModel().rows
+                                    .filter(row => row.original?.job?.status === false)
+                                    .length > 0 ? (
+                                    table.getRowModel().rows
+                                        .map((row) => (
+                                            <TableRow
+                                                key={row.id}
+                                                data-state={row.getIsSelected() && "selected"}
+                                            >
+                                                {row.getVisibleCells().map((cell) =>
+                                                (
+                                                    <TableCell key={cell.id}>
+                                                        {flexRender(
+                                                            cell.column.columnDef.cell,
+                                                            cell.getContext()
+                                                        )}
+                                                    </TableCell>
+                                                )
                                                 )}
-                                            </TableCell>
-                                        ))}
+                                            </TableRow>
+                                        )
+                                        )
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={columns.length}
+                                            className="h-24 text-center"
+                                        >
+                                            No results.
+                                        </TableCell>
                                     </TableRow>
-                                ))
+                                )
                             ) : (
                                 <TableRow>
                                     <TableCell

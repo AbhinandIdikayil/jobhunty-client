@@ -2,12 +2,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { HiMenuAlt3 } from 'react-icons/hi'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { getUser } from 'src/redux/actions/userAction'
-import { AppDispatch } from 'src/redux/store'
+import { AppDispatch, RootState } from 'src/redux/store'
 
 interface props {
     func: () => void,
@@ -16,17 +16,42 @@ interface props {
 
 function Header({ func, open }: props) {
     const dispatch: AppDispatch = useDispatch()
-
-
+    const user = useSelector((state: RootState) => state?.user)
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState()
+    const fetchUser = async () => {
+        try {
+            await dispatch(getUser()).unwrap();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
     useEffect(() => {
-        dispatch(getUser()).unwrap()
-        // if (user.role == 'user') {
-        //     return navigate('/home')
-        // } else if (user.role == 'company') {
-        //     return navigate('/company')
-        // }
+        const checkUserRole = async () => {
+            try {
+                await fetchUser();
+            } catch (error) {
+                // Optionally handle any errors here
+            } finally {
+                if (!user.role) {
+                    navigate('/login');
+                }
+            }
+        };
+
+        checkUserRole();
     }, [])
+
+    useEffect(() => {
+        if (!loading) {
+            if (!user.role) {
+                navigate('/login');
+            }
+        }
+    }, [loading, user.role, navigate]);
 
     return (
         <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>

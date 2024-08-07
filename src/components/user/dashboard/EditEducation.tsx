@@ -3,14 +3,21 @@ import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Plus } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { updateUserProfile } from 'src/redux/actions/userAction'
 import { AppDispatch, RootState } from 'src/redux/store'
+import { formatDate } from 'src/utils/formateDatetoDateinput'
 import { z } from 'zod'
 
+
+interface UserEditEducation {
+    setOpen: Dispatch<SetStateAction<boolean>>,
+    ind: number
+}
 
 
 const educationSchema = z.object({
@@ -34,24 +41,21 @@ const formSchema = z.object({
     education: z.array(educationSchema)
 })
 
-interface UserAddEducation {
-    setOpen: Dispatch<SetStateAction<boolean>>
-}
 
 
-function AddEducation() {
-    const [open,setOpen] = useState<boolean>(false)
+function EditEducation({ ind }: { ind: number }) {
+    const [open, setOpen] = useState<boolean>(false)
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild >
-                <Plus onClick={() => setOpen(true)} />
+                <Edit onClick={() => setOpen(true)} />
             </AlertDialogTrigger >
             <AlertDialogContent className='max-x-fit max-h-fit'>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Social links </AlertDialogTitle>
 
                     {/* ////! Here is the form component that is under this component */}
-                    <AddEducationForm setOpen={setOpen} />
+                    <EditEducationForm setOpen={setOpen} ind={ind} />
 
                 </AlertDialogHeader>
                 <AlertDialogFooter>
@@ -61,9 +65,10 @@ function AddEducation() {
     )
 }
 
-export default AddEducation
+export default EditEducation
 
-function AddEducationForm({setOpen}:UserAddEducation) {
+function EditEducationForm({ setOpen, ind }: UserEditEducation) {
+
     const state = useSelector((state: RootState) => state?.user);
     const dispatch: AppDispatch = useDispatch()
     const form = useForm<z.infer<typeof formSchema>>({
@@ -71,43 +76,41 @@ function AddEducationForm({setOpen}:UserAddEducation) {
         defaultValues: {
             education: [
                 {
-                    university: "",
-                    course: "",
+                    university: state?.user?.education?.[ind]?.university,
+                    course: state?.user?.education?.[ind]?.course,
                     year: {
-                        from: undefined,
-                        to: undefined
+                        from: new Date(state?.user?.education?.[ind]?.year?.from),
+                        to: new Date(state?.user?.education?.[ind]?.year?.to)
                     },
-                    description: ""
+                    description: state?.user?.education?.[ind]?.description || ''
                 }
             ]
         },
     })
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log('hiiii')
-        try {
-            const updatedEducation = values.education.map(ed => ({
-                ...ed,
-                year: {
-                    from: ed.year.from?.toISOString(),
-                    to: ed.year.to?.toISOString()
-                }
-            }));
-        
-            // Merge with existing education data
-            const payload = {
-                education: [
-                    ...state.user.education,
-                    ...updatedEducation
-                ]
-            };
 
-            console.log('Payload:', payload);
+    function onSubmit(values) {
+        const updatedEducation = values.education.map(ed => ({
+            ...ed,
+            year: {
+                from: ed.year.from?.toISOString(),
+                to: ed.year.to?.toISOString()
+            }
+        }));
+        const payload = {
+            education: state.user?.education?.map((data,index) => {
+                return index == ind ? updatedEducation[0] : data
+            })
+        };
+        try {
             dispatch(updateUserProfile(payload)).unwrap()
             setOpen(false)
-        } catch (error) {
+            toast.success('Education updated succesfully',{position:'top-center'})
+        } catch (error: any) {
             setOpen(false)
             console.log(error)
+            toast.error(error?.message,{position:'top-center'})
+
         }
     }
 
@@ -173,7 +176,7 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                                     <input
                                         className='border border-solid border-gray-400'
                                         type='date'
-                                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                                        value={field?.value ? formatDate(field?.value) : ''}
                                         onChange={(e) => {
                                             const valueAsDate = e.target.value ? new Date(e.target.value) : null;
                                             field.onChange(valueAsDate);
@@ -197,7 +200,7 @@ function AddEducationForm({setOpen}:UserAddEducation) {
                                     <input
                                         className='border border-solid border-gray-400'
                                         type='date'
-                                        value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                                        value={field?.value ? formatDate(field?.value) : ''}
                                         onChange={(e) => {
                                             const valueAsDate = e.target.value ? new Date(e.target.value) : null;
                                             field.onChange(valueAsDate);

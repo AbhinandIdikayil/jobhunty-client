@@ -1,14 +1,26 @@
+import { Avatar } from "@mui/material"
+import { useNavigate } from "react-router-dom"
 import { Company } from "src/types/Company"
 
-function CompanyCard({data}:{data:Company}) {
+function CompanyCard({ data }: { data: Company }) {
+    const navigate = useNavigate()
+    function handleNavigation(sss: any) {
+        navigate(`/Dashboard/companies/${data?._id}`, { state: sss })
+    }
     return (
-        <div className="company-card flex flex-col grow p-6 bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 ">
+        <div onClick={() => handleNavigation(data)} className="company-card flex flex-col grow p-6 bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 ">
             <div className="flex gap-5 justify-between text-base text-indigo-600">
-                <img
-                    loading="lazy"
-                    src={data?.images || ''}
-                    className="shrink-0 aspect-square w-[88px]"
-                />
+                {
+                    data?.images ? (
+                        <img
+                            loading="lazy"
+                            src={data?.images || ''}
+                            className="shrink-0 aspect-square w-[88px]"
+                        />
+                    ) : (
+                        <Avatar sx={{width:78,height:78}}> {data?.name.charAt(0)} </Avatar>
+                    )
+                }
                 <div className="self-start px-3 py-1 bg-slate-50">
                     7 Jobs
                 </div>
@@ -20,7 +32,7 @@ function CompanyCard({data}:{data:Company}) {
                 {
                     data?.description
                 }
-                
+
             </div>
             <div className="self-start px-2.5 py-1.5 mt-4 text-sm font-semibold text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
                 Business

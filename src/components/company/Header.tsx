@@ -9,7 +9,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Avatar } from "@mui/material";
 interface props {
     func: () => void,
     open: boolean
@@ -19,6 +20,7 @@ function Header({ func, open }: props) {
 
     const socket = useSocket();
     const state = useSelector((state: RootState) => state?.user)
+    // const navigate = useNavigate()
     useEffect(() => {
         const handleRequestUpdate = ({ email, status }: { email: string, status: string }) => {
             if (state?.user?.email === email) {
@@ -51,25 +53,36 @@ function Header({ func, open }: props) {
         };
     }, [socket, state])
 
+    // useEffect(() => {
+    //     if(!state.role && !state.user){
+    //         return navigate('/company/login')
+    //     }
+    // },[state])
+
     return (
         <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />
                 </div>
-                <img
-                    loading="lazy"
-                    // https://cdn.builder.io/api/v1/image/assets/TEMP/28fcac72ebb7d51aabcc8a2e42dcfd241ea63b6ee352291d3a8ebc64ceae3826?apiKey=bf80438c4595450788b907771330b274&
-                    src={state.user.images}
-                    alt="hai"
-                    className="shrink-0 self-start w-12 aspect-square"
-                />
+                {
+                    state.user?.images ? (
+                        <img
+                            loading="lazy"
+                            src={state.user.images}
+                            alt="hai"
+                            className="shrink-0 self-start w-12 aspect-square"
+                        />
+                    ) : (
+                        <Avatar> {state.user?.name[0]} </Avatar>
+                    )
+                }
                 <div className="flex flex-col">
                     <div className="text-base leading-6 text-slate-600">
                         Company
                     </div>
                     <div className="flex gap-2 text-xl font-semibold leading-6 text-slate-800">
-                        <div>Nomad</div>
+                        <div>{state?.user?.name}</div>
                         {/* <img
                             loading="lazy"
                             src="https://cdn.builder.io/api/v1/image/assets/TEMP/11e2517998516c181ac04025690221ae22f5c4e4eb4dee7f65d6fdbaf2f88a9b?apiKey=bf80438c4595450788b907771330b274&"

@@ -4,36 +4,46 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SquarePen } from 'lucide-react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from "react-hook-form"
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUserProfile } from 'src/redux/actions/userAction'
+import { AppDispatch, RootState } from 'src/redux/store'
 import { z } from "zod"
 
 
 const formSchema = z.object({
     // email: z.string().email({ message: 'Invalid email' }),
-    phone: z.string().regex(/^\d+$/, { message: 'Invalid phone number' }),
+    phonenumber: z.string().regex(/^\d+$/, { message: 'Invalid phone number' }),
     // language: z.string({ required_error: 'Language is required' }),
 })
 
+interface func {
+    setOpen: Dispatch<SetStateAction<boolean>>
+}
+
+
 
 function UserAddtionalDetailsUpdate() {
+    const [open, setOpen] = useState<boolean>(false)
     return (
         <>
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
-                <SquarePen /> 
-            </AlertDialogTrigger >
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>Additional Detaisl </AlertDialogTitle>
+            <AlertDialog open={open}>
+                <AlertDialogTrigger asChild>
+                    <SquarePen onClick={() => setOpen(true)} />
+                </AlertDialogTrigger >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Additional Detaisl </AlertDialogTitle>
 
-                    {/* ////! Here is the form component that is under this component */}
-                    <AdditionalDetailsForm />
+                        {/* ////! Here is the form component that is under this component */}
+                        <AdditionalDetailsForm setOpen={setOpen} />
 
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog >
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog >
         </>
     )
 }
@@ -41,51 +51,40 @@ function UserAddtionalDetailsUpdate() {
 export default UserAddtionalDetailsUpdate
 
 
-function AdditionalDetailsForm() {
+function AdditionalDetailsForm({ setOpen }: func) {
 
+    const state = useSelector((state: RootState) => state?.user)
+    const dispatch: AppDispatch = useDispatch()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            email: "",
-            phone: "",
-            language: "",
+            // email: "",
+            phonenumber: state?.user?.phonenumber || "",
+            // language: "",
         },
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         console.log(values)
+        try {
+            dispatch(updateUserProfile(values)).unwrap()
+            setOpen(false)
+        } catch (error) {
+            console.log(error)
+            setOpen(false)
+        }
     }
 
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
-                {/* <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email
-                            </FormLabel>
-                            <FormControl>
-                                <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
+
                 <FormField
                     control={form.control}
-                    name="phone"
+                    name="phonenumber"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Phone
-                                <span className="text-red-600">
-
-                                    {/* {
-                                        state.err && '(' + state.err + ')'
-                                    } */}
-                                </span>
-                            </FormLabel>
+                            <FormLabel>Phone</FormLabel>
                             <FormControl>
                                 <Input placeholder="shadcn" {...field} />
                             </FormControl>
@@ -93,21 +92,7 @@ function AdditionalDetailsForm() {
                         </FormItem>
                     )}
                 />
-                {/* <FormField
-                    control={form.control}
-                    name="language"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Language
-                            </FormLabel>
-                            <FormControl>
-                                <Input placeholder="shadcn" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                /> */}
-                <AlertDialogCancel className="">Cancel</AlertDialogCancel>
+                <AlertDialogCancel onClick={() => setOpen(false)} className="">Cancel</AlertDialogCancel>
                 {/* <AlertDialogAction> */}
                 <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
                 {/* </AlertDialogAction> */}

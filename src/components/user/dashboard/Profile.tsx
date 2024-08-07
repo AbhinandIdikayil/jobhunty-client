@@ -8,7 +8,7 @@ import { deepOrange } from '@mui/material/colors';
 import UserEditProfile from './EditProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Twitter } from 'lucide-react';
+import { Delete, DeleteIcon, Edit, Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, PlusIcon, Smartphone, Trash2, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
 import { FaAward, FaUniversity } from 'react-icons/fa'
 import AddExperience from './AddExperience';
@@ -17,8 +17,13 @@ import { handleFileChange } from 'src/utils/validatePdf';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
-import { updateUserProfile } from 'src/redux/actions/userAction';
+import { removeExperienceAndUpdateUserProfile, updateUserProfile } from 'src/redux/actions/userAction';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import AddSkills from './AddSkills';
+import { removeExperienceState } from 'src/redux/reducers/user/userSlice';
+import { formatDate } from 'src/utils/formateDate';
+import EditEducation from './EditEducation';
+import EditExperience from './EditExperience';
 
 function Profile() {
     const context = useOutletContext<prop>() || {};
@@ -69,6 +74,14 @@ function Profile() {
         } catch (error) {
             setModal(false)
             console.log(error)
+        }
+    }
+
+    async function removeExperience(ind: number) {
+        try {
+            await dispatch(removeExperienceAndUpdateUserProfile(ind)).unwrap();
+        } catch (error) {
+            console.error('Failed to remove experience and update profile:', error);
         }
     }
 
@@ -147,19 +160,11 @@ function Profile() {
                                     </div>
                                 </div>
                                 <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                    {/* I’m a product designer + filmmaker currently working remotely at
-                                    Twitter from beautiful Manchester, United Kingdom. I’m
-                                    passionate about designing digital products that have a positive
-                                    impact on the world. */}
                                     {
                                         state?.user?.about
                                     }
                                 </div>
                                 <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                    {/* For 10 years, I’ve specialised in interface, experience &
-                                    interaction design as well as working in user research and
-                                    product strategy for product agencies, big tech companies &
-                                    start-ups. */}
                                 </div>
                             </div>
                             <div className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
@@ -180,21 +185,25 @@ function Profile() {
                                                     <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
                                                         {data.title}
                                                     </div>
-                                                    <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                        <img
-                                                            loading="lazy"
-                                                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/112686944eefea14f6fb1632e47edea906d7aa4c1077c5fb335d9f1e4ed5bea1?"
-                                                            className="w-5 aspect-square"
-                                                        />
+                                                    <div className="flex justify-center items-center gap-1 p-2.5">
+                                                        <div className='px-2 border py-2 border-solid border-gray-400'>
+                                                            <Trash2 onClick={() => removeExperience(ind)} />
+                                                        </div>
+                                                        <div className='px-2 border py-2 border-solid border-gray-400'>
+                                                            <EditExperience ind={ind} />
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                                    <div className="font-medium text-slate-800">GoDaddy</div>
-                                                    <div>Full-Time</div>
-                                                    <div>Jun 2011 - May 2019 (8y)</div>
-                                                </div>
-                                                <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
-                                                    Manchester, UK
+                                                    <div className="font-medium text-slate-800"> {data?.company} </div>
+                                                    <div>
+                                                        {
+                                                            formatDate(data?.year?.from) || +
+                                                            ' - '
+                                                            +
+                                                            formatDate(data?.year?.to)
+                                                        }
+                                                    </div>
                                                 </div>
                                                 <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
                                                     Developed digital marketing strategies, activation plans,
@@ -204,38 +213,7 @@ function Profile() {
                                         </div>
                                     ))
                                 }
-                                <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-                                    <FaAward size={60} />
-                                    <div className="flex flex-col max-md:max-w-full">
-                                        <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                            <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
-                                                Growth Marketing Designer
-                                            </div>
-                                            <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/112686944eefea14f6fb1632e47edea906d7aa4c1077c5fb335d9f1e4ed5bea1?"
-                                                    className="w-5 aspect-square"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                            <div className="font-medium text-slate-800">GoDaddy</div>
-                                            <div>Full-Time</div>
-                                            <div>Jun 2011 - May 2019 (8y)</div>
-                                        </div>
-                                        <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
-                                            Manchester, UK
-                                        </div>
-                                        <div className="mt-3 text-base leading-7 text-slate-600 max-md:max-w-full">
-                                            Developed digital marketing strategies, activation plans,
-                                            proposals, contests and promotions for client initiatives
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
-                                    Show 3 more experiences
-                                </div>
+
                             </div>
 
 
@@ -252,20 +230,17 @@ function Profile() {
                                     state?.user?.education?.map((data, index) => (
                                         <>
 
-                                            <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
-
-                                                <FaUniversity size={80} />
+                                            <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap ">
+                                                <div className=''>
+                                                    <FaUniversity size={50} />
+                                                </div>
                                                 <div className="flex flex-col max-md:max-w-full">
                                                     <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
                                                         <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
                                                             {data.university}
                                                         </div>
                                                         <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                                            <img
-                                                                loading="lazy"
-                                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/7ce10734fca792aed29a77e6939d552f3a56b9153161e91719c937203a6057a7?"
-                                                                className="w-5 aspect-square"
-                                                            />
+                                                            <EditEducation ind={index} />
                                                         </div>
                                                     </div>
                                                     <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
@@ -297,35 +272,21 @@ function Profile() {
                                         Skills
                                     </div>
                                     <div className="flex gap-2">
-                                        <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/f05b3cf58607a025c3b4ce0904c939ba20980eaf9e9e0c1084676d03b8286e0e?"
-                                                className="w-5 aspect-square"
-                                            />
-                                        </div>
-                                        <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/cc911093a297f6cfc0af9b9326fab3816df85b14159212cf915bba39f20c8195?"
-                                                className="w-5 aspect-square"
-                                            />
+                                        <div className="flex justify-center items-center p-2.5 rounded border border-gray-400">
+                                            <AddSkills />
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
-                                    <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
-                                        Communication
-                                    </div>
-                                    <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
-                                        Analytics
-                                    </div>
-                                    <div className="px-3 py-1 bg-slate-50">Facebook Ads</div>
-                                    <div className="px-3 py-1 bg-slate-50">Content Planning</div>
+                                <div className="flex flex-wrap gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
+                                    {
+                                        state?.user?.skills?.map((data: string) => (
+                                            <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
+                                                {data}
+                                            </div>
+                                        ))
+                                    }
                                 </div>
-                                <div className="self-start px-3 py-1 mt-4 text-base leading-6 text-indigo-600 bg-slate-50">
-                                    Community Manager
-                                </div>
+
                             </div>
                             <div className='flex mt-3'>
                                 <button className='bg-indigo-600 w-full text-white font-bold p-2'>
@@ -381,7 +342,6 @@ function Profile() {
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    {/* <div className=""> */}
                                     <Accordion type="single" collapsible className="w-full">
                                         {
                                             state?.user?.resumes?.map((data, index) => (
@@ -396,7 +356,6 @@ function Profile() {
                                             ))
                                         }
                                     </Accordion>
-                                    {/* </div> */}
                                 </div>
                                 {
                                     pdf && (

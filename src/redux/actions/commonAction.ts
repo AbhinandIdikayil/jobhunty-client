@@ -9,8 +9,7 @@ export const listSectors = createAsyncThunk(
     '/sector-list',
     async (_, {rejectWithValue}) => {
         try {
-            const {data} = await AXIOS_INSTANCE_COMPANY.get('/sector')
-            console.log(data)
+            const {data} = await AXIOS_INSTANCE_JOB.get('/sector')
             return data
         } catch (error) {
             throw rejectWithValue(error)
@@ -22,7 +21,7 @@ export const listSectors = createAsyncThunk(
 
 export const listCategory = createAsyncThunk<IListCategory[], null, { rejectValue: ErrorPayload }>(
     'admin/list-category',
-    async (req, { rejectWithValue }) => {
+    async (_, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.get('/category')
             return data

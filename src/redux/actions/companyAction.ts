@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AXIOS_INSTANCE_COMPANY } from "src/constants/axiosInstance";
+import { handleTokenError } from "src/utils/HandleError";
 
 
 
@@ -10,7 +11,7 @@ export const getCompany = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_COMPANY.get('/company')
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )

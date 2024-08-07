@@ -1,13 +1,15 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { NavLink, Outlet, useOutletContext } from "react-router-dom"
 import { sendRequest } from "src/redux/actions/companyAction"
-import { AppDispatch } from "src/redux/store"
+import { AppDispatch, RootState } from "src/redux/store"
 import { prop } from "src/types/AllTypes"
 import {toast } from 'react-toastify'
+import { AxiosError } from "axios"
 
 function Settings() {
     const { open } = useOutletContext<prop>()
     const dispatch: AppDispatch = useDispatch()
+    const state = useSelector((state:RootState) => state.user)
 
     async function hanldeRequest() {
         try {
@@ -16,7 +18,7 @@ function Settings() {
             toast.success('Request has been send',{
                 position:"top-center"
             })
-        } catch (error) {
+        } catch (error: any) {
             if(error?.data?.message) {
                 toast.warn('Request has been already sent',{
                     position:"top-center"
@@ -35,7 +37,15 @@ function Settings() {
                 </span>
                 <div className="flex gap-5  mt-6 text-base leading-6 bg-white shadow-sm">
                     <NavLink to={''} end className="settings">Overview</NavLink>
-                    <NavLink to={'social-links'} className="settings">Social Links</NavLink>
+                    {
+                        state?.user?.name && state?.user?.email && state?.user?.description &&
+                        state?.user?.industry && state?.user?.employees &&
+                         state?.user?.locations && state?.user?.techStack ? (
+                            <NavLink to={'social-links'} className="settings">Social Links</NavLink>
+                        ) : (
+                            <button onClick={() => toast.warn('complete overview part',{position:'top-center'})}>Social links</button>
+                        )
+                    }
                 </div>
             </div>
             <hr />
