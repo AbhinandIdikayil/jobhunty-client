@@ -19,7 +19,7 @@ function Chat() {
                 <Listbox
                     classNames={{
                         base: "max-w-xs",
-                        list: "chat max-h-[500px] overflow-y-scroll",
+                        list: "chat max-h-[550px] overflow-y-scroll",
                     }}
                     defaultSelectedKeys={["1"]}
                     items={users}

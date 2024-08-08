@@ -42,6 +42,7 @@ function CompanyJobListing() {
     }, [])
 
     function handleNavigation (id: string) {
+        dispatch(setJobById(id))
         navigate('applicants/'+id)
     }
 

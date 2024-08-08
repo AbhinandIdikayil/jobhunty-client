@@ -11,6 +11,26 @@ export type JobReducer = {
     applications: JobApplication[]
 }
 
+interface applied {
+    _id: string,
+    name: string,
+    email: string,
+    coverImage: string,
+}
+export interface applicants {
+    _id: string,
+    companyId: string,
+    jobId: string,
+    deleted: boolean,
+    userId: string,
+    hiring_status: string,
+    resume: string,
+    answers: [],
+    createdAt: string,
+    hiring_info: [],
+    user: applied
+}
+
 
 export interface getAllJobsEntity {
     _id?: string,
@@ -83,6 +103,7 @@ export interface getAllJobsEntity {
         }
     },
     applicantCount?: number,
+    applicants: [applicants],
     company?: {
         _id?: string,
         email?: string,
@@ -186,7 +207,7 @@ export interface getAllJobsUser {
         createdAt: Date
         updatedAt: Date,
     },
-    job:{
+    job: {
         companyId: string
     }
 }

@@ -35,7 +35,7 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
                             </Link>
                         )
                     }
-                    <div className="flex gap-2 justify-between py-px mt-2 text-base text-slate-500">
+                    <div className="flex flex-wrap gap-2 justify-between py-px mt-2 text-base text-slate-500">
                         <div>Terraform</div>
                         <div>Hamburg, Germany</div>
                     </div>
@@ -44,12 +44,12 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
                             {data?.employmentDetails?.name}
                         </div>
                         <div className="shrink-0 w-px bg-zinc-200 h-[34px]" />
-                        <div className="px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
+                        <div className="hidden sm:block px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
                             Marketing
                         </div>
-                        <div className="px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
+                        {/* <div className="px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
                             Design
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

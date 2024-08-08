@@ -1,5 +1,4 @@
 import { TabsContent } from '@radix-ui/react-tabs'
-import React from 'react'
 
 function ResumeTab({ resume }: { resume: string }) {
     return (

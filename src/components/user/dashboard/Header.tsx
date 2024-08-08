@@ -2,6 +2,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Home } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { HiMenuAlt3 } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,7 +19,7 @@ function Header({ func, open }: props) {
     const dispatch: AppDispatch = useDispatch()
     const user = useSelector((state: RootState) => state?.user)
     const navigate = useNavigate()
-    const [loading, setLoading] = useState()
+    const [loading, setLoading] = useState<boolean>()
     const fetchUser = async () => {
         try {
             await dispatch(getUser()).unwrap();
@@ -61,7 +62,7 @@ function Header({ func, open }: props) {
                 </div>
                 <div className="flex flex-col justify-center items-center">
                     <div className="flex gap-2">
-                        <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
+                        <div className="hidden sm:block sm:flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
                             Dashboard
                         </div>
                         {/* <DropDown /> */}
@@ -125,12 +126,8 @@ function Header({ func, open }: props) {
                         </ScrollArea>
                     </PopoverContent>
                 </Popover>
-                <div className="flex gap-2.5 justify-center px-6 py-3 bg-indigo-600 max-md:px-5">
-                    <img
-                        loading="lazy"
-                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"
-                        className="shrink-0 self-start w-6 aspect-square"
-                    />
+                <div className="flex gap-1 sm:gap-2.5 justify-center px-2 py-3 sm:px-6 sm:py-3 bg-indigo-600">
+                    <Home className='hidden sm:block' />
                     <Link to={'/home'}>Home Page</Link>
                 </div>
             </div>

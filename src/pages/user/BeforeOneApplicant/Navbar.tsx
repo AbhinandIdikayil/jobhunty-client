@@ -34,9 +34,9 @@ function Navbar() {
 
     return (
         <nav className="flex justify-center items-center self-stretch px-16 w-full max-md:px-5 max-md:max-w-full border-b-2">
-            <div className="flex gap-5 justify-between  w-full max-w-[1192px] max-md:flex-wrap max-md:max-w-full">
-                <div className="flex gap-5 justify-center max-md:flex-wrap max-md:max-w-full">
-                    <div className="flex gap-2  items-center">
+            <div className="flex gap-1 sm:gap-5 justify-between items-center  w-full max-w-[1192px] max-md:max-w-full">
+                <div className="flex gap-1 sm:gap-5 justify-center max-md:flex-wrap max-md:max-w-full">
+                    <div className="hidden sm:flex gap-2  items-center">
                         <div className="flex overflow-hidden relative flex-col justify-center items-center w-8 aspect-square">
                             <img
                                 loading="lazy"
@@ -48,12 +48,12 @@ function Navbar() {
                             JobHuntly
                         </div>
                     </div>
-                    <div className="flex gap-4 justify-center pt-1 items-center text-base font-medium leading-6 text-slate-600">
-                        <NavLink to={'/home/jobs'}>Find Jobs</NavLink>
-                        <NavLink to={'/home/companies'}>Browse Companies</NavLink>
+                    <div className="flex gap-4 justify-center pt-1 items-center text-sm sm:text-base font-medium leading-6 text-slate-600">
+                        <NavLink to={'/home/jobs'}> Jobs</NavLink>
+                        <NavLink to={'/home/companies'}>Companies</NavLink>
                     </div>
                 </div>
-                <div className="flex gap-4 justify-between py-3.5 pl-6 text-base font-bold leading-6 text-center">
+                <div className="flex w-auto sm:w-auto gap-4 justify-center items-center p-1 sm:py-3.5 pl-6 text-base font-bold leading-6 text-center">
                     {
                         user?.user ? (
                             <>
