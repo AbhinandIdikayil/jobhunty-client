@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Backdrop, CircularProgress } from '@mui/material'
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { ChevronDown, MoreHorizontal } from 'lucide-react'
+import { ChevronDown, ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
@@ -20,10 +20,10 @@ function CompanyJobListing() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const jobState = useSelector((state: RootState) => state?.job)
-    const userState = useSelector((state:RootState) => state?.user )
+    const userState = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
-    const [loading,setLoading] = useState(true)
+    const [loading, setLoading] = useState(true)
 
     function handleRemove(id: string) {
         try {
@@ -48,14 +48,19 @@ function CompanyJobListing() {
     }
 
     useEffect(() => {
-        if(loading){
+        if (loading) {
             fetchData()
         }
     }, [])
 
-    function handleNavigation (id: string) {
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+    });
+
+    function handleNavigation(id: string) {
         dispatch(setJobById(id))
-        navigate('applicants/'+id)
+        navigate('applicants/' + id)
     }
 
     const columns: ColumnDef<getAllJobsEntity>[] = [
@@ -90,9 +95,9 @@ function CompanyJobListing() {
                     // console.error('Invalid date:', expiry);
                     return <div>Invalid Date</div>;
                 }
-                let formattedDate 
-                if(givenDate){
-                    formattedDate = format(givenDate, 'dd-MMM-yy') ;
+                let formattedDate
+                if (givenDate) {
+                    formattedDate = format(givenDate, 'dd-MMM-yy');
                 }
                 return <div>{formattedDate ?? ''}</div>
             }
@@ -176,15 +181,15 @@ function CompanyJobListing() {
                                 Edit
                             </DropdownMenuItem>
                             {/* <Link to={`applicants/${row.original._id}`}> */}
-                                <DropdownMenuItem
-                                    className='
+                            <DropdownMenuItem
+                                className='
                                       border
                                       font-bold
                                       '
                                 onClick={() => handleNavigation(row.original?._id)}
-                                >
-                                    details
-                                </DropdownMenuItem>
+                            >
+                                details
+                            </DropdownMenuItem>
                             {/* </Link> */}
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
@@ -197,8 +202,13 @@ function CompanyJobListing() {
     const table = useReactTable({
         data: jobState?.jobs || [],
         columns,
+        pageCount: Math.ceil((jobState?.jobs?.length || 0) / pagination.pageSize),
+        state: {
+            pagination
+        },
+        onPaginationChange: setPagination,
+        manualPagination: true,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
     });
@@ -308,6 +318,33 @@ function CompanyJobListing() {
                             )}
                         </TableBody>
                     </Table>
+                </div>
+                <div className="flex items-center justify-end space-x-2 py-4">
+                    <div className="space-x-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage()}
+                            className='border-solid border-slate-900'
+                        >
+                            Previous
+                            <ChevronLeftIcon className="h-4 w-4" />
+                        </Button>
+                        <span>
+                            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+                        </span>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage()}
+                                                 className='border-solid border-slate-900'
+                        >
+                            Next
+                            <ChevronRightIcon className="h-4 w-4" />
+                        </Button>
+                    </div>
                 </div>
             </div>
             <Backdrop

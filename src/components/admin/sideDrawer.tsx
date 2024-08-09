@@ -15,7 +15,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { Factory, HousePlus } from 'lucide-react';
+import { Factory, HousePlus, LogOut } from 'lucide-react';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -56,6 +56,9 @@ interface props {
   handleDrawerClose:() => void,
   navLinks: string[],
   open: boolean
+}
+function handleAdminLogout () {
+  
 }
 
 function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: props) {
@@ -119,6 +122,16 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
               </ListItemButton>
             </ListItem>
           ))}
+        </List>
+        <List>
+            <ListItem onClick={handleAdminLogout} key={'Logout'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  <LogOut size={30} />
+                </ListItemIcon> 
+                <ListItemText primary={'Logout'} />
+              </ListItemButton>
+            </ListItem>
         </List>
       </Drawer>
     </>

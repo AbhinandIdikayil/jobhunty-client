@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { resetState } from '../../../redux/reducers/user/userSlice';
 import { getUser, logout } from '../../../redux/actions/userAction';
 import { useEffect } from 'react';
+import { listCategory, listSectors } from 'src/redux/actions/commonAction';
 
 function Navbar() {
     const user = useSelector((state: RootState) => state.user)
@@ -12,6 +13,8 @@ function Navbar() {
 
     useEffect(() => {
         dispatch(getUser()).unwrap()
+        dispatch(listCategory(null)).unwrap()
+        dispatch(listSectors()).unwrap()
         // if (user.role == 'user') {
         //     return navigate('/home')
         // } 
@@ -44,9 +47,9 @@ function Navbar() {
                                 className="shrink-0 aspect-[1.35] w-[43px]"
                             />
                         </div>
-                        <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
+                        <Link to={'/home'} className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
                             JobHuntly
-                        </div>
+                        </Link>
                     </div>
                     <div className="flex gap-4 justify-center pt-1 items-center text-sm sm:text-base font-medium leading-6 text-slate-600">
                         <NavLink to={'/home/jobs'}> Jobs</NavLink>
