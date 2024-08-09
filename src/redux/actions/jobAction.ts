@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AXIOS_INSTANCE_JOB } from "src/constants/axiosInstance";
+import { handleTokenError } from "src/utils/HandleError";
 
 
 export const postJob = createAsyncThunk(
@@ -19,6 +20,7 @@ export const getAllJob = createAsyncThunk(
     async (req?: string, { rejectWithValue }) => {
         try {
             let res
+            console.log(req)
             if (req) {
                 res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req}`)
             } else {
@@ -100,7 +102,7 @@ export const listApplicants = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.get('/applicant')
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )

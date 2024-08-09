@@ -6,7 +6,7 @@ import { Backdrop, CircularProgress } from '@mui/material'
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ChevronDown, MoreHorizontal } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
@@ -23,6 +23,7 @@ function CompanyJobListing() {
     const userState = useSelector((state:RootState) => state?.user )
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
+    const [loading,setLoading] = useState(true)
 
     function handleRemove(id: string) {
         try {
@@ -36,9 +37,20 @@ function CompanyJobListing() {
         dispatch(setJobById(id))
         navigate(`/company/job-list/${id}`)
     }
+    const fetchData = async () => {
+        try {
+            await dispatch(getAllJob(userState?.user?._id)).unwrap()
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+        }
+    }
 
     useEffect(() => {
-        dispatch(getAllJob(userState?.user?._id)).unwrap()
+        if(loading){
+            fetchData()
+        }
     }, [])
 
     function handleNavigation (id: string) {
@@ -60,7 +72,7 @@ function CompanyJobListing() {
             accessorKey: 'job?.expiry',
             header: () => <div className="text-left">status</div>,
             cell: ({ row }) => {
-                let date = new Date(row?.original?.job?.expiry)
+                let date = new Date(String(row?.original?.job?.expiry))
                 let now = new Date()
                 let data = date > now ? true : false;
                 return <span className={`border border-solid px-2 py-1 rounded-full ${data ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{data ? 'Live' : 'Closed'}</span>
@@ -71,19 +83,32 @@ function CompanyJobListing() {
             accessorKey: `job?.expiry`,
             header: () => <div className="text-left">due date</div>,
             cell: ({ row }) => {
-                const givenDate = new Date(row.original?.job?.expiry);
-                const formattedDate = format(givenDate, 'dd-MMM-yy');
-                return <div>{formattedDate}</div>
+                const givenDate = new Date(String(row?.original?.job?.expiry));
+                console.log('Expiry value:', row?.original?.job?.expiry);
+                console.log(givenDate)
+                if (isNaN(givenDate.getTime())) {
+                    // console.error('Invalid date:', expiry);
+                    return <div>Invalid Date</div>;
+                }
+                let formattedDate 
+                if(givenDate){
+                    formattedDate = format(givenDate, 'dd-MMM-yy') ;
+                }
+                return <div>{formattedDate ?? ''}</div>
             }
         },
         {
             id: 'createdAt',
-            accessorKey: `job?.createdAt`,
+            accessorKey: `createdAt`,
             header: () => <div className="text-left">Date posted</div>,
             cell: ({ row }) => {
-                const givenDate = new Date(row.original?.job?.createdAt);
+                const givenDate = new Date(String(row.original?.job?.createdAt));
+                if (isNaN(givenDate.getTime())) {
+                    // console.error('Invalid date:', expiry);
+                    return <div>Invalid Date</div>;
+                }
                 const formattedDate = format(givenDate, 'dd-MMM-yy');
-                return <div>{formattedDate}</div>
+                return <div>{formattedDate || ''}</div>
             }
         },
         {
@@ -170,7 +195,7 @@ function CompanyJobListing() {
     ]
 
     const table = useReactTable({
-        data: jobState?.jobs,
+        data: jobState?.jobs || [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -183,7 +208,7 @@ function CompanyJobListing() {
             <div className="w-full">
                 <div className="flex items-center py-4">
                     <Input
-                        placeholder="Filter emails..."
+                        placeholder="Search jobs..."
                         value={(table.getColumn("jobTitle")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("jobTitle")?.setFilterValue(event.target.value)

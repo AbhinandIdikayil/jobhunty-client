@@ -1,5 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { Avatar } from '@mui/material';
 import { ArrowLeft, Globe, Instagram, Linkedin, Mail, Phone, Twitter } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,23 +48,34 @@ function ApplicantDetails() {
             <div className={`flex flex-wrap gap-5 justify-center items-start ${open ? 'px-3' : 'px-8'} w-full max-md:px-5 max-md:max-w-full`}>
                 <div className="flex flex-col grow shrink p-6 bg-white min-w-[240px] w-[282px] border-2 border-solid max-md:px-5">
                     <div className="flex gap-5 items-start self-start text-base leading-relaxed text-slate-800">
-                        <img
-                            loading="lazy"
-                            srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                            className="object-contain shrink-0 w-24 aspect-square"
-                        />
+                        {
+                            state?.applicant?.userId?.coverImage ? (
+                                <img
+                                    loading="lazy"
+                                    srcSet={state?.applicant?.userId?.coverImage}
+                                    // srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/c9a4f0236a9f401fc4617296c30a14a1e0489f27f15ddf29db165753e94e1fe2?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
+                                    className="object-contain shrink-0 w-24 rounded-full"
+                                />
+                            ) : (
+                                <Avatar sx={{ width: 73, height: 74 }}> {state?.applicant?.userId?.name?.charAt(0)} </Avatar>
+                            )
+                        }
                         <div className="flex flex-col">
                             <div className="text-2xl font-semibold leading-tight">
                                 {state?.applicant?.userId?.name}
                             </div>
-                            <div className="mt-2 text-slate-500">Product Designer</div>
+                            <div className="mt-2 text-slate-500">
+                                {
+                                    state?.applicant?.userId?.experiences?.map((data: any) => data?.working ? data?.title : '')
+                                }
+                            </div>
                             <div className="flex gap-2 justify-center items-center self-start mt-2 font-medium whitespace-nowrap">
-                                <img
+                                {/* <img
                                     loading="lazy"
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/f0106287ef0830139923d118c8c8c43d17de6b834e1092944488396b8ba04468?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
                                     className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
                                 />
-                                <div className="self-stretch my-auto">4.0</div>
+                                <div className="self-stretch my-auto">4.0</div> */}
                             </div>
                         </div>
                     </div>
@@ -74,13 +86,19 @@ function ApplicantDetails() {
                         </div>
                         <div className="flex mt-2 w-full bg-zinc-200 min-h-[1px]" />
                         <div className="flex flex-col self-start mt-2">
-                            <div className="text-base font-semibold text-slate-800">
-                                Product Development
-                            </div>
-                            <div className="flex gap-2 justify-center items-center self-start text-sm whitespace-nowrap text-slate-600">
-                                <div className="self-stretch my-auto">Marketing</div>
-                                <div className="self-stretch my-auto">Full-Time</div>
-                            </div>
+                            {
+                                state?.applicant?.userId?.experiences?.map((data: any) => data?.working ? (
+                                    <>
+                                        <div className="text-base font-semibold text-slate-800">
+                                            {data?.title}
+                                        </div>
+                                        <div className="flex gap-2 justify-center items-center self-start text-sm whitespace-nowrap text-slate-600">
+                                            <div className="self-stretch my-auto"> {data?.company} </div>
+                                            <div className="self-stretch my-auto">Full-Time</div>
+                                        </div>
+                                    </>
+                                ) : '')
+                            }
                         </div>
                     </div>
                     <div className="flex flex-col p-4 mt-5 w-full bg-slate-50">
@@ -209,7 +227,7 @@ function ApplicantDetails() {
                                     <div className="flex gap-5 justify-between items-start mt-4 max-w-full leading-relaxed w-[456px]">
                                         <div className="flex flex-col">
                                             <div className="flex flex-col self-start">
-                                                <div className="text-slate-500">Full Name</div>
+                                                <div className="text-slate-500">Name</div>
                                                 <div className="font-medium text-slate-800">
                                                     Jerome Bell
                                                 </div>
@@ -223,11 +241,7 @@ function ApplicantDetails() {
                                             </div>
                                         </div>
                                         <div className="flex flex-col">
-                                            <div className="flex flex-col self-start whitespace-nowrap">
-                                                <div className="text-slate-500">Gender</div>
-                                                <div className="font-medium text-slate-800">Male</div>
-                                            </div>
-                                            <div className="flex flex-col mt-4">
+                                            <div className="flex flex-col">
                                                 <div className="text-slate-500">Language</div>
                                                 <div className="font-medium text-slate-800">
                                                     English, French, Bahasa
@@ -236,10 +250,10 @@ function ApplicantDetails() {
                                         </div>
                                     </div>
                                     <div className="flex flex-col mt-4 max-w-full w-[232px]">
-                                        <div className="leading-relaxed text-slate-500">Address</div>
+                                        {/* <div className="leading-relaxed text-slate-500">Address</div>
                                         <div className="font-medium leading-7 text-slate-800">
                                             4517 Washington Ave. Manchester, Kentucky 39495
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </div>
                                 <div className="flex mt-6 w-full bg-zinc-200 min-h-[1px] max-md:max-w-full" />
@@ -269,16 +283,22 @@ function ApplicantDetails() {
                                             <div className="flex flex-col self-start">
                                                 <div className="text-slate-500">Current Job</div>
                                                 <div className="font-medium text-slate-800">
-                                                    Product Designer
+                                                    {
+                                                        state?.applicant?.userId?.experiences?.map((data: any) => data?.working ? data?.title : '')
+                                                    }
                                                 </div>
                                             </div>
                                             <div className="flex flex-col mt-4">
                                                 <div className="text-slate-500">
                                                     Highest Qualification Held
                                                 </div>
-                                                <div className="font-medium text-slate-800">
-                                                    Bachelors in Engineering
-                                                </div>
+                                                {
+                                                    state?.applicant?.userId?.education?.map((data) => (
+                                                        <div className="font-medium text-slate-800">
+                                                            {data?.course}
+                                                        </div>
+                                                    ))
+                                                }
                                             </div>
                                         </div>
                                         <div className="flex flex-col min-w-[240px]">
@@ -289,12 +309,13 @@ function ApplicantDetails() {
                                             <div className="flex flex-col mt-4">
                                                 <div className="text-slate-500">Skill set</div>
                                                 <div className="flex gap-1 items-start text-indigo-600">
-                                                    <div className="gap-4 self-stretch px-3 py-1 bg-slate-50">
-                                                        Project Management
-                                                    </div>
-                                                    <div className="gap-4 self-stretch px-3 py-1 whitespace-nowrap bg-slate-50">
-                                                        Copywriting
-                                                    </div>
+                                                    {
+                                                        state?.applicant?.userId?.skills?.map((data) => (
+                                                            <div className="gap-4 self-stretch px-3 py-1 bg-slate-50">
+                                                                {data}
+                                                            </div>
+                                                        ))
+                                                    }
                                                     <div className="gap-4 self-stretch px-3 py-1 whitespace-nowrap bg-slate-50">
                                                         English
                                                     </div>

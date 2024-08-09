@@ -3,6 +3,7 @@ import { Field, FieldArray, Form, Formik, FormikValues } from 'formik';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { listCategory, listSectors } from 'src/redux/actions/commonAction';
 import { postJob } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
@@ -42,7 +43,15 @@ function PostJob() {
     async function handleSubmit(values: FormikValues) {
         try {
             console.log(values)
-            dispatch(postJob(values)).unwrap()
+            if(company?.user?.approvalStatus !== 'Accepted') {
+                toast.error('your request hasnt accepted yet',{position:'top-center'})
+                return;
+            }
+            if(!company?.user?.profileCompletionStatus) {
+                toast.error('pleae complete the profile')
+                return 
+            }
+            await dispatch(postJob(values)).unwrap()
             return navigate('/company/job-list')
         } catch (error) {
             console.log(error)
@@ -205,16 +214,12 @@ function PostJob() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    {/* <span className='text-red-600 text-xs'>   {
-                                    errors?.skills && (
-                                        errors?.skills
-                                    )
-                                }   </span> */}
+                                   
                                     <FieldArray name='skills'>
                                         {({ remove, push }) => (
                                             <div>
                                                 {values.skills.length > 0 &&
-                                                    values.skills.map((skill, index) => (
+                                                    values.skills?.map((skill, index) => (
                                                         <div className="w-full sm:w-auto flex items-center" key={index}>
                                                             <div className="flex flex-col w-full">
                                                                 <Field
@@ -271,8 +276,8 @@ function PostJob() {
                                     <FieldArray name='responsibilities'>
                                         {({ remove, push }) => (
                                             <div>
-                                                {values.responsibilities.length > 0 &&
-                                                    values.responsibilities.map((skill, index) => (
+                                                {values?.responsibilities?.length > 0 &&
+                                                    values?.responsibilities?.map((skill, index) => (
                                                         <div className="w-full sm:w-auto flex items-center" key={index}>
                                                             <div className="flex flex-col w-full">
                                                                 <Field
@@ -330,7 +335,7 @@ function PostJob() {
                                             ({ remove, push }) => (
                                                 <div>
                                                     {values.qualification.length > 0 &&
-                                                        values.qualification.map((skill, index) => (
+                                                        values.qualification?.map((skill, index) => (
                                                             <div className="w-full sm:w-auto flex items-center" key={index}>
                                                                 <div className="flex flex-col w-full">
                                                                     <Field

@@ -5,9 +5,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Avatar, Backdrop, CircularProgress } from "@mui/material";
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ChevronDown } from "lucide-react";
+import { ArrowLeft, ChevronDown } from "lucide-react";
 import { useSelector } from "react-redux";
-import { Link, useOutletContext } from "react-router-dom";
+import { Link, useNavigate, useOutletContext } from "react-router-dom";
 import { RootState } from "src/redux/store";
 import { prop } from "src/types/AllTypes";
 import { applicants, } from "src/types/Job";
@@ -16,7 +16,8 @@ function ApplicantsOfJob() {
 
   const context = useOutletContext<prop>() || {};
   const { open } = context;
-  const jobState = useSelector((state:RootState) => state.job)
+  const jobState = useSelector((state: RootState) => state.job)
+  const navigate = useNavigate()
 
   const columns: ColumnDef<applicants>[] = [
     {
@@ -89,9 +90,24 @@ function ApplicantsOfJob() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  function handleNavigation () {
+    return navigate(-1)
+  }
+
   return (
     <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
       <div className="w-full">
+        <div>
+          <div className="flex gap-4 items-center">
+            <ArrowLeft onClick={() => handleNavigation()} />
+            <div className="text-2xl capitalize">
+              <h3 className="font-bold">
+                {jobState?.job?.job?.jobTitle}
+              </h3>
+              <p className="text-xl font-sans"> {jobState?.job?.job?.employmentDetails?.name} </p>
+            </div>
+          </div>
+        </div>
         <div className="flex items-center py-4">
           <Input
             placeholder="Filter emails..."

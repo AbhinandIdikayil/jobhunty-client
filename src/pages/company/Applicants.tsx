@@ -111,7 +111,7 @@ function Applicants() {
             <div className="w-full">
                 <div className="flex items-center py-4">
                     <Input
-                        placeholder="Filter emails..."
+                        placeholder="Search for applicants."
                         value={(table.getColumn("jobTitle")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("jobTitle")?.setFilterValue(event.target.value)

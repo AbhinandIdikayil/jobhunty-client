@@ -9,5 +9,5 @@ export const handleTokenError = (error: any) => {
       // Handle token expired or missing token
       return 'blocked';
     }
-    return error.response?.data?.error || 'An error occurred';
+    return error.response?.data || 'An error occurred';
   };

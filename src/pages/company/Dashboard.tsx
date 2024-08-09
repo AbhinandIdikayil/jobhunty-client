@@ -1,14 +1,18 @@
 import { useOutletContext } from "react-router-dom"
 import JobCard from "../../components/company/JobCard"
 import { prop } from "../../types/AllTypes"
+import { Select, SelectItem } from "@nextui-org/react"
 
 
 
 function Dashboard() {
-    const {open} = useOutletContext<prop>()
+    const { open } = useOutletContext<prop>()
+
     return (
         <div className={`flex flex-col ml-5 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
             <div className="flex flex-col grow pb-6 max-md:max-w-full">
+                <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
+                </div>
                 <div className="flex gap-5 justify-between px-px mt-8 w-full max-md:flex-wrap max-md:max-w-full">
                     <div className="flex flex-col px-5 max-md:max-w-full">
                         <div className="text-2xl font-semibold leading-7 text-slate-800 max-md:max-w-full">

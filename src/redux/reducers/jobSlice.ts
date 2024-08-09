@@ -1,6 +1,7 @@
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JobReducer } from "src/types/Job";
 import { applyJob, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, removeJob, updateJob } from "../actions/jobAction";
+import { handleAuthError } from "src/utils/HandleAuthError";
 
 const initialState: JobReducer = {
     loading: false,
@@ -134,6 +135,8 @@ const jobSlice = createSlice({
             .addCase(listApplicants.rejected,(state,{payload}) => {
                 state.err = payload
                 state.loading = false
+                state.applicants = []
+                handleAuthError(state,payload)
             })
             .addCase(getSpecificApplicantDetails.pending,(state) => {
                 state.err = null
