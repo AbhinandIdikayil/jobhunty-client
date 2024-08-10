@@ -19,7 +19,7 @@ const jobSlice = createSlice({
     reducers: {
         setJobById(state, action: PayloadAction<string>) {
             const id = action.payload;
-            const foundJob = state.jobs.find(job => job._id === id);
+            const foundJob = state.jobs?.jobs.find(job => job._id === id);
             state.job = foundJob || null // Set to null if no job is found
         },
     },
@@ -32,7 +32,7 @@ const jobSlice = createSlice({
             .addCase(postJob.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = null
-                state.jobs = [...state.jobs, payload]
+                state.jobs = [...state.jobs?.jobs, payload]
             })
             .addCase(postJob.rejected, (state, { payload }) => {
                 state.loading = false

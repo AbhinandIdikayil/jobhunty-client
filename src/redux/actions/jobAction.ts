@@ -5,7 +5,7 @@ import { handleTokenError } from "src/utils/HandleError";
 
 export const postJob = createAsyncThunk(
     'company/post-job',
-    async (req, { rejectWithValue }) => {
+    async (req:any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/post-job', req);
             return data;
@@ -34,7 +34,8 @@ export const getAllJob = createAsyncThunk(
                 res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req?._id}`, {
                     params:{
                         page:req.page,
-                        pageSize:req.pageSize
+                        pageSize:req.pageSize,
+                        name:req.name
                     }
                 })
             } else {

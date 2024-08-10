@@ -9,6 +9,7 @@ import { ChevronDown, ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from '
 import { useEffect, useState, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import { UseDebounce } from 'src/hooks/Debounce'
 import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
 import { setJobById } from 'src/redux/reducers/jobSlice'
 import { AppDispatch, RootState } from 'src/redux/store'
@@ -24,10 +25,13 @@ function CompanyJobListing() {
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
+    const [searchQuery,setSearchquery] = useState<string | null>(null)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,
     });
+
+    const debounceSearchQuery = UseDebounce(searchQuery,500)
 
     function handleRemove(id: string) {
         try {
@@ -55,9 +59,7 @@ function CompanyJobListing() {
                 }
             )).unwrap()
 
-            // if (data) {
             setLoading(false)
-            // }
         } catch (error) {
             setLoading(false)
             console.log(error)
@@ -203,9 +205,9 @@ function CompanyJobListing() {
     
     useEffect(() => {
         setLoading(true)
-        fetchData(pagination.pageIndex + 1, pagination.pageSize);
+        fetchData(pagination.pageIndex + 1, pagination.pageSize,debounceSearchQuery);
         console.log(jobState?.jobs?.jobs)
-    }, [pagination.pageIndex, pagination.pageSize]);
+    }, [pagination.pageIndex, pagination.pageSize,debounceSearchQuery]);
 
     if (loading) {
         return (
@@ -224,10 +226,8 @@ function CompanyJobListing() {
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Search jobs..."
-                        value={(table.getColumn("jobTitle")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("jobTitle")?.setFilterValue(event.target.value)
-                        }
+                        value={searchQuery}
+                        onChange={(e) => setSearchquery(e.target.value)}
                         className="max-w-sm"
                     />
                     <DropdownMenu>
@@ -285,7 +285,9 @@ function CompanyJobListing() {
                                             <TableRow
                                                 key={`row-${row.id}-${rowIndex}`} // Ensure unique key for each row
                                             >
-                                                {row.getVisibleCells().map((cell, cellIndex) => (
+                                                {
+                                                    console.log(row.original),
+                                                row.getVisibleCells().map((cell, cellIndex) => (
                                                     <TableCell key={`cell-${cell.id}-${cellIndex}`}> {/* Ensure unique key for each cell */}
                                                         {flexRender(
                                                             cell.column.columnDef.cell,
