@@ -3,10 +3,10 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { Backdrop, CircularProgress } from '@mui/material'
-import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns'
 import { ChevronDown, ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { getAllJob, removeJob } from 'src/redux/actions/jobAction'
@@ -23,7 +23,11 @@ function CompanyJobListing() {
     const userState = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+    });
 
     function handleRemove(id: string) {
         try {
@@ -37,26 +41,31 @@ function CompanyJobListing() {
         dispatch(setJobById(id))
         navigate(`/company/job-list/${id}`)
     }
-    const fetchData = async () => {
+    const fetchData = async (page: number, pageSize: number, name?: string, category?: string, employment?: string) => {
         try {
-            await dispatch(getAllJob(userState?.user?._id)).unwrap()
+            setLoading(true)
+            await dispatch(getAllJob(
+                {
+                    _id: userState?.user?._id,
+                    page,
+                    pageSize,
+                    name,
+                    employment,
+                    category
+                }
+            )).unwrap()
+
+            // if (data) {
             setLoading(false)
+            // }
         } catch (error) {
             setLoading(false)
             console.log(error)
         }
     }
 
-    useEffect(() => {
-        if (loading) {
-            fetchData()
-        }
-    }, [])
 
-    const [pagination, setPagination] = useState({
-        pageIndex: 0,
-        pageSize: 5,
-    });
+
 
     function handleNavigation(id: string) {
         dispatch(setJobById(id))
@@ -73,75 +82,72 @@ function CompanyJobListing() {
             }
         },
         {
-            id: 'status',
+            id: 'statusExpiry',
             accessorKey: 'job?.expiry',
             header: () => <div className="text-left">status</div>,
             cell: ({ row }) => {
-                let date = new Date(String(row?.original?.job?.expiry))
-                let now = new Date()
+                let date = new Date(String(row?.original?.job?.expiry));
+                let now = new Date();
                 let data = date > now ? true : false;
-                return <span className={`border border-solid px-2 py-1 rounded-full ${data ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>{data ? 'Live' : 'Closed'}</span>
+                return (
+                    <span className={`border border-solid px-2 py-1 rounded-full ${data ? 'border-green-600 text-green-600' : 'border-red-600 text-red-600'}`}>
+                        {data ? 'Live' : 'Closed'}
+                    </span>
+                );
             }
         },
         {
-            id: 'expriry',
+            id: 'expiryDate',
             accessorKey: `job?.expiry`,
-            header: () => <div className="text-left">due date</div>,
+            header: () => <div className="text-left">Due Date</div>,
             cell: ({ row }) => {
                 const givenDate = new Date(String(row?.original?.job?.expiry));
-                console.log('Expiry value:', row?.original?.job?.expiry);
-                console.log(givenDate)
                 if (isNaN(givenDate.getTime())) {
-                    // console.error('Invalid date:', expiry);
                     return <div>Invalid Date</div>;
                 }
-                let formattedDate
-                if (givenDate) {
-                    formattedDate = format(givenDate, 'dd-MMM-yy');
-                }
-                return <div>{formattedDate ?? ''}</div>
+                const formattedDate = format(givenDate, 'dd-MMM-yy');
+                return <div>{formattedDate ?? ''}</div>;
             }
         },
         {
             id: 'createdAt',
             accessorKey: `createdAt`,
-            header: () => <div className="text-left">Date posted</div>,
+            header: () => <div className="text-left">Date Posted</div>,
             cell: ({ row }) => {
                 const givenDate = new Date(String(row.original?.job?.createdAt));
                 if (isNaN(givenDate.getTime())) {
-                    // console.error('Invalid date:', expiry);
                     return <div>Invalid Date</div>;
                 }
                 const formattedDate = format(givenDate, 'dd-MMM-yy');
-                return <div>{formattedDate || ''}</div>
+                return <div>{formattedDate || ''}</div>;
             }
         },
         {
-            id: 'name',
+            id: 'category',
             accessorKey: `job?.category`,
-            header: () => <div className="text-left">category</div>,
+            header: () => <div className="text-left">Category</div>,
             cell: ({ row }) => {
-                return <div className='capitalize'>{row.original?.job?.categoryDetails?.name}</div>
+                return <div className='capitalize'>{row.original?.job?.categoryDetails?.name}</div>;
             }
         },
         {
-            id: 'status',
+            id: 'employment',
             accessorKey: 'job?.employment',
-            header: () => <div className="text-left">job type</div>,
+            header: () => <div className="text-left">Job Type</div>,
             cell: ({ row }) => {
-                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original?.job?.employmentDetails?.name}</span>
+                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original?.job?.employmentDetails?.name}</span>;
             }
         },
         {
-            id: 'count',
+            id: 'applicantCount',
             accessorKey: 'applicantCount',
-            header: () => <div className="text-left">applicants</div>,
+            header: () => <div className="text-left">Applicants</div>,
             cell: ({ row }) => {
-                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original?.applicantCount}</span>
+                return <span className='border border-solid text-indigo-600 border-indigo-600 px-2 py-1 rounded-full capitalize'>{row.original?.applicantCount}</span>;
             }
         },
         {
-            id: "actions",
+            id: 'actions',
             header: 'Actions',
             enableHiding: false,
             cell: ({ row }) => {
@@ -155,54 +161,36 @@ function CompanyJobListing() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            {
-                                (
-                                    <DropdownMenuItem
-                                        className='
-                                      border
-                                      font-bold
-                                      bg-red-600
-                                      text-white
-                                      '
-                                        onClick={() => handleRemove(row.original?._id)}
-                                    >
-                                        remove
-                                    </DropdownMenuItem>
-                                )
-                            }
-
                             <DropdownMenuItem
-                                className='
-                                      border
-                                      font-bold
-                                      '
+                                className='border font-bold bg-red-600 text-white'
+                                onClick={() => handleRemove(row.original?._id)}
+                            >
+                                Remove
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                className='border font-bold'
                                 onClick={() => handleEdit(row.original?._id)}
                             >
                                 Edit
                             </DropdownMenuItem>
-                            {/* <Link to={`applicants/${row.original._id}`}> */}
                             <DropdownMenuItem
-                                className='
-                                      border
-                                      font-bold
-                                      '
+                                className='border font-bold'
                                 onClick={() => handleNavigation(row.original?._id)}
                             >
-                                details
+                                Details
                             </DropdownMenuItem>
-                            {/* </Link> */}
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
                     </DropdownMenu>
-                )
+                );
             },
         },
-    ]
+    ];
 
     const table = useReactTable({
-        data: jobState?.jobs || [],
+        data: jobState?.jobs?.jobs || [],
         columns,
-        pageCount: Math.ceil((jobState?.jobs?.length || 0) / pagination.pageSize),
+        pageCount: Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize),
         state: {
             pagination
         },
@@ -212,6 +200,23 @@ function CompanyJobListing() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
     });
+    
+    useEffect(() => {
+        setLoading(true)
+        fetchData(pagination.pageIndex + 1, pagination.pageSize);
+        console.log(jobState?.jobs?.jobs)
+    }, [pagination.pageIndex, pagination.pageSize]);
+
+    if (loading) {
+        return (
+            <Backdrop
+                open={loading}
+                sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
+        )
+    }
 
     return (
         <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
@@ -257,49 +262,43 @@ function CompanyJobListing() {
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
-                                    {headerGroup.headers.map((header) => {
-                                        return (
-                                            <TableHead key={header.id}>
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                            </TableHead>
-                                        )
-                                    })}
+                                    {headerGroup.headers.map((header) => (
+                                        <TableHead key={header.id}>
+                                            {header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )}
+                                        </TableHead>
+                                    ))}
                                 </TableRow>
                             ))}
                         </TableHeader>
                         <TableBody>
                             {table.getRowModel().rows?.length ? (
                                 table.getRowModel().rows
-                                    .filter(row => row.original?.job?.status === false)
+                                    // .filter(row => row.original?.job?.status === false)
                                     .length > 0 ? (
                                     table.getRowModel().rows
-                                        .map((row) => (
+                                        .map((row, rowIndex) => (
                                             <TableRow
-                                                key={row.id}
-                                                data-state={row.getIsSelected() && "selected"}
+                                                key={`row-${row.id}-${rowIndex}`} // Ensure unique key for each row
                                             >
-                                                {row.getVisibleCells().map((cell) =>
-                                                (
-                                                    <TableCell key={cell.id}>
+                                                {row.getVisibleCells().map((cell, cellIndex) => (
+                                                    <TableCell key={`cell-${cell.id}-${cellIndex}`}> {/* Ensure unique key for each cell */}
                                                         {flexRender(
                                                             cell.column.columnDef.cell,
                                                             cell.getContext()
                                                         )}
                                                     </TableCell>
-                                                )
-                                                )}
+                                                ))}
                                             </TableRow>
-                                        )
-                                        )
+                                        ))
                                 ) : (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={columns.length}
+                                            colSpan={columns?.length}
                                             className="h-24 text-center"
                                         >
                                             No results.
@@ -309,7 +308,7 @@ function CompanyJobListing() {
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={columns.length}
+                                        colSpan={columns?.length}
                                         className="h-24 text-center"
                                     >
                                         No results.
@@ -324,7 +323,10 @@ function CompanyJobListing() {
                         <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => table.previousPage()}
+                            onClick={() => {
+                                console.log('hiii')
+                                table.previousPage()
+                            }}
                             disabled={!table.getCanPreviousPage()}
                             className='border-solid border-slate-900'
                         >
@@ -339,7 +341,7 @@ function CompanyJobListing() {
                             size="sm"
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
-                                                 className='border-solid border-slate-900'
+                            className='border-solid border-slate-900'
                         >
                             Next
                             <ChevronRightIcon className="h-4 w-4" />
@@ -347,14 +349,9 @@ function CompanyJobListing() {
                     </div>
                 </div>
             </div>
-            <Backdrop
-                open={false}
-                sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+
         </div>
     )
 }
 
-export default CompanyJobListing
+export default memo(CompanyJobListing)

@@ -99,7 +99,7 @@ function Overview() {
         }
     }
 
-    async function handleSubmit(values: FormikValues, helpers: FormikHandlers<FormikValues>) {
+    async function handleSubmit(values: FormikValues, helpers: any) {
         const { setSubmitting, setFieldError } = helpers
         if (!locations?.length || !stacks?.length) {
             console.log('Locations or tech stacks are missing');
@@ -233,7 +233,7 @@ function Overview() {
                                                 <div className="mt-6 font-semibold max-md:max-w-full">
                                                     Website
                                                     {
-                                                        errors?.website && <span className='text-red-600'> {errors?.website} </span>
+                                                        errors?.website && <span className='text-red-600'> {errors?.website as string} </span>
                                                     }
                                                 </div>
                                                 <Field name='website' className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full" />
@@ -241,7 +241,7 @@ function Overview() {
                                                     !locations?.length && <span className='text-red-600'>location is required</span>
                                                 }
                                                 {
-                                                    errors?.locations && <span className='text-red-600'> {errors?.locations} </span>
+                                                    errors?.locations && <span className='text-red-600'> {errors?.locations as string} </span>
                                                 }
 
                                                 <LocationInput label='location' name='location' location={locations} setLocation={setLocation} />
@@ -277,7 +277,7 @@ function Overview() {
                                                     </div>
                                                 </div>
                                                 {
-                                                    errors?.foundedDate && <span className='text-red-600'> {errors?.foundedDate} </span>
+                                                    errors?.foundedDate && <span className='text-red-600'> {errors?.foundedDate as string} </span>
                                                 }
                                                 <TypeDate label='founded-date' name='date' date={date} setDate={setDate} />
 
@@ -292,7 +292,7 @@ function Overview() {
                                                 <div className="text-base font-semibold leading-6 text-slate-600 max-md:max-w-full">
                                                     Description
                                                     {
-                                                        errors?.description && <span className='text-red-600'> {errors?.description} </span>
+                                                        errors?.description && <span className='text-red-600'> {errors?.description as string} </span>
                                                     }
                                                 </div>
                                                 <Field type='textarea' cols='30'

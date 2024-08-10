@@ -15,14 +15,28 @@ export const postJob = createAsyncThunk(
     }
 )
 
+export type paginationAndFilter = {
+    name?: string,
+    pageSize?: number,
+    page?: number,
+    category?: string,
+    employment?: string,
+    _id: string
+}
+
 export const getAllJob = createAsyncThunk(
     'list-job',
-    async (req?: string, { rejectWithValue }) => {
+    async (req?: paginationAndFilter, { rejectWithValue }) => {
         try {
             let res
             console.log(req)
-            if (req) {
-                res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req}`)
+            if (req?._id) {
+                res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req?._id}`, {
+                    params:{
+                        page:req.page,
+                        pageSize:req.pageSize
+                    }
+                })
             } else {
                 res = await AXIOS_INSTANCE_JOB.get(`/jobs`)
             }
@@ -36,7 +50,7 @@ export const getAllJob = createAsyncThunk(
 
 export const applyJob = createAsyncThunk(
     'user/apply',
-    async (req:any, { rejectWithValue }) => {
+    async (req: any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/apply-job', req)
             return data
