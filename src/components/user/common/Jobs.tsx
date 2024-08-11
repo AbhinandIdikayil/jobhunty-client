@@ -121,7 +121,7 @@ function Jobs() {
             filterAndSearch?.category,
         )
     }, [pagination.pageIndex, pagination.pageSize,
-         filterAndSearch?.employment, filterAndSearch?.category
+    filterAndSearch?.employment, filterAndSearch?.category
     ])
 
     function applyForJob(data: any) {
@@ -156,7 +156,7 @@ function Jobs() {
         // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
-        console.log('asdf',newAriaChecked)
+        console.log('asdf', newAriaChecked)
         setFilterAndSearch(prevState => {
             let updatedCategory;
 
@@ -175,6 +175,34 @@ function Jobs() {
             return {
                 ...prevState,
                 category: updatedCategory
+            };
+        })
+    }
+
+    function handleEmployment(e: any, _id: string) {
+        const target = e.currentTarget; // or e.target if it's directly on the button
+        const ariaChecked = target.getAttribute('aria-checked');
+        console.log('aria-checked value:', ariaChecked); // Should match what is in the DOM
+
+        // Optional: Toggle aria-checked value if needed
+        const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
+        target.setAttribute('aria-checked', newAriaChecked);
+        console.log('asdf', newAriaChecked)
+        setFilterAndSearch(prevState => {
+            let updatedEmployment;
+
+            if (newAriaChecked === 'true') {
+                // Add employment if checked
+                updatedEmployment = [...prevState.employment, _id];
+            } else {
+                // Remove .employment if unchecked
+                updatedEmployment = prevState.employment.filter(id => id !== _id);
+            }
+
+            console.log(updatedEmployment)
+            return {
+                ...prevState,
+                employment: updatedEmployment
             };
         })
     }
@@ -245,7 +273,7 @@ function Jobs() {
                                         <AccordionContent>
                                             {
                                                 categoryState.category?.map(data => (
-                                                    <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                                    <div onClick={(e) => handleEmployment(e,data?._id)} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                                                         <Checkbox id="terms2" />
                                                         <label
                                                             htmlFor="terms2"
@@ -265,8 +293,6 @@ function Jobs() {
                                             {
                                                 categoryState?.sectors?.map(data => (
                                                     <div onClick={(e) => handleCategory(e, data?._id)}
-
-
                                                         className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                                                         <Checkbox id="terms2" />
                                                         <label
@@ -278,15 +304,6 @@ function Jobs() {
                                                     </div>
                                                 ))
                                             }
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    Engineering
-                                                </label>
-                                            </div>
                                         </AccordionContent>
                                     </AccordionItem>
 
