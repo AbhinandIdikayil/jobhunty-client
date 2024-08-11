@@ -22,6 +22,11 @@ import { AppDispatch, RootState } from 'src/redux/store';
 import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'react-toastify';
+import { UseDebounce } from 'src/hooks/Debounce';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import { Backdrop, CircularProgress } from '@mui/material';
+import { useSelect } from '@nextui-org/react';
 
 const BootstrapInput = styled(InputBase)(({ theme }) => ({
     'label + &': {
@@ -67,14 +72,57 @@ function Jobs() {
     const { open } = context;
     const jobState = useSelector((state: RootState) => state.job);
     const userState = useSelector((state: RootState) => state.user)
+    const categoryState = useSelector((state: RootState) => state?.category)
     const dispatch: AppDispatch = useDispatch()
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [pdf, setPdf] = useState([])
     const [jobid, setJobId] = useState()
     const [companyId, setCompanyId] = useState()
+    const [loading, setLoading] = useState(false)
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+    });
+    const [filterAndSearch, setFilterAndSearch] = useState({
+        name: '',
+        category: [],
+        employment: []
+    })
+    // const debounceQuery = UseDebounce(filterAndSearch?.name, 500)
+    const page = Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize)
+
+    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[]) => {
+        try {
+            setLoading(true)
+            let data = await dispatch(getAllJob({
+                page,
+                pageSize,
+                name,
+                employment,
+                category
+            })).unwrap()
+            if (data) {
+                setLoading(false)
+            }
+        } catch (error) {
+            setLoading(false)
+
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
-        dispatch(getAllJob()).unwrap()
-    }, [])
+        setLoading(true)
+        fetchData(
+            pagination.pageIndex + 1,
+            pagination.pageSize,
+            '',
+            filterAndSearch?.employment,
+            filterAndSearch?.category,
+        )
+    }, [pagination.pageIndex, pagination.pageSize,
+         filterAndSearch?.employment, filterAndSearch?.category
+    ])
 
     function applyForJob(data: any) {
         if (userState?.user.resumes.length > 0) {
@@ -98,6 +146,37 @@ function Jobs() {
             console.log(error)
             toast.error(jobState?.err?.message, { position: "top-center" })
         }
+    }
+
+    function handleCategory(e: any, _id: string) {
+        const target = e.currentTarget; // or e.target if it's directly on the button
+        const ariaChecked = target.getAttribute('aria-checked');
+        console.log('aria-checked value:', ariaChecked); // Should match what is in the DOM
+
+        // Optional: Toggle aria-checked value if needed
+        const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
+        target.setAttribute('aria-checked', newAriaChecked);
+        console.log('asdf',newAriaChecked)
+        setFilterAndSearch(prevState => {
+            let updatedCategory;
+
+            if (newAriaChecked === 'true') {
+                console.log('-i')
+                // Add category if checked
+                updatedCategory = [...prevState.category, _id];
+            } else {
+                console.log('i-')
+
+                // Remove category if unchecked
+                updatedCategory = prevState.category.filter(id => id !== _id);
+            }
+
+            console.log(updatedCategory)
+            return {
+                ...prevState,
+                category: updatedCategory
+            };
+        })
     }
 
     return (
@@ -126,15 +205,13 @@ function Jobs() {
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
-                            {/* <InputLabel htmlFor="">Age</InputLabel> */}
-                            {/* <FormHelperText>Age</FormHelperText> */}
-                            <BootstrapInput id="demo-customized-textbox" />
+                            <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
                         </FormControl>
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
 
                             <NativeSelect
-
+                                onChange={() => console.log(filterAndSearch)}
                                 sx={{ minWidth: 200 }}
                                 id="demo-customized-select-native"
                                 // value={age}
@@ -166,39 +243,41 @@ function Jobs() {
                                     <AccordionItem value="item-1">
                                         <AccordionTrigger className='text-sm text-black'>Types Of Employment</AccordionTrigger>
                                         <AccordionContent>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-xs text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    Internship
-                                                </label>
-                                            </div>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-xs text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    Contract
-                                                </label>
-                                            </div>
+                                            {
+                                                categoryState.category?.map(data => (
+                                                    <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                                        <Checkbox id="terms2" />
+                                                        <label
+                                                            htmlFor="terms2"
+                                                            className="text-xs text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                        >
+                                                            {data?.name}
+                                                        </label>
+                                                    </div>
+                                                ))
+                                            }
                                         </AccordionContent>
                                     </AccordionItem>
 
                                     <AccordionItem className='text-sm text-black' value="item-2">
                                         <AccordionTrigger>Categories</AccordionTrigger>
                                         <AccordionContent>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    Technology
-                                                </label>
-                                            </div>
+                                            {
+                                                categoryState?.sectors?.map(data => (
+                                                    <div onClick={(e) => handleCategory(e, data?._id)}
+
+
+                                                        className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                                        <Checkbox id="terms2" />
+                                                        <label
+                                                            htmlFor="terms2"
+                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                        >
+                                                            {data?.name}
+                                                        </label>
+                                                    </div>
+                                                ))
+                                            }
                                             <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                                                 <Checkbox id="terms2" />
                                                 <label
@@ -206,30 +285,6 @@ function Jobs() {
                                                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                                 >
                                                     Engineering
-                                                </label>
-                                            </div>
-                                        </AccordionContent>
-                                    </AccordionItem>
-
-                                    <AccordionItem className='text-sm text-black' value="item-3">
-                                        <AccordionTrigger>Job Level</AccordionTrigger>
-                                        <AccordionContent>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    Directore
-                                                </label>
-                                            </div>
-                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                <Checkbox id="terms2" />
-                                                <label
-                                                    htmlFor="terms2"
-                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                >
-                                                    VP or above
                                                 </label>
                                             </div>
                                         </AccordionContent>
@@ -300,10 +355,45 @@ function Jobs() {
                                     </div>
                                 </div>
                                 {
-                                    jobState.jobs.map((data: any, ind) => (
+                                    jobState?.jobs?.jobs?.map((data: any, ind) => (
                                         <UserJobCard key={ind} data={data} apply={applyForJob} />
                                     ))
                                 }
+                                <div className='flex items-center justify-center gap-2 font-bold'>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => {
+                                            if (pagination.pageIndex < page) {
+                                                if (pagination.pageIndex + 1 > 1) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
+                                                }
+                                            }
+                                        }}
+                                        className="h-8 w-8 p-0"
+                                    >
+                                        <span className="sr-only">Go to first page</span>
+                                        <DoubleArrowLeftIcon className="h-4 w-4" />
+                                    </Button>
+                                    {
+                                        <span className='font-thin'>
+                                            page {pagination?.pageIndex + 1} of {page}
+                                        </span>
+                                    }
+                                    <Button
+                                        variant="contained"
+                                        className={`h-8 w-8 p-0`}
+                                        onClick={() => {
+                                            if (pagination.pageIndex < page) {
+                                                if (pagination.pageIndex + 1 < page) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <span className="sr-only">Go to first page</span>
+                                        <DoubleArrowRightIcon className="h-4 w-4" />
+                                    </Button>
+                                </div>
                                 <AlertDialog open={modalOpen}>
 
                                     <AlertDialogTrigger asChild>
@@ -339,6 +429,16 @@ function Jobs() {
                         </div>
                     </div>
                 </div>
+                {
+                    loading && (
+                        <Backdrop
+                            open={loading}
+                            sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        >
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
+                    )
+                }
             </div>
         </>
     )

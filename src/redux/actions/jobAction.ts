@@ -16,12 +16,14 @@ export const postJob = createAsyncThunk(
 )
 
 export type paginationAndFilter = {
+    price?:string,
     name?: string,
     pageSize?: number,
     page?: number,
-    category?: string,
-    employment?: string,
-    _id: string
+    category?: [string],
+    employment?: [string],
+    _id?: string  //! HERE THE ID IS USED TO GET THE JOBS THAT ARE BY A SPECIFIED COMPNAY
+    //! IF USER SIDE IS USING THE API DONT PASS THE ID
 }
 
 export const getAllJob = createAsyncThunk(
@@ -35,11 +37,19 @@ export const getAllJob = createAsyncThunk(
                     params:{
                         page:req.page,
                         pageSize:req.pageSize,
-                        name:req.name
+                        name:req.name,
                     }
                 })
             } else {
-                res = await AXIOS_INSTANCE_JOB.get(`/jobs`)
+                res = await AXIOS_INSTANCE_JOB.get(`/jobs`,{
+                    params: {
+                        page:req?.page,
+                        pageSize:req?.pageSize,
+                        name:req?.name,
+                        category:req.category,
+                        employment:req.employment,
+                    }
+                })
             }
             const { data } = res
             return data
