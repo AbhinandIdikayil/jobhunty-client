@@ -82,7 +82,7 @@ function ApplicantsOfJob() {
   ]
 
   const table = useReactTable({
-    data: jobState?.job?.applicants || [],
+    data: jobState?.job?.jobs?.applicants || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

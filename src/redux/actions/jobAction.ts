@@ -16,7 +16,7 @@ export const postJob = createAsyncThunk(
 )
 
 export type paginationAndFilter = {
-    price?:string,
+    price?:[number] | [],
     name?: string,
     pageSize?: number,
     page?: number,
@@ -46,8 +46,9 @@ export const getAllJob = createAsyncThunk(
                         page:req?.page,
                         pageSize:req?.pageSize,
                         name:req?.name,
-                        category:req.category,
-                        employment:req.employment,
+                        category:req?.category,
+                        employment:req?.employment,
+                        price:req?.price
                     }
                 })
             }
