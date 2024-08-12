@@ -111,7 +111,7 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
                             <ul className=''>
                                 {suggestions.map((suggestion:any, index) => (
                                     <li style={{ border: '1px  groove' }} onClick={() => handleSuggestionClick(suggestion)}
-                                        className='border-gray-400 cursor-pointer' key={index}>{suggestion?.csc || suggestions?.code}
+                                        className='border-gray-400 cursor-pointer' key={index}>{suggestion?.csc || suggestion?.code}
                                     </li>
                                 ))}
                             </ul>

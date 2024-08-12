@@ -51,10 +51,10 @@ function Chat() {
                 <div className='w-full'>
                     <input type="text" value={search || ''} onChange={(e) => setSearch(e.target.value)} placeholder='Search users..' className='w-full bg-gray-200 h-8 px-2 focus:outline-gray-200 rounded-md' />
                 </div>
-                <div className='flex flex-col px-3 gap-2 mt-1'>
+                <div className='flex flex-col px-3 gap-2 mt-1 w-full'>
                     {
                         data?.length ? data?.map(data => (
-                            <div className="flex gap-2 items-center">
+                            <div className="w-full flex gap-2 items-center hover:bg-gray-50 hover:cursor-pointer rounded ">
                                 <Avatar />
                                 <div className="flex flex-col">
                                     <span className="text-small">{data?.name}</span>
@@ -103,25 +103,7 @@ function Chat() {
                     </div>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
                         joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
-                    </div>
+                    </div>                   
                 </div>
 
                 <form
