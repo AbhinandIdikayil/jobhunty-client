@@ -13,13 +13,17 @@ function Settings() {
 
     async function hanldeRequest() {
         try {
+            if(!state?.user?.profileCompletionStatus){
+                toast.error('please complete the profile');
+                return
+            }
             const data = await dispatch(sendRequest()).unwrap()
             console.log(data)
             toast.success('Request has been send',{
                 position:"top-center"
             })
         } catch (error: any) {
-            if(error?.data?.message) {
+            if(error?.message) {
                 toast.warn('Request has been already sent',{
                     position:"top-center"
                 })

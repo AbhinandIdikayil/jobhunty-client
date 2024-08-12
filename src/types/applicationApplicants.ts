@@ -73,6 +73,7 @@ export interface JobApplication {
         ],
         experiences?: [
             {
+                working: boolean,
                 title: string,
                 description: string,
                 image: string,

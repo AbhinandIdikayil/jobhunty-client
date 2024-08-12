@@ -1,45 +1,73 @@
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { Avatar, Listbox, ListboxItem, Textarea } from '@nextui-org/react'
+import {  Textarea } from '@nextui-org/react'
 import { CornerDownLeft, Mic, Paperclip } from 'lucide-react'
-import React from 'react'
-import { users } from './data'
+import { useEffect, useState } from 'react'
+import { UseDebounce } from 'src/hooks/Debounce'
+import { AXIOS_INSTANCE_USER } from 'src/constants/axiosInstance'
+import { Avatar } from '@mui/material'
+import Loading from 'src/components/common/Loading'
 
 
 function Chat() {
 
+    const [search, setSearch] = useState<string | null>(null)
+    const debouncedValue = UseDebounce(search || '', 500)
+    const [data, setData] = useState<any[]>([]);
+    const [loading,setLoading] =  useState<boolean>(false)
 
-    const [values, setValues] = React.useState(new Set(["1"]));
+    const handleOnchange = async () => {
+        try {
+            const res = await AXIOS_INSTANCE_USER.get('/search-user', {
+                params: { name: debouncedValue },
+            });
+            if (Array.isArray(res.data)) {
+                setData(res.data);
+            } else {
+                setData([]);
+            }
+            setLoading(false)
+        } catch (error) {
+            setLoading(false)
+            setData([]);
+            console.error(error);
+        }
+    };
+    useEffect(() => {
+        setLoading(true)
+        if (debouncedValue) {
+            handleOnchange();
+        } else {
+            setLoading(false)
+            setData([]); // Clear data if search is empty
+        }
+    }, [debouncedValue]);
 
 
     return (
         <div className='flex gap-1 w-full'>
             <div className='w-1/3 hidden md:block'>
-                <Listbox
-                    classNames={{
-                        base: "max-w-xs",
-                        list: "chat max-h-[500px] overflow-y-scroll",
-                    }}
-                    defaultSelectedKeys={["1"]}
-                    items={users}
-                    label="Assigned to"
-                    selectionMode="multiple"
-                    onSelectionChange={setValues}
-                    variant="flat"
-                >
-                    {(item) => (
-                        <ListboxItem key={item.id} textValue={item.name}>
-                            <div className="flex gap-2 items-center">
-                                <Avatar alt={item.name} className="flex-shrink-0" size="sm" src={item.avatar} />
+                <div className='w-full'>
+                    <input type="text" value={search || ''} onChange={(e) => setSearch(e.target.value)} placeholder='Search users..' className='w-full bg-gray-200 h-8 px-2 focus:outline-gray-200 rounded-md' />
+                </div>
+                <div className='flex flex-col px-3 gap-2 mt-1 w-full'>
+                    {
+                        data?.length ? data?.map(data => (
+                            <div className="w-full flex gap-2 items-center hover:bg-gray-50 hover:cursor-pointer rounded ">
+                                <Avatar />
                                 <div className="flex flex-col">
-                                    <span className="text-small">{item.name}</span>
-                                    <span className="text-tiny text-default-400">{item.email}</span>
+                                    <span className="text-small">{data?.name}</span>
+                                    <span className="text-tiny text-default-400">{data?.email}</span>
                                 </div>
                             </div>
-                        </ListboxItem>
-                    )}
-                </Listbox>
+                        )) : (
+                            <div>
+                                ....
+                            </div>
+                        )
+                    }
+                </div>
             </div>
             <div className="relative flex w-full min-h-[82vh] flex-col rounded-xl bg-muted/50 px-1 lg:col-span-2">
 
@@ -50,59 +78,32 @@ function Chat() {
                 <div className="flex-1" />
                 <div className='chat w-full max-h-[63vh] overflow-y-scroll pb-2 flex flex-col scroll-smooth px-1'>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
                     </div>
                     <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='list-chat w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
-                    <div className='w-auto text-black max-w-[66.67%]  bg-gray-200 px-2 rounded-bl-none rounded-lg mb-2'>
-                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem 
-                    </div>
+                        joeljhgh Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt libero quisquam doloribus repudiandae deleniti rem
+                    </div>                   
                 </div>
 
                 <form
@@ -136,6 +137,7 @@ function Chat() {
                     </div>
                 </form>
             </div>
+            <Loading loading={loading} />
         </div>
     )
 }

@@ -3,14 +3,15 @@ import DropDown from "./DropDown";
 import { useSocket } from "src/context/SocketConext";
 import { useEffect } from "react";
 import { toast } from 'react-toastify'
-import { RootState } from "src/redux/store";
-import { useSelector } from "react-redux";
+import { AppDispatch, RootState } from "src/redux/store";
+import { useDispatch, useSelector } from "react-redux";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar } from "@mui/material";
+import { getCompany } from "src/redux/actions/companyAction";
 interface props {
     func: () => void,
     open: boolean
@@ -20,6 +21,7 @@ function Header({ func, open }: props) {
 
     const socket = useSocket();
     const state = useSelector((state: RootState) => state?.user)
+    const dispatch: AppDispatch = useDispatch()
     // const navigate = useNavigate()
     useEffect(() => {
         const handleRequestUpdate = ({ email, status }: { email: string, status: string }) => {
@@ -58,6 +60,19 @@ function Header({ func, open }: props) {
     //         return navigate('/company/login')
     //     }
     // },[state])
+
+    const fetchData = async () => {
+        try {
+            await dispatch(getCompany()).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
+        console.log('hi from overview -----')
+    }, [])
 
     return (
         <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>

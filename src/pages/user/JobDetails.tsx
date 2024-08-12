@@ -17,6 +17,7 @@ function JobDetails() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     useEffect(() => {
+        window.scroll(0,0)
         if (id) {
             dispatch(setJobById(id))
 

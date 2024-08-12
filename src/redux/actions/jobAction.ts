@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AXIOS_INSTANCE_JOB } from "src/constants/axiosInstance";
+import { handleTokenError } from "src/utils/HandleError";
 
 
 export const postJob = createAsyncThunk(
     'company/post-job',
-    async (req, { rejectWithValue }) => {
+    async (req:any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/post-job', req);
             return data;
@@ -14,15 +15,42 @@ export const postJob = createAsyncThunk(
     }
 )
 
+export type paginationAndFilter = {
+    price?:[number] | [],
+    name?: string,
+    pageSize?: number,
+    page?: number,
+    category?: [string],
+    employment?: [string],
+    _id?: string  //! HERE THE ID IS USED TO GET THE JOBS THAT ARE BY A SPECIFIED COMPNAY
+    //! IF USER SIDE IS USING THE API DONT PASS THE ID
+}
+
 export const getAllJob = createAsyncThunk(
     'list-job',
-    async (req?: string, { rejectWithValue }) => {
+    async (req?: paginationAndFilter, { rejectWithValue }) => {
         try {
             let res
-            if (req) {
-                res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req}`)
+            console.log(req)
+            if (req?._id) {
+                res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req?._id}`, {
+                    params:{
+                        page:req.page,
+                        pageSize:req.pageSize,
+                        name:req.name,
+                    }
+                })
             } else {
-                res = await AXIOS_INSTANCE_JOB.get(`/jobs`)
+                res = await AXIOS_INSTANCE_JOB.get(`/jobs`,{
+                    params: {
+                        page:req?.page,
+                        pageSize:req?.pageSize,
+                        name:req?.name,
+                        category:req?.category,
+                        employment:req?.employment,
+                        price:req?.price
+                    }
+                })
             }
             const { data } = res
             return data
@@ -34,7 +62,7 @@ export const getAllJob = createAsyncThunk(
 
 export const applyJob = createAsyncThunk(
     'user/apply',
-    async (req:any, { rejectWithValue }) => {
+    async (req: any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/apply-job', req)
             return data
@@ -100,7 +128,7 @@ export const listApplicants = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.get('/applicant')
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )

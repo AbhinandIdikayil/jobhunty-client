@@ -15,7 +15,10 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { Factory, HousePlus } from 'lucide-react';
+import { Factory, HousePlus, LogOut } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from 'src/redux/store';
+import { logout } from 'src/redux/actions/userAction';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -53,16 +56,28 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 interface props {
   handleDrawerOpen: () => void,
-  handleDrawerClose:() => void,
+  handleDrawerClose: () => void,
   navLinks: string[],
   open: boolean
 }
 
+
 function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: props) {
+
+  const dispatch: AppDispatch = useDispatch()
+  function handleAdminLogout() {
+    try {
+      dispatch(logout(null)).unwrap()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
   return (
     <>
       <CssBaseline />
-      <AppBar position="fixed" open={open} style={{zIndex:90}}>
+      <AppBar position="fixed" open={open} style={{ zIndex: 90 }}>
 
         <Header open={open} func={handleDrawerOpen} />
 
@@ -74,7 +89,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            backgroundColor:'#f4f4f4'
+            backgroundColor: '#f4f4f4'
           },
         }}
         variant="persistent"
@@ -86,18 +101,18 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         </DrawerHeader>
         <Divider />
         <List>
-          {['Dashboard','Company request', 'All companies', 'All users','Category','Sector'].map((text, index) => (
+          {['Dashboard', 'Company request', 'All companies', 'All users', 'Category', 'Sector'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton  sx={{width:drawerWidth}}>
+                <ListItemButton sx={{ width: drawerWidth }}>
                   <ListItemIcon>
                     {
                       text == 'Dashboard' && <RiHome2Line size={30} /> ||
                       text == 'Company request' && <TbBuildingSkyscraper size={30} /> ||
                       text == 'All companies' && <PiUsersThreeDuotone size={30} /> ||
-                      text == 'All users' && <PiUsersThreeDuotone size={30} />  ||
-                      text == 'Category' && <HousePlus size={30} />  ||
-                      text == 'Sector' && <Factory size={30} />  
+                      text == 'All users' && <PiUsersThreeDuotone size={30} /> ||
+                      text == 'Category' && <HousePlus size={30} /> ||
+                      text == 'Sector' && <Factory size={30} />
 
                     }
                   </ListItemIcon>
@@ -119,6 +134,16 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
               </ListItemButton>
             </ListItem>
           ))}
+        </List>
+        <List>
+          <ListItem onClick={handleAdminLogout} key={'Logout'} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogOut size={30} />
+              </ListItemIcon>
+              <ListItemText primary={'Logout'} />
+            </ListItemButton>
+          </ListItem>
         </List>
       </Drawer>
     </>

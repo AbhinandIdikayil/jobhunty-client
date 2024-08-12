@@ -26,7 +26,7 @@ export const updateProfile = createAsyncThunk(
             return data
         } catch (error) {
             console.log(error)
-            rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -38,7 +38,7 @@ export const updateSocialLinks = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_COMPANY.put('/company-social', { data: req });
             return data;
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -51,7 +51,7 @@ export const sendRequest = createAsyncThunk(
             console.log(data)
             return data
         } catch (error: any) {
-            return rejectWithValue(error.response)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )

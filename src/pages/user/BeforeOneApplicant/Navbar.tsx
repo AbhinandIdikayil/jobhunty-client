@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { AppDispatch, RootState } from '../../../redux/store'
 import { resetState } from '../../../redux/reducers/user/userSlice';
 import { getUser, logout } from '../../../redux/actions/userAction';
 import { useEffect } from 'react';
+import { listCategory, listSectors } from 'src/redux/actions/commonAction';
 
 function Navbar() {
     const user = useSelector((state: RootState) => state.user)
@@ -12,6 +13,8 @@ function Navbar() {
 
     useEffect(() => {
         dispatch(getUser()).unwrap()
+        dispatch(listCategory(null)).unwrap()
+        dispatch(listSectors()).unwrap()
         // if (user.role == 'user') {
         //     return navigate('/home')
         // } 
@@ -34,9 +37,9 @@ function Navbar() {
 
     return (
         <nav className="flex justify-center items-center self-stretch px-16 w-full max-md:px-5 max-md:max-w-full border-b-2">
-            <div className="flex gap-5 justify-between  w-full max-w-[1192px] max-md:flex-wrap max-md:max-w-full">
-                <div className="flex gap-5 justify-center max-md:flex-wrap max-md:max-w-full">
-                    <div className="flex gap-2  items-center">
+            <div className="flex gap-1 sm:gap-5 justify-between items-center  w-full max-w-[1192px] max-md:max-w-full">
+                <div className="flex gap-1 sm:gap-5 justify-center max-md:flex-wrap max-md:max-w-full">
+                    <div className="hidden sm:flex gap-2  items-center">
                         <div className="flex overflow-hidden relative flex-col justify-center items-center w-8 aspect-square">
                             <img
                                 loading="lazy"
@@ -44,16 +47,16 @@ function Navbar() {
                                 className="shrink-0 aspect-[1.35] w-[43px]"
                             />
                         </div>
-                        <div className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
+                        <Link to={'/home'} className="flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
                             JobHuntly
-                        </div>
+                        </Link>
                     </div>
-                    <div className="flex gap-4 justify-center pt-1 items-center text-base font-medium leading-6 text-slate-600">
-                        <NavLink to={'/home/jobs'}>Find Jobs</NavLink>
-                        <NavLink to={'/home/companies'}>Browse Companies</NavLink>
+                    <div className="flex gap-4 justify-center pt-1 items-center text-sm sm:text-base font-medium leading-6 text-slate-600">
+                        <NavLink to={'/home/jobs'}> Jobs</NavLink>
+                        <NavLink to={'/home/companies'}>Companies</NavLink>
                     </div>
                 </div>
-                <div className="flex gap-4 justify-between py-3.5 pl-6 text-base font-bold leading-6 text-center">
+                <div className="flex w-auto sm:w-auto gap-4 justify-center items-center p-1 sm:py-3.5 pl-6 text-base font-bold leading-6 text-center">
                     {
                         user?.user ? (
                             <>
