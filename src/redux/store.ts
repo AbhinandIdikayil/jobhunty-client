@@ -14,6 +14,7 @@ import persistStore from "redux-persist/es/persistStore";
 import adminSlice from "./reducers/admin/adminSlice";
 import categorySlice from "./reducers/categorySlice";
 import jobSlice from "./reducers/jobSlice";
+import ChatSlice from "./reducers/ChatSlice";
 
 const persistConfig = {
     key: 'root',
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
     user: userSlice,
     admin:adminSlice,
     category:categorySlice,
-    job:jobSlice
+    job:jobSlice,
+    chat:ChatSlice
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

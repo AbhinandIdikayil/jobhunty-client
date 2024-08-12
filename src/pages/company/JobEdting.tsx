@@ -1,9 +1,10 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Field, FieldArray, Form, Formik, FormikValues } from 'formik';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { LocationInput } from 'src/components/common/LocationInput';
 import { listCategory, listSectors } from 'src/redux/actions/commonAction';
 import { updateJob } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store'
@@ -19,6 +20,7 @@ function JobEdting() {
     const state = useSelector((state: RootState) => state?.job)
     const categoryState = useSelector((state: RootState) => state?.category)
     const navigate = useNavigate()
+    const [location,setLocation] = useState([])
 
     const PostJobInitialValues = {
         jobTitle: state?.job?.job?.jobTitle || '',
@@ -29,18 +31,20 @@ function JobEdting() {
             from: state?.job?.job?.salaryrange?.from || '',
             to: state?.job?.job?.salaryrange?.to || '',
         },
-        // experince: '',
+        location: state?.job?.job?.location ?? [],
         companyId: state?.job?.job?.company?._id || '',
         expiry: formatDate(state?.job?.job?.expiry) || '',
         responsibilities: state?.job?.job?.responsibilities || [''],
         skills: state?.job?.job?.skills || [''],
         qualification: state?.job?.job?.qualification || [''],
     }
-    console.log(PostJobInitialValues)
     function handleSubmit(values: FormikValues) {
         try {
+            if(location?.length > 1){
+                return toast.error('Multiple locations are restricted')
+            }
             navigate('/company/job-list')
-            dispatch(updateJob({data:values,id:state?.job?._id})).unwrap()
+            dispatch(updateJob({data:{...values,location},id:state?.job?._id})).unwrap()
             toast.success('job updated successfully',{position:'top-center'})
         } catch (error) {
             console.log(error)
@@ -48,6 +52,7 @@ function JobEdting() {
     }
 
     useEffect(() => {
+        setLocation(state?.job?.job?.location ?? [])
         dispatch(listSectors())
         dispatch(listCategory(null))
     }, [])
@@ -360,6 +365,19 @@ function JobEdting() {
                                         }
                                     </FieldArray>
                                     <span className='font-sans'>atleast 50 character</span>
+                                </div>
+                            </div>
+                            <hr />
+                            <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
+                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
+                                    <span className='font-bold text-xl'>Location</span>
+                                    <label htmlFor="" className='font-sans'>
+                                        Please specify  the location of the job posting
+                                    </label>
+                                </div>
+                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
+                                    <LocationInput label='location' name='location'  key={'location'} location={location} 
+                                     setLocation={setLocation}/>
                                 </div>
                             </div>
                             <hr />

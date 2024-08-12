@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Field, FieldArray, Form, Formik, FormikValues } from 'formik';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import { postJob } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { postJobValidationSchema } from 'src/validation/company';
+import { LocationInput } from '../common/LocationInput';
 
 function PostJob() {
     const context = useOutletContext<prop>() || {};
@@ -17,11 +18,13 @@ function PostJob() {
     const company = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
+    const [location,setLocation] = useState([]);
 
     useEffect(() => {
         dispatch(listCategory(null)).unwrap()
         dispatch(listSectors()).unwrap()
-    }, [])
+        console.log(location)
+    }, [location])
 
     let PostJobInitialValues = {
         jobTitle: '',
@@ -32,7 +35,6 @@ function PostJob() {
             from: '',
             to: '',
         },
-        // experince: '',
         companyId: company?.user?._id || '',
         expiry: '',
         responsibilities: [''],
@@ -40,18 +42,26 @@ function PostJob() {
         qualification: [''],
     }
 
+    useEffect(() => {
+        console.log(location)
+
+    },[])
+
     async function handleSubmit(values: FormikValues) {
         try {
             console.log(values)
-            if(company?.user?.approvalStatus !== 'Accepted') {
-                toast.error('your request hasnt accepted yet',{position:'top-center'})
+            if(location?.length > 1){
+                return toast.error('Multiple location is restricted')
+            }
+            if (company?.user?.approvalStatus !== 'Accepted') {
+                toast.error('your request hasnt accepted yet', { position: 'top-center' })
                 return;
             }
-            if(!company?.user?.profileCompletionStatus) {
+            if (!company?.user?.profileCompletionStatus) {
                 toast.error('pleae complete the profile')
-                return 
+                return
             }
-            await dispatch(postJob(values)).unwrap()
+            await dispatch(postJob({...values,location})).unwrap()
             return navigate('/company/job-list')
         } catch (error) {
             console.log(error)
@@ -214,7 +224,7 @@ function PostJob() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                   
+
                                     <FieldArray name='skills'>
                                         {({ remove, push }) => (
                                             <div>
@@ -381,6 +391,18 @@ function PostJob() {
                                 </div>
                             </div>
                             <hr />
+                            <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
+                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
+                                    <span className='font-bold text-xl'>Location</span>
+                                    <label htmlFor="" className='font-sans'>
+                                        Please specify  the location of the job posting
+                                    </label>
+                                </div>
+                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
+                                    <LocationInput label='location' name='location'  key={'location'} location={location}  setLocation={setLocation}/>
+                                </div>
+                            </div>
+
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
                                     <span className='font-bold text-xl'>Ends on</span>
