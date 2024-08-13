@@ -1,4 +1,3 @@
-import { any, boolean } from "zod"
 
 export type ChatInitialState = {
     loading : boolean,
@@ -6,4 +5,6 @@ export type ChatInitialState = {
     selectedUser : null | any,
     users : any[] | [],
     companies : any[] | [],
+    chats:any[] | [],
+    messages: any[] | []
 }

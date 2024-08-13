@@ -34,7 +34,7 @@ import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
 import CompanyJobListing from './components/company/CompanyJobListing'
-import Chat from './pages/company/Chat'
+import Chat from './pages/Chat/Chat'
 import JobDetails from './pages/user/JobDetails'
 import CompanyDetails from './pages/user/CompanyDetails'
 import JobEdting from './pages/company/JobEdting'
@@ -67,6 +67,7 @@ function App() {
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
+          <Route path='messages' element={<Chat />} />
           <Route path='applications' element={<Applications />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
