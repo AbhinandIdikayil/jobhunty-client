@@ -60,7 +60,7 @@ function SendMessage({ setMessages }: { setMessages: any }) {
     }
 
     useEffect(() => {
-        const handleReceiveMessage = (message) => {
+        const handleReceiveMessage = (message:any) => {
             console.log(message, '----------------')
             setMessages((prevMessages: any) => [...prevMessages, message]);
         };
@@ -68,14 +68,13 @@ function SendMessage({ setMessages }: { setMessages: any }) {
             socket.on('recieve-message', handleReceiveMessage);
         }
         return () => {
-            socket.off('recieve-message', handleReceiveMessage);
+            if(socket){
+                socket.off('recieve-message', handleReceiveMessage);
+            }
 
         }
     }, [socket])
 
-    const handleIcon = () => {
-
-    }
 
     return (
         <>

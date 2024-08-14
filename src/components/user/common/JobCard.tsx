@@ -5,7 +5,7 @@ import {   getAllJobsUser} from "src/types/Job"
 
 function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => void }) {
     const location = useLocation()
-    return (
+    return ( 
         <div className="hover:cursor-default flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full">
             <div className="flex gap-5 justify-between font-semibold">
                 {
@@ -55,7 +55,7 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
             </div>
             <div className="flex flex-col justify-between text-center">
                 <button
-                    onClick={() => apply({ jobId: data?._id, companyId: data?.job?.companyId })}
+                    onClick={() => apply({ jobId: data?._id, companyId: data?.companyId })}
                     className="hover:cursor-pointer px-6 py-3 text-base font-bold text-white whitespace-nowrap bg-indigo-600 max-md:px-5">
                     Apply
                 </button>
