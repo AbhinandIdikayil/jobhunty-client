@@ -1,42 +1,82 @@
 import { Avatar } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, memo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { createOneToOneChat } from 'src/redux/actions/chatAction'
+import { getAllusers } from 'src/redux/actions/adminAction'
+import { createOneToOneChat, getAllMessages, listChats } from 'src/redux/actions/chatAction'
+import { listAllCompanies } from 'src/redux/actions/commonAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 
 function UserListingCard({ data, setLoading }: { data: any, setLoading: (newState: boolean) => void }) {
     const dispatch: AppDispatch = useDispatch()
     const [chatDetails, setChatDetails] = useState<any>()
     const users = useSelector((state: RootState) => state?.admin)
+    const chat = useSelector((state: RootState) => state?.chat)
     const location = useLocation()
-    function createChat(data: any) {
+
+    async function createChat(data: any) {
         try {
-            console.log(data)
-            dispatch(createOneToOneChat({ data })).unwrap()
+            setLoading(true)
+            let result
+            if (location.pathname == '/company/messages') {
+                result = await dispatch(createOneToOneChat({ data, role: 'company' })).unwrap()
+            } else {
+                result = await dispatch(createOneToOneChat({ data, role: 'user' })).unwrap()
+            }
+            return result
         } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
+    async function filterChat() {
+        let a = await dispatch(listAllCompanies()).unwrap()
+        let b = await dispatch(getAllusers()).unwrap()
+        // if (a || b) {
+        if (location.pathname == '/company/messages') {
+            console.log(users.users)
+            let res = users?.users?.filter(user => user?._id == data?.members[0])
+            setLoading(false)
+            console.log(res, data)
+            setChatDetails(res)
+            return;
+        } else {
+            let res = users?.companies?.filter(com => com?._id === data?.members?.[1])
+            setLoading(false)
+            setChatDetails(res)
+        }
+        // }
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        dispatch(listChats()).unwrap()
+        if (data) {
+            filterChat().then(data => data).catch(err => console.log(err))
+        }
+    }, [])
+    async function listMessage() {
+        setLoading(true)
+        try {
+            const data = await dispatch(getAllMessages(chat?.selectedUser?._id)).unwrap()
+            if (data) {
+                setLoading(false)
+                return data
+            }
+        } catch (error) {
+            setLoading(false)
             console.log(error)
         }
     }
-    function filterChat() {
-        setLoading(true)
-        if (location.pathname == '/company/messages') {
-            let res = users?.users?.filter(user => user?._id === data?.members?.[0])
-            setChatDetails(res)
-        } else {
-            let res = users?.companies?.filter(com => com?._id === data?.members?.[1])
-            setChatDetails(res)
-        }
-        setLoading(false)
-    }
     useEffect(() => {
-        if (!data?.name && !data?.emial) {
-            filterChat()
-        }
-    }, [])
+        listMessage()
+    }, [chat?.selectedUser])
+
     return (
         <>
-            <div onClick={() => createChat(data?._id)} className="w-full flex gap-2 items-center hover:bg-gray-50 hover:cursor-pointer rounded border-b">
+            <div onClick={() => createChat(data?._id)}
+                className={`${chat?.selectedUser?._id == data?._id ? 'text-indigo-600' : ''} w-full flex gap-2 items-center hover:bg-gray-50 hover:cursor-pointer rounded border-b`}>
                 <Avatar />
                 <div className="flex flex-col">
                     <span className="text-small"> {data?.name || chatDetails?.[0]?.name} </span>

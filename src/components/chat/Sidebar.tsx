@@ -1,4 +1,3 @@
-import { Avatar } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom';
 import { AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_USER } from 'src/constants/axiosInstance';
@@ -18,9 +17,8 @@ function Sidebar({ setLoading }: { setLoading: (newState: boolean) => void }) {
 
     const handleOnchange = async () => {
         try {
-            setLoading(true)
-            let res
-            if (location.pathname == '/company/messages') {
+            let res;
+            if (location.pathname === '/company/messages') {
                 res = await AXIOS_INSTANCE_USER.get('/search-user', {
                     params: { name: debouncedValue },
                 });
@@ -29,30 +27,59 @@ function Sidebar({ setLoading }: { setLoading: (newState: boolean) => void }) {
                     params: { name: debouncedValue },
                 });
             }
-            if (Array.isArray(res.data)) {
-                setData(res.data);
-            } else {
-                setData([]);
-            }
-            setLoading(false)
+            setData(Array.isArray(res.data) ? res.data : []);
         } catch (error) {
-            setLoading(false)
-            setData([]);
             console.error(error);
+            setData([]);
+        } finally {
+            setLoading(false);
         }
     };
+    
+    const fetchChats = async () => {
+        try {
+            setLoading(true);
+            const chats = await dispatch(listChats()).unwrap();
+            if (chats) {
+                // This might be redundant if you already have chats in Redux state
+                setData([]);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const fetchChats = async () => {
+            try {
+                setLoading(true);
+                await dispatch(listChats()).unwrap();
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchChats();
+    }, [dispatch]);
+
     useEffect(() => {
         setLoading(true)
         if (debouncedValue) {
             handleOnchange();
+            fetchChats()
         } else {
+            fetchChats()
             setLoading(false)
             setData([]); // Clear data if search is empty
         }
     }, [debouncedValue]);
 
     useEffect(() => {
-        dispatch(listChats()).unwrap()
+        fetchChats()
+        setData([]);
     }, [])
 
     return (
@@ -64,10 +91,23 @@ function Sidebar({ setLoading }: { setLoading: (newState: boolean) => void }) {
             </div>
             <div className='flex flex-col px-3 gap-2 mt-1 w-full'>
                 {
-                    data?.length > 0 && data?.map(data => (
-                        <UserListingCard key={data?._id} data={data} setLoading={setLoading} />
-                    )) ||
-                    chatState?.chats?.map(data => <UserListingCard key={data?._id} data={data} setLoading={setLoading} />)
+                    search && search?.length > 0 ? (
+                        data?.length > 0 ? (
+                            data.map(item => (
+                                <UserListingCard key={item?._id} data={item} setLoading={setLoading} />
+                            ))
+                        ) : (
+                            <div>No results found</div>
+                        )
+                    ) : (
+                        chatState?.chats?.length > 0 ? (
+                            chatState.chats.map(item => (
+                                <UserListingCard key={item?._id} data={item} setLoading={setLoading} />
+                            ))
+                        ) : (
+                            <div>No data available</div>
+                        )
+                    )
                 }
             </div>
         </div>

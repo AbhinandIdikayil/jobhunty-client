@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
 import { ChatInitialState } from "src/types/Chat";
-import { createOneToOneChat, listChats } from "../actions/chatAction";
+import { createOneToOneChat, getAllMessages, listChats } from "../actions/chatAction";
 
 
 const initialState: ChatInitialState = {
@@ -44,6 +44,20 @@ const chatSlice = createSlice({
             })
             .addCase(listChats.rejected, (state, { payload }) => {
                 state.loading = false
+                state.err = payload
+            })
+            .addCase(getAllMessages.pending, (state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(getAllMessages.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.err = null
+                state.messages = payload
+            })
+            .addCase(getAllMessages.rejected, (state, { payload }) => {
+                state.loading = false
+                state.messages = []
                 state.err = payload
             })
     }
