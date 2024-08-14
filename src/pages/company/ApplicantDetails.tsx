@@ -5,6 +5,8 @@ import { ArrowLeft, Globe, Instagram, Linkedin, Mail, Phone, Twitter } from 'luc
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import HiringProcess from 'src/components/company/HiringProcess';
+import InterviewSchedule from 'src/components/company/InterviewSchedule';
 import ResumeTab from 'src/components/company/ResumeTab';
 import { getSpecificApplicantDetails } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
@@ -187,13 +189,6 @@ function ApplicantDetails() {
                     <Tabs defaultValue="profile" className="w-full">
                         <div className="flex flex-col  w-full font-semibold leading-relaxed bg-white  text-slate-500 max-md:max-w-full">
                             <div className="flex flex-wrap gap-5 items-start w-full border-b-2 border-solid bg-white shadow-sm">
-                                {/* <div className="flex flex-col text-slate-800 w-[134px]">
-                                <div className="self-center">Applicant Profile</div>
-                                <div className="flex mt-2 w-full bg-indigo-600 rounded-none min-h-[4px]" />
-                            </div>
-                            <div className="whitespace-nowrap">Resume</div>
-                            <div>Hiring Progress</div>
-                            <div>Interview Schedule</div> */}
                                 <TabsList className="flex items-center justify-center w-full bg-white">
                                     <TabsTrigger
                                         className={cn(
@@ -331,6 +326,8 @@ function ApplicantDetails() {
                                 <ResumeTab resume={state?.applicant?.resume} />
                             )
                         }
+                        <HiringProcess />
+                        <InterviewSchedule />
                     </Tabs>
                 </div>
             </div>
