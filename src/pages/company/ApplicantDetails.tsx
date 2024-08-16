@@ -38,14 +38,6 @@ function ApplicantDetails() {
                     <ArrowLeft onClick={handleGoBack} />
                     <div className="self-stretch my-auto">Applicant Details</div>
                 </div>
-                <div className="flex gap-2.5 justify-center items-center self-stretch px-4 py-3 my-auto text-base font-bold leading-relaxed text-center text-indigo-600">
-                    <img
-                        loading="lazy"
-                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/8e21e78d1fb1c7a83fc10c17c27a833da525866af2a8874ad4d2210bcbc59d28?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                        className="object-contain shrink-0 self-stretch my-auto w-5 aspect-square"
-                    />
-                    <div className="self-stretch my-auto">More Action</div>
-                </div>
             </div>
             <div className={`flex flex-wrap gap-5 justify-center items-start ${open ? 'px-3' : 'px-8'} w-full max-md:px-5 max-md:max-w-full`}>
                 <div className="flex flex-col grow shrink p-6 bg-white min-w-[240px] w-[282px] border-2 border-solid max-md:px-5">

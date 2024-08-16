@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Login as LoginI } from "../../types/AllTypes"
 import { Formik, Field, FormikValues, Form } from 'formik'
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { AppDispatch, RootState } from "../../redux/store"
 import { useDispatch, useSelector } from "react-redux"
 import { googleLoginAndSignup, login } from "../../redux/actions/userAction"
@@ -21,6 +21,7 @@ const Login: React.FC = () => {
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate();
     const [otpPage, setOtpPage] = useState(false);
+    const location = useLocation()
 
     const [isCompanyLogin, setIsCompanyLogin] = useState(false);
 
@@ -82,7 +83,7 @@ const Login: React.FC = () => {
     }
 
     async function handleSubmit(values: FormikValues) {
-        const url = window.location.href.split('/')[3];
+        
         // if (url == 'login') {
         const formData: LoginI = {
             ...values
@@ -90,7 +91,11 @@ const Login: React.FC = () => {
         try {
             const data = await dispath(login(formData)).unwrap()
             if (data) {
-                navigate('/home')
+                if(location.pathname == '/company/login'){
+                    return navigate('/company')
+                } else {
+                    return navigate('/home')
+                }
             }
         } catch (error) {
             console.log(error)

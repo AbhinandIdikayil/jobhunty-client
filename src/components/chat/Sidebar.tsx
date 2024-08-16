@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { listChats } from 'src/redux/actions/chatAction';
 
-function Sidebar({ setLoading }: { setLoading: (newState: boolean) => void }) {
+function Sidebar({ setLoading , setMessages}: { setLoading: (newState: boolean) => void, setMessages:(newState:any) => void }) {
     const [search, setSearch] = useState<string | null>(null)
     const debouncedValue = UseDebounce(search || '', 1000)
     const [data, setData] = useState<any[]>([]);
@@ -94,7 +94,7 @@ function Sidebar({ setLoading }: { setLoading: (newState: boolean) => void }) {
                     search && search?.length > 0 ? (
                         data?.length > 0 ? (
                             data.map(item => (
-                                <UserListingCard key={item?._id} data={item} setLoading={setLoading} />
+                                <UserListingCard setMessages={setMessages}  key={item?._id} data={item} setLoading={setLoading} />
                             ))
                         ) : (
                             <div>No results found</div>
@@ -102,7 +102,7 @@ function Sidebar({ setLoading }: { setLoading: (newState: boolean) => void }) {
                     ) : (
                         chatState?.chats?.length > 0 ? (
                             chatState.chats.map(item => (
-                                <UserListingCard key={item?._id} data={item} setLoading={setLoading} />
+                                <UserListingCard setMessages={setMessages} key={item?._id} data={item} setLoading={setLoading} />
                             ))
                         ) : (
                             <div>No data available</div>

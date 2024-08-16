@@ -2,6 +2,7 @@ import { Avatar } from "@mui/material"
 import { deepOrange } from "@mui/material/colors"
 import { Link, useLocation } from "react-router-dom"
 import {   getAllJobsUser} from "src/types/Job"
+import { formatSalary } from "src/utils/formatSalary"
 
 function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => void }) {
     const location = useLocation()
@@ -64,11 +65,10 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/98f64b305f12c671b14db57bd5c042df5e706b2094a78a5b493aef4524773937?"
                     className="self-center mt-4 aspect-[25] w-[164px]"
                 />
-                <div className="mt-2 text-sm text-slate-500">
-                    <span className="font-semibold text-slate-800">
-                        8 applied
-                    </span>{" "}
-                    <span className="text-slate-500">of 12 capacity</span>
+                <div className="font-semibold text-slate-800">
+                    {
+                        formatSalary(data?.salaryrange?.from,data?.salaryrange?.to)
+                    }
                 </div>
             </div>
         </div >

@@ -60,7 +60,7 @@ function Chat() {
 
     return (
         <div className='flex gap-1 w-full'>
-            <Sidebar setLoading={setLoading} />
+            <Sidebar setLoading={setLoading} setMessages={setMessages} />
             {/* //! sidebar to list and search for and users and company, listing the chats also */}
 
             <div className="relative flex flex-col w-full min-h-[82vh]  rounded-xl bg-muted/50 px-1 lg:col-span-2">

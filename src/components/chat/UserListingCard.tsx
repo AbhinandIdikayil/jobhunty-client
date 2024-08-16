@@ -7,7 +7,7 @@ import { createOneToOneChat, getAllMessages, listChats } from 'src/redux/actions
 import { listAllCompanies } from 'src/redux/actions/commonAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 
-function UserListingCard({ data, setLoading }: { data: any, setLoading: (newState: boolean) => void }) {
+function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoading: (newState: boolean) => void, setMessages:(newState:any) => void }) {
     const dispatch: AppDispatch = useDispatch()
     const [chatDetails, setChatDetails] = useState<any>()
     const users = useSelector((state: RootState) => state?.admin)
@@ -15,6 +15,7 @@ function UserListingCard({ data, setLoading }: { data: any, setLoading: (newStat
     const location = useLocation()
 
     async function createChat(data: any) {
+        setMessages('')
         try {
             setLoading(true)
             let result
