@@ -1,7 +1,31 @@
 import { TabsContent } from '@radix-ui/react-tabs'
-import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateHiringStatus } from 'src/redux/actions/jobAction'
+import { AppDispatch, RootState } from 'src/redux/store'
 
-function HiringProcess() {
+function HiringProcess({ applicantId, setLoading }: { applicantId: string | null, setLoading: (prev: boolean) => void }) {
+    const jobState = useSelector((state: RootState) => state?.job)
+    const dispatch: AppDispatch = useDispatch()
+    async function handleHiringStatus(id: string | null) {
+        setLoading(true)
+        if (id) {
+            try {
+                const value = {
+                    applicationId: id,
+                    status: null
+                }
+                const data = await dispatch(updateHiringStatus(value)).unwrap()
+                return data
+            } catch (error) {
+                console.log(error)
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
+
+    const status = ['in-review', 'shortlisted', 'interview', 'hired/declined']
+
     return (
         <TabsContent value='hiring'>
             <div className="flex flex-col max-w-2xl px-2 ">
@@ -20,11 +44,16 @@ function HiringProcess() {
                         </div>
                     </div> */}
                     <div className="object-contain mt-5 w-full aspect-[13.51] flex gap-2 max-md:max-w-full capitalize">
-                        <div className='w-1/4 bg-gray-300 flex items-center justify-center font-semibold text-blue-700 rounded-sm'> in review</div>
-                        <div className='w-1/4 bg-gray-300 flex items-center justify-center font-semibold text-blue-700 rounded-sm'> shortlisted</div>
-                        <div className='w-1/4 bg-indigo-700 flex items-center justify-center font-semibold text-white rounded-sm'> interview</div>
-                        <div className='w-1/4 bg-gray-300 flex items-center justify-center font-semibold text-blue-700 rounded-sm'> hired/declined</div>
-                    </div>      
+                        {
+                            status?.map((data: string) => (
+                                <div className={`w-1/4 flex items-center
+                                ${jobState?.applicant?.hiring_status == data ? 'bg-indigo-700 text-white' : 'text-blue-700  bg-gray-300 '} 
+                                justify-center font-semibold rounded-sm`}>
+                                    {data}
+                                </div>
+                            ))
+                        }
+                    </div>
                     <div className="flex flex-col mt-5 max-w-full w-[538px]">
                         <div className="text-base font-semibold leading-relaxed text-slate-800">
                             Stage Info
@@ -46,9 +75,9 @@ function HiringProcess() {
                                         <br /> 3517 W. Gray St. Utica, Pennsylvania 57867
                                     </div>
                                 </div>
-                                <div className="gap-2.5 self-stretch px-6 py-3 mt-6 font-bold leading-relaxed text-center text-white border border-indigo-200 border-solid bg-indigo-700 hover:bg-white hover:text-black transition ease-in max-md:px-5">
+                                <button onClick={() => handleHiringStatus(applicantId || null)} className="hover:cursor-pointer gap-2.5 self-stretch px-6 py-3 mt-6 font-bold leading-relaxed text-center text-white border border-indigo-200 border-solid bg-indigo-700 hover:bg-indigo-400 max-md:px-5">
                                     Move To Next Step
-                                </div>
+                                </button>
                             </div>
                             <div className="flex flex-col items-start leading-relaxed w-[218px]">
                                 <div className="flex flex-col">

@@ -5,7 +5,7 @@ import { handleTokenError } from "src/utils/HandleError";
 
 export const postJob = createAsyncThunk(
     'company/post-job',
-    async (req:any, { rejectWithValue }) => {
+    async (req: any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/post-job', req);
             return data;
@@ -16,7 +16,7 @@ export const postJob = createAsyncThunk(
 )
 
 export type paginationAndFilter = {
-    price?:[number] | [],
+    price?: [number] | [],
     name?: string,
     pageSize?: number,
     page?: number,
@@ -34,21 +34,21 @@ export const getAllJob = createAsyncThunk(
             console.log(req)
             if (req?._id) {
                 res = await AXIOS_INSTANCE_JOB.get(`/all-job/${req?._id}`, {
-                    params:{
-                        page:req.page,
-                        pageSize:req.pageSize,
-                        name:req.name,
+                    params: {
+                        page: req.page,
+                        pageSize: req.pageSize,
+                        name: req.name,
                     }
                 })
             } else {
-                res = await AXIOS_INSTANCE_JOB.get(`/jobs`,{
+                res = await AXIOS_INSTANCE_JOB.get(`/jobs`, {
                     params: {
-                        page:req?.page,
-                        pageSize:req?.pageSize,
-                        name:req?.name,
-                        category:req?.category,
-                        employment:req?.employment,
-                        price:req?.price
+                        page: req?.page,
+                        pageSize: req?.pageSize,
+                        name: req?.name,
+                        category: req?.category,
+                        employment: req?.employment,
+                        price: req?.price
                     }
                 })
             }
@@ -104,7 +104,7 @@ export const updateJob = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.put(`/post-job/${req.id}`, req)
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -116,7 +116,7 @@ export const listApplications = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.get(`/application`)
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -140,8 +140,27 @@ export const getSpecificApplicantDetails = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.get(`/applicant/${req}`)
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
 
+type hiring = {
+    applicationId: string,
+    status: string | null
+}
+
+
+export const updateHiringStatus = createAsyncThunk(
+    'applicant/hiring-status',
+    async (req: hiring, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.put(`/application/${req.applicationId}`, req.status)
+            return {
+                id:data?._id, hiring_status: data.hiring_status
+            }
+        } catch (error) {
+            return rejectWithValue(handleTokenError(error))
+        }
+    }
+)

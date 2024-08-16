@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JobReducer } from "src/types/Job";
-import { applyJob, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, removeJob, updateJob } from "../actions/jobAction";
+import { applyJob, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, removeJob, updateHiringStatus, updateJob } from "../actions/jobAction";
 import { handleAuthError } from "src/utils/HandleAuthError";
 
 const initialState: JobReducer = {
@@ -109,47 +109,63 @@ const jobSlice = createSlice({
                 state.loading = false
                 state.err = payload
             })
-            .addCase(listApplications.pending,(state) => {
+            .addCase(listApplications.pending, (state) => {
                 state.err = null
                 state.loading = true
             })
-            .addCase(listApplications.fulfilled,(state,{payload}) => {
+            .addCase(listApplications.fulfilled, (state, { payload }) => {
                 state.err = null
                 state.loading = false
                 state.applications = payload
             })
-            .addCase(listApplications.rejected,(state,{payload}) => {
+            .addCase(listApplications.rejected, (state, { payload }) => {
                 state.err = payload
                 state.loading = false
                 state.applications = []
             })
-            .addCase(listApplicants.pending,(state) => {
+            .addCase(listApplicants.pending, (state) => {
                 state.err = null
                 state.loading = true
             })
-            .addCase(listApplicants.fulfilled,(state,{payload}) => {
+            .addCase(listApplicants.fulfilled, (state, { payload }) => {
                 state.err = null
                 state.loading = false
                 state.applicants = payload
             })
-            .addCase(listApplicants.rejected,(state,{payload}) => {
+            .addCase(listApplicants.rejected, (state, { payload }) => {
                 state.err = payload
                 state.loading = false
                 state.applicants = []
-                handleAuthError(state,payload)
+                handleAuthError(state, payload)
             })
-            .addCase(getSpecificApplicantDetails.pending,(state) => {
+            .addCase(getSpecificApplicantDetails.pending, (state) => {
                 state.err = null
                 state.loading = true
             })
-            .addCase(getSpecificApplicantDetails.fulfilled,(state,{payload}) => {
+            .addCase(getSpecificApplicantDetails.fulfilled, (state, { payload }) => {
                 state.err = null
                 state.loading = false
                 state.applicant = payload ?? null
             })
-            .addCase(getSpecificApplicantDetails.rejected,(state) => {
+            .addCase(getSpecificApplicantDetails.rejected, (state) => {
                 state.err = null
                 state.loading = false
+            })
+            .addCase(updateHiringStatus.pending, (state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(updateHiringStatus.fulfilled, (state, action) => {
+                const { hiring_status } = action.payload;
+                state.loading = false;
+                state.err = null;
+                if (state.applicant) {
+                    state.applicant.hiring_status = hiring_status ?? state.applicant.hiring_status;
+                }
+            })
+            .addCase(updateHiringStatus.rejected, (state, { payload }) => {
+                state.loading = false
+                state.err = payload
             })
     }
 })

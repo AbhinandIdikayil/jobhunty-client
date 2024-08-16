@@ -3,9 +3,10 @@ import { cn } from '@/lib/utils';
 import { Avatar } from '@mui/material';
 import { formatDistanceToNow } from 'date-fns';
 import { ArrowLeft, Globe, Instagram, Linkedin, Mail, Phone, Twitter } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import Loading from 'src/components/common/Loading';
 import HiringProcess from 'src/components/company/HiringProcess';
 import InterviewSchedule from 'src/components/company/InterviewSchedule';
 import ProfileTab from 'src/components/company/ProfileTab';
@@ -22,6 +23,7 @@ function ApplicantDetails() {
     const state = useSelector((state: RootState) => state?.job)
     const navigate = useNavigate()
     const params = useParams()
+    const [loading,setLoading] = useState<boolean>(false)
     const { id } = params
 
     function handleGoBack() {
@@ -225,11 +227,12 @@ function ApplicantDetails() {
                                 <ResumeTab resume={state?.applicant?.resume} />
                             )
                         }
-                        <HiringProcess />
+                        <HiringProcess setLoading={setLoading} applicantId={state?.applicant?._id || null} />
                         <InterviewSchedule />
                     </Tabs>
                 </div>
             </div>
+            <Loading loading={loading} />
         </div >
     )
 }
