@@ -25,7 +25,7 @@ function CompanyJobListing() {
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
-    const [searchQuery,setSearchquery] = useState<string | null>(null)
+    const [searchQuery,setSearchquery] = useState<string>('')
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,

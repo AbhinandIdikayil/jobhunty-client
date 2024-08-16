@@ -1,16 +1,19 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@mui/material';
+import { formatDistanceToNow } from 'date-fns';
 import { ArrowLeft, Globe, Instagram, Linkedin, Mail, Phone, Twitter } from 'lucide-react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import HiringProcess from 'src/components/company/HiringProcess';
 import InterviewSchedule from 'src/components/company/InterviewSchedule';
+import ProfileTab from 'src/components/company/ProfileTab';
 import ResumeTab from 'src/components/company/ResumeTab';
 import { getSpecificApplicantDetails } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
+import { formatDateToDaysAgo } from 'src/utils/formateDateToDaysAgo';
 
 function ApplicantDetails() {
     const context = useOutletContext<prop>() || {};
@@ -55,7 +58,7 @@ function ApplicantDetails() {
                             )
                         }
                         <div className="flex flex-col">
-                            <div className="text-2xl font-semibold leading-tight">
+                            <div className="text-2xl font-semibold leading-tight capitalize">
                                 {state?.applicant?.userId?.name}
                             </div>
                             <div className="mt-2 text-slate-500">
@@ -76,7 +79,11 @@ function ApplicantDetails() {
                     <div className="flex flex-col p-4 mt-5 w-full leading-relaxed bg-slate-50">
                         <div className="flex gap-5 justify-between items-start w-full text-sm">
                             <div className="text-slate-800">Applied Jobs</div>
-                            <div className="text-right text-slate-500">2 days ago</div>
+                            <div className="text-right text-slate-500">
+                                {
+                                    formatDateToDaysAgo(state?.applicant?.createdAt || null)
+                                }
+                            </div>
                         </div>
                         <div className="flex mt-2 w-full bg-zinc-200 min-h-[1px]" />
                         <div className="flex flex-col self-start mt-2">
@@ -177,7 +184,7 @@ function ApplicantDetails() {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col grow shrink items-center pb-6 border-2 border-solid text-base bg-white min-h-[859px] min-w-[240px] w-[648px] max-md:max-w-full">
+                <div className="flex flex-col grow shrink items-center pb-6 border-2 border-solid text-base bg-white max-h-[859px] min-w-[240px] w-[648px] max-md:max-w-full">
                     <Tabs defaultValue="profile" className="w-full">
                         <div className="flex flex-col  w-full font-semibold leading-relaxed bg-white  text-slate-500 max-md:max-w-full">
                             <div className="flex flex-wrap gap-5 items-start w-full border-b-2 border-solid bg-white shadow-sm">
@@ -205,114 +212,14 @@ function ApplicantDetails() {
                                 </TabsList>
                             </div>
                         </div>
-                        <TabsContent value='profile'>
-                            <div className="flex flex-col mt-6 px-4 max-w-full w-[672px]">
-                                <div className="flex flex-col items-start w-full max-w-2xl max-md:max-w-full">
-                                    <div className="self-stretch text-lg font-semibold leading-relaxed text-slate-800">
-                                        Personal Info
-                                    </div>
-                                    <div className="flex gap-5 justify-between items-start mt-4 max-w-full leading-relaxed w-[456px]">
-                                        <div className="flex flex-col">
-                                            <div className="flex flex-col self-start">
-                                                <div className="text-slate-500">Name</div>
-                                                <div className="font-medium text-slate-800">
-                                                    Jerome Bell
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col mt-4">
-                                                <div className="text-slate-500">Date of Birth</div>
-                                                <div className="font-medium text-gray-400">
-                                                    March 23, 1995{" "}
-                                                    <span className="text-gray-400">(26 y.o)</span>{" "}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col">
-                                            <div className="flex flex-col">
-                                                <div className="text-slate-500">Language</div>
-                                                <div className="font-medium text-slate-800">
-                                                    English, French, Bahasa
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col mt-4 max-w-full w-[232px]">
-                                        {/* <div className="leading-relaxed text-slate-500">Address</div>
-                                        <div className="font-medium leading-7 text-slate-800">
-                                            4517 Washington Ave. Manchester, Kentucky 39495
-                                        </div> */}
-                                    </div>
-                                </div>
-                                <div className="flex mt-6 w-full bg-zinc-200 min-h-[1px] max-md:max-w-full" />
-                                <div className="flex flex-col mt-6 w-full max-w-2xl max-md:max-w-full">
-                                    <div className="text-lg font-semibold leading-relaxed text-slate-800">
-                                        Professional Info
-                                    </div>
-                                    <div className="flex flex-col mt-4 w-full">
-                                        <div className="leading-relaxed text-slate-500">About Me</div>
-                                        <div className="flex flex-col mt-2 w-full font-medium leading-7 bg-white text-slate-800">
-                                            <div className="max-md:max-w-full">
-                                                I’m a product designer + filmmaker currently working
-                                                remotely at Twitter from beautiful Manchester, United
-                                                Kingdom. I’m passionate about designing digital products
-                                                that have a positive impact on the world.
-                                            </div>
-                                            <div className="mt-4 max-md:max-w-full">
-                                                For 10 years, I’ve specialised in interface, experience &
-                                                interaction design as well as working in user research and
-                                                product strategy for product agencies, big tech companies &
-                                                start-ups.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-5 items-start mt-4 w-full leading-relaxed max-md:max-w-full">
-                                        <div className="flex flex-col">
-                                            <div className="flex flex-col self-start">
-                                                <div className="text-slate-500">Current Job</div>
-                                                <div className="font-medium text-slate-800">
-                                                    {
-                                                        state?.applicant?.userId?.experiences?.map((data: any) => data?.working ? data?.title : '')
-                                                    }
-                                                </div>
-                                            </div>
-                                            <div className="flex flex-col mt-4">
-                                                <div className="text-slate-500">
-                                                    Highest Qualification Held
-                                                </div>
-                                                {
-                                                    state?.applicant?.userId?.education?.map((data) => (
-                                                        <div className="font-medium text-slate-800">
-                                                            {data?.course}
-                                                        </div>
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col min-w-[240px]">
-                                            <div className="flex flex-col self-start">
-                                                <div className="text-slate-500">Experience in Years</div>
-                                                <div className="font-medium text-slate-800">4 Years</div>
-                                            </div>
-                                            <div className="flex flex-col mt-4">
-                                                <div className="text-slate-500">Skill set</div>
-                                                <div className="flex gap-1 items-start text-indigo-600">
-                                                    {
-                                                        state?.applicant?.userId?.skills?.map((data) => (
-                                                            <div className="gap-4 self-stretch px-3 py-1 bg-slate-50">
-                                                                {data}
-                                                            </div>
-                                                        ))
-                                                    }
-                                                    <div className="gap-4 self-stretch px-3 py-1 whitespace-nowrap bg-slate-50">
-                                                        English
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </TabsContent>
+                        <ProfileTab
+                            key={'profile'}
+                            name={state?.applicant?.userId?.name || ''}
+                            about={state?.applicant?.userId?.about || ''}
+                            education={state?.applicant?.userId?.education || []}
+                            experiences={state?.applicant?.userId?.experiences || []}
+                            skills={state?.applicant?.userId?.skills || []}
+                        />
                         {
                             state?.applicant?.resume && (
                                 <ResumeTab resume={state?.applicant?.resume} />

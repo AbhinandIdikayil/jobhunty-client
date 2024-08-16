@@ -59,9 +59,19 @@ function ApplicantsOfJob() {
       accessorKey: `createdAt`,
       header: () => <div className="text-left">applied date</div>,
       cell: ({ row }) => {
-        const givenDate = new Date(row.original.createdAt);
+        const createdAt = row.original?.createdAt;
+        if (!createdAt) {
+          return '';
+        }
+
+        const givenDate = new Date(createdAt);
+        if (isNaN(givenDate.getTime())) {
+          // If the date is invalid, return a fallback value or an empty string
+          return '';
+        }
+
         const formattedDate = format(givenDate, 'dd-MMM-yy');
-        return <div>{formattedDate}</div>
+        return <div>{formattedDate}</div>;
       }
     },
     {
@@ -82,7 +92,7 @@ function ApplicantsOfJob() {
   ]
 
   const table = useReactTable({
-    data: jobState?.job?.jobs?.applicants || [],
+    data: jobState?.job?.applicants ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -90,7 +100,7 @@ function ApplicantsOfJob() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  function handleNavigation () {
+  function handleNavigation() {
     return navigate(-1)
   }
 
@@ -169,6 +179,7 @@ function ApplicantsOfJob() {
                 table.getRowModel().rows
                   .length > 0 ? (
                   table.getRowModel().rows
+                    .filter(row => Object.keys(row.original || {}).length > 0) // filter out empty objects
                     .map((row) => (
                       <TableRow
                         key={row.id}
