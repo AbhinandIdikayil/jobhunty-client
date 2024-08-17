@@ -1,21 +1,18 @@
 import { TabsContent } from '@radix-ui/react-tabs'
+import { PlusIcon } from 'lucide-react'
+import AddInterview from './AddInterview'
+import { useState } from 'react'
 
 function InterviewSchedule() {
+    const [open,setOpen] = useState<boolean>(false)
     return (
         <TabsContent value='interview'>
             <div className="flex flex-col leading-relaxed max-w-[688px] h-full px-1 ">
-                <div className="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full border-b-2">
+                <div className="flex flex-wrap gap-10 justify-between items-center w-full text-base max-md:max-w-full border-2 mt-4 px-2">
                     <div className="self-stretch my-auto font-semibold text-slate-800">
                         Interview List
                     </div>
-                    <div className="flex gap-2.5 justify-center items-center self-stretch px-4 py-3 my-auto font-bold text-center text-indigo-600 min-w-[240px]">
-                        <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/72ec0d8dd41afbe99d4b5cb91df2c15b2190671e5e605917ed2f2739f5c9ac39?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-                            className="object-contain shrink-0 self-stretch my-auto w-5 aspect-square"
-                        />
-                        <div className="self-stretch my-auto">Add Schedule Interview</div>
-                    </div>
+                    <AddInterview open={open} setOpen={setOpen} />
                 </div>
                 <div className="chat flex flex-col mt-4 w-full h-[700px] overflow-y-auto shadow-md">
                     <div className="flex flex-col w-full max-md:max-w-full">

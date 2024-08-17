@@ -44,6 +44,7 @@ function AddEducation() {
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild >
+                
                 <Plus onClick={() => setOpen(true)} />
             </AlertDialogTrigger >
             <AlertDialogContent className='max-x-fit max-h-fit'>

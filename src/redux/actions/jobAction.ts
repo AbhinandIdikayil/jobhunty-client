@@ -28,7 +28,7 @@ export type paginationAndFilter = {
 
 export const getAllJob = createAsyncThunk(
     'list-job',
-    async (req?: paginationAndFilter, { rejectWithValue }) => {
+    async (req: paginationAndFilter | undefined, { rejectWithValue }) => {
         try {
             let res
             console.log(req)
@@ -55,7 +55,7 @@ export const getAllJob = createAsyncThunk(
             const { data } = res
             return data
         } catch (error: any) {
-            return rejectWithValue(error?.response?.data)
+            return rejectWithValue(error)
         }
     }
 )
@@ -156,9 +156,22 @@ export const updateHiringStatus = createAsyncThunk(
     async (req: hiring, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.put(`/application/${req.applicationId}`, req.status)
+            console.log(data)
             return {
-                id:data?._id, hiring_status: data.hiring_status
+                id: data?._id, hiring_status: data.hiring_status
             }
+        } catch (error) {
+            return rejectWithValue(handleTokenError(error))
+        }
+    }
+)
+
+export const scheduleInterview = createAsyncThunk(
+    'applicant/schedule-interview',
+    async (req:any, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.put(`/schedule-interview/${req.id}`,req)
+            return data;
         } catch (error) {
             return rejectWithValue(handleTokenError(error))
         }

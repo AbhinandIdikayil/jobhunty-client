@@ -227,7 +227,7 @@ function ApplicantDetails() {
                                 <ResumeTab resume={state?.applicant?.resume} />
                             )
                         }
-                        <HiringProcess setLoading={setLoading} applicantId={state?.applicant?._id || null} />
+                        <HiringProcess key={'hiring'} setLoading={setLoading} applicantId={state?.applicant?._id || null} />
                         <InterviewSchedule />
                     </Tabs>
                 </div>

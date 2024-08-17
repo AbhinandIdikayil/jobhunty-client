@@ -2,7 +2,7 @@ export interface JobApplication {
     _id: string;
     companyId: {
         images?: string,
-        _id?:string,
+        _id?: string,
         email?: string,
         name?: string,
         description?: string,
@@ -87,4 +87,14 @@ export interface JobApplication {
     answers: any[];
     createdAt: string;
     hiring_info: any[];
+    schedule: [
+        {
+            testType: string,
+            date: string,
+            roomId: string,
+            time: string,
+            status: string,
+            feedback: string
+        },
+    ],
 }
