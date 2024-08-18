@@ -1,7 +1,6 @@
-import { createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IVerifyEmail, Login, verifyOtpRequest, verifyOtpResponse } from "../../types/AllTypes";
 import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_USER } from "../../constants/axiosInstance";
-import { AxiosError } from "axios";
 import { aboutEdit } from "src/types/profile";
 import { removeExperienceState } from "../reducers/user/userSlice";
 import { RootState } from "../store";
