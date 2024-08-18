@@ -1,4 +1,4 @@
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem, User, } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownSection, DropdownItem } from "@nextui-org/react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/actions/userAction";
 import { AppDispatch } from "../../redux/store";
@@ -37,7 +37,7 @@ export default function DropDown() {
         >
             <DropdownTrigger>
                 <img
-                    disableRipple
+                    // disableRipple
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/11e2517998516c181ac04025690221ae22f5c4e4eb4dee7f65d6fdbaf2f88a9b?apiKey=bf80438c4595450788b907771330b274&"
                     className="shrink-0 w-6 aspect-square "
