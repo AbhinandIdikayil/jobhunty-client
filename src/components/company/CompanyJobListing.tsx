@@ -165,7 +165,8 @@ function CompanyJobListing() {
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem
                                 className='border font-bold bg-red-600 text-white'
-                                onClick={() => handleRemove(row.original?._id)}
+                                onClick={() =>{ 
+                                    handleRemove(row.original?._id)}}
                             >
                                 Remove
                             </DropdownMenuItem>

@@ -2,7 +2,7 @@ export interface JobApplication {
     _id: string;
     companyId: {
         images?: string,
-        _id?: string,
+        _id?:string,
         email?: string,
         name?: string,
         description?: string,

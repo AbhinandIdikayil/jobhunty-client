@@ -80,7 +80,7 @@ function ApplicantsOfJob() {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          <Link to={`/company/applicants/${row.original.user?._id}`}>
+          <Link to={`/company/applicants/${row.original?._id}`}>
             <Button
               className='rounded-none hover:bg-white bg-gray-50 font-bold text-indigo-600 border-2 border-indigo-600'>
               See application

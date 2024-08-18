@@ -4,16 +4,18 @@ import { logout } from "../../redux/actions/userAction";
 import { AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { resetState } from "../../redux/reducers/user/userSlice";
+import { googleLogout } from '@react-oauth/google'
 
 export default function DropDown() {
 
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
 
-    async function handleLogout () {
+    async function handleLogout() {
         try {
             let data = await dispatch(logout(undefined))
-            if(data) {
+            if (data) {
+                googleLogout()
                 dispatch(resetState())
                 navigate('/company/login')
             }
@@ -22,7 +24,7 @@ export default function DropDown() {
         }
     }
 
-    
+
     return (
         <Dropdown
             showArrow
@@ -60,30 +62,10 @@ export default function DropDown() {
                     ],
                 }}
             >
-                <DropdownSection aria-label="Profile & Actions"  showDivider>
-                    <DropdownItem
-                        isReadOnly
-                        key="profile"
-                        className="h-14 gap-2 opacity-100"
-                    >
-                        <User
-                            name="Junior Garcia"
-                            description="@jrgarciadev"
-                            classNames={{
-                                name: "text-default-600",
-                                description: "text-default-500",
-                            }}
-                            avatarProps={{
-                                size: "sm",
-                                src: "https://avatars.githubusercontent.com/u/30373425?v=4",
-                            }}
-                        />
-                    </DropdownItem>
+                <DropdownSection aria-label="Profile & Actions" showDivider>
                     <DropdownItem key="dashboard">
                         Dashboard
                     </DropdownItem>
-                    <DropdownItem key="settings">Settings</DropdownItem>
-
                 </DropdownSection>
 
                 <DropdownSection aria-label="Preferences" showDivider>
@@ -108,7 +90,11 @@ export default function DropDown() {
                 </DropdownSection>
 
                 <DropdownSection className="hover:cursor-pointer" aria-label="Help & Feedback">
-                    <DropdownItem  key="logout" className="bg-indigo-600 font-semibold" onClick={handleLogout}>Log Out</DropdownItem>
+                    <DropdownItem key="logout" className="bg-indigo-600 text-white" onClick={handleLogout}>
+                        <button className="font-bold capitalize">
+                            Logout
+                        </button>
+                    </DropdownItem>
                 </DropdownSection>
             </DropdownMenu>
         </Dropdown>

@@ -42,6 +42,7 @@ import Applicants from './pages/company/Applicants'
 import Applications from './pages/user/Applications'
 import ApplicantDetails from './pages/company/ApplicantDetails'
 import ApplicantsOfJob from './pages/company/ApplicantsOfJob'
+import Schedules from './pages/company/Schedules'
 
 
 function App() {
@@ -99,7 +100,7 @@ function App() {
             <Route path='job-list' element={<CompanyJobListing />} />
             <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='job-list/applicants/:id' element={<ApplicantsOfJob />} />
-            <Route path='schedules' element={<h1>schedules</h1>} />
+            <Route path='schedules' element={<Schedules />} />
             <Route path='settings' element={<Settings />}>
               <Route path='' element={<Overview />} />
               <Route path='social-links' element={<SocialLinks />} />

@@ -60,7 +60,7 @@ function AddInterview({ open, setOpen }: { open: boolean, setOpen: (prev: boolea
 
 export default AddInterview
 
-function ScheduleForm({ setOpen,id }: { setOpen: (pre: boolean) => void,id:string }) {
+function ScheduleForm({ setOpen,id }: { setOpen: (pre: boolean) => void,id:any }) {
     const [time, setTime] = useState<string>('')
     const dispatch: AppDispatch = useDispatch()
     const form = useForm<z.infer<typeof formSchema>>({

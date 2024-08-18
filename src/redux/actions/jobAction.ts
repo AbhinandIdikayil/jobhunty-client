@@ -10,7 +10,7 @@ export const postJob = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.post('/post-job', req);
             return data;
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -55,7 +55,8 @@ export const getAllJob = createAsyncThunk(
             const { data } = res
             return data
         } catch (error: any) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
+
         }
     }
 )
@@ -67,7 +68,7 @@ export const applyJob = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.post('/apply-job', req)
             return data
         } catch (error: any) {
-            return rejectWithValue(error?.response?.data)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -79,7 +80,7 @@ export const getJobDetails = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.get(`/details/${req}`)
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )
@@ -91,7 +92,7 @@ export const removeJob = createAsyncThunk(
             const { data } = await AXIOS_INSTANCE_JOB.delete(`/post-job/${req}`)
             return data
         } catch (error) {
-            return rejectWithValue(error)
+            return rejectWithValue(handleTokenError(error))
         }
     }
 )

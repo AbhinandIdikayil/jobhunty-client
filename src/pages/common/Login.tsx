@@ -85,7 +85,7 @@ const Login: React.FC = () => {
     async function handleSubmit(values: FormikValues) {
         
         // if (url == 'login') {
-        const formData: LoginI = {
+        const formData: any = {
             ...values
         }
         try {

@@ -273,15 +273,7 @@ function Signup() {
                                         Get more opportunities{" "}
                                     </div>
                                     <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600  border-indigo-200  leading-[160%] max-md:px-5">
-                                        {/* <div className="w-full"> */}
-                                        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />
-                                        {/* <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/2019ff383b243dae561ad6a469db084ba563760d8f4bb4a2722edf42f5a32861?"
-                                        className="shrink-0 my-auto w-5 aspect-square"
-                                    />
-                                    <div>Sign Up with Google</div> */}
-                                        {/* </div> */}
+                                        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />                                        
                                     </div>
                                     <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
                                         <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[109px]" />
