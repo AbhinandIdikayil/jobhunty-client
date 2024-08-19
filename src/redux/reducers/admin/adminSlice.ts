@@ -7,7 +7,10 @@ import { adminReducer } from "src/types/Admin";
 const initialState: adminReducer = {
     loading: false,
     request: [],
-    companies: [],
+    companies: {
+        companies: [],
+        totalCount: [{ count: 0 }]
+    },
     users: [],
     err: null,
     role: null,
@@ -83,14 +86,17 @@ const adminSlice = createSlice({
                 state.loading = true
                 state.err = null
             })
-            .addCase(listAllCompanies.fulfilled, (state,{payload}) => {
+            .addCase(listAllCompanies.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = null
                 state.companies = payload
             })
-            .addCase(listAllCompanies.rejected, (state,{payload}) => {
+            .addCase(listAllCompanies.rejected, (state, { payload }) => {
                 state.loading = false
-                state.companies = []
+                state.companies = {
+                    companies: [],
+                    totalCount: [{ count: 0 }] // Ensure to set this as well to maintain the initial structure
+                };
                 state.err = payload
             })
     }

@@ -18,16 +18,16 @@ function CompanyCard({ data }: { data: Company }) {
                             className="shrink-0 aspect-square w-[88px]"
                         />
                     ) : (
-                        <Avatar sx={{width:78,height:78}}> {data?.name.charAt(0)} </Avatar>
+                        <Avatar sx={{width:78,height:78}}> {data?.name.charAt(0) ?? ''} </Avatar>
                     )
                 }
             </div>
             <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                {data?.name}
+                {data?.name ?? ''}
             </div>
             <div className="company-desc mt-4 text-lg leading-7 text-slate-600">
                 {
-                    data?.description
+                    data?.description ?? ''
                 }
 
             </div>

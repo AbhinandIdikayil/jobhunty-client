@@ -3,8 +3,6 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import Button from '@mui/material/Button'
-
-
 import {
     Accordion,
     AccordionContent,
@@ -232,7 +230,7 @@ function Jobs() {
 
     return (
         <>
-            <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <div className={`flex flex-col items-center  ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
                         <div className="self-start text-slate-800 max-md:text-4xl">
