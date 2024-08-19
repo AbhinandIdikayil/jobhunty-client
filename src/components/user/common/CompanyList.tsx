@@ -1,22 +1,61 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Checkbox } from '@/components/ui/checkbox'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import { listAllCompanies } from 'src/redux/actions/commonAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import CompanyCard from './CompanyCard';
+import Loading from 'src/components/common/Loading';
+import { Button } from '@/components/ui/button';
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+
+
+interface FilterAndSearch {
+    name: string;
+    category: any[];
+}
 
 function CompanyList() {
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state.admin)
+    const [loading,setLoading] = useState<boolean>(false)
+    const [pagination, setPagination] = useState({
+        pageIndex: 0,
+        pageSize: 5,
+    });
+    const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
+        name: '',
+        category: [],
+    })
+
+    const fetchData = async (page: number, pageSize: number, name?: string,  category?: string[]) => {
+        try {
+            setLoading(true)
+            await dispatch(listAllCompanies({
+                page,
+                pageSize,
+                name,
+                category,
+            })).unwrap()
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     useEffect(() => {
-        dispatch(listAllCompanies()).unwrap()
-    }, [])
+        fetchData(
+            pagination?.pageIndex+1,
+            pagination?.pageSize,
+            '',
+            filterAndSearch?.category
+        )
+    }, [pagination?.pageIndex,pagination?.pageSize,filterAndSearch?.category])
 
     return (
         <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-white'} px-3`}>
@@ -49,7 +88,6 @@ function CompanyList() {
                                             </div>
                                         </AccordionContent>
                                     </AccordionItem>
-
                                     <AccordionItem value="item-2">
                                         <AccordionTrigger className='font-bold text-slate-800'>Company size</AccordionTrigger>
                                         <AccordionContent>
@@ -71,7 +109,6 @@ function CompanyList() {
                                                     1-50 (25)
                                                 </label>
                                             </div>
-
                                         </AccordionContent>
                                     </AccordionItem>
                                 </Accordion>
@@ -84,35 +121,6 @@ function CompanyList() {
                                         <div className="text-3xl font-semibold leading-10">
                                             All Companies
                                         </div>
-                                        <div className="mt-1 text-base leading-6">
-                                            Showing 73 results
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-5 justify-center items-center my-auto">
-                                        <div className="flex gap-3 self-stretch my-auto text-base leading-6">
-                                            <div className="text-right text-slate-500">Sort by:</div>
-                                            <div className="flex gap-2 font-medium text-slate-800">
-                                                <div>Most relevant</div>
-                                                <img
-                                                    loading="lazy"
-                                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/1e0ad8cf3b83b975764a3f6ff7c0a8ace747a9c9cb2b5fdad9baf757c992c964?"
-                                                    className="shrink-0 my-auto w-4 aspect-square"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="shrink-0 self-stretch my-auto w-px h-8 bg-gray-800 border border-gray-800 border-solid" />
-                                        <div className="flex gap-4 self-stretch">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/173c4a9f782b35eaeba837b298e7a2bacbc5d940995719d94651c13828e73d74?"
-                                                className="shrink-0 w-10 aspect-square"
-                                            />
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/78f3aa7eaa20179df9e47270a51233973379309c809f3c6a5d37c8050bd3aa48?"
-                                                className="shrink-0 w-10 aspect-square"
-                                            />
-                                        </div>
                                     </div>
                                 </div>
                                 <div className='company grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
@@ -122,10 +130,46 @@ function CompanyList() {
                                         ))
                                     }
                                 </div>
+                                <div className='flex items-center justify-center gap-2 font-bold'>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => {
+                                            if (pagination.pageIndex < page) {
+                                                if (pagination.pageIndex + 1 > 1) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
+                                                }
+                                            }
+                                        }}
+                                        className="h-8 w-8 p-0"
+                                    >
+                                        <span className="sr-only">Go to first page</span>
+                                        <DoubleArrowLeftIcon className="h-4 w-4" />
+                                    </Button>
+                                    {
+                                        <span className='font-thin'>
+                                            page {pagination?.pageIndex + 1} of {page}
+                                        </span>
+                                    }
+                                    <Button
+                                        variant="contained"
+                                        className={`h-8 w-8 p-0`}
+                                        onClick={() => {
+                                            if (pagination.pageIndex < page) {
+                                                if (pagination.pageIndex + 1 < page) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
+                                                }
+                                            }
+                                        }}
+                                    >
+                                        <span className="sr-only">Go to first page</span>
+                                        <DoubleArrowRightIcon className="h-4 w-4" />
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <Loading loading={loading} key={'company-loading'} />
             </div>
         </div>
     )

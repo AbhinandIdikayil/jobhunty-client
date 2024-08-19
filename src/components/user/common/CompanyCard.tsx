@@ -21,9 +21,6 @@ function CompanyCard({ data }: { data: Company }) {
                         <Avatar sx={{width:78,height:78}}> {data?.name.charAt(0)} </Avatar>
                     )
                 }
-                <div className="self-start px-3 py-1 bg-slate-50">
-                    7 Jobs
-                </div>
             </div>
             <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
                 {data?.name}

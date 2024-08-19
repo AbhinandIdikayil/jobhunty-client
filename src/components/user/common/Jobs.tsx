@@ -41,6 +41,8 @@ function Jobs() {
     const [loading, setLoading] = useState(false)
     const [minSalary, setMinSalary] = useState<number>()
     const [maxSalary, setMaxSalary] = useState<number>()
+    const [search, setSearch] = useState<string>('')
+    const [startNameSearch, setStartNameSearch] = useState<boolean>(false)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,
@@ -91,14 +93,14 @@ function Jobs() {
         fetchData(
             pagination.pageIndex + 1,
             pagination.pageSize,
-            '',
+            filterAndSearch?.name,
             filterAndSearch?.employment,
             filterAndSearch?.category,
             mergeRanges(filterAndSearch?.price),
         )
     }, [pagination.pageIndex, pagination.pageSize,
     filterAndSearch?.employment, filterAndSearch?.category,
-    filterAndSearch?.price
+    filterAndSearch?.price, startNameSearch
     ])
 
     function applyForJob(data: any) {
@@ -123,6 +125,15 @@ function Jobs() {
             console.log(error)
             toast.error(jobState?.err?.message, { position: "top-center" })
         }
+    }
+
+    function handleSearch() {
+        if(filterAndSearch?.name?.trim().length <= 1){
+            return toast.error('At least 2 character',{
+                position:'top-center'
+            })
+        }
+        setStartNameSearch(!startNameSearch)
     }
 
     function handleCategory(e: any, _id: string) {
@@ -203,7 +214,7 @@ function Jobs() {
             }
 
             const mergedRanges = mergeRanges(updatedPrice);
-            console.log(updatedPrice,mergedRanges)
+            console.log(updatedPrice, mergedRanges)
             return {
                 ...prevState,
                 price: updatedPrice
@@ -211,17 +222,16 @@ function Jobs() {
         })
     }
 
-    const mergeRanges = (ranges:any) => {
+    const mergeRanges = (ranges: any) => {
         if (ranges.length === 0) return [];
         const sortedRanges = ranges.sort((a, b) => a[0] - b[0]);
         console.log(sortedRanges)
-        const merged = [sortedRanges[0][0],sortedRanges[sortedRanges?.length-1][1]];
+        const merged = [sortedRanges[0][0], sortedRanges[sortedRanges?.length - 1][1]];
         return merged
     };
 
     return (
         <>
-
             <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
@@ -244,13 +254,17 @@ function Jobs() {
                 <div className="p-6 mt-5 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
-                            <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
+                            <InputLabel
+                                htmlFor="demo-customized-textbox"
+                            >
+                                Search company name
+                            </InputLabel>
                             <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
                         </FormControl>
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
 
-                            <NativeSelect
+                            {/* <NativeSelect
                                 onChange={() => console.log(filterAndSearch)}
                                 sx={{ minWidth: 200 }}
                                 id="demo-customized-select-native"
@@ -262,14 +276,18 @@ function Jobs() {
                                 <option value={10} className='font-bold border-solid px-2'>company name</option>
                                 <option value={20}>company name</option>
                                 <option value={30}>company companay company</option>
-                            </NativeSelect>
+                            </NativeSelect> */}
 
                         </FormControl>
-                        <Button sx={{
+                        <Button 
+                        onClick={handleSearch}
+                        sx={{
                             m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
                                 backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
                             }
-                        }} variant="outlined">search my job</Button>
+                        }} variant="outlined">
+                            search my job
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -43,9 +43,9 @@ function JobEdting() {
             if(location?.length > 1){
                 return toast.error('Multiple locations are restricted')
             }
-            navigate('/company/job-list')
             dispatch(updateJob({data:{...values,location},id:state?.job?._id})).unwrap()
             toast.success('job updated successfully',{position:'top-center'})
+            navigate('/company/job-list')
         } catch (error) {
             console.log(error)
         }

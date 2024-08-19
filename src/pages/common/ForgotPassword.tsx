@@ -2,6 +2,7 @@ import { Navbar } from "@nextui-org/react"
 import { Field, Form, Formik, FormikValues } from "formik"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import { forgotPassword } from "src/redux/actions/userAction"
 import { AppDispatch, RootState } from "src/redux/store"
 import { forgotPasswordValidation } from "src/validation/common/signup-validation"
@@ -26,6 +27,7 @@ function ForgotPassword() {
       const data = await dispath(forgotPassword(value)).unwrap()
       console.log(data)
       if (data) {
+        toast.success('password updated succesfully', { position: 'top-center' })
         navigate('/login')
       }
     } catch (error) {

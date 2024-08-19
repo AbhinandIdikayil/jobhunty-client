@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Loading from 'src/components/common/Loading'
 import Sidebar from 'src/components/chat/Sidebar'
 import { UseChatSocketContext } from 'src/context/ChatSocketContext'
@@ -17,19 +17,22 @@ function Chat() {
     const chat = useSelector((state: RootState) => state?.chat)
     const [messages, setMessages] = useState<any>([])
     const dispatch: AppDispatch = useDispatch()
-    useEffect(() => {
+    const chatRef = useRef<HTMLDivElement>(null);
 
+    const handleScrollToBottom = () => {
+        if (chatRef.current) {
+            chatRef.current.scrollTop = chatRef.current.scrollHeight;
+        }
+    };
+    useEffect(() => {
         if (socket) {
             console.log(user)
             socket.emit('setup', user)
             socket.on('connected', () => setSocketConnected(true))
-
             socket.on('disconnect', () => {
                 console.log('disconnected');
             });
         }
-
-
 
         return () => {
             if (socket) {
@@ -58,6 +61,10 @@ function Chat() {
         fetchMessages()
     }, [chat?.selectedUser])
 
+    useEffect(() => {
+        handleScrollToBottom();
+    }, [messages])
+
     return (
         <div className='flex gap-1 w-full'>
             <Sidebar setLoading={setLoading} setMessages={setMessages} />
@@ -65,7 +72,7 @@ function Chat() {
 
             <div className="relative flex flex-col w-full min-h-[82vh]  rounded-xl bg-muted/50 px-1 lg:col-span-2">
                 <div className="flex-1" />
-                <div className='chat w-full max-h-[63vh] overflow-y-scroll pb-2 flex flex-col scroll-smooth px-1'>
+                <div ref={chatRef} className='chat w-full max-h-[63vh] overflow-y-scroll pb-2 flex flex-col scroll-smooth px-1'>
                     {
                         chat?.messages?.length ? chat?.messages?.map((data: any, ind: number) => {
                             return data?.senderId === user?._id ? (

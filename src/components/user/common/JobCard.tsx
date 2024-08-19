@@ -37,8 +37,11 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
                         )
                     }
                     <div className="flex flex-wrap gap-2 justify-between py-px mt-2 text-base text-slate-500">
-                        <div>Terraform</div>
-                        <div>Hamburg, Germany</div>
+                        <span>
+                            {data?.location?.[0] || 'non-disclosable'}    
+                        </span>
+                        {/* <div>Terraform</div>
+                        <div>Hamburg, Germany</div> */}
                     </div>
                     <div className="flex gap-2 mt-2 text-sm whitespace-nowrap">
                         <div className="px-2.5 py-1.5 text-emerald-300 bg-emerald-300 bg-opacity-10 rounded-[80px]">
@@ -46,11 +49,9 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
                         </div>
                         <div className="shrink-0 w-px bg-zinc-200 h-[34px]" />
                         <div className="hidden sm:block px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">
-                            Marketing
+                            {data?.categoryDetails?.name || 'non-disclosable'}
                         </div>
-                        {/* <div className="px-2.5 py-1.5 text-indigo-600 border border-indigo-600 border-solid rounded-[80px]">
-                            Design
-                        </div> */}
+                       
                     </div>
                 </div>
             </div>
