@@ -20,13 +20,16 @@ function ResumePreview() {
       < PersonalDetails data={resume} />
       {/* summary */}
       <SummarPreview data={resume} />
-      {/* experience */}
-      {resume?.experience?.length > 0 && <ExperiencePreview data={resume} />}
-      {/* education */}
-      {resume?.education?.length > 0 && <EducationalPreview data={resume} />}
 
       {/* skills */}
       {resume?.skills?.length > 0 && <SkillsPreview data={resume} />}
+
+      {/* experience */}
+      {resume?.experience?.length > 0 && <ExperiencePreview data={resume} />}
+      
+      {/* education */}
+      {resume?.education?.length > 0 && <EducationalPreview data={resume} />}
+
     </div >
   )
 }

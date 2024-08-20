@@ -12,12 +12,20 @@ function Navbar() {
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
 
+    const fetch = async () => {
+        try {
+            await dispatch(listCategory(null)).unwrap()
+            await dispatch(listSectors()).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
         if (user?.user) {
             dispatch(getUser()).unwrap()
         }
-        dispatch(listCategory(null)).unwrap()
-        dispatch(listSectors()).unwrap()
+        fetch()
         // if (user.role == 'user') {
         //     return navigate('/home')
         // } 
@@ -25,6 +33,7 @@ function Navbar() {
             return navigate('/company')
         }
     }, [])
+
 
     async function handleLogout() {
         try {

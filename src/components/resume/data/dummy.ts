@@ -79,5 +79,9 @@ export default{
             id:1,
             name:'React Native',
         }
-    ]
+    ],
+    skill:{
+        technical_skill:['mongodb','expressjs'],
+        soft_skill:['communication','problem solving']
+    }
 }
