@@ -10,50 +10,25 @@ function SkillsPreview({ data }: { data: any }) {
             <hr style={{
                 borderColor: data?.themeColor
             }} />
-            <div className="text-xs flex mt-2 ">
-                {
-                    data?.skill?.technical_skill?.length > 0 && (
-                        <div className="w-[130px] capitalize">
-                            technical skill
+            {
+                data?.skill?.length &&
+                data?.skill?.map((val: any) => {
+                    return (
+                        <div className="text-xs flex mt-2 w-full">
+                            <div className="w-[110px] capitalize flex-shrink-0">
+                                {val?.name}
+                            </div>
+                            <div className="w-[240px] h-full break-words">
+                                {
+                                    val?.data
+                                }
+                            </div>
                         </div>
                     )
-                }
-                <div>
-                    {
-                        data?.skill?.technical_skill &&
-                        data?.skill?.technical_skill?.map((skill: any, ind: number) => (
-                            <span>
-                                {skill}
-                                {
-                                    (ind === data?.skill?.technical_skill?.length - 1) ? ' ' : ','
-                                }
-                            </span>
-                        ))
-                    }
-                </div>
-            </div>
-            <div className="text-xs flex mt-2 ">
-                {
-                    data?.skill?.technical_skill?.length > 0 && (
-                        <div className="w-[130px] capitalize">
-                            soft skill
-                        </div>
-                    )
-                }
-                <div>
-                    {
-                        data?.skill?.soft_skill &&
-                        data?.skill?.soft_skill?.map((skill: any, ind: number) => (
-                            <span>
-                                {skill}
-                                {
-                                    (ind === data?.skill?.soft_skill?.length - 1) ? ' ' : ','
-                                }
-                            </span>
-                        ))
-                    }
-                </div>
-            </div>
+                })
+            }
+
+
         </div>
     )
 }

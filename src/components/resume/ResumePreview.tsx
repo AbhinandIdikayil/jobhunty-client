@@ -22,7 +22,7 @@ function ResumePreview() {
       <SummarPreview data={resume} />
 
       {/* skills */}
-      {resume?.skills?.length > 0 && <SkillsPreview data={resume} />}
+      {resume?.skill?.length > 0 && <SkillsPreview data={resume} />}
 
       {/* experience */}
       {resume?.experience?.length > 0 && <ExperiencePreview data={resume} />}

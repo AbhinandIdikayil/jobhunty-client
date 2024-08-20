@@ -4,15 +4,13 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import { IoSettingsOutline } from "react-icons/io5";
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
-import { TbNumber1Small } from "react-icons/tb";
-import { ClipboardListIcon, LayoutGrid, MessageSquareText, NotebookPen, Users, FileText , Search, Building2, CircleUserRound } from 'lucide-react'
+import {  LayoutGrid, MessageSquareText, FileText, Search, Building2, CircleUserRound, FilePlus2 } from 'lucide-react'
 import Header from './Header';
 
 interface AppBarProps extends MuiAppBarProps {
@@ -93,38 +91,57 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                     </div>
                     <MdOutlineArrowBackIos onClick={handleDrawerClose} />
                 </DrawerHeader>
-                <Divider />
-                <List>
+                {/* <Divider /> */}
+                <List disablePadding sx={{ "&:hover": { backgroundColor: "transparent" } }} className='bg-white'>
                     {['Dashboard', 'Messages', 'applications', 'jobs', 'companies', 'profile'].map((text, index) => (
-                        <ListItem key={text} disablePadding >
-                            <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                                <ListItemButton sx={{ width: drawerWidth - 2 }}>
-                                    <ListItemIcon>
-                                        {
-                                            text == 'Dashboard' && <LayoutGrid /> ||
-                                            text == 'Messages' && <MessageSquareText /> ||
-                                            text == 'applications' && <FileText /> ||
-                                            text == 'jobs' && <Search /> ||
-                                            text == 'companies' && <Building2 /> ||
-                                            text == 'profile' && <CircleUserRound />
-                                        }
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
+                        <ListItem key={text} disablePadding sx={{
+                            "&.MuiButtonBase-root:hover": {
+                                bgcolor: "transparent"
+                            }
+                        }} >
+                            <NavLink className={'sidebar-link '} end to={navLinks[index]}>
+                                <ListItemButton disableRipple sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }} >
+                                    <div
+                                        className={`flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
+                                      hover:translate-y-[-5px] hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer
+                                     `}>
+                                        <ListItemIcon sx={{ "&:hover": { backgroundColor: "transparent" } }}>
+                                            {
+                                                text == 'Dashboard' && <LayoutGrid color='black' /> ||
+                                                text == 'Messages' && <MessageSquareText color='black' /> ||
+                                                text == 'applications' && <FileText color='black' /> ||
+                                                text == 'jobs' && <Search color='black' /> ||
+                                                text == 'companies' && <Building2 color='black' /> ||
+                                                text == 'profile' && <CircleUserRound color='black' />
+                                            }
+                                        </ListItemIcon>
+                                        <h1 className='font-extrabold text-sm'>
+                                            {text}
+                                        </h1>
+                                    </div>
                                 </ListItemButton>
                             </NavLink>
                         </ListItem>
                     ))}
                 </List>
                 <Divider sx={{ borderBottom: '.5px solid black' }} />
-                <List>
-                    {['settings','resume'].map((text) => (
+                <List disablePadding>
+                    {['settings', 'resume'].map((text) => (
                         <ListItem key={text} disablePadding className='capitalize'>
                             <NavLink to={text}>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <IoSettingsOutline size={30} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
+                                <ListItemButton sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
+                                    <div className='flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
+                                     hover:translate-y-[-5px] hover:shadow-2xl transition-all duration-300 ease-in-out'>
+                                        <ListItemIcon>
+                                            {
+                                                text == 'resume' && <FilePlus2 /> ||
+                                                text == 'settings' && <IoSettingsOutline size={30} />
+                                            }
+                                        </ListItemIcon>
+                                        <h1 className='font-extrabold text-sm'>
+                                            {text}
+                                        </h1>
+                                    </div>
                                 </ListItemButton>
                             </NavLink>
                         </ListItem>
