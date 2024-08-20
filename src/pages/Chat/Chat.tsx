@@ -111,7 +111,7 @@ function Chat() {
                                 </div>
                             ) : (
                                 <div key={`${data?.id}+${ind}`}
-                                    className=' text-black w-fit max-w-[50%] bg-gray-200 px-2 mb rounded-lg rounded-bl-none break-words'>
+                                    className=' text-black w-fit max-w-[50%] bg-gray-200 px-2 mb-1 rounded-lg rounded-bl-none break-words'>
                                     <h1>
                                         {data?.content?.content ?? ''}
                                     </h1>

@@ -1,0 +1,16 @@
+.wrapper {
+    display: grid;
+    grid-auto-rows: 240px;
+    grid-template-columns: repeat(auto-fill, 222px);
+    grid-gap: 10px;
+    background-color: #fff;
+    color: #444;
+  }
+  
+  .box {
+    color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 150%;
+    border: 1px solid gray;
+  }

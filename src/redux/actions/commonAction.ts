@@ -33,7 +33,7 @@ export const listCategory = createAsyncThunk<IListCategory[], null, { rejectValu
 
 export const addCategory = createAsyncThunk(
     'admin/add-category',
-    async (req: AddCategory, { rejectWithValue }) => {
+    async (req: any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/add-category', req)
             return data

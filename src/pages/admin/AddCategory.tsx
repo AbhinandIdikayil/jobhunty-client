@@ -2,7 +2,7 @@ import { useNavigate, useOutletContext } from 'react-router-dom';
 import { prop } from 'src/types/AllTypes';
 import { openEditor } from 'react-profile'
 import { ChangeEvent, useState } from 'react';
-import { Field, Form, Formik, FormikHandlers, FormikValues } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { AddCategoryValidation } from 'src/validation/admin';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/redux/store';
@@ -36,7 +36,7 @@ function AddCategory() {
             }
         }
     }
-    async function handleSubmit(values: IAddCategory, helpers: FormikHandlers<FormikValues>) {
+    async function handleSubmit(values: IAddCategory, helpers:any) {
         const { setSubmitting, setFieldError } = helpers
         if (!dataUrl) {
             setFieldError('image', 'Image is required')
@@ -46,7 +46,7 @@ function AddCategory() {
 
         }
         const imageUrl = await uploadToCloudinary(dataUrl)
-        let data = {
+        let data:any = {
             ...values,
             image: imageUrl
         }

@@ -32,8 +32,8 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
         }
     }
     async function filterChat() {
-        let a = await dispatch(listAllCompanies()).unwrap()
-        let b = await dispatch(getAllusers()).unwrap()
+        await dispatch(listAllCompanies(undefined)).unwrap()
+        await dispatch(getAllusers()).unwrap()
         // if (a || b) {
         if (location.pathname == '/company/messages') {
             console.log(users.users)
@@ -43,7 +43,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
             setChatDetails(res)
             return;
         } else {
-            let res = users?.companies?.filter(com => com?._id === data?.members?.[1])
+            let res = users?.companies?.companies?.filter(com => com?._id === data?.members?.[1])
             setLoading(false)
             setChatDetails(res)
         }

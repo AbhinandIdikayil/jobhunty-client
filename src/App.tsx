@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
@@ -28,7 +28,7 @@ import UserDashboard from './components/user/dashboard/Dashboard'
 import Profile from './components/user/dashboard/Profile'
 import Categories from './pages/admin/Categories'
 import AddCategory from './pages/admin/AddCategory'
-const PostJob = lazy(() => import('./components/company/PostJob')) 
+const PostJob = lazy(() => import('./components/company/PostJob'))
 import 'react-profile/themes/default'
 import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
@@ -43,6 +43,9 @@ import Applications from './pages/user/Applications'
 import ApplicantDetails from './pages/company/ApplicantDetails'
 import ApplicantsOfJob from './pages/company/ApplicantsOfJob'
 import Schedules from './pages/company/Schedules'
+import ResumeHome from './pages/resume/ResumeHome'
+import ResumeForm from './pages/resume/CreateResume'
+
 
 
 function App() {
@@ -56,7 +59,7 @@ function App() {
       <Routes>
 
       ////! routes for user
-      <Route path='/' element={<Navigate to='home' />} />
+        <Route path='/' element={<Navigate to='home' />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='home' element={<UserLayout />} >
@@ -75,9 +78,11 @@ function App() {
           <Route path='companies' element={<CompanyList />} />
           <Route path='companies/:id' element={<CompanyDetails />} />
           <Route path='profile' element={<Profile />} />
+          <Route path='resume' element={<ResumeHome />} />
+          <Route path='resume/create' element={<ResumeForm />} />
         </Route>
 
-        
+
 
 
         <Route path='/forgot-password' element={<ForgotPassword />} />

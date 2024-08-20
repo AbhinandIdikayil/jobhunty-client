@@ -117,15 +117,14 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                 </List>
                 <Divider sx={{ borderBottom: '.5px solid black' }} />
                 <List>
-                    {['Settings'].map((text) => (
-                        <ListItem key={text} disablePadding>
-                            <NavLink to={'settings'}>
+                    {['settings','resume'].map((text) => (
+                        <ListItem key={text} disablePadding className='capitalize'>
+                            <NavLink to={text}>
                                 <ListItemButton>
                                     <ListItemIcon>
                                         <IoSettingsOutline size={30} />
                                     </ListItemIcon>
                                     <ListItemText primary={text} />
-                                    <TbNumber1Small size={30} />
                                 </ListItemButton>
                             </NavLink>
                         </ListItem>
