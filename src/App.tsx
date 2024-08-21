@@ -45,6 +45,8 @@ import ApplicantsOfJob from './pages/company/ApplicantsOfJob'
 import Schedules from './pages/company/Schedules'
 import ResumeHome from './pages/resume/ResumeHome'
 import ResumeForm from './pages/resume/CreateResume'
+import ResumeView from './pages/resume/ResumeView'
+import { ResumeContextProvider } from './context/ResumeContext'
 
 
 
@@ -80,6 +82,11 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path='resume' element={<ResumeHome />} />
           <Route path='resume/create' element={<ResumeForm />} />
+          <Route path='resume/view' element={
+            <ResumeContextProvider>
+              <ResumeView />
+            </ResumeContextProvider>
+          } />
         </Route>
 
 

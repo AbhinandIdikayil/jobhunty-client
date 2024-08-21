@@ -1,17 +1,17 @@
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, ArrowRight, Home } from 'lucide-react';
 import { useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import PersonalDetail from './form/PersonalDetail';
 import Summary from './form/Summary';
 import AddExperience from './form/AddExperience';
 import AddEducation from './form/AddEducation';
 import AddSkills from './form/AddSkills';
+import ThemeColor from './ThemeColor';
 
 function FormSection() {
   const [activeFormIndex, setActiveFormIndex] = useState(1);
   const [enableNext, setEnableNext] = useState(true);
-  const { resumeId } = useParams();
   return (
     <div>
       <div className='flex justify-between items-center'>
@@ -19,7 +19,7 @@ function FormSection() {
           <Link to={"/dashboard"}>
             <Button><Home /></Button>
           </Link>
-          <button>theme</button>
+          <ThemeColor />
 
         </div>
         <div className='flex gap-2'>
@@ -46,7 +46,7 @@ function FormSection() {
               : activeFormIndex == 5 ?
                 <AddSkills />
                 : activeFormIndex == 6 ?
-                  <Navigate to={'/my-resume/' + resumeId + "/view"} />
+                  <Navigate to={'/Dashboard/resume/view'} />
 
                   : null
       }

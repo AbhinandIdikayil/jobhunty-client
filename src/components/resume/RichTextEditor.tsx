@@ -60,8 +60,6 @@ function RichTextEditor({ onRichTextEditorChange, index, defaultValue }: { onRic
                         <BtnBulletList />
                         <Separator />
                         <BtnLink />
-
-
                     </Toolbar>
                 </Editor>
             </EditorProvider>

@@ -70,15 +70,7 @@ function AddExperience() {
 
   const onSave = () => {
     setLoading(true)
-    // const data = {
-    //   data: {
-    //     Experience: experinceList.map(({ id, ...rest }) => rest)
-    //   }
-    // }
-
     console.log(experinceList)
-
-
     setLoading(false);
     toast('Details updated !')
 
@@ -137,7 +129,7 @@ function AddExperience() {
                   <RichTextEditor
                     index={index}
                     defaultValue={item?.workSummery}
-                    onRichTextEditorChange={(event) => handleRichTextEditor(event, 'workSummery', index)} />
+                    onRichTextEditorChange={(event: any) => handleRichTextEditor(event, 'workSummery', index)} />
                 </div>
               </div>
             </div>
