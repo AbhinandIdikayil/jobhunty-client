@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
 import RichTextEditor from '../RichTextEditor';
-
+import h from 'draftjs-to-html'
 
 const formField = {
   title: '',
@@ -15,7 +15,6 @@ const formField = {
   startDate: '',
   endDate: '',
   workSummery: '',
-
 }
 
 function AddExperience() {
@@ -36,7 +35,6 @@ function AddExperience() {
   }
 
   const AddNewExperience = () => {
-
     setExperinceList([...experinceList, {
       title: '',
       companyName: '',
@@ -54,12 +52,12 @@ function AddExperience() {
 
   const handleRichTextEditor = (e: any, name: any, index: any) => {
     const newEntries = experinceList.slice();
-    newEntries[index][name] = e.target.value;
-
+    newEntries[index][name] = e.target.value
     setExperinceList(newEntries);
   }
 
   useEffect(() => {
+    console.log(experinceList)
     setResume({
       ...resume,
       experience: experinceList

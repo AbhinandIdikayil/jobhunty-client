@@ -6,12 +6,13 @@ import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
 import { AIChatSession } from '../../../service/AIModal'
 
+
 const PROMPT = 'position titile: {positionTitle} , Depends on position title give me 5-7 bullet points for my experience in resume (Please do not add experince level and No JSON array) , give me result in HTML tags'
 
 
 function RichTextEditor({ onRichTextEditorChange, index, defaultValue }: { onRichTextEditorChange: any, index: any, defaultValue: any }) {
     const [value, setValue] = useState(defaultValue);
-    const { resume, setResume } = UseResumeContext()
+    const { resume } = UseResumeContext()
     const [loading, setLoading] = useState(false);
     const GenerateSummeryFromAI = async () => {
 
@@ -23,7 +24,6 @@ function RichTextEditor({ onRichTextEditorChange, index, defaultValue }: { onRic
         const prompt = PROMPT.replace('{positionTitle}', resume.experience[index].title);
 
         const result = await AIChatSession.sendMessage(prompt);
-        console.log(result.response.text());
         const resp = result.response.text()
         setValue(resp.replace('[', '').replace(']', ''));
         setLoading(false);
@@ -46,7 +46,7 @@ function RichTextEditor({ onRichTextEditorChange, index, defaultValue }: { onRic
                 </Button>
             </div>
             <EditorProvider>
-                <Editor value={value} onChange={(e) => {
+                <Editor style={{fontSize:'12px'}} value={value} onChange={(e) => {
                     setValue(e.target.value);
                     onRichTextEditorChange(e)
                 }}>
