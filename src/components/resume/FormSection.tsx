@@ -8,10 +8,12 @@ import AddExperience from './form/AddExperience';
 import AddEducation from './form/AddEducation';
 import AddSkills from './form/AddSkills';
 import ThemeColor from './ThemeColor';
+import { UseResumeContext } from 'src/context/ResumeContext';
 
 function FormSection() {
   const [activeFormIndex, setActiveFormIndex] = useState(1);
   const [enableNext, setEnableNext] = useState(true);
+  const { resume } = UseResumeContext()
   return (
     <div>
       <div className='flex justify-between items-center'>
@@ -36,9 +38,9 @@ function FormSection() {
       </div>
       {/* Personal Detail  */}
       {activeFormIndex == 1 ?
-        <PersonalDetail enabledNext={(v:any) => setEnableNext(v)} />
+        <PersonalDetail enabledNext={(v: any) => setEnableNext(v)} />
         : activeFormIndex == 2 ?
-          <Summary enabledNext={(v:any) => setEnableNext(v)} />
+          <Summary enabledNext={(v: any) => setEnableNext(v)} />
           : activeFormIndex == 3 ?
             <AddExperience />
             : activeFormIndex == 4 ?
@@ -46,17 +48,12 @@ function FormSection() {
               : activeFormIndex == 5 ?
                 <AddSkills />
                 : activeFormIndex == 6 ?
-                  <Navigate to={'/Dashboard/resume/view'} />
+                  <Navigate state={resume} to={'/Dashboard/resume/view'} />
 
                   : null
       }
 
 
-      {/* Experience  */}
-
-      {/* Educational Detail  */}
-
-      {/* Skills  */}
 
     </div>
   )

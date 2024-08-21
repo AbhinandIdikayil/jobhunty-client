@@ -53,9 +53,9 @@ function CompanyList() {
     }
 
     function handleSearch() {
-        if(filterAndSearch?.name?.trim().length <= 1){
-            return toast.error('At least 2 character',{
-                position:'top-center'
+        if (filterAndSearch?.name?.trim().length <= 1) {
+            return toast.error('At least 2 character', {
+                position: 'top-center'
             })
         }
         setStartNameSearch(!startNameSearch)
@@ -99,7 +99,7 @@ function CompanyList() {
             filterAndSearch?.name,
             filterAndSearch?.category
         )
-    }, [pagination?.pageIndex, pagination?.pageSize, filterAndSearch?.category,startNameSearch])
+    }, [pagination?.pageIndex, pagination?.pageSize, filterAndSearch?.category, startNameSearch])
 
     return (
         <>
@@ -122,7 +122,8 @@ function CompanyList() {
                         Find your next career at companies like HubSpot, Nike, and Dropbox
                     </div>
                 </div>
-                <div className="p-6 mt-5 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
+                <hr className={`${open ? 'w-full bg-black border-solid border-black' :'hidden' }`} />
+                <div className="p-6 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel
@@ -156,138 +157,139 @@ function CompanyList() {
                                 m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
                                     backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
                                 }
-                            }} 
+                            }}
                             variant='outlined'
-                            >
+                        >
                             search my job
                         </Button>
                     </div>
                 </div>
+                <hr className={`${open ? 'w-full bg-black border-solid border-black' :'hidden' }`} />
             </div>
             {/* <div className={`flex flex-col items-center ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-white'} px-3`}> */}
-                <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
-                    <div className="w-full max-w-[1192px] max-md:max-w-full">
-                        <div className="flex gap-5 max-md:flex-col">
-                            <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                                <div className="flex flex-col text-base leading-6 text-slate-600 ">
-                                    <Accordion type="multiple" className="w-full">
-                                        <AccordionItem className='text-sm text-black' value="item-1">
-                                            <AccordionTrigger>Categories</AccordionTrigger>
-                                            <AccordionContent>
-                                                {
-                                                    categoryState?.sectors?.map(data => (
-                                                        <div onClick={(e) => handleCategory(e, data?.name)}
-                                                            className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                            <Checkbox id="terms2" />
-                                                            <label
-                                                                htmlFor="terms2"
-                                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                            >
-                                                                {data?.name}
-                                                            </label>
-                                                        </div>
-                                                    ))
-                                                }
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                        <AccordionItem value="item-2">
-                                            <AccordionTrigger className='font-bold text-slate-800'>Company size</AccordionTrigger>
-                                            <AccordionContent>
-                                                <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                    <Checkbox id="terms2" />
-                                                    <label
-                                                        htmlFor="terms2"
-                                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                    >
-                                                        1-50 (25)
-                                                    </label>
-                                                </div>
-                                                <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                    <Checkbox id="terms2" />
-                                                    <label
-                                                        htmlFor="terms2"
-                                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                    >
-                                                        1-50 (25)
-                                                    </label>
-                                                </div>
-                                            </AccordionContent>
-                                        </AccordionItem>
-                                    </Accordion>
-                                </div>
+            <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
+                <div className="w-full max-w-[1192px] max-md:max-w-full">
+                    <div className="flex gap-5 max-md:flex-col">
+                        <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
+                            <div className="flex flex-col text-base leading-6 text-slate-900">
+                                <Accordion type="multiple" className="w-full">
+                                    <AccordionItem className='text-sm text-black font-bold border px-2 rounded-lg shadow-sm' value="item-1">
+                                        <AccordionTrigger className='font-bold'>Categories</AccordionTrigger>
+                                        <AccordionContent>
+                                            {
+                                                categoryState?.sectors?.map(data => (
+                                                    <div onClick={(e) => handleCategory(e, data?.name)}
+                                                        className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                                        <Checkbox id="terms2" />
+                                                        <label
+                                                            htmlFor="terms2"
+                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                        >
+                                                            {data?.name}
+                                                        </label>
+                                                    </div>
+                                                ))
+                                            }
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                    <AccordionItem value="item-2" className=' border px-2 rounded-lg mt-1 shadow-sm'>
+                                        <AccordionTrigger className='font-bold text-sm'>Company size</AccordionTrigger>
+                                        <AccordionContent>
+                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                                <Checkbox id="terms2" />
+                                                <label
+                                                    htmlFor="terms2"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    1-50 (25)
+                                                </label>
+                                            </div>
+                                            <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                                                <Checkbox id="terms2" />
+                                                <label
+                                                    htmlFor="terms2"
+                                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                                >
+                                                    1-50 (25)
+                                                </label>
+                                            </div>
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                </Accordion>
                             </div>
-                            <div className="flex flex-col ml-5 w-[82%] max-md:ml-0 max-md:w-full">
-                                <div className="flex flex-col grow max-md:mt-10 max-md:max-w-full">
-                                    <div className="flex gap-5 justify-between px-px w-full max-md:flex-wrap max-md:max-w-full">
-                                        <div className="flex flex-col text-slate-800">
-                                            <div className="text-3xl font-semibold leading-10">
-                                                All Companies
-                                            </div>
-                                            <div className="font-semibold leading-10">
-                                                showing
-                                                {' '}
-                                                {state?.companies?.totalCount?.[0]?.count}
-                                                {' '}
-                                                result
-                                            </div>
+                        </div>
+                        <div className="flex flex-col ml-5 w-[82%] max-md:ml-0 max-md:w-full">
+                            <div className="flex flex-col grow max-md:mt-10 max-md:max-w-full">
+                                <div className="flex gap-5 justify-between px-px w-full max-md:flex-wrap max-md:max-w-full">
+                                    <div className="flex flex-col text-slate-900">
+                                        <div className="text-3xl font-semibold leading-10">
+                                            All Companies
                                         </div>
+                                        <span className="font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm">
+                                            showing
+                                            {' '}
+                                            {state?.companies?.totalCount?.[0]?.count}
+                                            {' '}
+                                            result
+                                        </span>
                                     </div>
-                                    <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
-                                        {
-                                            state.companies.companies?.length > 0 &&
-                                            state.companies.companies.map((data, index) => (
-                                                <CompanyCard key={index} data={data} />
-                                            ))
-                                        }
-                                        {
-                                            state.companies.companies?.length == 0 && (
-                                                <div className='w-screen'>
+                                </div>
+                                <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
+                                    {
+                                        state.companies.companies?.length > 0 &&
+                                        state.companies.companies.map((data, index) => (
+                                            <CompanyCard key={index} data={data} />
+                                        ))
+                                    }
+                                    {
+                                        state.companies.companies?.length == 0 && (
+                                            <div className='w-screen'>
 
-                                                </div>
-                                            )
-                                        }
-                                    </div>
-                                    <div className='flex items-center justify-center gap-2 font-bold'>
-                                        <Button
-                                            variant="contained"
-                                            onClick={() => {
-                                                if (pagination.pageIndex < page) {
-                                                    if (pagination.pageIndex + 1 > 1) {
-                                                        setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
-                                                    }
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                <div className='flex items-center justify-center gap-2 font-bold'>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => {
+                                            if (pagination.pageIndex < page) {
+                                                if (pagination.pageIndex + 1 > 1) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
                                                 }
-                                            }}
-                                            className="h-8 w-8 p-0"
-                                        >
-                                            <span className="sr-only">Go to first page</span>
-                                            <DoubleArrowLeftIcon className="h-4 w-4" />
-                                        </Button>
-                                        {
-                                            <span className='font-thin'>
-                                                page {pagination?.pageIndex + 1} of {page}
-                                            </span>
-                                        }
-                                        <Button
-                                            variant="contained"
-                                            className={`h-8 w-8 p-0`}
-                                            onClick={() => {
-                                                if (pagination.pageIndex < page) {
-                                                    if (pagination.pageIndex + 1 < page) {
-                                                        setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
-                                                    }
+                                            }
+                                        }}
+                                        className="h-8 w-8 p-0"
+                                    >
+                                        <span className="sr-only">Go to first page</span>
+                                        <DoubleArrowLeftIcon className="h-4 w-4" />
+                                    </Button>
+                                    {
+                                        <span className='font-thin'>
+                                            page {pagination?.pageIndex + 1} of {page}
+                                        </span>
+                                    }
+                                    <Button
+                                        variant="contained"
+                                        className={`h-8 w-8 p-0`}
+                                        onClick={() => {
+                                            if (pagination.pageIndex < page) {
+                                                if (pagination.pageIndex + 1 < page) {
+                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
                                                 }
-                                            }}
-                                        >
-                                            <span className="sr-only">Go to first page</span>
-                                            <DoubleArrowRightIcon className="h-4 w-4" />
-                                        </Button>
-                                    </div>
+                                            }
+                                        }}
+                                    >
+                                        <span className="sr-only">Go to first page</span>
+                                        <DoubleArrowRightIcon className="h-4 w-4" />
+                                    </Button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <Loading loading={loading} key={'company-loading'} />
                 </div>
+                <Loading loading={loading} key={'company-loading'} />
+            </div>
             {/* </div> */}
         </>
     )

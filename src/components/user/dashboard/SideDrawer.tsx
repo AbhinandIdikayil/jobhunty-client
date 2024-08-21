@@ -10,7 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
-import {  LayoutGrid, MessageSquareText, FileText, Search, Building2, CircleUserRound, FilePlus2 } from 'lucide-react'
+import {  LayoutGrid, MessageSquareText, FileText, Search, Building2, CircleUserRound, FilePlus2, ListChecks } from 'lucide-react'
 import Header from './Header';
 
 interface AppBarProps extends MuiAppBarProps {
@@ -62,6 +62,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
 
             </AppBar>
             <Drawer
+            className='shadow-xl'
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
@@ -103,7 +104,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                                 <ListItemButton disableRipple sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }} >
                                     <div
                                         className={`flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
-                                      hover:translate-y-[-5px] hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer
+                                      hover:translate-y-[-2px] hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer
                                      `}>
                                         <ListItemIcon sx={{ "&:hover": { backgroundColor: "transparent" } }}>
                                             {
@@ -126,16 +127,16 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                 </List>
                 <Divider sx={{ borderBottom: '.5px solid black' }} />
                 <List disablePadding>
-                    {['settings', 'resume'].map((text) => (
+                    {['quiz', 'resume'].map((text) => (
                         <ListItem key={text} disablePadding className='capitalize'>
                             <NavLink to={text}>
                                 <ListItemButton sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
                                     <div className='flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
-                                     hover:translate-y-[-5px] hover:shadow-2xl transition-all duration-300 ease-in-out'>
+                                     hover:translate-y-[-2px] hover:shadow-xl transition-all duration-300 ease-in-out'>
                                         <ListItemIcon>
                                             {
-                                                text == 'resume' && <FilePlus2 /> ||
-                                                text == 'settings' && <IoSettingsOutline size={30} />
+                                                text == 'resume' && <FilePlus2 color='black' /> ||
+                                                text == 'quiz' && <ListChecks size={30} color='black' />
                                             }
                                         </ListItemIcon>
                                         <h1 className='font-extrabold text-sm'>

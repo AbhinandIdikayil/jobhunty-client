@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FilePlus2 } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { UseResumeContext } from 'src/context/ResumeContext'
 import { z } from 'zod'
 
@@ -37,19 +38,21 @@ export default ResumeNameModal
 
 
 function AddNameForm({ setOpen }: { setOpen: (prev: boolean) => void }) {
+    const { resume, setResume, } = UseResumeContext()
+    const navigate = useNavigate()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: ""
         },
     })
-    const { setResume, resume } = UseResumeContext()
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setResume({
             ...resume,
             resumeName: values?.name
         })
+        navigate('create')
     }
 
     return (

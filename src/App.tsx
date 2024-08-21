@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense } from 'react'
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
@@ -47,6 +47,7 @@ import ResumeHome from './pages/resume/ResumeHome'
 import ResumeForm from './pages/resume/CreateResume'
 import ResumeView from './pages/resume/ResumeView'
 import { ResumeContextProvider } from './context/ResumeContext'
+import Quiz from './pages/quiz/Quiz'
 
 
 
@@ -81,7 +82,12 @@ function App() {
           <Route path='companies/:id' element={<CompanyDetails />} />
           <Route path='profile' element={<Profile />} />
           <Route path='resume' element={<ResumeHome />} />
-          <Route path='resume/create' element={<ResumeForm />} />
+          <Route path='quiz' element={<Quiz />} />
+          <Route path='resume/create' element={
+            <ResumeContextProvider>
+              <ResumeForm />
+            </ResumeContextProvider>
+          } />
           <Route path='resume/view' element={
             <ResumeContextProvider>
               <ResumeView />

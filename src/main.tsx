@@ -21,8 +21,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <NextUIProvider>
             <SocketProvider>
               <ChatSocketProvider>
-=                  <App />
-                  <ToastContainer />
+                <ToastContainer />
+                <App />
               </ChatSocketProvider>
             </SocketProvider>
           </NextUIProvider>

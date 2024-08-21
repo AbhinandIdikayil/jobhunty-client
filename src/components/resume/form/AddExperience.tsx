@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
 import RichTextEditor from '../RichTextEditor';
-import h from 'draftjs-to-html'
 
 const formField = {
   title: '',

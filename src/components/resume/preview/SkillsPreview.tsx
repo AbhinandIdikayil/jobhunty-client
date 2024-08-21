@@ -1,5 +1,8 @@
+import { useLocation } from "react-router-dom"
 
 function SkillsPreview({ data }: { data: any }) {
+    const location = useLocation();
+    let path = location.pathname
     return (
         <div className='my-6'>
             <h2 className='text-center font-bold text-sm mb-2'
@@ -18,7 +21,13 @@ function SkillsPreview({ data }: { data: any }) {
                             <div className="w-[110px] capitalize flex-shrink-0">
                                 {val?.name}
                             </div>
-                            <div className="w-[240px] h-full break-words">
+                            <div
+                                className={`
+                                ${path == '/Dashboard/resume/create'
+                                        ? ' w-[230px] ' : 'w-full text-right'
+                                }
+                               h-full break-words`}
+                            >
                                 {
                                     val?.data
                                 }

@@ -46,7 +46,7 @@ function RichTextEditor({ onRichTextEditorChange, index, defaultValue }: { onRic
                 </Button>
             </div>
             <EditorProvider>
-                <Editor style={{fontSize:'12px'}} value={value} onChange={(e) => {
+                <Editor style={{fontSize:'14px'}} value={value} onChange={(e) => {
                     setValue(e.target.value);
                     onRichTextEditorChange(e)
                 }}>

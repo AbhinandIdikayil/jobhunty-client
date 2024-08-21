@@ -102,20 +102,21 @@ input[type="number"]:focus {
 
 @media print {
   body * {
-      visibility: hidden;
+    visibility: hidden;
   }
 
   #print-area, #print-area * {
-      visibility: visible;
+    visibility: visible;
   }
 
   #print-area {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
   }
 }
+
 
 ol {
   list-style-type: decimal; /* Ensures the ordered list uses numbers */
@@ -123,7 +124,6 @@ ol {
 }
 
 
-/* Add this to your CSS file */
 .custom-list ol {
   list-style-type: decimal; /* Ensure the ordered list displays numbers */
   padding-left: 20px;
