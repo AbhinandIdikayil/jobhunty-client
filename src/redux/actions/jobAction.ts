@@ -169,9 +169,9 @@ export const updateHiringStatus = createAsyncThunk(
 
 export const scheduleInterview = createAsyncThunk(
     'applicant/schedule-interview',
-    async (req:any, { rejectWithValue }) => {
+    async (req: any, { rejectWithValue }) => {
         try {
-            const { data } = await AXIOS_INSTANCE_JOB.put(`/schedule-interview/${req.id}`,req)
+            const { data } = await AXIOS_INSTANCE_JOB.put(`/schedule-interview/${req.id}`, req)
             return data;
         } catch (error) {
             return rejectWithValue(handleTokenError(error))

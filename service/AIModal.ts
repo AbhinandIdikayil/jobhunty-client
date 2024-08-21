@@ -18,7 +18,6 @@ const generationConfig = {
   responseMimeType: "application/json",
 };
 
-
 export const AIChatSession = model.startChat({
   generationConfig,
   // safetySettings: Adjust safety settings

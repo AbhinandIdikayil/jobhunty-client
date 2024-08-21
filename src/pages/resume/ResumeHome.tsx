@@ -19,7 +19,7 @@ function ResumeHome() {
                     <div className='box'>asd</div>
                 </div>
             </div> */}
-            <div className="bg-slate-800 w-full font-body justify-around lg:px-[100px] flex items-center h-[550px] text-white rounded-2xl shadow-xl">
+            <div className="bg-slate-900 w-full font-body justify-around lg:px-[100px] flex items-center h-[550px] text-white rounded-2xl shadow-xl">
                 <div className="animate-topslide lg:py-16 w-full ">
                     <p className="text-[30px] text-bold mb-4">Resume Builder</p>
                     <h1 className="text-bold  text-gray-400 text-[18px]">
@@ -50,7 +50,7 @@ function ResumeHome() {
                 <div className='hidden sm:block'>
                     <img
                         alt="gif"
-                        className="animate-topslide -mt-24 md:mt-12 max-h-[450px]"
+                        className="animate-topslide -mt-24 md:mt-12 max-h-[450px] rounded-3xl"
                         src="https://github.com/bellatrick/resume-builder/blob/main/public/gif3.gif?raw=true"
                     />
                 </div>
