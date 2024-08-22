@@ -5,11 +5,7 @@ import NativeSelect from '@mui/material/NativeSelect';
 import Button from '@mui/material/Button'
 import {
     Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Checkbox } from '@/components/ui/checkbox';
 import { prop } from 'src/types/AllTypes';
 import { useOutletContext } from 'react-router-dom';
 import UserJobCard from './JobCard'
@@ -18,11 +14,13 @@ import { AppDispatch, RootState } from 'src/redux/store';
 import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'react-toastify';
-import { CircleChevronRight } from 'lucide-react';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { Backdrop, CircularProgress } from '@mui/material';
-import { formatSalary } from 'src/utils/formatSalary';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
+import CategoryAccordian from 'src/components/common/CategoryAccordian';
+import SectoresAccordian from 'src/components/common/SectoresAccordian';
+import SalaryAccordian from 'src/components/common/SalaryAccordian';
+import Loading from 'src/components/common/Loading';
 
 
 function Jobs() {
@@ -30,7 +28,6 @@ function Jobs() {
     const { open } = context;
     const jobState = useSelector((state: RootState) => state.job);
     const userState = useSelector((state: RootState) => state.user)
-    const categoryState = useSelector((state: RootState) => state?.category)
     const dispatch: AppDispatch = useDispatch()
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [pdf, setPdf] = useState([])
@@ -60,10 +57,6 @@ function Jobs() {
         price: [],
     })
     const page = Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize)
-    let salary = [[100000, 300000], [300000, 600000],
-    [600000, 1200000], [1200000, 2350000]]
-
-
 
     const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[]) => {
         try {
@@ -261,20 +254,9 @@ function Jobs() {
                         </FormControl>
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
-
-                            {/* <NativeSelect
-                                onChange={() => console.log(filterAndSearch)}
-                                sx={{ minWidth: 200 }}
-                                id="demo-customized-select-native"
-                                // value={age}
-                                // onChange={handleChange}
-                                input={<BootstrapInput />}
-                            >
-                                <option aria-label="None" value="" />
-                                <option value={10} className='font-bold border-solid px-2'>company name</option>
-                                <option value={20}>company name</option>
-                                <option value={30}>company companay company</option>
-                            </NativeSelect> */}
+                            <BootstrapInput
+                                // onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })}
+                                id="demo-customized-textbox" />
 
                         </FormControl>
                         <Button
@@ -298,72 +280,12 @@ function Jobs() {
                         <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col grow text-base leading-6 text-slate-900 max-md:mt-10">
                                 <Accordion type="multiple" className="w-full">
-                                    <AccordionItem value="item-1" className='border px-2 rounded-lg shadow-sm'>
-                                        <AccordionTrigger className='text-sm text-black font-bold'>Types Of Employment</AccordionTrigger>
-                                        <AccordionContent>
-                                            {
-                                                categoryState.category?.map(data => (
-                                                    <div onClick={(e) => handleEmployment(e, data?._id)} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-sm text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {data?.name}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </AccordionContent>
-                                    </AccordionItem>
+                                    <CategoryAccordian handleEmployment={handleEmployment} />
 
-                                    <AccordionItem className='text-sm text-black border px-2 rounded-lg mt-1 shadow-sm' value="item-2">
-                                        <AccordionTrigger className='font-bold'>Categories</AccordionTrigger>
-                                        <AccordionContent>
-                                            {
-                                                categoryState?.sectors?.map(data => (
-                                                    <div onClick={(e) => handleCategory(e, data?._id)}
-                                                        className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {data?.name}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </AccordionContent>
-                                    </AccordionItem>
+                                    <SectoresAccordian handleCategory={handleCategory} />
 
-                                    <AccordionItem className='text-sm text-black border px-2 rounded-lg mt-1 shadow-sm' value="item-4">
-                                        <AccordionTrigger className='font-bold'>Salary Range</AccordionTrigger>
-                                        <AccordionContent>
-                                            <div className='flex gap-2 items-center justify-start mb-1'>
-                                                <input type="number" onChange={(e) => setMinSalary(parseInt(e.target.value))} className='border border-solid h-8 w-1/3 px-2' min={0} max={10000000} />
-                                                <input type="number" onChange={(e) => setMaxSalary(parseInt(e.target.value))} className='border border-solid h-8 w-1/3 px-2' min={0} max={10000000} />
-                                                {/* <CircleChevronRight onClick={handleSubmit} className='text-gray-500' /> */}
-                                            </div>
-                                            {
-
-                                                salary?.map(data => (
-                                                    <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" onClick={(e) => handleSalary(e, data)} />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {formatSalary(data[0], data[1])}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-
-                                        </AccordionContent>
-                                    </AccordionItem>
+                                    <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} />
                                 </Accordion>
-
                             </div>
                         </div>
                         <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
@@ -453,16 +375,8 @@ function Jobs() {
                         </div>
                     </div>
                 </div>
-                {
-                    loading && (
-                        <Backdrop
-                            open={loading}
-                            sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                        >
-                            <CircularProgress color="inherit" />
-                        </Backdrop>
-                    )
-                }
+                <Loading loading={loading} key={'loading'} />
+
             </div>
         </>
     )
