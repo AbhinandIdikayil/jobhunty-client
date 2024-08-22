@@ -22,6 +22,7 @@ export type paginationAndFilter = {
     page?: number,
     category?: [string],
     employment?: [string],
+    location?: string,
     _id?: string  //! HERE THE ID IS USED TO GET THE JOBS THAT ARE BY A SPECIFIED COMPNAY
     //! IF USER SIDE IS USING THE API DONT PASS THE ID
 }
@@ -48,7 +49,8 @@ export const getAllJob = createAsyncThunk(
                         name: req?.name,
                         category: req?.category,
                         employment: req?.employment,
-                        price: req?.price
+                        price: req?.price,
+                        location: req?.location
                     }
                 })
             }

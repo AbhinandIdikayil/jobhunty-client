@@ -46,19 +46,21 @@ function Jobs() {
 
     interface FilterAndSearch {
         name: string;
+        location: string;
         category: any[];
         employment: any[] | [];
         price: number[] | [];
     }
     const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
         name: '',
+        location:'',
         category: [],
         employment: [],
         price: [],
     })
     const page = Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize)
 
-    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[]) => {
+    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[], location: string) => {
         try {
             setLoading(true)
             let data = await dispatch(getAllJob({
@@ -68,6 +70,7 @@ function Jobs() {
                 employment,
                 category,
                 price,
+                location,
             })).unwrap()
         } catch (error) {
             console.log(error)
@@ -75,8 +78,6 @@ function Jobs() {
             setLoading(false)
         }
     }
-
-
 
     useEffect(() => {
         fetchData(
@@ -86,6 +87,7 @@ function Jobs() {
             filterAndSearch?.employment,
             filterAndSearch?.category,
             mergeRanges(filterAndSearch?.price),
+            filterAndSearch?.location
         )
     }, [pagination.pageIndex, pagination.pageSize,
     filterAndSearch?.employment, filterAndSearch?.category,
@@ -117,11 +119,11 @@ function Jobs() {
     }
 
     function handleSearch() {
-        if (filterAndSearch?.name?.trim().length <= 1) {
-            return toast.error('At least 2 character', {
-                position: 'top-center'
-            })
-        }
+        // if (filterAndSearch?.name?.trim().length <= 1) {
+        //     return toast.error('At least 2 character', {
+        //         position: 'top-center'
+        //     })
+        // }
         setStartNameSearch(!startNameSearch)
     }
 
@@ -241,7 +243,6 @@ function Jobs() {
                     </div>
                 </div>
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-
                 <div className="p-6 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
@@ -255,7 +256,7 @@ function Jobs() {
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
                             <BootstrapInput
-                                // onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })}
+                                onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })}
                                 id="demo-customized-textbox" />
 
                         </FormControl>
@@ -273,7 +274,6 @@ function Jobs() {
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
 
             </div>
-            {/* // </div> */}
             <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
                 <div className="w-full max-w-[1193px] max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
@@ -281,9 +281,7 @@ function Jobs() {
                             <div className="flex flex-col grow text-base leading-6 text-slate-900 max-md:mt-10">
                                 <Accordion type="multiple" className="w-full">
                                     <CategoryAccordian handleEmployment={handleEmployment} />
-
                                     <SectoresAccordian handleCategory={handleCategory} />
-
                                     <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} />
                                 </Accordion>
                             </div>

@@ -12,9 +12,13 @@ import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons
 import { Button, FormControl, InputLabel } from '@mui/material';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
 import { toast } from 'react-toastify';
+import CategoryAccordian from 'src/components/common/CategoryAccordian';
+import SectoresAccordian from 'src/components/common/SectoresAccordian';
+import { filter } from 'lodash';
 
 interface FilterAndSearch {
     name: string;
+    location: string;
     category: any[];
 }
 
@@ -32,11 +36,12 @@ function CompanyList() {
     const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
         name: '',
         category: [],
+        location:''
     })
     const [startNameSearch, setStartNameSearch] = useState<boolean>(false)
     const page = Math.ceil((state?.companies?.totalCount?.[0]?.count || 5) / pagination.pageSize)
 
-    const fetchData = async (page: number, pageSize: number, name?: string, category?: string[]) => {
+    const fetchData = async (page: number, pageSize: number, name?: string, category?: string[], location?: string) => {
         try {
             setLoading(true)
             await dispatch(listAllCompanies({
@@ -44,6 +49,7 @@ function CompanyList() {
                 pageSize,
                 name,
                 category,
+                location
             })).unwrap()
         } catch (error) {
             console.log(error)
@@ -53,11 +59,12 @@ function CompanyList() {
     }
 
     function handleSearch() {
-        if (filterAndSearch?.name?.trim().length <= 1) {
-            return toast.error('At least 2 character', {
-                position: 'top-center'
-            })
-        }
+        // if (filterAndSearch?.name?.trim().length == ) {
+        //     return toast.error('At least 2 character', {
+        //         position: 'top-center'
+        //     })
+        // }
+        console.log(filterAndSearch)
         setStartNameSearch(!startNameSearch)
     }
 
@@ -97,7 +104,8 @@ function CompanyList() {
             pagination?.pageIndex + 1,
             pagination?.pageSize,
             filterAndSearch?.name,
-            filterAndSearch?.category
+            filterAndSearch?.category,
+            filterAndSearch?.location
         )
     }, [pagination?.pageIndex, pagination?.pageSize, filterAndSearch?.category, startNameSearch])
 
@@ -122,7 +130,7 @@ function CompanyList() {
                         Find your next career at companies like HubSpot, Nike, and Dropbox
                     </div>
                 </div>
-                <hr className={`${open ? 'w-full bg-black border-solid border-black' :'hidden' }`} />
+                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
                 <div className="p-6 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
@@ -135,20 +143,7 @@ function CompanyList() {
                         </FormControl>
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
-
-                            {/* <NativeSelect
-                                onChange={() => console.log(filterAndSearch)}
-                                sx={{ minWidth: 200 }}
-                                id="demo-customized-select-native"
-                                // value={age}
-                                // onChange={handleChange}
-                                input={<BootstrapInput />}
-                            >
-                                <option aria-label="None" value="" />
-                                <option value={10} className='font-bold border-solid px-2'>company name</option>
-                                <option value={20}>company name</option>
-                                <option value={30}>company companay company</option>
-                            </NativeSelect> */}
+                            <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })} id="demo-customized-textbox" />
 
                         </FormControl>
                         <Button
@@ -164,34 +159,16 @@ function CompanyList() {
                         </Button>
                     </div>
                 </div>
-                <hr className={`${open ? 'w-full bg-black border-solid border-black' :'hidden' }`} />
+                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
             </div>
-            {/* <div className={`flex flex-col items-center ${open && open ? 'w-5/6' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-white'} px-3`}> */}
             <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
                 <div className="w-full max-w-[1192px] max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col text-base leading-6 text-slate-900">
                                 <Accordion type="multiple" className="w-full">
-                                    <AccordionItem className='text-sm text-black font-bold border px-2 rounded-lg shadow-sm' value="item-1">
-                                        <AccordionTrigger className='font-bold'>Categories</AccordionTrigger>
-                                        <AccordionContent>
-                                            {
-                                                categoryState?.sectors?.map(data => (
-                                                    <div onClick={(e) => handleCategory(e, data?.name)}
-                                                        className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {data?.name}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </AccordionContent>
-                                    </AccordionItem>
+                                    <SectoresAccordian handleCategory={handleCategory} />
+
                                     <AccordionItem value="item-2" className=' border px-2 rounded-lg mt-1 shadow-sm'>
                                         <AccordionTrigger className='font-bold text-sm'>Company size</AccordionTrigger>
                                         <AccordionContent>
@@ -237,7 +214,7 @@ function CompanyList() {
                                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
                                     {
                                         state.companies.companies?.length > 0 &&
-                                        state.companies.companies.map((data:any, index) => (
+                                        state.companies.companies.map((data: any, index) => (
                                             <CompanyCard key={index} data={data} />
                                         ))
                                     }
@@ -290,7 +267,6 @@ function CompanyList() {
                 </div>
                 <Loading loading={loading} key={'company-loading'} />
             </div>
-            {/* </div> */}
         </>
     )
 }

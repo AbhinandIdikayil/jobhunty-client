@@ -6,7 +6,7 @@ import { RootState } from 'src/redux/store'
 function SectoresAccordian({handleCategory}:{handleCategory:(e:any,id:string) => void}) {
     const categoryState = useSelector((state: RootState) => state.category)
     return (
-        <AccordionItem className='text-sm text-black border px-2 rounded-lg mt-1 shadow-sm' value="item-2">
+        <AccordionItem className='text-sm text-black border px-2 rounded-lg mt-1 shadow-sm' value="category">
             <AccordionTrigger className='font-bold'>Categories</AccordionTrigger>
             <AccordionContent>
                 {

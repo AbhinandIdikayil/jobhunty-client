@@ -90,6 +90,7 @@ export const listAllCompanies = createAsyncThunk(
                     pageSize: req?.pageSize,
                     name: req?.name,
                     category: req?.category,
+                    location: req?.location
                 }
             })
             return data
