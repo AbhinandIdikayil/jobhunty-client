@@ -12,7 +12,7 @@ import { dateToTime } from 'src/utils/FormatDateToTime';
 function Chat() {
 
     const [loading, setLoading] = useState<boolean>(false);
-    const { socket, setSocketConnected, socketConnected } = UseChatSocketContext()
+    const { socket, setSocketConnected } = UseChatSocketContext()
     const user = useSelector((state: RootState) => state?.user?.user)
     const chat = useSelector((state: RootState) => state?.chat)
     const [messages, setMessages] = useState<any>([])

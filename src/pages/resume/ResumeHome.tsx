@@ -3,7 +3,7 @@ import ResumeNameModal from 'src/components/resume/ResumeNameModal';
 import { ResumeContextProvider } from 'src/context/ResumeContext';
 
 function ResumeHome() {
-;
+    ;
     return (
         <ResumeContextProvider>
             {/* <div className={`${open ? 'w-full' : 'w-full'} px-0 sm:px-10 py-5 text-zinc-800 `}>
@@ -34,10 +34,7 @@ function ResumeHome() {
                                 <span className="absolute transition-all duration-700  ease group-hover:left-[8rem] bottom-0 left-0 w-[12rem] h-24 -ml-10 bg-[#5227C7] rounded-full blur-md"></span>
                                 <span className="absolute transition-all duration-700  ease group-hover:left-0 bottom-0 right-0 w-[10rem] h-24 -mr-10 bg-teal-400 rounded-full blur-md"></span>
                             </span>
-                            <span className="relative text-white flex gap-2">
-                                <ResumeNameModal />
-                                Create resume
-                            </span>
+                            <ResumeNameModal />
                         </button>
                         <button
                             className="  border-2 after:w-full  hover:border-indigo-700  transition-all border-teal-600 px-6 py-3 rounded-md"

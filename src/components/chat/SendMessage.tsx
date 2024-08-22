@@ -15,9 +15,9 @@ import EmojiPicker from 'emoji-picker-react';
 
 function SendMessage({ setMessages }: { setMessages: any }) {
     const [messageInput, setMessageInput] = useState<string>('');
-    const { socket, socketConnected, setSocketConnected } = UseChatSocketContext()
+    const { socket, socketConnected } = UseChatSocketContext()
     const dispatch: AppDispatch = useDispatch()
-    const chatState = useSelector((state: RootState) => state?.chat)
+    const chatState = useSelector((state: RootState) => state.chat)
     const location = useLocation()
     const [show, setShow] = useState<boolean>(false)
 
@@ -71,7 +71,6 @@ function SendMessage({ setMessages }: { setMessages: any }) {
             if(socket){
                 socket.off('recieve-message', handleReceiveMessage);
             }
-
         }
     }, [socket])
 

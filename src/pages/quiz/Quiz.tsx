@@ -30,6 +30,7 @@ function Quiz() {
             setQuiz(jsonData)
             setShow(true)
         } catch (error) {
+            toast.error('Some error has happened');
         } finally {
             setLoading(false)
         }
@@ -55,11 +56,11 @@ function Quiz() {
                                     We help you prepare for interview and quizes(based on your skills in profile ){" "}
                                 </div>
                                 <div className="flex gap-5 justify-between mt-10 max-w-full w-[158px]">
-                                    <div onClick={startQuiz} className="px-5 py-3 font-bold text-white shadow-lg max-md:pr-5 bg-indigo-600 rounded shadow-black hover:-translate-y-1 duration-300">
+                                    <div onClick={startQuiz} className="px-5 py-3 font-bold text-white shadow-lg max-md:pr-5 bg-indigo-600 rounded shadow-black hover:-translate-y-1 duration-300 flex  justify-center items-center gap-2">
                                         Start solving
 
                                         {
-                                            loading && <LoaderCircle />
+                                            loading && <LoaderCircle className="animate-spin" />
                                         }
                                     </div>
                                 </div>

@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 function QuizCard({ data, setShow }: { data: any, setShow: any }) {
     const [index, setIndex] = useState<number>(0)
     function selectOption(userAnswer: string) {
+        toast.dismiss();
         if (userAnswer == data[index]?.correctAnswer) {
             toast.success('Correct answer', { position: 'top-center' })
             if (index == 4) {
@@ -33,7 +34,8 @@ function QuizCard({ data, setShow }: { data: any, setShow: any }) {
             </div>
             {
                 data[index]?.options?.map((ele: string, ind: number) => (
-                    <div onClick={() => selectOption(ele)} className="flex gap-3.5 items-center py-3 pr-16 pl-4 mt-2 text-base font-semibold bg-gray-100 rounded-lg">
+                    <div onClick={() => selectOption(ele)} className={`flex gap-3.5 items-center py-3 pr-16 pl-4 mt-2 text-base font-semibold bg-gray-100 rounded-lg
+                    `}>
                         <div>
                             {ind + 1}
                         </div>

@@ -22,7 +22,10 @@ function ResumeNameModal() {
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild>
-                <FilePlus2 onClick={() => setOpen(true)} />
+                <span onClick={() => setOpen(true)} className="relative text-white flex gap-2">
+                    <FilePlus2 />
+                    Create resume
+                </span>
             </AlertDialogTrigger >
             <AlertDialogContent aria-describedby='undefined'>
                 <AlertDialogHeader>
