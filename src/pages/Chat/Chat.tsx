@@ -26,7 +26,6 @@ function Chat() {
     };
     useEffect(() => {
         if (socket) {
-            console.log(user)
             socket.emit('setup', user)
             socket.on('connected', () => setSocketConnected(true))
             socket.on('disconnect', () => {
@@ -55,6 +54,7 @@ function Chat() {
 
     useEffect(() => {
         dispatch(listChats()).unwrap()
+        console.log('------------ chat page ------------')
     }, [])
 
     useEffect(() => {

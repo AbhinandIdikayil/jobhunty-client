@@ -40,10 +40,8 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
         await dispatch(getAllusers()).unwrap()
         // if (a || b) {
         if (location.pathname == '/company/messages') {
-            console.log(users.users)
             let res = users?.users?.filter(user => user?._id == data?.members[0])
             setLoading(false)
-            console.log(res, data)
             setChatDetails(res)
             return;
         } else {
@@ -74,34 +72,31 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
         if (data) {
             filterChat().then(data => data).catch(err => console.log(err))
         }
+        console.log('---------user listing cards -----------')
     }, [])
 
     useEffect(() => {
         if (socket && socket?.connected) {
-            socket.on('get-online-users', (val: any) => {
+            const handleOnlineUsers = (val: any) => {
                 const users = val?.filter((user: any) => user.role === 'user');
                 const companies = val?.filter((user: any) => user.role === 'company');
-                console.log(companies, 'company---------')
-                console.log(users, 'user-------------')
                 if (location.pathname === '/company/messages') {
-                    setOnlineUsers((prev: any) => [...prev, ...users]);
+                    setOnlineUsers(users); // Directly set the new list of online users
                 } else {
-                    setOnlineCompanies((prev: any) => [...prev, ...companies]);
+                    setOnlineCompanies(companies); // Directly set the new list of online companies
                 }
-            })
-        }
+            };
+            socket.on('get-online-users', handleOnlineUsers)
 
-        return () => {
-            if (socket) {
-                socket.off('get-users')
+            return () => {
+                socket.off('get-online-users', handleOnlineUsers)
             }
         }
+
     }, [socket])
 
     useEffect(() => {
         listMessage()
-        console.log(onlineUsers, '========')
-        console.log(onlineCompanies, '========')
     }, [chat?.selectedUser])
 
     return (
@@ -118,14 +113,13 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                     {
                         location.pathname == '/company/messages'
                             ?
-                            onlineUsers?.map((val: any) => {
-                                console.log(val, '-==============')
+                            onlineUsers?.length > 0 ? onlineUsers?.map((val: any) => {
                                 if (data?.members[0] === val?.userId) {
                                     return (
                                         <div
                                             className={`  
                                             bg-green-500          
-                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
+                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-lg shadow-lg`}
                                         >
 
                                         </div>
@@ -134,37 +128,52 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                     return (<div
                                         className={`  
                                             bg-blue-500          
-                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
+                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-lg shadow-lg`}
                                     >
 
                                     </div>)
                                 }
-                            })
-                            :
-                            onlineCompanies?.map((val: any) => {
-                                console.log(val, '--------======')
-                                if (data?.members[1] == val?.userId) {
-                                    return (
-                                        <div
-                                            className={`  
-                                            bg-green-500          
-                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
-                                        >
-
-                                        </div>
-                                    )
-                                } else {
-                                    return (
-                                        <div
-                                            className={`  
+                            }) : (
+                                <div
+                                    className={`  
                                             bg-blue-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
-                                        >
+                                >
+                                </div>
+                            )
+                            :
+                            onlineCompanies?.length > 0 ?
+                                onlineCompanies?.map((val: any) => {
+                                    if (data?.members[1] == val?.userId) {
+                                        return (
+                                            <div
+                                                className={`  
+                                            bg-green-500          
+                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
+                                            >
 
-                                        </div>
-                                    )
-                                }
-                            })
+                                            </div>
+                                        )
+                                    } else {
+                                        return (
+                                            <div
+                                                className={`  
+                                            bg-blue-500          
+                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
+                                            >
+
+                                            </div>
+                                        )
+                                    }
+                                }) : (
+                                    <div
+                                        className={`  
+                                            bg-blue-500          
+                                    w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
+                                    >
+
+                                    </div>
+                                )
                     }
 
                 </div>
@@ -173,4 +182,4 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
     )
 }
 
-export default UserListingCard
+export default memo(UserListingCard)

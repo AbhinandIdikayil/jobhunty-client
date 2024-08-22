@@ -80,6 +80,7 @@ function Sidebar({ setLoading , setMessages}: { setLoading: (newState: boolean) 
     useEffect(() => {
         fetchChats()
         setData([]);
+        console.log('---------------sidebar------------')
     }, [])
 
     return (
