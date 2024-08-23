@@ -180,3 +180,15 @@ export const scheduleInterview = createAsyncThunk(
         }
     }
 )
+
+export const editInterview = createAsyncThunk(
+    'company/edit-interview',
+    async (req:any,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.patch(`/schedule-interview/${req.id}`, req)
+            return data;
+        } catch (error) {
+            return rejectWithValue(handleTokenError(error))
+        }
+    }
+)

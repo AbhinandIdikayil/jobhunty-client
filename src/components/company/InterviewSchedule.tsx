@@ -5,11 +5,15 @@ import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/store'
 import { formatDateToDaysAgo } from 'src/utils/formateDateToDaysAgo'
 import { formatDateToThree } from 'src/utils/formateDate'
-import { Ellipsis, Pencil } from 'lucide-react'
+import { MoreHorizontal, Pencil } from 'lucide-react'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
+import EditInterview from './EditInterview'
 
 function InterviewSchedule() {
     const [open, setOpen] = useState<boolean>(false)
     const applicant = useSelector((state: RootState) => state?.job?.applicant);
+   
     return (
         <TabsContent value='interview'>
             <div className="flex flex-col leading-relaxed max-w-[688px] h-full px-1 ">
@@ -21,15 +25,15 @@ function InterviewSchedule() {
                 </div>
                 <div className="chat flex flex-col mt-4 w-full h-[700px] overflow-y-auto shadow-md">
                     {
-                        applicant?.schedule?.map((data) => (
-                            <div className="flex flex-col w-full max-md:max-w-full">
+                        applicant?.schedule?.map((data, ind: number) => (
+                            <div key={ind} className="flex flex-col w-full max-md:max-w-full">
                                 <div className="text-sm text-slate-900 font-semibold">
                                     {
                                         formatDateToDaysAgo(data?.date)
-                                        +  ' - ' +
+                                        + ' - ' +
                                         formatDateToThree(data?.date)
                                     }
-                                    </div>
+                                </div>
                                 <div className="flex flex-wrap gap-4 justify-between items-center p-4 mt-2 w-full bg-white border border-solid border-slate-500 max-md:max-w-full">
                                     <div className="flex gap-4 items-center self-stretch my-auto w-[204px]">
                                         <img
@@ -46,14 +50,29 @@ function InterviewSchedule() {
                                     </div>
                                     <div className="flex flex-col self-stretch my-auto w-[159px]">
                                         <div className="text-base font-medium text-slate-800">
-                                           {data?.time }
+                                            {data?.time}
                                         </div>
                                     </div>
                                     <div className="flex gap-2.5 justify-center items-center self-stretch px-4 py-3 my-auto text-base font-bold text-center text-indigo-600 border border-indigo-200 border-solid">
                                         <Pencil />
                                         <div className="self-stretch my-auto">Add Feedback</div>
                                     </div>
-                                    <Ellipsis />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="h-8 w-8 p-0">
+                                                <span className="sr-only">Open menu</span>
+                                                <MoreHorizontal className="h-4 w-4" />
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent align="end">
+                                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                            <DropdownMenuItem
+                                                className='border font-bold'
+                                            >
+                                                <EditInterview ind={ind} key={ind} />
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </div>
                             </div>
                         ))

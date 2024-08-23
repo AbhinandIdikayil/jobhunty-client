@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JobReducer } from "src/types/Job";
-import { applyJob, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, removeJob, scheduleInterview, updateHiringStatus, updateJob } from "../actions/jobAction";
+import { applyJob, editInterview, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, removeJob, scheduleInterview, updateHiringStatus, updateJob } from "../actions/jobAction";
 import { handleAuthError } from "src/utils/HandleAuthError";
 
 const initialState: JobReducer = {
@@ -184,6 +184,24 @@ const jobSlice = createSlice({
             .addCase(scheduleInterview.rejected, (state) => {
                 state.loading = false
                 state.err = null
+            })
+            .addCase(editInterview.pending, (state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(editInterview.fulfilled, (state,{payload}) => {
+                state.loading = false
+                state.err = null
+                if (state.applicant) {
+                    state.applicant = {
+                        ...state.applicant,
+                        schedule: payload?.schedule
+                    };
+                }
+            })
+            .addCase(editInterview.rejected, (state,{payload}) => {
+                state.loading = false
+                state.err = {payload}
             })
     }
 })

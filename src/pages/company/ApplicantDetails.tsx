@@ -1,4 +1,4 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@mui/material';
 import { formatDistanceToNow } from 'date-fns';
@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import Loading from 'src/components/common/Loading';
+import ContactInApplicantDetails from 'src/components/company/ContactInApplicantDetails';
 import HiringProcess from 'src/components/company/HiringProcess';
 import InterviewSchedule from 'src/components/company/InterviewSchedule';
 import ProfileTab from 'src/components/company/ProfileTab';
@@ -68,14 +69,6 @@ function ApplicantDetails() {
                                     state?.applicant?.userId?.experiences?.map((data: any) => data?.working ? data?.title : '')
                                 }
                             </div>
-                            <div className="flex gap-2 justify-center items-center self-start mt-2 font-medium whitespace-nowrap">
-                                {/* <img
-                                    loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/f0106287ef0830139923d118c8c8c43d17de6b834e1092944488396b8ba04468?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                    className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
-                                />
-                                <div className="self-stretch my-auto">4.0</div> */}
-                            </div>
                         </div>
                     </div>
                     <div className="flex flex-col p-4 mt-5 w-full leading-relaxed bg-slate-50">
@@ -119,72 +112,8 @@ function ApplicantDetails() {
                             <div className="flex flex-1 shrink basis-0 bg-zinc-200 h-[11px] w-[67px]" />
                         </div>
                     </div>
-                    <div className="flex gap-2 items-start mt-5 w-full">
-                        <div className="flex-1 shrink gap-2.5 self-stretch px-6 py-3 text-base font-bold leading-relaxed text-center text-indigo-600 min-w-[240px] max-md:px-5">
-                            Schedule Interview
-                        </div>
-                        <div className="flex gap-2.5 justify-center items-center p-3 w-[50px]">
-                            <img
-                                loading="lazy"
-                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/983f87027d052ca6f42e7a93bf6569d73bd703dd1dcce28a0deb1b419c305a32?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                className="object-contain self-stretch my-auto aspect-square w-[26px]"
-                            />
-                        </div>
-                    </div>
                     <div className="flex mt-5 w-full bg-zinc-200 min-h-[1px]" />
-                    <div className="flex flex-col items-start mt-5 w-full text-base leading-relaxed bg-white max-w-[304px]">
-                        <div className="gap-px self-stretch w-full text-xl font-semibold leading-tight whitespace-nowrap text-slate-800">
-                            Contact
-                        </div>
-                        <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <Mail />
-                            <div className="flex flex-col">
-                                <div className="text-slate-500">Email</div>
-                                <div className="text-slate-800">{state?.applicant?.userId?.email}</div>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 items-start mt-4">
-                            <Phone />
-                            <div className="flex flex-col">
-                                <div className="text-slate-500">Phone</div>
-                                <div className="text-slate-800">+44 1245 572 135</div>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            {
-                                state?.applicant?.userId?.socialLink?.[0] && (
-                                    <>
-                                        <Instagram />
-                                        <div className="flex flex-col">
-                                            <div className="text-slate-500">Instagram</div>
-                                            <div className="text-indigo-600"> {state?.applicant?.userId?.socialLink[0].substr(12)} </div>
-                                        </div>
-                                    </>
-                                )
-                            }
-                        </div>
-                        <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <Twitter />
-                            <div className="flex flex-col">
-                                <div className="text-slate-500">Twitter</div>
-                                <div className="text-indigo-600"> {state.applicant?.userId?.socialLink?.[1].substr(12)} </div>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <Linkedin />
-                            <div className="flex flex-col">
-                                <div className="text-slate-500">Linked in </div>
-                                <div className="text-indigo-600"> {state?.applicant?.userId?.socialLink?.[2].substr(12)} </div>
-                            </div>
-                        </div>
-                        <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
-                            <Globe />
-                            <div className="flex flex-col">
-                                <div className="text-slate-500">Website</div>
-                                <div className="text-indigo-600">www.jeromebell.com</div>
-                            </div>
-                        </div>
-                    </div>
+                    <ContactInApplicantDetails email={state?.applicant?.userId?.email || ""} socialLink={state.applicant?.userId?.socialLink || []} />
                 </div>
                 <div className="flex flex-col grow shrink items-center pb-6 border-2 border-solid text-base bg-white max-h-[859px] min-w-[240px] w-[648px] max-md:max-w-full">
                     <Tabs defaultValue="profile" className="w-full">
@@ -228,7 +157,7 @@ function ApplicantDetails() {
                             )
                         }
                         <HiringProcess key={'hiring'} setLoading={setLoading} applicantId={state?.applicant?._id || null} />
-                        <InterviewSchedule />
+                        <InterviewSchedule key={'interview'} />
                     </Tabs>
                 </div>
             </div>

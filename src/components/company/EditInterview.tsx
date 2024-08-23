@@ -1,15 +1,16 @@
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { PlusIcon } from 'lucide-react'
-import { useState } from 'react'
+import { AlertDialogDescription } from '@radix-ui/react-alert-dialog'
+import { memo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { scheduleInterview } from 'src/redux/actions/jobAction'
+import { editInterview } from 'src/redux/actions/jobAction'
 import { AppDispatch, RootState } from 'src/redux/store'
+import { AmPmTime } from 'src/utils/AmPmTime'
+import { formatDate } from 'src/utils/formateDatetoDateinput'
 import { z } from 'zod'
 
 
@@ -27,78 +28,82 @@ const formSchema = z.object({
 })
 
 
-function AddInterview({ open, setOpen }: { open: boolean, setOpen: (prev: boolean) => void }) {
-    const applicant = useSelector((state: RootState) => state?.job?.applicant)
-    function addInterviewModel() {
-        if (applicant?.hiring_status !== 'interview') {
-            toast.error('Hiring status is not interview')
-            return
-        }
-        setOpen(true)
-    }
+function EditInterview({ ind }: { ind: number }) {
+    const [open, setOpen] = useState<boolean>(false)
     return (
-        <AlertDialog open={open}>
-            <AlertDialogTrigger asChild >
-                <button onClick={addInterviewModel} type='button' className="flex gap-2.5 justify-center items-center self-stretch px-4 py-3 my-auto font-bold text-center text-white min-w-[240px] bg-indigo-600 ">
-                    <PlusIcon />
-                    <div className="self-stretch my-auto">Add Schedule Interview</div>
+        <AlertDialog open={open} onOpenChange={setOpen}>
+            <AlertDialogTrigger asChild className='w-full'>
+                <button onClick={(e) => {
+                    e.stopPropagation(); // Prevent event from bubbling up
+                    setOpen(true);
+                }}  className="bg-blue-400 w-full font-bold">
+                    Edit
                 </button>
             </AlertDialogTrigger >
             <AlertDialogContent className='max-x-fit max-h-fit'>
                 <AlertDialogHeader>
-                    <AlertDialogTitle>Schedule  interview</AlertDialogTitle>
-
-                    {/* ////! Here is the form component that is under this component */}
-                    <ScheduleForm setOpen={setOpen} id={applicant?._id} />
-
+                    <AlertDialogTitle>Edit  interview</AlertDialogTitle>
+                    <FormEdit setOpen={setOpen}  ind={ind} />
                 </AlertDialogHeader>
-                <AlertDialogFooter>
-                </AlertDialogFooter>
+                <AlertDialogDescription />
             </AlertDialogContent>
         </AlertDialog >
     )
 }
 
-export default AddInterview
+export default memo(EditInterview)
 
-function ScheduleForm({ setOpen, id }: { setOpen: (pre: boolean) => void, id: any }) {
+
+
+function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, ind: number }) {
     const [time, setTime] = useState<string>('')
     const dispatch: AppDispatch = useDispatch()
+    const applicant = useSelector((state: RootState) => state?.job?.applicant)
+    function extractAmPm() {
+        const match = applicant?.schedule?.[ind]?.time?.match(/(AM|PM)/i);
+        console.log(applicant?.schedule?.[ind]?.time?.substr(1,5))
+        return match ? match[0] : null;
+    }
+    let meridian = extractAmPm()
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             schedule: [
                 {
-                    type: "",   // type is initialized as an empty string
-                    date: undefined, // date should be initialized as a date object or null
-                    time: "",     // time is initialized as an empty string
-                    roomId: ""
+                    type: "" || applicant?.schedule?.[ind]?.testType,  
+                    date: new Date(applicant?.schedule?.[ind]?.date) ?? '',
+                    time: applicant?.schedule?.[ind]?.time?.slice(0,5) ?? '',   
+                    roomId: "" ?? applicant?.schedule?.[ind]?.roomId
                 }
             ]
         },
     })
 
-
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-        let data = {
-            ...values.schedule[0],
-            time,
-            id,
-        }
-        console.log(data)
+    async function onSubmit(values:any) {
         try {
-            await dispatch(scheduleInterview(data)).unwrap()
+            let res = {...values.schedule[0],ind,id:applicant?._id}
+            if(!time){
+                res = {
+                    ...res,
+                    time: res?.time + ''+meridian
+                }
+            } else {
+                res = {
+                    ...res,
+                    time
+                }
+            }
+            console.log(res)
+            await dispatch(editInterview(res)).unwrap()
         } catch (error) {
             console.log(error)
         } finally {
             setOpen(false)
         }
     }
-
-
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0" onClick={(e) => e.stopPropagation()}>
                 <FormField
                     control={form.control}
                     name={`schedule.${0}.type`}
@@ -141,7 +146,7 @@ function ScheduleForm({ setOpen, id }: { setOpen: (pre: boolean) => void, id: an
                                 <input
                                     className='border border-solid border-gray-400'
                                     type='date'
-                                    value={field.value ? new Date(field.value).toISOString().split('T')[0] : ''}
+                                    value={field.value ? formatDate(field.value) : ''}
                                     onChange={(e) => {
                                         console.log(e.target.value)
                                         const valueAsDate = e.target.value ? new Date(e.target.value) : null;
@@ -170,24 +175,7 @@ function ScheduleForm({ setOpen, id }: { setOpen: (pre: boolean) => void, id: an
                                     onChange={
                                         (e) => {
                                             const value = e.target.value;
-                                            const timeSplit = value.split(':');
-                                            let hours = parseInt(timeSplit[0]);
-                                            const minutes = timeSplit[1];
-                                            let meridian;
-
-                                            if (hours > 12) {
-                                                meridian = 'PM';
-                                                hours -= 12;
-                                            } else if (hours < 12) {
-                                                meridian = 'AM';
-                                                if (hours === 0) {
-                                                    hours = 12;
-                                                }
-                                            } else {
-                                                meridian = 'PM';
-                                            }
-
-                                            const formatted = `${hours}:${minutes} ${meridian}`;
+                                            const formatted = AmPmTime(value);
                                             setTime(formatted)
                                             field.onChange(value);
                                         }
@@ -206,3 +194,7 @@ function ScheduleForm({ setOpen, id }: { setOpen: (pre: boolean) => void, id: an
         </Form>
     )
 }
+
+
+export const FormEdit =  memo(EditScheduleForm);
+
