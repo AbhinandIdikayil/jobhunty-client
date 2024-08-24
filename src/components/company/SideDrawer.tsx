@@ -95,8 +95,9 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           </div>
           <MdOutlineArrowBackIos onClick={handleDrawerClose} />
         </DrawerHeader>
-        <Divider />
-        <List>
+        <Divider  />
+        <List 
+        >
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>

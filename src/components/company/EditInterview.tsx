@@ -15,7 +15,7 @@ import { z } from 'zod'
 
 
 const scheduleSchema = z.object({
-    type: z.string().nonempty({ message: 'Type is required' }),
+    testType: z.string().nonempty({ message: 'Type is required' }),
     date: z.date({ required_error: 'Date is required' }).refine(date => date > new Date(), {
         message: 'Date must be in the future'
     }),
@@ -30,20 +30,28 @@ const formSchema = z.object({
 
 function EditInterview({ ind }: { ind: number }) {
     const [open, setOpen] = useState<boolean>(false)
+    const handleOpenChange = (newOpen: boolean) => {
+        if (!newOpen) {
+            // Only allow the dialog to close if we're setting it to false
+            setOpen(false);
+        }
+    };
     return (
-        <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialog open={open} onOpenChange={handleOpenChange}
+            onPointerDownOutside={(e) => e.preventDefault()}
+            onClickOutside={(e) => e.preventDefault()}>
             <AlertDialogTrigger asChild className='w-full'>
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent event from bubbling up
                     setOpen(true);
-                }}  className="w-full font-bold">
+                }} className="w-full font-bold">
                     Edit
                 </button>
             </AlertDialogTrigger >
             <AlertDialogContent className='max-x-fit max-h-fit'>
                 <AlertDialogHeader>
                     <AlertDialogTitle>Edit  interview</AlertDialogTitle>
-                    <FormEdit setOpen={setOpen}  ind={ind} />
+                    <FormEdit setOpen={setOpen} ind={ind} />
                 </AlertDialogHeader>
                 <AlertDialogDescription />
             </AlertDialogContent>
@@ -55,13 +63,13 @@ export default memo(EditInterview)
 
 
 
-function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, ind: number }) {
+function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, ind: number }) {
     const [time, setTime] = useState<string>('')
     const dispatch: AppDispatch = useDispatch()
     const applicant = useSelector((state: RootState) => state?.job?.applicant)
     function extractAmPm() {
         const match = applicant?.schedule?.[ind]?.time?.match(/(AM|PM)/i);
-        console.log(applicant?.schedule?.[ind]?.time?.substr(1,5))
+        console.log(applicant?.schedule?.[ind]?.time?.substr(1, 5))
         return match ? match[0] : null;
     }
     let meridian = extractAmPm()
@@ -70,22 +78,22 @@ function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, 
         defaultValues: {
             schedule: [
                 {
-                    type: "" || applicant?.schedule?.[ind]?.testType,  
+                    testType: "" || applicant?.schedule?.[ind]?.testType,
                     date: new Date(applicant?.schedule?.[ind]?.date) ?? '',
-                    time: applicant?.schedule?.[ind]?.time?.slice(0,5) ?? '',   
+                    time: applicant?.schedule?.[ind]?.time?.slice(0, 5) ?? '',
                     roomId: "" ?? applicant?.schedule?.[ind]?.roomId
                 }
             ]
         },
     })
 
-    async function onSubmit(values:any) {
+    async function onSubmit(values: any) {
         try {
-            let res = {...values.schedule[0],ind,id:applicant?._id}
-            if(!time){
+            let res = { ...values.schedule[0], ind, id: applicant?._id }
+            if (!time) {
                 res = {
                     ...res,
-                    time: res?.time + ''+meridian
+                    time: res?.time + '' + meridian
                 }
             } else {
                 res = {
@@ -103,16 +111,24 @@ function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, 
     }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0" onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={(e: any) => {
+                e.preventDefault();
+                e.stopPropagation();
+                form.handleSubmit(onSubmit)(e);
+            }
+            } className="space-y-0" onClick={(e) => e.stopPropagation()}>
                 <FormField
                     control={form.control}
-                    name={`schedule.${0}.type`}
+                    name={`schedule.${0}.testType`}
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>Type of test
                             </FormLabel>
                             <FormControl>
-                                <Input  {...field} />
+                                <Input
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onClick={(e) => e.stopPropagation()} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -127,7 +143,11 @@ function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, 
                             <FormLabel>Room number {''}
                             </FormLabel>
                             <FormControl>
-                                <Input  {...field} />
+                                <Input
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                    onClick={(e) => e.stopPropagation()}
+                                    onClick={(e) => e.stopPropagation()}
+                                      {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -187,7 +207,7 @@ function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, 
                     )}
                 />
                 <div className='pt-3'>
-                    <AlertDialogCancel onClick={() => setOpen(false)} className="">Cancel</AlertDialogCancel>
+                    <AlertDialogCancel onClick={(e) => { e.stopPropagation(); setOpen(false); }} className="">Cancel</AlertDialogCancel>
                     <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
                 </div>
             </form>
@@ -196,5 +216,5 @@ function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, 
 }
 
 
-export const FormEdit =  memo(EditScheduleForm);
+export const FormEdit = memo(EditScheduleForm);
 

@@ -4,8 +4,55 @@ import { MoreHorizontal } from 'lucide-react'
 import EditInterview from './EditInterview'
 import { formatDateToDaysAgo } from 'src/utils/formateDateToDaysAgo'
 import { formatDateToThree } from 'src/utils/formateDate'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { memo } from 'react'
+import { AXIOS_INSTANCE_NOTIFICATION } from 'src/constants/axiosInstance'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/redux/store'
+import axios from 'axios'
+import { method } from 'lodash'
 
-function InterviewList({date,image,name,testType,time, ind}:{date:any,image:any,name:string,testType:string,time:string, ind:number}) {
+function InterviewList({ email, setLoading, date, image, name, testType, time, ind, room }:
+    { email: string, setLoading: (prev: boolean) => void, date: any, image: any, name: string, testType: string, time: string, ind: number, room: string }) {
+    const user = useSelector((state: RootState) => state?.user);
+    const navigate = useNavigate()
+    const handleNavigation = async () => {
+        setLoading(true)
+        try {
+            if (room) {
+                let req = {
+                    company: user?.user?.name,
+                    link: `/home/interview/${room}`,
+                    roomId: room,
+                    testType,
+                    user: name,
+                    email,
+                }
+                const data = await fetch(`http://localhost:6001/api/interview-link`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: 'PUT',
+                    body: JSON.stringify({data:req})
+                })
+                //  await AXIOS_INSTANCE_NOTIFICATION.post('/interview-link', { data: req })
+                if (data) {
+                    console.log(data)
+                    toast.success(data?.message ?? 'Email has sented')
+                    return navigate(`/company/interview/${room}`)
+                }
+            } else {
+                toast.error('cant get room id')
+                return
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error('Error occured')
+        } finally {
+            setLoading(false)
+        }
+    }
     return (
         <div className="flex flex-col w-full max-md:max-w-full">
             <div className="text-sm text-slate-900 font-semibold">
@@ -26,7 +73,7 @@ function InterviewList({date,image,name,testType,time, ind}:{date:any,image:any,
                         <div className="text-base font-semibold text-slate-800">
                             {name}
                         </div>
-                        <div className="text-sm text-slate-500"> {testType || 'hai'} </div>
+                        <div className="text-sm text-slate-500"> {testType || 'null'} </div>
                     </div>
                 </div>
                 <div className="flex flex-col self-stretch my-auto w-[139px]">
@@ -38,7 +85,7 @@ function InterviewList({date,image,name,testType,time, ind}:{date:any,image:any,
                     <div className="self-stretch my-auto border border-indigo-200 border-solid py-2 px-1">
                         Add Feedback
                     </div>
-                    <div className="self-stretch my-auto border border-indigo-200 border-solid py-2 px-1">
+                    <div onClick={handleNavigation} className="hover:cursor-pointer hover:shadow-lg self-stretch my-auto border border-indigo-200 border-solid py-2 px-1">
                         start
                     </div>
                 </div>
@@ -61,4 +108,4 @@ function InterviewList({date,image,name,testType,time, ind}:{date:any,image:any,
     )
 }
 
-export default InterviewList
+export default memo(InterviewList)

@@ -39,7 +39,7 @@ const userSlice = createSlice({
                 };
             }
             return state;
-        }
+        },
     },
     extraReducers: (builder: ActionReducerMapBuilder<UserReducer>) => {
         builder
@@ -247,7 +247,7 @@ const userSlice = createSlice({
             })
             .addCase(getUser.rejected, (state, { payload }) => {
                 state.loading = false
-                state.err = payload.message
+                state.err = payload?.message
                 handleAuthError(state,payload)
             })
             .addCase(updateUserProfile.pending, (state) => {

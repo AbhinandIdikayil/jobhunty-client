@@ -3,15 +3,9 @@ import AddInterview from './AddInterview'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/store'
-import { formatDateToDaysAgo } from 'src/utils/formateDateToDaysAgo'
-import { formatDateToThree } from 'src/utils/formateDate'
-import { MoreHorizontal, Pencil } from 'lucide-react'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Button } from '@/components/ui/button'
-import EditInterview from './EditInterview'
 import InterviewList from './InterviewList'
 
-function InterviewSchedule() {
+function InterviewSchedule({ setLoading }: { setLoading: (prev: boolean) => void }) {
     const [open, setOpen] = useState<boolean>(false)
     const applicant = useSelector((state: RootState) => state?.job?.applicant);
 
@@ -27,8 +21,8 @@ function InterviewSchedule() {
                 <div className="chat flex flex-col mt-4 w-full h-[700px] overflow-y-auto shadow-md">
                     {
                         applicant?.schedule?.map((data, ind: number) => (
-                            <InterviewList date={data?.date} image={applicant?.userId?.coverImage} name={applicant?.userId?.name || ''}
-                             ind={ind}  testType={data?.testType || ''} time={data?.time} key={ind} />
+                            <InterviewList email={applicant?.userId?.email || ''} setLoading={setLoading} date={data?.date} image={applicant?.userId?.coverImage} name={applicant?.userId?.name || ''}
+                                ind={ind} testType={data?.testType || ''} time={data?.time} key={ind} room={data?.roomId} />
                         ))
                     }
                 </div>
