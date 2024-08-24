@@ -25,7 +25,7 @@ function Applications() {
         {
             id: 'image',
             accessorKey: 'companyId?.images',
-            header: () => <div>Image</div>,
+            header: () => <div>Logo</div>,
             cell: ({ row }) => {
                 return <div className='w-16 h-16'> <img src={row.original?.companyId?.images} className='rounded-full bg-transparent' alt="" /> </div>
             }

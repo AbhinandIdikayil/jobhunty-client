@@ -9,11 +9,12 @@ import { MoreHorizontal, Pencil } from 'lucide-react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import EditInterview from './EditInterview'
+import InterviewList from './InterviewList'
 
 function InterviewSchedule() {
     const [open, setOpen] = useState<boolean>(false)
     const applicant = useSelector((state: RootState) => state?.job?.applicant);
-   
+
     return (
         <TabsContent value='interview'>
             <div className="flex flex-col leading-relaxed max-w-[688px] h-full px-1 ">
@@ -26,55 +27,8 @@ function InterviewSchedule() {
                 <div className="chat flex flex-col mt-4 w-full h-[700px] overflow-y-auto shadow-md">
                     {
                         applicant?.schedule?.map((data, ind: number) => (
-                            <div key={ind} className="flex flex-col w-full max-md:max-w-full">
-                                <div className="text-sm text-slate-900 font-semibold">
-                                    {
-                                        formatDateToDaysAgo(data?.date)
-                                        + ' - ' +
-                                        formatDateToThree(data?.date)
-                                    }
-                                </div>
-                                <div className="flex flex-wrap gap-4 justify-between items-center p-4 mt-2 w-full bg-white border border-solid border-slate-500 max-md:max-w-full">
-                                    <div className="flex gap-4 items-center self-stretch my-auto w-[204px]">
-                                        <img
-                                            loading="lazy"
-                                            srcSet={applicant?.userId?.coverImage}
-                                            className="object-contain shrink-0 self-stretch my-auto w-10 rounded-full"
-                                        />
-                                        <div className="flex flex-col self-stretch my-auto">
-                                            <div className="text-base font-semibold text-slate-800">
-                                                {applicant?.userId?.name}
-                                            </div>
-                                            <div className="text-sm text-slate-500"> {data?.testType || 'hai'} </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-col self-stretch my-auto w-[159px]">
-                                        <div className="text-base font-medium text-slate-800">
-                                            {data?.time}
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-2.5 justify-center items-center self-stretch px-4 py-3 my-auto text-base font-bold text-center text-indigo-600 border border-indigo-200 border-solid">
-                                        <Pencil />
-                                        <div className="self-stretch my-auto">Add Feedback</div>
-                                    </div>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                                <span className="sr-only">Open menu</span>
-                                                <MoreHorizontal className="h-4 w-4" />
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                            <DropdownMenuItem
-                                                className='border font-bold'
-                                            >
-                                                <EditInterview ind={ind} key={ind} />
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                </div>
-                            </div>
+                            <InterviewList date={data?.date} image={applicant?.userId?.coverImage} name={applicant?.userId?.name || ''}
+                             ind={ind}  testType={data?.testType || ''} time={data?.time} key={ind} />
                         ))
                     }
                 </div>

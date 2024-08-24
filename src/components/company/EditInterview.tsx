@@ -36,7 +36,7 @@ function EditInterview({ ind }: { ind: number }) {
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent event from bubbling up
                     setOpen(true);
-                }}  className="bg-blue-400 w-full font-bold">
+                }}  className="w-full font-bold">
                     Edit
                 </button>
             </AlertDialogTrigger >
@@ -146,7 +146,7 @@ function EditScheduleForm({ setOpen,  ind }: { setOpen: (pre: boolean) => void, 
                                 <input
                                     className='border border-solid border-gray-400'
                                     type='date'
-                                    value={field.value ? formatDate(field.value) : ''}
+                                    value={field.value ? formatDate(field?.value) : ''}
                                     onChange={(e) => {
                                         console.log(e.target.value)
                                         const valueAsDate = e.target.value ? new Date(e.target.value) : null;

@@ -41,7 +41,7 @@ function AddInterview({ open, setOpen }: { open: boolean, setOpen: (prev: boolea
             <AlertDialogTrigger asChild >
                 <button onClick={addInterviewModel} type='button' className="flex gap-2.5 justify-center items-center self-stretch px-4 py-3 my-auto font-bold text-center text-white min-w-[240px] bg-indigo-600 ">
                     <PlusIcon />
-                    <div className="self-stretch my-auto">Add Schedule Interview</div>
+                    <div className="self-stretch my-auto">Schedule Interview</div>
                 </button>
             </AlertDialogTrigger >
             <AlertDialogContent className='max-x-fit max-h-fit'>

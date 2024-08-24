@@ -72,7 +72,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            borderRight: '1px solid black'
+            // borderRight: '1px solid black'
           },
         }}
         variant="persistent"

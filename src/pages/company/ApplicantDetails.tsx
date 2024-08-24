@@ -46,7 +46,7 @@ function ApplicantDetails() {
                 </div>
             </div>
             <div className={`flex flex-wrap gap-5 justify-center items-start ${open ? 'px-3' : 'px-8'} w-full max-md:px-5 max-md:max-w-full`}>
-                <div className="flex flex-col grow shrink p-6 bg-white min-w-[240px] w-[282px] border-2 border-solid max-md:px-5">
+                <div className="flex flex-col grow shrink p-6 bg-white min-w-[240px] w-[282px] border-2 border-solid max-md:px-5 shadow-md">
                     <div className="flex gap-5 items-start self-start text-base leading-relaxed text-slate-800">
                         {
                             state?.applicant?.userId?.coverImage ? (
@@ -115,7 +115,7 @@ function ApplicantDetails() {
                     <div className="flex mt-5 w-full bg-zinc-200 min-h-[1px]" />
                     <ContactInApplicantDetails email={state?.applicant?.userId?.email || ""} socialLink={state.applicant?.userId?.socialLink || []} />
                 </div>
-                <div className="flex flex-col grow shrink items-center pb-6 border-2 border-solid text-base bg-white max-h-[859px] min-w-[240px] w-[648px] max-md:max-w-full">
+                <div className="flex flex-col grow shrink items-center pb-6 border-2 border-solid text-base bg-white max-h-[859px] min-w-[240px] w-[648px] max-md:max-w-full shadow-md">
                     <Tabs defaultValue="profile" className="w-full">
                         <div className="flex flex-col  w-full font-semibold leading-relaxed bg-white  text-slate-500 max-md:max-w-full">
                             <div className="flex flex-wrap gap-5 items-start w-full border-b-2 border-solid bg-white shadow-sm">

@@ -4,7 +4,6 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import { IoSettingsOutline } from "react-icons/io5";
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -62,14 +61,13 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
 
             </AppBar>
             <Drawer
-            className='shadow-xl'
                 sx={{
                     width: drawerWidth,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
                         width: drawerWidth,
                         boxSizing: 'border-box',
-                        borderRight: '1px solid black'
+                        // borderRight: '1px solid black'
                     },
                 }}
                 variant="persistent"
@@ -93,12 +91,10 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                     <MdOutlineArrowBackIos onClick={handleDrawerClose} />
                 </DrawerHeader>
                 {/* <Divider /> */}
-                <List disablePadding sx={{ "&:hover": { backgroundColor: "transparent" } }} className='bg-white'>
+                <List disablePadding sx={{ "&:hover": { backgroundColor: "transparent" } }}>
                     {['Dashboard', 'Messages', 'applications', 'jobs', 'companies', 'profile'].map((text, index) => (
                         <ListItem key={text} disablePadding sx={{
-                            "&.MuiButtonBase-root:hover": {
-                                bgcolor: "transparent"
-                            }
+                            
                         }} >
                             <NavLink className={'sidebar-link '} end to={navLinks[index]}>
                                 <ListItemButton disableRipple sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }} >

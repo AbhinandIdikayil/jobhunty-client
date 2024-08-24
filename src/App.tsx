@@ -48,6 +48,7 @@ import ResumeForm from './pages/resume/CreateResume'
 import ResumeView from './pages/resume/ResumeView'
 import { ResumeContextProvider } from './context/ResumeContext'
 import Quiz from './pages/quiz/Quiz'
+import Interview from './pages/Interview'
 
 
 
@@ -66,6 +67,7 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='home' element={<UserLayout />} >
+          <Route path='interview/:room' element={<Interview />} />
           <Route index element={<Home />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
@@ -124,6 +126,7 @@ function App() {
               <Route path='social-links' element={<SocialLinks />} />
             </Route>
           </Route>
+          <Route path='interview/:room' element={<Interview />} />
         </Route>
 
 
