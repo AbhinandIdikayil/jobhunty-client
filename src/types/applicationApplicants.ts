@@ -87,4 +87,14 @@ export interface JobApplication {
     answers: any[];
     createdAt: string;
     hiring_info: any[];
+    schedule: [
+        {
+            testType: string,
+            date: string,
+            roomId: string,
+            time: string,
+            status: string,
+            feedback: string
+        },
+    ],
 }

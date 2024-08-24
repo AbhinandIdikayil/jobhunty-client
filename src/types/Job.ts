@@ -168,6 +168,7 @@ export interface getAllJobsUser {
     createdAt: Date,
     updatedAt: Date,
     status: boolean,
+    location:[string],
     company: {
         _id: string,
         email: string,

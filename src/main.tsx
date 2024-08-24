@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
@@ -11,21 +10,24 @@ import { NextUIProvider } from '@nextui-org/react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { SocketProvider } from './context/SocketConext.tsx'
+import { ChatSocketProvider } from './context/ChatSocketContext.tsx'
 const clientId = process.env.CLIENT_ID as string
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <GoogleOAuthProvider clientId={clientId}>
-            <NextUIProvider>
-              <SocketProvider>
+  <BrowserRouter>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <GoogleOAuthProvider clientId={clientId}>
+          <NextUIProvider>
+            <SocketProvider>
+              <ChatSocketProvider>
                 <ToastContainer />
                 <App />
-              </SocketProvider>
-            </NextUIProvider>
-          </GoogleOAuthProvider>
-        </PersistGate>
-      </Provider>
-    </BrowserRouter>
+              </ChatSocketProvider>
+            </SocketProvider>
+          </NextUIProvider>
+        </GoogleOAuthProvider>
+      </PersistGate>
+    </Provider>
+  </BrowserRouter>
 )

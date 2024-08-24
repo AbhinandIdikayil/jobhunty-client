@@ -72,7 +72,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            borderRight: '1px solid black'
+            // borderRight: '1px solid black'
           },
         }}
         variant="persistent"
@@ -95,8 +95,9 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           </div>
           <MdOutlineArrowBackIos onClick={handleDrawerClose} />
         </DrawerHeader>
-        <Divider />
-        <List>
+        <Divider  />
+        <List 
+        >
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>

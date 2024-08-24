@@ -16,7 +16,7 @@ import { resetErr } from '../../redux/reducers/user/userSlice';
 
 
 function Signup() {
-    
+
     const user = useSelector((state: RootState) => state?.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate()
@@ -46,7 +46,7 @@ function Signup() {
 
     useEffect(() => {
         dispath(resetErr())
-        if(user.role == 'company'){
+        if (user.role == 'company') {
             return navigate('/company')
         } else if (user.role == 'user') {
             return navigate('/home')
@@ -61,17 +61,17 @@ function Signup() {
     const responseMessage = (response: Object) => {
         console.log(response);
         let data;
-        if(location.pathname === '/company/signup') {
+        if (location.pathname === '/company/signup') {
             data = {
                 ...response,
-                role:'company',
-                page:'signup'
+                role: 'company',
+                page: 'signup'
             }
         } else {
             data = {
                 ...response,
-                role:'user',
-                page:'signup'
+                role: 'user',
+                page: 'signup'
             }
         }
         handleGoogleAuth(data)
@@ -91,11 +91,11 @@ function Signup() {
             console.log(error);
         }
     }
-    
-    
+
+
     async function handleSubmit(values: FormikValues) {
         try {
-            
+
             if (isExpired) {
                 alert('OTP has expired. Please request a new one.');
                 return;
@@ -141,13 +141,13 @@ function Signup() {
         } as const
         type SignupType = keyof typeof signupConfig;
         const urLKey = Object.keys(signupConfig).find(key => url.includes(key)) as SignupType | undefined
-        
+
         if (urLKey) {
             handleOpen();
             const { role, navigateTo } = signupConfig[urLKey]
             try {
                 console.log(name, password, values?.otp, role)
-                const data = await dispath(verifyOtp({ email:email,name:name, password:password, otp: values?.otp, role })).unwrap();
+                const data = await dispath(verifyOtp({ email: email, name: name, password: password, otp: values?.otp, role })).unwrap();
                 console.log(data)
                 if (data) {
                     navigate(navigateTo)
@@ -222,7 +222,7 @@ function Signup() {
                                                     <span className='text-red-600'>
                                                         {
                                                             errors?.otp && errors?.otp ||
-                                                            user?.err  && user?.err
+                                                            user?.err && user?.err
                                                         }
                                                     </span>
                                                 </div>
@@ -273,15 +273,7 @@ function Signup() {
                                         Get more opportunities{" "}
                                     </div>
                                     <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600  border-indigo-200  leading-[160%] max-md:px-5">
-                                        {/* <div className="w-full"> */}
                                         <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />
-                                        {/* <img
-                                        loading="lazy"
-                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/2019ff383b243dae561ad6a469db084ba563760d8f4bb4a2722edf42f5a32861?"
-                                        className="shrink-0 my-auto w-5 aspect-square"
-                                    />
-                                    <div>Sign Up with Google</div> */}
-                                        {/* </div> */}
                                     </div>
                                     <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
                                         <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[109px]" />
@@ -302,10 +294,9 @@ function Signup() {
                                                         isCompanySignup ? 'Company name' : 'Full name'
                                                     }
                                                     <span className='text-red-600'>
-                                                        {
-                                                            errors?.name && errors?.name ||
-                                                            user?.err?.message && '(' + user?.err?.message + ')' ||
-                                                            user?.err && (user?.err as string).includes('user') && '(' + user?.err + ')' 
+                                                        {errors?.name ||
+                                                            (typeof user?.err === 'object' && 'message' in user.err && `(${(user.err as { message: string }).message})`) ||
+                                                            (typeof user?.err === 'string' && user.err.includes('user') && `(${user.err})`)
                                                         }
                                                     </span>
                                                 </div>

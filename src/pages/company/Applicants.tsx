@@ -23,9 +23,9 @@ function Applicants() {
 
     const columns: ColumnDef<JobApplication>[] = [
         {
-            id: 'name',
-            accessorKey: 'userId?.name',
-            header: () => <div>Name</div>,
+            id: 'Logo',
+            accessorKey: 'userId?.coverImage',
+            header: () => <div>Logo</div>,
             cell: ({ row }) => {
                 return <div className='text-left w-16 h-16'>
                     {

@@ -59,9 +59,19 @@ function ApplicantsOfJob() {
       accessorKey: `createdAt`,
       header: () => <div className="text-left">applied date</div>,
       cell: ({ row }) => {
-        const givenDate = new Date(row.original.createdAt);
+        const createdAt = row.original?.createdAt;
+        if (!createdAt) {
+          return '';
+        }
+
+        const givenDate = new Date(createdAt);
+        if (isNaN(givenDate.getTime())) {
+          // If the date is invalid, return a fallback value or an empty string
+          return '';
+        }
+
         const formattedDate = format(givenDate, 'dd-MMM-yy');
-        return <div>{formattedDate}</div>
+        return <div>{formattedDate}</div>;
       }
     },
     {
@@ -70,7 +80,7 @@ function ApplicantsOfJob() {
       enableHiding: false,
       cell: ({ row }) => {
         return (
-          <Link to={`/company/applicants/${row.original.user?._id}`}>
+          <Link to={`/company/applicants/${row.original?._id}`}>
             <Button
               className='rounded-none hover:bg-white bg-gray-50 font-bold text-indigo-600 border-2 border-indigo-600'>
               See application
@@ -82,7 +92,7 @@ function ApplicantsOfJob() {
   ]
 
   const table = useReactTable({
-    data: jobState?.job?.jobs?.applicants || [],
+    data: jobState?.job?.applicants ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -90,7 +100,7 @@ function ApplicantsOfJob() {
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  function handleNavigation () {
+  function handleNavigation() {
     return navigate(-1)
   }
 
@@ -169,6 +179,7 @@ function ApplicantsOfJob() {
                 table.getRowModel().rows
                   .length > 0 ? (
                   table.getRowModel().rows
+                    .filter(row => Object.keys(row.original || {}).length > 0) // filter out empty objects
                     .map((row) => (
                       <TableRow
                         key={row.id}

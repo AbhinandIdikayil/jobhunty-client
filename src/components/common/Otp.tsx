@@ -16,12 +16,13 @@ function Otp() {
         try {
             let value = {
                 ...values,
-                email:state.user.email,
+                email: state.user.email,
                 intention: true
             }
             const data = await dispath(verifyOtp(value)).unwrap()
             console.log(data)
             if (data) {
+                
                 return navigate('/forgot-password')
             }
         } catch (error) {

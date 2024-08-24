@@ -5,30 +5,43 @@ import { resetState } from '../../../redux/reducers/user/userSlice';
 import { getUser, logout } from '../../../redux/actions/userAction';
 import { useEffect } from 'react';
 import { listCategory, listSectors } from 'src/redux/actions/commonAction';
+import { googleLogout } from '@react-oauth/google'
 
 function Navbar() {
     const user = useSelector((state: RootState) => state.user)
     const dispatch: AppDispatch = useDispatch();
     const navigate = useNavigate()
 
+    const fetch = async () => {
+        try {
+            await dispatch(listCategory(null)).unwrap()
+            await dispatch(listSectors()).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     useEffect(() => {
-        dispatch(getUser()).unwrap()
-        dispatch(listCategory(null)).unwrap()
-        dispatch(listSectors()).unwrap()
+        if (user?.user) {
+            dispatch(getUser()).unwrap()
+        }
+        fetch()
         // if (user.role == 'user') {
         //     return navigate('/home')
         // } 
-         if (user.role == 'company') {
+        if (user.role == 'company') {
             return navigate('/company')
         }
     }, [])
+
 
     async function handleLogout() {
         try {
             let data = await dispatch(logout(undefined))
             if (data) {
                 dispatch(resetState())
-                navigate('/login')
+                googleLogout()
+                return navigate('/login')
             }
         } catch (error) {
             console.log(error);

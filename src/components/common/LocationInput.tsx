@@ -68,7 +68,7 @@ export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, locat
         []
     );
 
-    async function handleSubmit(e) {
+    async function handleSubmit() {
         await fetchLocation(field)
     }
 

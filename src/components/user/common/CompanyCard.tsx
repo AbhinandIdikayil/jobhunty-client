@@ -8,7 +8,7 @@ function CompanyCard({ data }: { data: Company }) {
         navigate(`/Dashboard/companies/${data?._id}`, { state: sss })
     }
     return (
-        <div onClick={() => handleNavigation(data)} className="company-card flex flex-col grow p-6 bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 ">
+        <div onClick={() => handleNavigation(data)} className="company-card flex flex-col grow p-6 bg-white border border-solid border-zinc-200 leading-[160%] max-md:px-5 max-md:mt-8 rounded-lg  border-t-indigo-600 border-t-4 shadow-sm">
             <div className="flex gap-5 justify-between text-base text-indigo-600">
                 {
                     data?.images ? (
@@ -18,19 +18,16 @@ function CompanyCard({ data }: { data: Company }) {
                             className="shrink-0 aspect-square w-[88px]"
                         />
                     ) : (
-                        <Avatar sx={{width:78,height:78}}> {data?.name.charAt(0)} </Avatar>
+                        <Avatar sx={{width:78,height:78}}> {data?.name.charAt(0) ?? ''} </Avatar>
                     )
                 }
-                <div className="self-start px-3 py-1 bg-slate-50">
-                    7 Jobs
-                </div>
             </div>
             <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
-                {data?.name}
+                {data?.name ?? ''}
             </div>
             <div className="company-desc mt-4 text-lg leading-7 text-slate-600">
                 {
-                    data?.description
+                    data?.description ?? ''
                 }
 
             </div>

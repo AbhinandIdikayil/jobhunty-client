@@ -22,5 +22,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./@"),
       'src': path.resolve(__dirname, './src') 
     },
-  }
+  },
 })

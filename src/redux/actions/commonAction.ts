@@ -7,16 +7,15 @@ import { ICategory } from "src/types/category";
 
 export const listSectors = createAsyncThunk(
     '/sector-list',
-    async (_, {rejectWithValue}) => {
+    async (_, { rejectWithValue }) => {
         try {
-            const {data} = await AXIOS_INSTANCE_JOB.get('/sector')
+            const { data } = await AXIOS_INSTANCE_JOB.get('/sector')
             return data
         } catch (error) {
             throw rejectWithValue(error)
         }
     }
 )
-
 
 
 export const listCategory = createAsyncThunk<IListCategory[], null, { rejectValue: ErrorPayload }>(
@@ -34,7 +33,7 @@ export const listCategory = createAsyncThunk<IListCategory[], null, { rejectValu
 
 export const addCategory = createAsyncThunk(
     'admin/add-category',
-    async (req: AddCategory, { rejectWithValue }) => {
+    async (req: any, { rejectWithValue }) => {
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/add-category', req)
             return data
@@ -71,9 +70,9 @@ export const deleteCategory = createAsyncThunk(
 
 export const addSector = createAsyncThunk(
     'admin/add-sector',
-    async(req:IAddSector,{rejectWithValue}) => {
+    async (req: IAddSector, { rejectWithValue }) => {
         try {
-            const {data} = await AXIOS_INSTANCE_JOB.post('/add-sector',{data:req})
+            const { data } = await AXIOS_INSTANCE_JOB.post('/add-sector', { data: req })
             return data;
         } catch (error) {
             return rejectWithValue(error)
@@ -83,9 +82,17 @@ export const addSector = createAsyncThunk(
 
 export const listAllCompanies = createAsyncThunk(
     '/list-companies',
-    async (_,{rejectWithValue}) => {
+    async (req:any, { rejectWithValue }) => {
         try {
-            const {data} = await AXIOS_INSTANCE_COMPANY.get('/all-company')
+            const { data } = await AXIOS_INSTANCE_COMPANY.get('/all-company', {
+                params: {
+                    page: req?.page,
+                    pageSize: req?.pageSize,
+                    name: req?.name,
+                    category: req?.category,
+                    location: req?.location
+                }
+            })
             return data
         } catch (error) {
             return rejectWithValue(error)

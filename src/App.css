@@ -89,3 +89,70 @@ input[type="number"]:focus {
   border-bottom-right-radius: 0;
 }
 
+.rsw-ce ul {
+  list-style: disc;
+  padding-left: 2em;
+}
+
+.rsw-ce ol {
+  list-style: decimal;
+  padding-left: 2em;
+}
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #print-area, #print-area * {
+    visibility: visible;
+  }
+
+  #print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+
+ol {
+  list-style-type: decimal; /* Ensures the ordered list uses numbers */
+  margin: 0; /* Adjust margin as needed */
+}
+
+
+.custom-list ol {
+  list-style-type: decimal; /* Ensure the ordered list displays numbers */
+  padding-left: 20px;
+}
+.custom-list ul {
+  list-style-type: circle; /* Ensure the ordered list displays numbers */
+  padding-left: 20px;
+}
+.custom-list li {
+  margin-left: 0; /* Ensure no extra margin is added */
+  padding-left: 0; /* Ensure no extra padding is added */
+  color: inherit; /* Inherit the text color */
+  font-size: inherit; /* Inherit the font size */
+}
+
+
+
+.clicked {
+  animation: jump 0.3s ease-out forwards;
+}
+
+@keyframes jump {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
+}

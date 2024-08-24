@@ -3,7 +3,10 @@
 export type adminReducer = {
     loading: boolean,
     request: any[],
-    companies: Company[],
+    companies: {
+        companies:Company[],
+        totalCount:[{count:number}]
+    },
     users: any[],
     err: null | any,
     role: 'admin' | null

@@ -3,15 +3,9 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import Button from '@mui/material/Button'
-
-
 import {
     Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Checkbox } from '@/components/ui/checkbox';
 import { prop } from 'src/types/AllTypes';
 import { useOutletContext } from 'react-router-dom';
 import UserJobCard from './JobCard'
@@ -20,11 +14,13 @@ import { AppDispatch, RootState } from 'src/redux/store';
 import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'react-toastify';
-import { CircleChevronRight } from 'lucide-react';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { Backdrop, CircularProgress } from '@mui/material';
-import { formatSalary } from 'src/utils/formatSalary';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
+import CategoryAccordian from 'src/components/common/CategoryAccordian';
+import SectoresAccordian from 'src/components/common/SectoresAccordian';
+import SalaryAccordian from 'src/components/common/SalaryAccordian';
+import Loading from 'src/components/common/Loading';
 
 
 function Jobs() {
@@ -32,7 +28,6 @@ function Jobs() {
     const { open } = context;
     const jobState = useSelector((state: RootState) => state.job);
     const userState = useSelector((state: RootState) => state.user)
-    const categoryState = useSelector((state: RootState) => state?.category)
     const dispatch: AppDispatch = useDispatch()
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const [pdf, setPdf] = useState([])
@@ -41,6 +36,8 @@ function Jobs() {
     const [loading, setLoading] = useState(false)
     const [minSalary, setMinSalary] = useState<number>()
     const [maxSalary, setMaxSalary] = useState<number>()
+    const [search, setSearch] = useState<string>('')
+    const [startNameSearch, setStartNameSearch] = useState<boolean>(false)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,
@@ -49,23 +46,21 @@ function Jobs() {
 
     interface FilterAndSearch {
         name: string;
+        location: string;
         category: any[];
         employment: any[] | [];
         price: number[] | [];
     }
     const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
         name: '',
+        location:'',
         category: [],
         employment: [],
         price: [],
     })
     const page = Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize)
-    let salary = [[100000, 300000], [300000, 600000],
-    [600000, 1200000], [1200000, 2350000]]
 
-
-
-    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[]) => {
+    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[], location: string) => {
         try {
             setLoading(true)
             let data = await dispatch(getAllJob({
@@ -75,30 +70,28 @@ function Jobs() {
                 employment,
                 category,
                 price,
+                location,
             })).unwrap()
-            if (data) {
-                setLoading(false)
-            }
         } catch (error) {
-            setLoading(false)
-
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
 
     useEffect(() => {
-        setLoading(true)
         fetchData(
             pagination.pageIndex + 1,
             pagination.pageSize,
-            '',
+            filterAndSearch?.name,
             filterAndSearch?.employment,
             filterAndSearch?.category,
             mergeRanges(filterAndSearch?.price),
+            filterAndSearch?.location
         )
     }, [pagination.pageIndex, pagination.pageSize,
     filterAndSearch?.employment, filterAndSearch?.category,
-    filterAndSearch?.price
+    filterAndSearch?.price, startNameSearch
     ])
 
     function applyForJob(data: any) {
@@ -123,6 +116,15 @@ function Jobs() {
             console.log(error)
             toast.error(jobState?.err?.message, { position: "top-center" })
         }
+    }
+
+    function handleSearch() {
+        // if (filterAndSearch?.name?.trim().length <= 1) {
+        //     return toast.error('At least 2 character', {
+        //         position: 'top-center'
+        //     })
+        // }
+        setStartNameSearch(!startNameSearch)
     }
 
     function handleCategory(e: any, _id: string) {
@@ -203,7 +205,7 @@ function Jobs() {
             }
 
             const mergedRanges = mergeRanges(updatedPrice);
-            console.log(updatedPrice,mergedRanges)
+            console.log(updatedPrice, mergedRanges)
             return {
                 ...prevState,
                 price: updatedPrice
@@ -211,18 +213,17 @@ function Jobs() {
         })
     }
 
-    const mergeRanges = (ranges:any) => {
+    const mergeRanges = (ranges: any) => {
         if (ranges.length === 0) return [];
         const sortedRanges = ranges.sort((a, b) => a[0] - b[0]);
         console.log(sortedRanges)
-        const merged = [sortedRanges[0][0],sortedRanges[sortedRanges?.length-1][1]];
+        const merged = [sortedRanges[0][0], sortedRanges[sortedRanges?.length - 1][1]];
         return merged
     };
 
     return (
         <>
-
-            <div className={`flex flex-col items-center ml-2 ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <div className={`flex flex-col items-center  ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
                         <div className="self-start text-slate-800 max-md:text-4xl">
@@ -241,139 +242,59 @@ function Jobs() {
                         Find your next career at companies like HubSpot, Nike, and Dropbox
                     </div>
                 </div>
-                <div className="p-6 mt-5 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
+                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
+                <div className="p-6 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <FormControl sx={{ m: 1 }} variant="standard">
-                            <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
+                            <InputLabel
+                                htmlFor="demo-customized-textbox"
+                            >
+                                Search company name
+                            </InputLabel>
                             <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, name: e.target.value })} id="demo-customized-textbox" />
                         </FormControl>
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
-
-                            <NativeSelect
-                                onChange={() => console.log(filterAndSearch)}
-                                sx={{ minWidth: 200 }}
-                                id="demo-customized-select-native"
-                                // value={age}
-                                // onChange={handleChange}
-                                input={<BootstrapInput />}
-                            >
-                                <option aria-label="None" value="" />
-                                <option value={10} className='font-bold border-solid px-2'>company name</option>
-                                <option value={20}>company name</option>
-                                <option value={30}>company companay company</option>
-                            </NativeSelect>
+                            <BootstrapInput
+                                onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })}
+                                id="demo-customized-textbox" />
 
                         </FormControl>
-                        <Button sx={{
-                            m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
-                                backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
-                            }
-                        }} variant="outlined">search my job</Button>
+                        <Button
+                            onClick={handleSearch}
+                            sx={{
+                                m: 1, marginTop: '30px', backgroundColor: 'rgb(79 70 229)', color: 'white', borderRadius: '0px', fontWeight: '600', '&:hover': {
+                                    backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
+                                }
+                            }} variant="outlined">
+                            search my job
+                        </Button>
                     </div>
                 </div>
+                <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
+
             </div>
-            {/* // </div> */}
             <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
                 <div className="w-full max-w-[1193px] max-md:max-w-full">
                     <div className="flex gap-5 max-md:flex-col">
                         <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col grow text-base leading-6 text-slate-600 max-md:mt-10">
+                            <div className="flex flex-col grow text-base leading-6 text-slate-900 max-md:mt-10">
                                 <Accordion type="multiple" className="w-full">
-                                    <AccordionItem value="item-1">
-                                        <AccordionTrigger className='text-sm text-black'>Types Of Employment</AccordionTrigger>
-                                        <AccordionContent>
-                                            {
-                                                categoryState.category?.map(data => (
-                                                    <div onClick={(e) => handleEmployment(e, data?._id)} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-xs text-black font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {data?.name}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </AccordionContent>
-                                    </AccordionItem>
-
-                                    <AccordionItem className='text-sm text-black' value="item-2">
-                                        <AccordionTrigger>Categories</AccordionTrigger>
-                                        <AccordionContent>
-                                            {
-                                                categoryState?.sectors?.map(data => (
-                                                    <div onClick={(e) => handleCategory(e, data?._id)}
-                                                        className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {data?.name}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-                                        </AccordionContent>
-                                    </AccordionItem>
-
-                                    <AccordionItem className='text-sm text-black' value="item-4">
-                                        <AccordionTrigger>Salary Range</AccordionTrigger>
-                                        <AccordionContent>
-                                            <div className='flex gap-2 items-center justify-start mb-1'>
-                                                <input type="number" onChange={(e) => setMinSalary(parseInt(e.target.value))} className='border border-solid h-8 w-1/3 px-2' min={0} max={10000000} />
-                                                <input type="number" onChange={(e) => setMaxSalary(parseInt(e.target.value))} className='border border-solid h-8 w-1/3 px-2' min={0} max={10000000} />
-                                                {/* <CircleChevronRight onClick={handleSubmit} className='text-gray-500' /> */}
-                                            </div>
-                                            {
-
-                                                salary?.map(data => (
-                                                    <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
-                                                        <Checkbox id="terms2" onClick={(e) => handleSalary(e, data)} />
-                                                        <label
-                                                            htmlFor="terms2"
-                                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                        >
-                                                            {formatSalary(data[0], data[1])}
-                                                        </label>
-                                                    </div>
-                                                ))
-                                            }
-
-                                        </AccordionContent>
-                                    </AccordionItem>
+                                    <CategoryAccordian handleEmployment={handleEmployment} />
+                                    <SectoresAccordian handleCategory={handleCategory} />
+                                    <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} />
                                 </Accordion>
-
                             </div>
                         </div>
                         <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
                                 <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
                                     <div className="flex flex-col">
-                                        <div className="text-3xl font-semibold leading-10 text-slate-800">
+                                        <div className="text-3xl font-semibold leading-10 text-slate-900">
                                             All Jobs
                                         </div>
-                                        <div className="mt-1 text-base leading-6 text-slate-500">
-                                            Showing 73 results
-                                        </div>
-                                    </div>
-                                    <div className="flex gap-5 justify-between my-auto">
-                                        <div className="flex gap-3 my-auto text-base leading-6">
-
-                                        </div>
-                                        <div className="flex gap-4">
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/83dc5820df5ac7a0fdb6df552b5d8ccad8fb0e7e0ba27f0adecfc62b9f30140c?"
-                                                className="shrink-0 w-10 aspect-square"
-                                            />
-                                            <img
-                                                loading="lazy"
-                                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/af99e711d991f721e551cf0f66b57afaa46ed70f4aab789d5c1cae314f16f791?"
-                                                className="shrink-0 w-10 aspect-square"
-                                            />
+                                        <div className="font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm">
+                                            Showing {jobState?.jobs?.totalCount?.[0]?.count} results
                                         </div>
                                     </div>
                                 </div>
@@ -452,16 +373,8 @@ function Jobs() {
                         </div>
                     </div>
                 </div>
-                {
-                    loading && (
-                        <Backdrop
-                            open={loading}
-                            sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                        >
-                            <CircularProgress color="inherit" />
-                        </Backdrop>
-                    )
-                }
+                <Loading loading={loading} key={'loading'} />
+
             </div>
         </>
     )

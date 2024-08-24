@@ -1,7 +1,6 @@
 import { useOutletContext } from "react-router-dom"
 import JobCard from "../../components/company/JobCard"
 import { prop } from "../../types/AllTypes"
-import { Select, SelectItem } from "@nextui-org/react"
 
 
 

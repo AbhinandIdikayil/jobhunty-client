@@ -16,7 +16,7 @@ import { JobApplication } from 'src/types/applicationApplicants';
 
 function Applications() {
 
-    const state = useSelector((state:RootState) => state?.job)
+    const state = useSelector((state: RootState) => state?.job)
     const dispatch = useDispatch()
     const context = useOutletContext<prop>() || {};
     const { open } = context;
@@ -25,7 +25,7 @@ function Applications() {
         {
             id: 'image',
             accessorKey: 'companyId?.images',
-            header: () => <div>Image</div>,
+            header: () => <div>Logo</div>,
             cell: ({ row }) => {
                 return <div className='w-16 h-16'> <img src={row.original?.companyId?.images} className='rounded-full bg-transparent' alt="" /> </div>
             }
@@ -41,9 +41,19 @@ function Applications() {
         {
             id: 'status',
             accessorKey: 'hiring_status',
-            header: () => <div className="text-left">hiring stage</div>,
+            header: () => <div className="text-left">hiring status</div>,
             cell: ({ row }) => {
-                return <span className={`border border-solid px-2 py-1 rounded-full`}>{row.original.hiring_status}</span>
+                return (
+                    <span
+                        className={`
+                            ${row.original.hiring_status == 'interview' ? 'border border-green-500 text-green-500': ''}
+                            ${row.original.hiring_status == 'shortlisted' ? 'border border-orange-500 text-orange-500': ''}
+                            ${row.original.hiring_status == 'in-review' ? 'border border-indigo-500 text-indigo-500': ''}
+                            border border-solid px-2 py-1 rounded-full`}
+                    >
+                        {row.original.hiring_status}
+                    </span>
+                )
             }
         },
         {
@@ -85,10 +95,10 @@ function Applications() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
     });
-    
+
     useEffect(() => {
-        dispatch(listApplications())
-    },[])
+        dispatch(listApplications(null))
+    }, [])
 
     return (
         <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
@@ -110,24 +120,24 @@ function Applications() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             {
-                                
-                            table
-                                .getAllColumns()
-                                .filter((column) => column.getCanHide())
-                                .map((column) => {
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            key={column.id}
-                                            className="capitalize"
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) =>
-                                                column.toggleVisibility(!!value)
-                                            }
-                                        >
-                                            {column.id}
-                                        </DropdownMenuCheckboxItem>
-                                    )
-                                })}
+
+                                table
+                                    .getAllColumns()
+                                    .filter((column) => column.getCanHide())
+                                    .map((column) => {
+                                        return (
+                                            <DropdownMenuCheckboxItem
+                                                key={column.id}
+                                                className="capitalize"
+                                                checked={column.getIsVisible()}
+                                                onCheckedChange={(value) =>
+                                                    column.toggleVisibility(!!value)
+                                                }
+                                            >
+                                                {column.id}
+                                            </DropdownMenuCheckboxItem>
+                                        )
+                                    })}
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

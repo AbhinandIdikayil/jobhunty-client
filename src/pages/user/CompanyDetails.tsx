@@ -1,7 +1,8 @@
 import { Facebook, Instagram, TwitchIcon, Twitter } from "lucide-react";
 import { useLocation, useOutletContext } from "react-router-dom";
+import CompanyDetailsHeader from "src/components/common/CompanyDetailsHeader";
 import { prop } from "src/types/AllTypes";
-import stack from '../../assets/techstacks.json'
+// import stack from '../../assets/techstacks.json'
 
 function CompanyDetails() {
     const context = useOutletContext<prop>() || {};
@@ -10,6 +11,7 @@ function CompanyDetails() {
     const { state } = location
     return (
         <div className={`flex flex-col items-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <CompanyDetailsHeader data={state} />
             <div className={`flex flex-col sm:flex-row gap-5 items-start  ${open ? 'px-5 py-5' : 'px-10 py-10'}  w-full bg-white `}>
                 <div className="flex flex-col grow shrink w-full sm:w-1/2">
                     <div className="flex flex-col max-w-full ">
@@ -35,7 +37,7 @@ function CompanyDetails() {
                             </div>
                             <div className="flex flex-wrap gap-4 items-start mt-4 w-full max-md:max-w-full">
                                 {
-                                    state.socialLinks.map((data) => {
+                                    state.socialLinks.map((data:any) => {
                                         if (data.includes('twitter')) {
                                             return (
                                                 <div className="flex gap-4 items-start p-2">
@@ -90,7 +92,7 @@ function CompanyDetails() {
                         <div className="flex flex-col self-start mt-4 w-[297px] h-full text-base leading-relaxed text-slate-800">
                             <div className="flex flex-wrap items-start">
                                 {
-                                    state.techStack.map((data) => (
+                                    state.techStack.map((data:any) => (
                                         <div className="flex flex-col items-center p-3 w-[98px]">
                                             <picture>
                                                 <source
@@ -100,13 +102,13 @@ function CompanyDetails() {
 
                                                 <img src={`https://deviconapi.vercel.app/${data}?theme=lig&size=50`} />
                                             </picture>
-                                            
+
                                             <div className="mt-2.5"> {data} </div>
                                         </div>
                                     ))
                                 }
 
-                             
+
                                 {/* <div className="flex flex-col items-center p-3 whitespace-nowrap">
                                     <img
                                         loading="lazy"
@@ -124,13 +126,10 @@ function CompanyDetails() {
                             <div className="text-3xl font-semibold leading-tight text-slate-800">
                                 Office Location
                             </div>
-                            <div className="mt-4 text-base leading-relaxed text-slate-600">
-                                Stripe offices spread across 20 countries
-                            </div>
                         </div>
                         <div className="flex flex-col items-start self-start mt-6 text-base font-semibold leading-relaxed text-black">
                             {
-                                state.locations.map((data) => (
+                                state.locations.map((data:any) => (
                                     <div className="flex gap-3 items-center self-stretch">
                                         <div className="self-stretch my-auto"> {data} </div>
                                     </div>

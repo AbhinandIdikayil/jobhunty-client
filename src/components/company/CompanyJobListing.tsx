@@ -25,13 +25,13 @@ function CompanyJobListing() {
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
-    const [searchQuery,setSearchquery] = useState<string | null>(null)
+    const [searchQuery, setSearchquery] = useState<string>('')
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 5,
     });
 
-    const debounceSearchQuery = UseDebounce(searchQuery,500)
+    const debounceSearchQuery = UseDebounce(searchQuery, 500)
 
     function handleRemove(id: string) {
         try {
@@ -165,7 +165,9 @@ function CompanyJobListing() {
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem
                                 className='border font-bold bg-red-600 text-white'
-                                onClick={() => handleRemove(row.original?._id)}
+                                onClick={() => {
+                                    handleRemove(row.original?._id)
+                                }}
                             >
                                 Remove
                             </DropdownMenuItem>
@@ -202,12 +204,12 @@ function CompanyJobListing() {
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
     });
-    
+
     useEffect(() => {
         setLoading(true)
-        fetchData(pagination.pageIndex + 1, pagination.pageSize,debounceSearchQuery);
+        fetchData(pagination.pageIndex + 1, pagination.pageSize, debounceSearchQuery);
         console.log(jobState?.jobs?.jobs)
-    }, [pagination.pageIndex, pagination.pageSize,debounceSearchQuery]);
+    }, [pagination.pageIndex, pagination.pageSize, debounceSearchQuery]);
 
     if (loading) {
         return (
@@ -286,15 +288,14 @@ function CompanyJobListing() {
                                                 key={`row-${row.id}-${rowIndex}`} // Ensure unique key for each row
                                             >
                                                 {
-                                                    console.log(row.original),
-                                                row.getVisibleCells().map((cell, cellIndex) => (
-                                                    <TableCell key={`cell-${cell.id}-${cellIndex}`}> {/* Ensure unique key for each cell */}
-                                                        {flexRender(
-                                                            cell.column.columnDef.cell,
-                                                            cell.getContext()
-                                                        )}
-                                                    </TableCell>
-                                                ))}
+                                                    row.getVisibleCells().map((cell, cellIndex) => (
+                                                        <TableCell key={`cell-${cell.id}-${cellIndex}`}> {/* Ensure unique key for each cell */}
+                                                            {flexRender(
+                                                                cell.column.columnDef.cell,
+                                                                cell.getContext()
+                                                            )}
+                                                        </TableCell>
+                                                    ))}
                                             </TableRow>
                                         ))
                                 ) : (

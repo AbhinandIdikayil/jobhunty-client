@@ -28,13 +28,13 @@ import UserDashboard from './components/user/dashboard/Dashboard'
 import Profile from './components/user/dashboard/Profile'
 import Categories from './pages/admin/Categories'
 import AddCategory from './pages/admin/AddCategory'
-const PostJob = lazy(() => import('./components/company/PostJob')) 
+const PostJob = lazy(() => import('./components/company/PostJob'))
 import 'react-profile/themes/default'
 import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
 import CompanyJobListing from './components/company/CompanyJobListing'
-import Chat from './pages/company/Chat'
+import Chat from './pages/Chat/Chat'
 import JobDetails from './pages/user/JobDetails'
 import CompanyDetails from './pages/user/CompanyDetails'
 import JobEdting from './pages/company/JobEdting'
@@ -42,6 +42,14 @@ import Applicants from './pages/company/Applicants'
 import Applications from './pages/user/Applications'
 import ApplicantDetails from './pages/company/ApplicantDetails'
 import ApplicantsOfJob from './pages/company/ApplicantsOfJob'
+import Schedules from './pages/company/Schedules'
+import ResumeHome from './pages/resume/ResumeHome'
+import ResumeForm from './pages/resume/CreateResume'
+import ResumeView from './pages/resume/ResumeView'
+import { ResumeContextProvider } from './context/ResumeContext'
+import Quiz from './pages/quiz/Quiz'
+import Interview from './pages/Interview'
+
 
 
 function App() {
@@ -55,10 +63,11 @@ function App() {
       <Routes>
 
       ////! routes for user
-      <Route path='/' element={<Navigate to='home' />} />
+        <Route path='/' element={<Navigate to='home' />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='home' element={<UserLayout />} >
+          <Route path='interview/:room' element={<Interview />} />
           <Route index element={<Home />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
@@ -67,15 +76,28 @@ function App() {
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
           <Route path='' element={<UserDashboard />} />
+          <Route path='messages' element={<Chat />} />
           <Route path='applications' element={<Applications />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
           <Route path='companies' element={<CompanyList />} />
           <Route path='companies/:id' element={<CompanyDetails />} />
           <Route path='profile' element={<Profile />} />
+          <Route path='resume' element={<ResumeHome />} />
+          <Route path='quiz' element={<Quiz />} />
+          <Route path='resume/create' element={
+            <ResumeContextProvider>
+              <ResumeForm />
+            </ResumeContextProvider>
+          } />
+          <Route path='resume/view' element={
+            <ResumeContextProvider>
+              <ResumeView />
+            </ResumeContextProvider>
+          } />
         </Route>
 
-        
+
 
 
         <Route path='/forgot-password' element={<ForgotPassword />} />
@@ -98,12 +120,13 @@ function App() {
             <Route path='job-list' element={<CompanyJobListing />} />
             <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='job-list/applicants/:id' element={<ApplicantsOfJob />} />
-            <Route path='schedules' element={<h1>schedules</h1>} />
+            <Route path='schedules' element={<Schedules />} />
             <Route path='settings' element={<Settings />}>
               <Route path='' element={<Overview />} />
               <Route path='social-links' element={<SocialLinks />} />
             </Route>
           </Route>
+          <Route path='interview/:room' element={<Interview />} />
         </Route>
 
 

@@ -1,17 +1,41 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { Socket } from 'socket.io-client'
+import io, { Socket } from 'socket.io-client'
 import { Children } from 'src/types/AllTypes';
 
 
-const ChatSocketContext = createContext<Socket | null>(null)
+
+interface ChatSocketContextType {
+    socket: Socket | null;
+    socketConnected: boolean;
+    setSocketConnected: (connected: boolean) => void;
+}
+
+const ChatSocketContext = createContext<ChatSocketContextType | null>(null);
+
+export const UseChatSocketContext = () => {
+    const context = useContext(ChatSocketContext);
+    if (!context) {
+        throw new Error('UseChatSocketContext must be used within a ChatSocketProvider');
+    }
+    return context;
+};
 
 
-export const UseChatContext = () => useContext(ChatSocketContext);
-
-export const ChatSocketProvidet = ({ children }: Children) => {
+export const ChatSocketProvider = ({ children }: Children) => {
     const [socket, setSocket] = useState<Socket | null>(null);
+    const [socketConnected,setSocketConnected] = useState<boolean>(false)
+    useEffect(() => {        
+        const newSocket = io(String(process.env.CHAT_ORIGIN))
+        setSocket(newSocket);
 
-    useEffect(() => {
-
+        return () => {
+            newSocket.close()
+        }
     }, [])
+
+    return (
+        <ChatSocketContext.Provider value={{socket,socketConnected,setSocketConnected}}>
+            {children}
+        </ChatSocketContext.Provider>
+    )
 }
