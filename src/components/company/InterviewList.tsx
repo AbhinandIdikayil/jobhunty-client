@@ -7,11 +7,8 @@ import { formatDateToThree } from 'src/utils/formateDate'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { memo } from 'react'
-import { AXIOS_INSTANCE_NOTIFICATION } from 'src/constants/axiosInstance'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/store'
-import axios from 'axios'
-import { method } from 'lodash'
 
 function InterviewList({ email, setLoading, date, image, name, testType, time, ind, room }:
     { email: string, setLoading: (prev: boolean) => void, date: any, image: any, name: string, testType: string, time: string, ind: number, room: string }) {
@@ -29,14 +26,13 @@ function InterviewList({ email, setLoading, date, image, name, testType, time, i
                     user: name,
                     email,
                 }
-                const data = await fetch(`http://localhost:6001/api/interview-link`, {
+                const data:any = await fetch(`${process.env.NOTIFICATION_URL}/api/interview-link`, {
                     headers: {
                         "Content-Type": "application/json",
                     },
                     method: 'PUT',
                     body: JSON.stringify({data:req})
                 })
-                //  await AXIOS_INSTANCE_NOTIFICATION.post('/interview-link', { data: req })
                 if (data) {
                     console.log(data)
                     toast.success(data?.message ?? 'Email has sented')
