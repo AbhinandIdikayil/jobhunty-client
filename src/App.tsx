@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
@@ -49,10 +49,12 @@ import ResumeView from './pages/resume/ResumeView'
 import { ResumeContextProvider } from './context/ResumeContext'
 import Quiz from './pages/quiz/Quiz'
 import Interview from './pages/Interview'
+import Call from './pages/call/Call'
 
 
 
 function App() {
+
 
   return (
     <Suspense fallback={
@@ -60,6 +62,7 @@ function App() {
         <CircularProgress color="inherit" />
       </Backdrop>
     }>
+      <Call /> 
       <Routes>
 
       ////! routes for user

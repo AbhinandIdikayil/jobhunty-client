@@ -70,7 +70,7 @@ function Chat() {
             <Sidebar setLoading={setLoading} setMessages={setMessages} />
             {/* //! sidebar to list and search for and users and company, listing the chats also */}
 
-            <div className="relative flex flex-col w-full min-h-[82vh]  rounded-xl bg-muted/50 px-1 lg:col-span-2">
+            <div className="relative flex flex-col w-full min-h-[83vh]  rounded-xl bg-muted/50 px-1 lg:col-span-2">
                 <div className="flex-1" />
                 <div ref={chatRef} className='chat w-full max-h-[63vh] overflow-y-scroll pb-2 flex flex-col scroll-smooth px-1'>
                     {

@@ -70,8 +70,7 @@ export const postJobValidationSchema = Yup.object().shape({
         .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
     description: Yup
         .string()
-        .required('Description is required')
-        .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
+        .required('Description is required'),
     employment: Yup
         .string()
         .required('Employment type is required'),

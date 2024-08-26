@@ -4,7 +4,7 @@ import { JobApplication } from "./applicationApplicants"
 export type JobReducer = {
     loading: boolean,
     err: null | any,
-    jobs: getAllJobsEntity[],
+    jobs: getAllJobsEntity | any
     job: getAllJobsEntity | null,
     applicant: JobApplication | null
     applicants: JobApplication[]
@@ -34,7 +34,7 @@ export interface applicants {
 
 export interface getAllJobsEntity {
     _id?: string,
-    job?: {
+    jobs: {
         _id?: string,
         jobTitle?: string,
         employment?: string,
@@ -101,7 +101,7 @@ export interface getAllJobsEntity {
             isDeleted?: boolean,
             createdAt?: Date,
         }
-    },
+    }[],
     applicantCount?: number,
     applicants: [applicants],
     company?: {
@@ -126,8 +126,9 @@ export interface getAllJobsEntity {
         LinkedInLink?: string,
         profileCompletionStatus?: string
     },
+    description: string,
     jobTitle?: string,
-    locations?: [string],
+    location?: [string],
     responsibilities?: [string],
     skills?: [string],
     qualification?: [string],

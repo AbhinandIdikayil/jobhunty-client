@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 import { setJobById } from 'src/redux/reducers/jobSlice';
@@ -13,7 +13,6 @@ function JobDetails() {
     const location = useLocation()
     const dispatch: AppDispatch = useDispatch();
     const state = useSelector((state: RootState) => state.job)
-    // const [states, setStates] = useState<string>('')
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     useEffect(() => {
@@ -33,13 +32,6 @@ function JobDetails() {
         }
     }
 
-    // if (states === 'loading') {
-    //     return <h1>loading.....</h1>;
-    // }
-
-    // if (states === 'error') {
-    //     return <h1>Error loading data</h1>;
-    // }
 
     return (
         <>
@@ -81,7 +73,7 @@ function JobDetails() {
                                         Description
                                     </div>
                                     <div className="mt-4 leading-7 max-md:max-w-full">
-                                        {/* {state?.job?.description} */}
+                                        {state?.job?.description}
                                         {/* Stripe is looking for Social Media Marketing expert to help
                                         manage our online networks. You will be responsible for
                                         monitoring our social media channels, creating content, finding
@@ -166,19 +158,6 @@ function JobDetails() {
                                     <div className="text-lg sm:text-2xl font-semibold leading-10 text-gray-700">
                                         About this role
                                     </div>
-                                    <div className="flex flex-col p-4 mt-6 w-full bg-slate-50">
-                                        <div className="text-base font-semibold leading-6 text-center text-slate-500">
-                                            <span className="text-gray-700">5 applied</span>{" "}
-                                            <span className=" text-slate-500">of 10 capacity</span>
-                                        </div>
-                                        <div className="flex mt-2">
-                                            <div className="flex-1 shrink-0 h-2 bg-emerald-300" />
-                                            <div className="flex-1 shrink-0 h-2 bg-emerald-300" />
-                                            <div className="flex-1 shrink-0 h-2 bg-zinc-200" />
-                                            <div className="flex-1 shrink-0 h-2 bg-zinc-200" />
-                                            <div className="flex-1 shrink-0 h-2 bg-zinc-200" />
-                                        </div>
-                                    </div>
                                     <div className="flex gap-5 justify-between mt-6 text-base leading-6">
                                         <div className="text-slate-600">Apply Before</div>
                                         <div className="font-semibold text-gray-700">
@@ -242,7 +221,7 @@ function JobDetails() {
                                                 if (typeof data === 'string' && data.length > 0) {
                                                     return (
                                                         <span key={ind} className="px-3 py-1 mt-2.5 text-base leading-6 text-indigo-600 bg-slate-50">
-                                                            as
+                                                            {data}
                                                         </span>
                                                     )
                                                 } else {

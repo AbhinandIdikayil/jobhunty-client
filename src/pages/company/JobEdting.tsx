@@ -23,20 +23,20 @@ function JobEdting() {
     const [location,setLocation] = useState([])
 
     const PostJobInitialValues = {
-        jobTitle: state?.job?.job?.jobTitle || '',
-        description: state?.job?.job?.description || '',
-        employment: state?.job?.job?.employmentDetails?._id || '',
-        category: state?.job?.job?.categoryDetails?._id || '',
+        jobTitle: state.job?.jobTitle || '',
+        description: state?.job?.description || '',
+        employment: state?.job?.employmentDetails?._id || '',
+        category: state?.job?.categoryDetails?._id || '',
         salaryrange: {
-            from: state?.job?.job?.salaryrange?.from || '',
-            to: state?.job?.job?.salaryrange?.to || '',
+            from: state?.job?.salaryrange?.from || '',
+            to: state?.job?.salaryrange?.to || '',
         },
-        location: state?.job?.job?.location ?? [],
-        companyId: state?.job?.job?.company?._id || '',
-        expiry: formatDate(state?.job?.job?.expiry) || '',
-        responsibilities: state?.job?.job?.responsibilities || [''],
-        skills: state?.job?.job?.skills || [''],
-        qualification: state?.job?.job?.qualification || [''],
+        location: state?.job?.location ?? [],
+        companyId: state?.job?.company?._id || '',
+        expiry: formatDate(state?.job?.expiry) || '',
+        responsibilities: state?.job?.responsibilities || [''],
+        skills: state?.job?.skills || [''],
+        qualification: state?.job?.qualification || [''],
     }
     function handleSubmit(values: FormikValues) {
         try {
@@ -65,7 +65,8 @@ function JobEdting() {
                 onSubmit={handleSubmit}
             >
 
-                {({ errors, setFieldValue, isSubmitting, values }) => {
+                {({ errors, setFieldValue, isSubmitting, values }) =>
+                 {
                     return (
                         <Form>
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center'>
@@ -95,7 +96,7 @@ function JobEdting() {
                                     <span className='text-xs text-red-600'>
 
                                     </span>
-                                    <Field type="text" name='description' className='w-full sm:w-auto  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
+                                    <Field type="textarea" as='textarea' name='description' className='w-full sm:w-[450px] h-32 border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
                                     <span className='font-sans'>atleast 50 character</span>
                                 </div>
                             </div>
@@ -165,7 +166,7 @@ function JobEdting() {
 
                                     <Select onValueChange={(e) => setFieldValue('category', e)}>
                                         <SelectTrigger className="w-[200px]">
-                                            <SelectValue placeholder={state?.job?.job?.categoryDetails?.name} />
+                                            <SelectValue placeholder={state?.job?.categoryDetails?.name} />
                                         </SelectTrigger>
                                         <SelectContent className='border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2'>
                                             {

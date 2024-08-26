@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@nextui-org/react'
-import { CornerDownLeft, Mic, Paperclip, Smile } from 'lucide-react'
+import { CornerDownLeft, Paperclip, Phone, Smile } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -114,7 +114,7 @@ function SendMessage({ setMessages }: { setMessages: any }) {
 
 
                     <Button variant="ghost" size="icon">
-                        <Mic className="size-4" />
+                        <Phone className="size-4" />
                         <span className="sr-only">Use Microphone</span>
                     </Button>
 

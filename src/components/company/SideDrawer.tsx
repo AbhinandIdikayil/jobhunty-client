@@ -104,15 +104,15 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                 <ListItemButton sx={{ width: drawerWidth - 2 }}>
                   <ListItemIcon>
                     {
-                      text == 'Dashboard' && <LayoutGrid /> ||
-                      text == 'Messages' && <MessageSquareText /> ||
-                      text == 'Company profiles' && <Building2Icon /> ||
-                      text == 'All applicants' && <Users /> ||
-                      text == 'Job listing' && <ClipboardListIcon /> ||
-                      text == 'My schedule' && <NotebookPen />
+                      text == 'Dashboard' && <LayoutGrid color='black' /> ||
+                      text == 'Messages' && <MessageSquareText color='black' /> ||
+                      text == 'Company profiles' && <Building2Icon color='black' /> ||
+                      text == 'All applicants' && <Users color='black' /> ||
+                      text == 'Job listing' && <ClipboardListIcon color='black' /> ||
+                      text == 'My schedule' && <NotebookPen color='black' />
                     }
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText sx={{color:'black'}} primary={text} />
                 </ListItemButton>
               </NavLink>
             </ListItem>
@@ -125,10 +125,9 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
               <NavLink to={'settings'}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <IoSettingsOutline size={30} />
+                    <IoSettingsOutline size={30} color='black' />
                   </ListItemIcon>
                   <ListItemText primary={text} />
-                  <TbNumber1Small size={30} />
                 </ListItemButton>
               </NavLink>
             </ListItem>
