@@ -66,8 +66,8 @@ function ProfileTab({name,about,experiences,education,skills}:{name:string | nul
                                 </div>
                                 {
                                     // state?.applicant?.userId?.
-                                    education?.map((data) => (
-                                        <div className="font-medium text-slate-800">
+                                    education?.map((data,ind:number) => (
+                                        <div key={data +''+ind} className="font-medium text-slate-800">
                                             {data?.course}
                                         </div>
                                     ))
@@ -84,8 +84,8 @@ function ProfileTab({name,about,experiences,education,skills}:{name:string | nul
                                 <div className="flex gap-1 items-start text-indigo-600">
                                     {
                                         // state?.applicant?.userId?.
-                                        skills?.map((data) => (
-                                            <div className="gap-4 self-stretch px-3 py-1 bg-slate-50">
+                                        skills?.map((data,ind:number) => (
+                                            <div key={data +''+ind} className="gap-4 self-stretch px-3 py-1 bg-slate-50">
                                                 {data}
                                             </div>
                                         ))

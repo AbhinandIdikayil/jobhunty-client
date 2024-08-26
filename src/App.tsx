@@ -67,7 +67,7 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='home' element={<UserLayout />} >
-          <Route path='interview/:room' element={<Interview />} />
+          <Route path='interview/:room' element={<Interview />} />  //! FOR INTERVIEW (VIDEO CALL)
           <Route index element={<Home />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />

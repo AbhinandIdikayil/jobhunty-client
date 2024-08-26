@@ -10,8 +10,8 @@ import { memo } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/store'
 
-function InterviewList({ email, setLoading, date, image, name, testType, time, ind, room }:
-    { email: string, setLoading: (prev: boolean) => void, date: any, image: any, name: string, testType: string, time: string, ind: number, room: string }) {
+function InterviewList({applcantId, email, setLoading, date, image, name, testType, time, ind, room }:
+    {applcantId:any, email: string, setLoading: (prev: boolean) => void, date: any, image: any, name: string, testType: string, time: string, ind: number, room: string }) {
     const user = useSelector((state: RootState) => state?.user);
     const navigate = useNavigate()
     const handleNavigation = async () => {
@@ -20,23 +20,29 @@ function InterviewList({ email, setLoading, date, image, name, testType, time, i
             if (room) {
                 let req = {
                     company: user?.user?.name,
-                    link: `/home/interview/${room}`,
+                    link: `/home/interview/${room}=${applcantId}`, //! route for employee containing the id of employee (user)
                     roomId: room,
                     testType,
                     user: name,
                     email,
                 }
-                const data:any = await fetch(`${process.env.NOTIFICATION_URL}/api/interview-link`, {
+                const data: any = await fetch(`${process.env.NOTIFICATION_URL}/api/interview-link`, {
                     headers: {
                         "Content-Type": "application/json",
                     },
                     method: 'PUT',
-                    body: JSON.stringify({data:req})
+                    body: JSON.stringify({ data: req })
                 })
                 if (data) {
                     console.log(data)
                     toast.success(data?.message ?? 'Email has sented')
-                    return navigate(`/company/interview/${room}`)
+                    return navigate(`/company/interview/${room}=${user?.user?._id}`, { //!     navigating to page containing id of company
+                        state: {
+                            user: user?.user?.name,
+                            roomId: room,
+                            joiner: email
+                        }
+                    })
                 }
             } else {
                 toast.error('cant get room id')

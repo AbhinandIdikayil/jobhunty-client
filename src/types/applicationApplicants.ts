@@ -47,6 +47,7 @@ export interface JobApplication {
     };
     deleted: boolean;
     userId: {
+        _id: string,
         name?: string
         email?: string,
         password?: string,

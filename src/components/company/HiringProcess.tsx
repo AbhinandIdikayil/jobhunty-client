@@ -45,8 +45,8 @@ function HiringProcess({ applicantId, setLoading }: { applicantId: string | null
                     </div> */}
                     <div className="object-contain mt-5 w-full aspect-[13.51] flex gap-2 max-md:max-w-full capitalize">
                         {
-                            status?.map((data: string) => (
-                                <div className={`w-1/4 flex items-center
+                            status?.map((data: string,ind:number) => (
+                                <div key={data +''+ind} className={`w-1/4 flex items-center
                                 ${jobState?.applicant?.hiring_status == data ? 'bg-indigo-700 text-white' : 'text-blue-700  bg-gray-300 '} 
                                 justify-center font-semibold rounded-sm`}>
                                     {data}
