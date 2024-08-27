@@ -10,8 +10,8 @@ function SectoresAccordian({handleCategory}:{handleCategory:(e:any,id:string) =>
             <AccordionTrigger className='font-bold'>Categories</AccordionTrigger>
             <AccordionContent>
                 {
-                    categoryState?.sectors?.map(data => (
-                        <div onClick={(e) => handleCategory(e, data?._id)}
+                    categoryState?.sectors?.map((data,ind) => (
+                        <div key={data?.name + ind} onClick={(e) => handleCategory(e, data?._id)}
                             className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                             <Checkbox id="terms2" />
                             <label

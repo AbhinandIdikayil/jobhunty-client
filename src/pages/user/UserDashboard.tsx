@@ -1,21 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ApplicationListInDashboard from 'src/components/user/dashboard/ApplicationListInDashboard';
 import DashboardInterviewList from 'src/components/user/dashboard/DashboardInterviewList';
-import { RootState } from 'src/redux/store';
+import { listApplicants } from 'src/redux/actions/jobAction';
+import { AppDispatch, RootState } from 'src/redux/store';
 
 function UserDashboard() {
+  const dispatch: AppDispatch = useDispatch()
+
   const application = useSelector((state: RootState) => state?.job?.applications);
   const interviewed = application?.filter((data) => data?.hiring_status === 'interview')
-  const shortlisted = application?.filter((data) => data?.hiring_status === 'in-review')
+  const shortlisted = application?.filter((data) => data?.hiring_status == 'shortlisted')
+  const inreview = application?.filter((data) => data?.hiring_status === 'in-review')
   const rejected = application?.filter((data) => data?.hiring_status === 'rejected')
-  const [series] = useState([interviewed?.length, shortlisted?.length, application?.length, rejected?.length]);
-  const [options] = useState({
+
+  const [series] = useState([interviewed?.length, inreview?.length, shortlisted?.length, rejected?.length, application?.length]);
+  const [options] = useState<any>({
     chart: {
       type: 'donut',
     },
-    labels: ['Interviewed', 'shortlisted', 'applied', 'declined'],
+    labels: ['Interviewed', 'in-review', 'shortlisted', 'declined', 'applied'],
     responsive: [{
       breakpoint: 480,
       options: {
@@ -28,7 +33,21 @@ function UserDashboard() {
       },
     }],
   });
-  // const 
+
+  const fetchData = async () => {
+    try {
+      let data = await dispatch(listApplicants()).unwrap()
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+
   return (
     <div className="flex flex-col h-screen">
       <div className="flex flex-wrap gap-2 items-start px-4 py-4 w-full h-[398px]">

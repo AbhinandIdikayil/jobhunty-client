@@ -295,11 +295,11 @@ function Overview() {
                                                         errors?.description && <span className='text-red-600'> {errors?.description as string} </span>
                                                     }
                                                 </div>
-                                                <Field type='textarea' cols='30'
+                                                <Field type='textarea'
                                                     as='textarea'
-                                                    rows='5' name='description'
+                                                    name='description'
                                                     label='description'
-                                                    className="justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full"
+                                                    className="w-full h-56 justify-center items-start px-4 py-3 mt-1 whitespace-nowrap bg-white border border-solid border-zinc-200 max-md:pr-5 max-md:max-w-full"
                                                 />
                                             </div>
                                             <button type='submit' disabled={isSubmitting} name='button' className="justify-center self-end px-10 py-3.5 mt-12 text-lg font-bold leading-7 text-center text-white bg-indigo-600 max-md:px-5 max-md:mt-10">

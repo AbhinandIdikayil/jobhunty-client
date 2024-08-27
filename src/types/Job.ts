@@ -34,7 +34,7 @@ export interface applicants {
 
 export interface getAllJobsEntity {
     _id?: string,
-    jobs: {
+    jobs?: {
         _id?: string,
         jobTitle?: string,
         employment?: string,

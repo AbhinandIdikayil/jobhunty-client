@@ -21,13 +21,7 @@ function CompanyDetails() {
                             </div>
                             <div className={`
                             mt-4 text-base leading-7 text-slate-600 
-                            // //max-md:max-w-full
                             `}>
-                                Stripe is a software platform for starting and running internet
-                                businesses. Millions of businesses rely on Stripe’s software
-                                tools to accept payments, expand globally, and manage their
-                                businesses online. Stripe has been at the forefront of expanding
-                                internet commerce, powering new business models, and supporting
                                 {state?.description}
                             </div>
                         </div>

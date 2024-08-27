@@ -1,17 +1,12 @@
 import { ArrowRight } from 'lucide-react'
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom';
-import { listApplicants } from 'src/redux/actions/jobAction';
-import { AppDispatch, RootState } from 'src/redux/store'
+import { RootState } from 'src/redux/store'
 import { formatDateToThree } from 'src/utils/formateDate';
 
 function ApplicationListInDashboard() {
   const application = useSelector((state: RootState) => state?.job?.applications);
-  const dispatch:AppDispatch = useDispatch()
-  useEffect(() => {
-    dispatch(listApplicants()).unwrap()
-  }, [])
+
   return (
     <div className=" px-4 py-4 flex flex-col leading-relaxed">
       <div className="flex flex-col w-full max-md:max-w-full  shadow-md">
