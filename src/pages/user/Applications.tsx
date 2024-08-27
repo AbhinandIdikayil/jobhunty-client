@@ -10,14 +10,14 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
 import { listApplications } from 'src/redux/actions/jobAction';
-import { RootState } from 'src/redux/store';
+import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { JobApplication } from 'src/types/applicationApplicants';
 
 function Applications() {
 
     const state = useSelector((state: RootState) => state?.job)
-    const dispatch = useDispatch()
+    const dispatch:AppDispatch = useDispatch()
     const context = useOutletContext<prop>() || {};
     const { open } = context;
 
@@ -97,7 +97,7 @@ function Applications() {
     });
 
     useEffect(() => {
-        dispatch(listApplications(null))
+        dispatch(listApplications()).unwrap()
     }, [])
 
     return (

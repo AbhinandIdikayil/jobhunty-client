@@ -459,11 +459,15 @@ function PostJob() {
                                     <span className='font-sans'>atleast 50 character</span>
                                 </div>
                             </div>
-                            <div className='flex   mx-1'>
-                                <div onClick={() => setFieldValue('description',AiGeneratedDesc?.description)} className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
-                                    <p>{AiGeneratedDesc?.description}</p>
-                                </div>
-                            </div>
+                            {
+                                AiGeneratedDesc?.description && (
+                                    <div className='flex   mx-1'>
+                                        <div onClick={() => setFieldValue('description', AiGeneratedDesc?.description)} className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
+                                            <p>{AiGeneratedDesc?.description}</p>
+                                        </div>
+                                    </div>
+                                )
+                            }
                             <hr />
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>

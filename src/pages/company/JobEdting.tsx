@@ -20,23 +20,23 @@ function JobEdting() {
     const state = useSelector((state: RootState) => state?.job)
     const categoryState = useSelector((state: RootState) => state?.category)
     const navigate = useNavigate()
-    const [location,setLocation] = useState([])
+    const [location,setLocation] = useState<any>([])
 
     const PostJobInitialValues = {
-        jobTitle: state.job?.jobTitle || '',
-        description: state?.job?.description || '',
-        employment: state?.job?.employmentDetails?._id || '',
-        category: state?.job?.categoryDetails?._id || '',
+        jobTitle: state?.job?.job?.jobTitle || '',
+        description: state?.job?.job?.description || '',
+        employment: state?.job?.job?.employmentDetails?._id || '',
+        category: state?.job?.job?.categoryDetails?._id || '',
         salaryrange: {
-            from: state?.job?.salaryrange?.from || '',
-            to: state?.job?.salaryrange?.to || '',
+            from: state?.job?.job?.salaryrange?.from || '',
+            to: state?.job?.job?.salaryrange?.to || '',
         },
-        location: state?.job?.location ?? [],
-        companyId: state?.job?.company?._id || '',
-        expiry: formatDate(state?.job?.expiry) || '',
-        responsibilities: state?.job?.responsibilities || [''],
-        skills: state?.job?.skills || [''],
-        qualification: state?.job?.qualification || [''],
+        location: state?.job?.job?.location || [],
+        companyId: state?.job?.job?.company?._id || '',
+        expiry: formatDate(state?.job?.job?.expiry || '') || '',
+        responsibilities: state?.job?.job?.responsibilities || [''],
+        skills: state?.job?.job?.skills || [''],
+        qualification: state?.job?.job?.qualification || [''],
     }
     function handleSubmit(values: FormikValues) {
         try {
@@ -162,8 +162,6 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-1/2 flex flex-col items-start'>
-
-
                                     <Select onValueChange={(e) => setFieldValue('category', e)}>
                                         <SelectTrigger className="w-[200px]">
                                             <SelectValue placeholder={state?.job?.categoryDetails?.name} />
@@ -198,16 +196,11 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    {/* <span className='text-red-600 text-xs'>   {
-                            errors?.skills && (
-                                errors?.skills
-                            )
-                        }   </span> */}
                                     <FieldArray name='skills'>
                                         {({ remove, push }) => (
                                             <div>
                                                 {values.skills.length > 0 &&
-                                                    values.skills.map((skill, index) => (
+                                                    values.skills.map((_, index) => (
                                                         <div className="w-full sm:w-auto flex items-center" key={index}>
                                                             <div className="flex flex-col w-full">
                                                                 <Field
@@ -248,7 +241,6 @@ function JobEdting() {
                                             </div>
                                         )}
                                     </FieldArray>
-
                                 </div>
                             </div>
                             <hr />

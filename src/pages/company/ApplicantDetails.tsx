@@ -1,8 +1,7 @@
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@mui/material';
-import { formatDistanceToNow } from 'date-fns';
-import { ArrowLeft, Globe, Instagram, Linkedin, Mail, Phone, Twitter } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
@@ -24,7 +23,7 @@ function ApplicantDetails() {
     const state = useSelector((state: RootState) => state?.job)
     const navigate = useNavigate()
     const params = useParams()
-    const [loading,setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
     const { id } = params
 
     function handleGoBack() {

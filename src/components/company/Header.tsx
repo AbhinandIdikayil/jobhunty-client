@@ -9,7 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import { getCompany } from "src/redux/actions/companyAction";
 interface props {
@@ -71,7 +71,6 @@ function Header({ func, open }: props) {
 
     useEffect(() => {
         fetchData()
-        console.log('hi from overview -----')
     }, [])
 
     return (
@@ -113,7 +112,7 @@ function Header({ func, open }: props) {
                         <img
                             loading="lazy"
                             src="https://cdn.builder.io/api/v1/image/assets/TEMP/22cc243b4b17eb6822f1aae2f96ecac59c86787ba7154d9a5282f66481ba231f?apiKey=bf80438c4595450788b907771330b274&"
-                            className="shrink-0 my-auto w-10 aspect-square"
+                            className="shrink-0 my-auto w-10 aspect-square hover:-translate-y-1 duration-200"
                         />
                     </PopoverTrigger>
                     <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
@@ -164,7 +163,7 @@ function Header({ func, open }: props) {
                         </ScrollArea>
                     </PopoverContent>
                 </Popover>
-                <div className="flex gap-2.5 justify-center px-6 py-3 bg-indigo-600 max-md:px-5">
+                <div className="flex gap-2.5 justify-center px-6 py-3 bg-indigo-600 max-md:px-5 shadow-xl hover:-translate-y-1 duration-200 rounded">
                     <img
                         loading="lazy"
                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"

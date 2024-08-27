@@ -24,7 +24,6 @@ const Requests = lazy(() => import('./pages/admin/Requests'))
 const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 const Companies = lazy(() => import('./pages/admin/Companies'))
 const UserDashboardHome = lazy(() => import('./components/user/dashboard/Home'));
-import UserDashboard from './components/user/dashboard/Dashboard'
 import Profile from './components/user/dashboard/Profile'
 import Categories from './pages/admin/Categories'
 import AddCategory from './pages/admin/AddCategory'
@@ -50,6 +49,7 @@ import { ResumeContextProvider } from './context/ResumeContext'
 import Quiz from './pages/quiz/Quiz'
 import Interview from './pages/Interview'
 import Call from './pages/call/Call'
+import UserDashboard from './pages/user/UserDashboard'
 
 
 
@@ -78,7 +78,7 @@ function App() {
           <Route path='companies/details' element={<CompanyDetails />} />
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
-          <Route path='' element={<UserDashboard />} />
+          <Route path='' element={<UserDashboard  />} />
           <Route path='messages' element={<Chat />} />
           <Route path='applications' element={<Applications />} />
           <Route path='jobs' element={<Jobs />} />
