@@ -23,7 +23,7 @@ function PieCharDashboard() {
         ],
     };
     return (
-        <div className="mx-6 mt-12 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
+        <div className=" mt-12 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
             <div id="chart">
                 <ReactApexChart
                     options={options}

@@ -79,8 +79,8 @@ function Dashboard() {
                     </div>
                 </div>
                 <div className="mt-6 w-full max-md:max-w-full">
-                    <div className="flex gap-5 w-full max-md:flex-col max-md:gap-0">
-                        <div className="flex flex-col w-3/4 max-md:ml-0 max-md:w-full">
+                    <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+                        <div className="flex flex-col w-[65%] max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col grow py-6 w-full bg-white border border-solid border-zinc-200 max-md:mt-6 max-md:max-w-full">
                                 <div className="flex gap-5 justify-between mx-6 max-md:flex-wrap max-md:mr-2.5 max-md:max-w-full">
                                     <div className="flex flex-col">
@@ -148,7 +148,9 @@ function Dashboard() {
                                     <div className="self-start ml-6 text-xl font-semibold leading-6 text-center text-slate-800 ">
                                         Applicants Summary
                                     </div>
-                                    <PieCharDashboard />
+                                    <div className="flex gap-2 px-6 py-2 mt-4 whitespace-nowrap max-md:px-5">
+                                        <PieCharDashboard />
+                                    </div>
                                 </div>
                             </div>
                         </div>

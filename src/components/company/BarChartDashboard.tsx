@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { chart } from "src/pages/company/Dashboard";
 
-function BarChartDashboard({chart,setChart}:{chart:chart,setChart:React.Dispatch<React.SetStateAction<chart>>}) {
-    
+function BarChartDashboard({ chart, setChart }: { chart: chart, setChart: React.Dispatch<React.SetStateAction<chart>> }) {
+
     const [chartData, setChartData] = useState({
         series: [
             {
                 name: 'APPLICANTS',
-                data: [44, 55, 41, 67, 22, 43,43],
+                data: [44, 55, 41, 67, 22, 43, 43],
             },
             {
                 name: 'SHORTLISTED',
-                data: [13, 23, 20, 8, 13, 27,12],
+                data: [13, 23, 20, 8, 13, 27, 12],
             },
             {
                 name: 'INTERVIEW',
-                data: [11, 17, 15, 15, 21, 14,3],
+                data: [11, 17, 15, 15, 21, 14, 3],
             },
             {
                 name: 'PRODUCT D',
@@ -75,7 +75,7 @@ function BarChartDashboard({chart,setChart}:{chart:chart,setChart:React.Dispatch
                     '01/06/2011 GMT',
                     '01/07/2011 GMT',
                 ],
-                labels:{
+                labels: {
                     format: 'dd/MMM'
                 }
             },
@@ -89,17 +89,14 @@ function BarChartDashboard({chart,setChart}:{chart:chart,setChart:React.Dispatch
         },
     });
     return (
-        <>
-            <div id="chart">
-                <ReactApexChart
-                    options={chartData.options}
-                    series={chartData.series}
-                    type="bar"
-                    height={350}
-                />
-            </div>
-            <div id="html-dist"></div>
-        </>
+        <div id="chart">
+            <ReactApexChart
+                options={chartData.options}
+                series={chartData.series}
+                type="bar"
+                height={350}
+            />
+        </div>
     )
 }
 
