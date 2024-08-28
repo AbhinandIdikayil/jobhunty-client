@@ -4,7 +4,7 @@ function PieCharDashboard() {
     const options = {
         series: [44, 55, 13, 43, 22],
         chart: {
-            width: 342,
+            width: 300,
             type: 'pie',
         },
         labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
@@ -23,7 +23,7 @@ function PieCharDashboard() {
         ],
     };
     return (
-        <div className=" mt-12 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
+        <div className="mt-12 max-md:mt-10 max-md:mr-2.5 max-md:max-w-full">
             <div id="chart">
                 <ReactApexChart
                     options={options}
@@ -32,7 +32,6 @@ function PieCharDashboard() {
                     width={options.chart.width}
                 />
             </div>
-            <div id="html-dist"></div>
         </div>
     )
 }

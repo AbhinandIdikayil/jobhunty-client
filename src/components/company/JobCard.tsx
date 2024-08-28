@@ -8,9 +8,8 @@ function JobCard() {
         <div className="flex gap-5 max-md:flex-col  w-full">
             {
                 jobState.jobs.jobs?.map((data: any, ind: number) => {
-                    console.log(data)
                     return ind <= 3 && (
-                        <div className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
+                        <div key={ind+data?.job?.jobTitle } className="flex flex-col w-3/12 max-md:ml-0 max-md:w-full">
                             <div className="flex flex-col grow p-6 mx-auto w-full text-sm font-semibold leading-6 bg-white border border-solid border-zinc-200 max-md:pl-5 max-md:mt-10">
                                 <div className="flex gap-5 justify-between text-emerald-300 whitespace-nowrap">
                                     <img

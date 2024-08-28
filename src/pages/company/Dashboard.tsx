@@ -21,8 +21,8 @@ function Dashboard() {
     });
 
     return (
-        <div className={`flex ${open ? 'w-11/12' : 'w-full'} max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
-            <div className="flex flex-col grow pb-6 w-full max-md:max-w-full">
+        <div className={`flex flex-col ${open ? 'w-11/12' : 'w-full'} max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
+            <div className="sm:pl-5 flex flex-col grow pb-6 w-full max-md:max-w-full ">
                 <div className="flex w-full flex-wrap md:flex-nowrap gap-4">
                 </div>
                 <div className="px-5 mt-8 max-md:max-w-full">
@@ -35,8 +35,7 @@ function Dashboard() {
                                 <div className="text-lg font-medium leading-7">
                                     New candidates to review
                                 </div>
-                                <img
-                                    loading="lazy"
+                                <img loading="lazy"
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/0d67482e3d717ee772fa042101c13ad242d3c3efbcfa9515fa9715b3514f77fd?apiKey=bf80438c4595450788b907771330b274&"
                                     className="shrink-0 self-stretch my-auto w-6 aspect-square"
                                 />
@@ -52,8 +51,7 @@ function Dashboard() {
                                         Schedule for today
                                     </div>
                                 </div>
-                                <img
-                                    loading="lazy"
+                                <img loading="lazy"
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/5192c2afba141d8c84b3ed160d0b813c35157bac93e43620e4127a0fd1d8c6fb?apiKey=bf80438c4595450788b907771330b274&"
                                     className="shrink-0 my-auto w-6 aspect-square"
                                 />
@@ -69,8 +67,7 @@ function Dashboard() {
                                         Messages received
                                     </div>
                                 </div>
-                                <img
-                                    loading="lazy"
+                                <img loading="lazy"
                                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/1925330832ae6e0032c5685bd4dc5177474b0e377d509538ee3547c357bb6bb1?apiKey=bf80438c4595450788b907771330b274&"
                                     className="shrink-0 my-auto w-6 aspect-square"
                                 />
@@ -78,9 +75,9 @@ function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className="mt-6 w-full max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col max-md:gap-0">
-                        <div className="flex flex-col w-[65%] max-md:ml-0 max-md:w-full">
+                <div className="mt-6 w-full max-md:max-w-full ">
+                    <div className="flex gap-5 max-md:flex-col max-md:gap-0 ">
+                        <div className={`flex flex-col ${open ? 'w-3/4' : 'w-full'}  max-md:ml-0 max-md:w-full`}>
                             <div className="flex flex-col grow py-6 w-full bg-white border border-solid border-zinc-200 max-md:mt-6 max-md:max-w-full">
                                 <div className="flex gap-5 justify-between mx-6 max-md:flex-wrap max-md:mr-2.5 max-md:max-w-full">
                                     <div className="flex flex-col">
@@ -124,12 +121,12 @@ function Dashboard() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="mt-12 max-md:mt-10  max-md:max-w-full">
-                                    <BarChartDashboard chart={timePeriod} setChart={setTimePeriod} />
+                                <div className="mt-12 max-md:mt-10 w-full  max-md:max-w-full">
+                                    <BarChartDashboard charts={timePeriod}  />
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col w-1/4 max-md:ml-0 max-md:w-full">
+                        <div className="flex flex-col w-full md:w-1/3 max-md:ml-0 ">
                             <div className="flex flex-col grow max-md:mt-6">
                                 <div className="flex flex-col pt-6 pb-6 w-full bg-white border border-solid border-zinc-200">
                                     <div className="self-start ml-6 text-xl font-semibold leading-6 text-center text-slate-800 ">
@@ -156,7 +153,7 @@ function Dashboard() {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col w-full mt-6 border border-solid border-zinc-200 max-md:max-w-full">
+                <div className="flex flex-col w-full  mt-6 border border-solid border-zinc-200 max-md:max-w-full">
                     <div className="flex gap-5 justify-between p-6 w-full font-semibold bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full">
                         <div className="text-xl leading-6 text-slate-800">
                             Job Updates

@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@canvasjs/charts": "^3.10.3",
     "@ckeditor/ckeditor5-build-classic": "^43.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -19,6 +18,7 @@
     "@internationalized/date": "^3.5.4",
     "@mui/material": "^5.15.21",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
+    "@mui/x-charts": "^7.14.0",
     "@nextui-org/react": "^2.4.2",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
@@ -38,6 +38,7 @@
     "@zegocloud/zego-uikit-prebuilt": "^2.8.0",
     "apexcharts": "^3.52.0",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.4",
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.2.0",
     "clsx": "^2.1.1",
@@ -54,6 +55,7 @@
     "lucide-react": "^0.407.0",
     "react": "^18.3.1",
     "react-apexcharts": "^1.4.1",
+    "react-chartjs-2": "^5.2.0",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.1",
