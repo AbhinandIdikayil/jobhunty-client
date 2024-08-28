@@ -5,7 +5,7 @@ function JobCard() {
     const jobState = useSelector((state: RootState) => state?.job)
     const userState = useSelector((state:RootState) => state?.user)
     return (
-        <div className="flex gap-5 max-md:flex-col max-md:gap-0">
+        <div className="flex gap-5 max-md:flex-col  w-full">
             {
                 jobState.jobs.jobs?.map((data: any, ind: number) => {
                     console.log(data)
@@ -38,9 +38,7 @@ function JobCard() {
                     )
                 })
             }
-
         </div>
-
     )
 }
 
