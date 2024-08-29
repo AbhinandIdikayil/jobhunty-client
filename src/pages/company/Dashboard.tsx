@@ -4,7 +4,10 @@ import { prop } from "../../types/AllTypes"
 import { ArrowRight } from "lucide-react";
 import BarChartDashboard from "src/components/company/BarChartDashboard";
 import PieCharDashboard from "src/components/company/PieCharDashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AppDispatch, RootState } from "src/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { listApplicants } from "src/redux/actions/jobAction";
 
 
 export interface chart {
@@ -14,11 +17,19 @@ export interface chart {
 }
 function Dashboard() {
     const { open } = useOutletContext<prop>()
+    const dispatch:AppDispatch = useDispatch()
     const [timePeriod, setTimePeriod] = useState<chart>({
         week: true,
         month: false,
         year: false,
     });
+    const state = useSelector((state:RootState) => state?.job);
+    const scheduledForToday = state?.applicants?.flatMap(applicant => (
+        applicant?.schedule?.filter(schedule =>  new Date(schedule.date).getTime() < Date.now())
+      ));
+    useEffect(() => {
+        dispatch(listApplicants()).unwrap()
+    }, [])
 
     return (
         <div className={`flex flex-col ${open ? 'w-11/12' : 'w-full'} max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
@@ -45,7 +56,7 @@ function Dashboard() {
                             <div className="flex grow gap-3.5 justify-between p-6 w-full text-white bg-emerald-300 max-md:px-5 max-md:mt-6">
                                 <div className="flex gap-3.5">
                                     <div className="text-5xl font-semibold leading-10 max-md:text-4xl">
-                                        3
+                                        {scheduledForToday?.length}
                                     </div>
                                     <div className="my-auto text-lg font-medium leading-7">
                                         Schedule for today
@@ -57,22 +68,7 @@ function Dashboard() {
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-col  w-1/3 max-md:ml-0 max-md:w-full">
-                            <div className="flex grow gap-2.5 justify-between p-6 w-full text-white bg-sky-400 max-md:px-5 max-md:mt-6">
-                                <div className="flex gap-3.5">
-                                    <div className="text-5xl font-semibold leading-10 max-md:text-4xl">
-                                        24
-                                    </div>
-                                    <div className="my-auto text-lg font-medium leading-7">
-                                        Messages received
-                                    </div>
-                                </div>
-                                <img loading="lazy"
-                                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/1925330832ae6e0032c5685bd4dc5177474b0e377d509538ee3547c357bb6bb1?apiKey=bf80438c4595450788b907771330b274&"
-                                    className="shrink-0 my-auto w-6 aspect-square"
-                                />
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div className="mt-6 w-full max-md:max-w-full ">
@@ -96,7 +92,7 @@ function Dashboard() {
                                                 month: false,
                                                 year: false,
                                             }))
-                                        }} className={`justify-center px-3 py-2  ${timePeriod?.week && 'bg-white'} `}>
+                                        }} className={`justify-center px-3 py-2 hover:cursor-pointer  ${timePeriod?.week && 'bg-white'} `}>
                                             Week
                                         </div>
                                         <div onClick={() => {
@@ -106,7 +102,7 @@ function Dashboard() {
                                                 month: true,
                                                 year: false,
                                             }))
-                                        }} className={`justify-center px-3 py-2 ${timePeriod?.month && 'bg-white'}`}>
+                                        }} className={`justify-center px-3 py-2 hover:cursor-pointer ${timePeriod?.month && 'bg-white'}`}>
                                             Month
                                         </div>
                                         <div onClick={() => {
@@ -116,7 +112,7 @@ function Dashboard() {
                                                 month: false,
                                                 year: true,
                                             }))
-                                        }} className={`justify-center px-3 py-2 ${timePeriod?.year && 'bg-white'} `}>
+                                        }} className={`justify-center px-3 py-2 hover:cursor-pointer ${timePeriod?.year && 'bg-white'} `}>
                                             Year
                                         </div>
                                     </div>

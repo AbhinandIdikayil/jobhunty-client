@@ -181,7 +181,7 @@ function CompanyJobListing() {
                                 className='border font-bold'
                                 onClick={() => handleNavigation(row.original?._id)}
                             >
-                                Details
+                                Applicants
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>

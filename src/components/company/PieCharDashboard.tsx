@@ -1,13 +1,22 @@
 import ReactApexChart from "react-apexcharts";
+import { useSelector } from "react-redux";
+import { RootState } from "src/redux/store";
 
 function PieCharDashboard() {
+    const state = useSelector((state:RootState) => state?.job)
+    const inreview = state?.applicants?.filter((data) => data?.hiring_status === 'in-review')
+    const shortlisted = state?.applicants?.filter((data) => data?.hiring_status === 'shortlisted')
+    const interview = state?.applicants?.filter((data) => data?.hiring_status === 'interview')
+    const rejected = state?.applicants?.filter((data) => data?.hiring_status === 'rejected')
+    const hired = state?.applicants?.filter((data) => data?.hiring_status === 'hired')
+    console.log(inreview?.length, shortlisted?.length, interview?.length, rejected?.length || 0, hired?.length || 0)
     const options = {
-        series: [44, 55, 13, 43, 22],
+        series: [inreview?.length, shortlisted?.length, interview?.length, rejected?.length || 0, hired?.length || 0],
         chart: {
             width: 300,
             type: 'pie',
         },
-        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+        labels: ['in-review', 'shortlisted', 'interview', 'rejected', 'hired'],
         responsive: [
             {
                 breakpoint: 480,
