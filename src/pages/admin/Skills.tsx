@@ -3,10 +3,12 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown, MoreHorizontal, PlusCircle } from 'lucide-react';
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
+import AddSkillModal from 'src/components/admin/AddSkillModal';
+import EditSkillModal from 'src/components/admin/EditSkillModal';
 import { listSkills } from 'src/redux/actions/adminAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
@@ -19,9 +21,6 @@ function Skills() {
     const dispatch: AppDispatch = useDispatch();
     const [loading, setLoading] = useState<boolean>(false)
 
-    const fetchSkills = async () => {
-        setLoading(true)
-    }
 
     async function handleRemove(id: string) {
 
@@ -102,13 +101,9 @@ function Skills() {
                             }
 
                             <DropdownMenuItem
-                                className='
-                                      border
-                                      font-bold
-                                      '
-                                onClick={() => navigate('',)}
+                                className='border font-bold'
                             >
-                                Edit
+                                <EditSkillModal ind={row.index} />
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                         </DropdownMenuContent>
@@ -122,9 +117,10 @@ function Skills() {
         data: state?.skills || [],
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        getSortedRowModel: getSortedRowModel(),
+        // getPaginationRowModel: getPaginationRowModel(),
+        // getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
+        rowCount:Infinity
     })
 
     const fetchData = async () => {
@@ -143,9 +139,12 @@ function Skills() {
     return (
         <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
             <div className="w-full">
+                <div className='h-8 text-right'>
+                    <AddSkillModal />
+                </div>
                 <div className="flex items-center py-4">
                     <Input
-                        placeholder="Filter emails..."
+                        placeholder="Filter skills..."
                         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("name")?.setFilterValue(event.target.value)

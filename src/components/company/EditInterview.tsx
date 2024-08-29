@@ -38,8 +38,7 @@ function EditInterview({ ind }: { ind: number }) {
     };
     return (
         <AlertDialog open={open} onOpenChange={handleOpenChange}
-            onPointerDownOutside={(e) => e.preventDefault()}
-            onClickOutside={(e) => e.preventDefault()}>
+            onClickOutside={(e:any) => e?.preventDefault()}>
             <AlertDialogTrigger asChild className='w-full'>
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent event from bubbling up

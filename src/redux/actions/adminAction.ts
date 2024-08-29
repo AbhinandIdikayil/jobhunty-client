@@ -79,8 +79,8 @@ export const addSkill = createAsyncThunk(
         try {
             const { data } = await AXIOS_INSTANCE_JOB.post('/skill', { data: req })
             return data
-        } catch (error) {
-            return rejectWithValue(error)
+        } catch (error: any) {
+            return rejectWithValue(error.response.data)
         }
     }
 )
@@ -89,10 +89,10 @@ export const editSkill = createAsyncThunk(
     'admin/edit-skill',
     async (req: any, { rejectWithValue }) => {
         try {
-            const {data} = await AXIOS_INSTANCE_JOB.put('/skill')
+            const {data} = await AXIOS_INSTANCE_JOB.put('/skill',{data:req})
             return data
-        } catch (error) {
-            return rejectWithValue(error)
+        } catch (error:any) {
+            return rejectWithValue(error?.response?.data)
         }
     }
 )
