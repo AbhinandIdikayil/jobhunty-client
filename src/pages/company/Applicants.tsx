@@ -75,6 +75,14 @@ function Applicants() {
             }
         },
         {
+            id: 'mark',
+            accessorKey: 'jobId.mark',
+            header: () => <div>Mark</div>,
+            cell: ({ row }) => {
+                return <div className='text-left capitalize'> {row?.original?.mark}  </div>
+            }
+        },
+        {
             id: "actions",
             header: 'Actions',
             enableHiding: false,

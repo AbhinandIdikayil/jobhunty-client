@@ -90,6 +90,7 @@ export interface JobApplication {
     hiring_info: any[];
     schedule: [
         {
+            _id: string,
             testType: string,
             date: string,
             roomId: string,

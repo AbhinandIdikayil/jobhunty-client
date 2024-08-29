@@ -1,10 +1,43 @@
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid';
-import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useState } from 'react';
+import { JSXElementConstructor, ReactElement, ReactNode, ReactPortal, useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/redux/store';
+
+import dayjs from 'dayjs';
+
+// Ensure you have a plugin for parsing custom date-time strings, if needed
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat);
 
 const ScheduleChart = ({ data }: { data: any }) => {
-    const [events,setEvents] = useState()
+    const [events, setEvents] = useState();
+    const applicants = useSelector((state: RootState) => state?.job?.applicants)
+
+    useEffect(() => {
+        const event = applicants?.flatMap(applicant => (
+            applicant?.schedule ?.map((schedule) => {
+                const date = dayjs(schedule.date).format("YYYY-MM-DD");  // Format the date as "YYYY-MM-DD"
+                const time = dayjs(schedule.time, ["h:mm A"]).format("HH:mm");
+
+                const startDateTime = `${date}T${time}`;
+
+                return {
+                    id: schedule?._id,
+                    title: schedule.testType,  // Customize as needed
+                    start: startDateTime,  // Combined date and time for FullCalendar
+                    end: dayjs(startDateTime).add(1, 'hour').format(),  // Add duration if needed
+                    roomId: schedule.roomId,  // Include any other fields as needed
+                    status: schedule.status,  // Include any other fields as needed
+                };
+            })
+        ))
+        console.log(event)
+        // ...event,
+        // start: dayjs(String(event?.date)).toISOString()
+        setEvents(event as any)
+    }, [])
 
     return (
         <>
@@ -19,7 +52,6 @@ const ScheduleChart = ({ data }: { data: any }) => {
                     }}
                     events={events}
                     eventContent={renderEventContent}
-
                 />
             </div>
         </>
