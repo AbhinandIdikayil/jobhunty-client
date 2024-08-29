@@ -1,73 +1,61 @@
-
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useOutletContext } from 'react-router-dom';
-import { listRequest, updateApproval } from 'src/redux/actions/adminAction';
-import { AppDispatch, RootState } from 'src/redux/store'
-import { prop } from 'src/types/AllTypes';
-import {
-    ColumnDef, createColumnHelper,
-    flexRender,
-    getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable
-} from '@tanstack/react-table'
-import { CompanyRequest } from 'src/types/Admin';
-import { Input } from '@/components/ui/input';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { listSkills } from 'src/redux/actions/adminAction';
+import { AppDispatch, RootState } from 'src/redux/store';
+import { prop } from 'src/types/AllTypes';
 
-function Requests() {
-    const { open } = useOutletContext<prop>()
+function Skills() {
+    const state = useSelector((state: RootState) => state?.admin)
+    const navigate = useNavigate()
+    const context = useOutletContext<prop>() || {};
+    const { open } = context;
+    const dispatch: AppDispatch = useDispatch();
+    const [loading, setLoading] = useState<boolean>(false)
 
-    const state = useSelector((state: RootState) => state?.admin);
-    const dispatch: AppDispatch = useDispatch()
-
-
-    useEffect(() => {
-        dispatch(listRequest(undefined)).unwrap()
-    }, [])
-
-
-    async function handleAcceptRequest(id: string) {
-        const req = {
-            id,
-            status: 'Accepted'
-        }
-        await dispatch(updateApproval(req)).unwrap()
-        await dispatch(listRequest(undefined)).unwrap()
-    }
-    async function handleRejectRequest(id: string) {
-        const req = {
-            id,
-            status: 'Rejected'
-        }
-        await dispatch(updateApproval(req)).unwrap()
-        await dispatch(listRequest(undefined)).unwrap()
+    const fetchSkills = async () => {
+        setLoading(true)
     }
 
-    const columns: ColumnDef<CompanyRequest>[] = [
+    async function handleRemove(id: string) {
+
+    }
+
+    interface Skill {
+        _id: string,
+        name: string,
+        createdAt: string,
+        status: boolean
+    }
+    const columns: ColumnDef<Skill>[] = [
         {
-            id:'name',
-            accessorKey: 'companyId.name',
+            id: 'name',
+            accessorKey: 'name',
             header: () => <div className="text-left">Name</div>,
             cell: ({ row }) => {
-                return <div>{row.original.companyId.name}</div>
+                return <div>{row.original.name}</div>
             }
         },
         {
-            id:'email',
-            accessorKey: 'companyId.email',
-            header: () => <div className="text-left">Email</div>,
+            id: 'createdAt',
+            accessorKey: 'description',
+            header: () => <div className="text-left">creadet at</div>,
             cell: ({ row }) => {
-                return <div>{row.original.companyId.email}</div>
+                return <div>{row.original.createdAt}</div>
             }
         },
         {
-            accessorKey: 'companyId.approvalStatus',
-            header: () => <div>Status</div>,
+            id: 'status',
+            accessorKey: 'status',
+            header: () => <div className="text-left">deleted</div>,
             cell: ({ row }) => {
-                return <div>{row.original.companyId.approvalStatus}</div>
+                return <div>{row.original.status ? "true" : "false"}</div>
             }
         },
         {
@@ -86,23 +74,43 @@ function Requests() {
                         <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             {
-                                row.original.companyId.approvalStatus == 'Rejected'
-                                    && (
-                                        <DropdownMenuItem
-                                            className='
-                                        border
-                                        font-bold
-                                        '
-                                            onClick={() => handleAcceptRequest(row.original.companyId._id)}
-                                        >
-                                            Accept request
-                                        </DropdownMenuItem>
-                                    ) 
+                                row.original.status ? (
+                                    <DropdownMenuItem
+                                        className='
+                                      border
+                                      font-bold
+                                      bg-indigo-600
+                                      text-white
+                                      '
+                                        onClick={() => handleRemove(row.original._id)}
+                                    >
+                                        undo
+                                    </DropdownMenuItem>
+                                ) : (
+                                    <DropdownMenuItem
+                                        className='
+                                      border
+                                      font-bold
+                                      bg-red-600
+                                      '
+                                        onClick={() => handleRemove(row.original._id)}
+                                    >
+                                        remove
+                                    </DropdownMenuItem>
+
+                                )
                             }
 
+                            <DropdownMenuItem
+                                className='
+                                      border
+                                      font-bold
+                                      '
+                                onClick={() => navigate('',)}
+                            >
+                                Edit
+                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className='font-bold bg-[#011aff] text-white'>Message and block</DropdownMenuItem>
-                            <DropdownMenuItem>View company details</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )
@@ -110,15 +118,27 @@ function Requests() {
         },
     ]
 
-
     const table = useReactTable({
-        data: state?.request ?? [],
+        data: state?.skills || [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
     })
+
+    const fetchData = async () => {
+        try {
+            await dispatch(listSkills()).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
 
     return (
         <div className={`flex flex-col ml-2 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 max-md:w-full`}>
@@ -214,4 +234,4 @@ function Requests() {
     )
 }
 
-export default Requests
+export default Skills

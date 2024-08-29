@@ -112,7 +112,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                                                 text == 'profile' && <CircleUserRound color='black' />
                                             }
                                         </ListItemIcon>
-                                        <h1 className='font-extrabold text-sm'>
+                                        <h1 className='font-extrabold text-sm capitalize'>
                                             {text}
                                         </h1>
                                     </div>

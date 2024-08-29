@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder, createSlice } from "@reduxjs/toolkit";
-import { blockUser, getAllusers, listRequest, updateApproval } from "src/redux/actions/adminAction";
+import { addSkill, blockUser, editSkill, getAllusers, listRequest, listSkills, updateApproval } from "src/redux/actions/adminAction";
 import { listAllCompanies } from "src/redux/actions/commonAction";
 import { adminReducer } from "src/types/Admin";
 
@@ -12,6 +12,7 @@ const initialState: adminReducer = {
         totalCount: [{ count: 0 }]
     },
     users: [],
+    skills: [],
     err: null,
     role: null,
 }
@@ -98,6 +99,45 @@ const adminSlice = createSlice({
                     totalCount: [{ count: 0 }] // Ensure to set this as well to maintain the initial structure
                 };
                 state.err = payload
+            })
+            .addCase(addSkill.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(addSkill.fulfilled, (state, { payload }) => {
+                state.loading = false
+                state.skills = [
+                    ...state.skills,
+                    payload
+                ]
+            })
+            .addCase(addSkill.rejected, (state, { payload }) => {
+                state.loading = false
+                state.err = payload
+            })
+            .addCase(editSkill.pending, (state, { payload }:{payload:any}) => {
+                state.loading = true
+                state.skills = state.skills?.map((skill) => skill?._id == payload?._id ? payload : skill )
+            })
+            .addCase(editSkill.fulfilled, (state) => {
+                state.loading = false
+            })
+            .addCase(editSkill.rejected, (state, { payload }) => {
+                state.loading = false
+                state.err = payload
+            })
+            .addCase(listSkills.pending,(state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(listSkills.fulfilled,(state,{payload}:{payload:any}) => {
+                state.loading = false
+                state.skills = payload
+                state.err = null
+            })
+            .addCase(listSkills.rejected,(state,{payload}) => {
+                state.loading = false
+                state.err = payload
+                state.skills = []
             })
     }
 })

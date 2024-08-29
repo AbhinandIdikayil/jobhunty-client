@@ -48,9 +48,9 @@ function JobDetails() {
                             <div className="text-lg sm:text-2xl font-semibold leading-10 text-gray-700">
                                 {state?.job?.jobTitle}
                             </div>
-                            <div className="flex gap-2 justify-between mt-2 text-xl leading-8 text-slate-600">
+                            <div className="flex gap-2 justify-between mt-2 text-xl leading-8 text-slate-600 capitalize">
                                 <div>{state?.job?.company?.name}</div>
-                                <div>Paris, France</div>
+                                <div> {state?.job?.company?.locations?.[0]} </div>
                                 <div> {state?.job?.employmentDetails?.name} </div>
                             </div>
                         </div>
@@ -72,7 +72,7 @@ function JobDetails() {
                                     <div className="text-lg sm:text-2xl font-semibold leading-10 text-gray-700 max-md:max-w-full">
                                         Description
                                     </div>
-                                    <div className="mt-4 leading-7 max-md:max-w-full">
+                                    <div className="mt-4 leading-7 max-md:max-w-full capitalize">
                                         {state?.job?.description}
                                         {/* Stripe is looking for Social Media Marketing expert to help
                                         manage our online networks. You will be responsible for
@@ -95,7 +95,7 @@ function JobDetails() {
                                                                 className="shrink-0 self-start w-5 aspect-square mt-1"
                                                                 alt="Responsibility Icon"
                                                             />
-                                                            <div className="max-md:max-w-full">
+                                                            <div className="max-md:max-w-full capitalize">
                                                                 {data}
                                                             </div>
                                                         </div>
@@ -120,7 +120,7 @@ function JobDetails() {
                                     <div className="mt-10 text-lg sm:text-2xl font-semibold leading-10 text-gray-700 max-md:max-w-full">
                                         Who You Are
                                     </div>
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col capitalize">
                                         {
                                             state?.job?.qualification?.map((data, ind) => {
                                                 if (typeof data === 'string' && data.length > 0) {

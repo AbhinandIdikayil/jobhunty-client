@@ -7,7 +7,7 @@ import PieCharDashboard from "src/components/company/PieCharDashboard";
 import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "src/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { listApplicants } from "src/redux/actions/jobAction";
+import { getAllJob, listApplicants } from "src/redux/actions/jobAction";
 
 
 export interface chart {
@@ -17,18 +17,26 @@ export interface chart {
 }
 function Dashboard() {
     const { open } = useOutletContext<prop>()
-    const dispatch:AppDispatch = useDispatch()
+    const dispatch: AppDispatch = useDispatch()
     const [timePeriod, setTimePeriod] = useState<chart>({
         week: true,
         month: false,
         year: false,
     });
-    const state = useSelector((state:RootState) => state?.job);
+    const state = useSelector((state: RootState) => state?.job);
     const scheduledForToday = state?.applicants?.flatMap(applicant => (
-        applicant?.schedule?.filter(schedule =>  new Date(schedule.date).getTime() < Date.now())
-      ));
+        applicant?.schedule?.filter(schedule => new Date(schedule.date).getTime() < Date.now())
+    ));
+    const fetchData = async () => {
+        try {
+            await dispatch(listApplicants()).unwrap()
+            await dispatch(getAllJob()).unwrap()
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
-        dispatch(listApplicants()).unwrap()
+        fetchData()
     }, [])
 
     return (
@@ -68,7 +76,7 @@ function Dashboard() {
                                 />
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div className="mt-6 w-full max-md:max-w-full ">
@@ -118,7 +126,7 @@ function Dashboard() {
                                     </div>
                                 </div>
                                 <div className="mt-12 max-md:mt-10 w-full  max-md:max-w-full">
-                                    <BarChartDashboard charts={timePeriod}  />
+                                    <BarChartDashboard charts={timePeriod} />
                                 </div>
                             </div>
                         </div>
@@ -130,7 +138,7 @@ function Dashboard() {
                                     </div>
                                     <div className="flex gap-4 items-start px-6 pt-2.5 pb-5 mt-4 max-md:px-5">
                                         <div className="self-start text-7xl font-semibold leading-[72px] text-slate-800 max-md:text-4xl">
-                                            12
+                                            {state?.jobs?.totalCount?.[0]?.count ?? 0}
                                         </div>
                                         <div className="flex-auto self-end mt-10 text-xl leading-8 text-slate-500">
                                             Jobs Opened

@@ -8,6 +8,7 @@ export type adminReducer = {
         totalCount:[{count:number}]
     },
     users: any[],
+    skills: any[],
     err: null | any,
     role: 'admin' | null
 }

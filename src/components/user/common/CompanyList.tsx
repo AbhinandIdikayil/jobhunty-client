@@ -36,7 +36,7 @@ function CompanyList() {
     const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
         name: '',
         category: [],
-        location:''
+        location: ''
     })
     const [startNameSearch, setStartNameSearch] = useState<boolean>(false)
     const page = Math.ceil((state?.companies?.totalCount?.[0]?.count || 5) / pagination.pageSize)
@@ -214,9 +214,11 @@ function CompanyList() {
                                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 pt-2'>
                                     {
                                         state.companies.companies?.length > 0 &&
-                                        state.companies.companies.map((data: any, index) => (
-                                            <CompanyCard key={index} data={data} />
-                                        ))
+                                        state.companies.companies.map((data: any, index) => {
+                                            return data?.approvalStatus === 'Accepted' &&  (
+                                                <CompanyCard key={index} data={data} />
+                                            )
+                                        })
                                     }
                                     {
                                         state.companies.companies?.length == 0 && (

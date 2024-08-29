@@ -22,6 +22,13 @@ const jobSlice = createSlice({
             const foundJob = state.jobs?.jobs.find((job:any) => job._id === id);
             state.job = foundJob || null // Set to null if no job is found
         },
+        reset(state){
+            state.jobs = []
+            state.applicants = []
+            state.applications = []
+            state.applicant = null
+            state.job = null
+        }
     },
     extraReducers: (builder: ActionReducerMapBuilder<JobReducer>) => {
         builder
@@ -206,5 +213,5 @@ const jobSlice = createSlice({
     }
 })
 
-export const { setJobById } = jobSlice.actions;
+export const { setJobById, reset } = jobSlice.actions;
 export default jobSlice.reducer

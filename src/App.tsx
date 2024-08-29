@@ -50,6 +50,7 @@ import Quiz from './pages/quiz/Quiz'
 import Interview from './pages/Interview'
 import Call from './pages/call/Call'
 import UserDashboard from './pages/user/UserDashboard'
+import Skills from './pages/admin/Skills'
 
 
 
@@ -150,6 +151,7 @@ function App() {
             <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />
+            <Route path='skills' element={<Skills />} />
           </Route>
         </Route>
       </Routes>

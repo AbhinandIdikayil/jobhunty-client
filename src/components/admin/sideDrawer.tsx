@@ -15,7 +15,7 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { IoSettingsOutline } from 'react-icons/io5';
-import { Factory, HousePlus, LogOut } from 'lucide-react';
+import { Box, Factory, HousePlus, LogOut } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from 'src/redux/store';
 import { logout } from 'src/redux/actions/userAction';
@@ -101,7 +101,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         </DrawerHeader>
         <Divider />
         <List>
-          {['Dashboard', 'Company request', 'All companies', 'All users', 'Category', 'Sector'].map((text, index) => (
+          {['Dashboard', 'Company request', 'All companies', 'All users', 'Category', 'Sector', 'Skills'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
                 <ListItemButton sx={{ width: drawerWidth }}>
@@ -112,8 +112,8 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                       text == 'All companies' && <PiUsersThreeDuotone size={30} /> ||
                       text == 'All users' && <PiUsersThreeDuotone size={30} /> ||
                       text == 'Category' && <HousePlus size={30} /> ||
-                      text == 'Sector' && <Factory size={30} />
-
+                      text == 'Sector' && <Factory size={30} /> ||
+                      text == 'Skills' && <Box size={30} />
                     }
                   </ListItemIcon>
                   <ListItemText className='' primary={text} />
