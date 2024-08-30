@@ -1,13 +1,15 @@
 import { Link, useOutletContext } from "react-router-dom"
 import JobCard from "../../components/company/JobCard"
 import { prop } from "../../types/AllTypes"
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import BarChartDashboard from "src/components/company/BarChartDashboard";
 import PieCharDashboard from "src/components/company/PieCharDashboard";
 import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "src/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllJob, listApplicants } from "src/redux/actions/jobAction";
+import { AXIOS_INSTANCE_JOB } from "src/constants/axiosInstance";
+import { CSVLink } from "react-csv";
 
 
 export interface chart {
@@ -27,6 +29,8 @@ function Dashboard() {
     const scheduledForToday = state?.applicants?.flatMap(applicant => (
         applicant?.schedule?.filter(schedule => new Date(schedule.date).getTime() < Date.now())
     ));
+    const [csvData, setCsvData] = useState([]);
+
     const fetchData = async () => {
         try {
             await dispatch(listApplicants()).unwrap()
@@ -35,9 +39,33 @@ function Dashboard() {
             console.log(error)
         }
     }
+    async function download() {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.post("/download");
+
+            const csvData = data.map((candidate: any) => ({
+                name: candidate.user.name,
+                email: candidate.user.email,
+                status: candidate.hiring_status,
+                phone: candidate.user?.phonenumber
+            }));
+
+            setCsvData(csvData);
+        } catch (error) {
+            console.log(error)
+        }
+    }
     useEffect(() => {
         fetchData()
+        download()
     }, [])
+    const headers = [
+        { label: "Name", key: "name" },
+        { label: "Email", key: "email" },
+        { label: "Status", key: "status" }, // Note: 'status' field should match your data field
+        { label: "Phone", key: "phone" }, // Note: 'status' field should match your data field
+    ];
+
 
     return (
         <div className={`flex flex-col ${open ? 'w-11/12' : 'w-full'} max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
@@ -146,8 +174,20 @@ function Dashboard() {
                                     </div>
                                 </div>
                                 <div className="flex flex-col pt-6 pb-6 mt-6 w-full bg-white border border-solid border-zinc-200">
-                                    <div className="self-start ml-6 text-xl font-semibold leading-6 text-center text-slate-800 ">
-                                        Applicants Summary
+                                    <div className="self-start text-xl font-semibold leading-6 text-center text-slate-800 flex w-full justify-around">
+                                        <div>
+                                            Applicants Summary
+                                        </div>
+                                        {csvData.length > 0 && (
+                                            <CSVLink
+                                                data={csvData}
+                                                headers={headers}
+                                                filename={"Candidates_List.csv"}
+                                                className="btn"
+                                            >
+                                                <Download />
+                                            </CSVLink>
+                                        )}
                                     </div>
                                     <div className="flex gap-2 px-6 py-2 mt-4 whitespace-nowrap max-md:px-5">
                                         <PieCharDashboard />

@@ -94,7 +94,6 @@ function ApplicantDetails() {
                                             </div>
                                             <div className="flex gap-2 justify-center items-center self-start text-sm whitespace-nowrap text-slate-600">
                                                 <div className="self-stretch my-auto"> {data?.company} </div>
-                                                <div className="self-stretch my-auto">Full-Time</div>
                                             </div>
                                         </>
                                     ) : '')

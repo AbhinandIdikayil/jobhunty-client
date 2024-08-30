@@ -32,7 +32,7 @@ function HireOrDeclineModal({ open, setOpen }: { open: boolean, setOpen: (prev: 
         open ? (
             <div className='absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[350px] w-[300px] bg-blue-500 z-50 rounded-3xl flex flex-col justify-around shadow-2xl shadow-black transition-all duration-500 ease-out scale-90 animate-call-popup' >
                 <div className="text-white font-bold text-lg text-center w-full">
-                    <div className="flex justify-center items-center animate-bounce">
+                    <div className="flex justify-center items-center">
                         Change status...
                     </div>
                 </div>
