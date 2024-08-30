@@ -4,14 +4,24 @@ import { formatDateToThree } from "src/utils/formateDate";
 
 function DashboardInterviewList() {
     const state = useSelector((state: RootState) => state.job)
+    const today = new Date(); // Get today's date
+
     const allSchedules = state.applications?.flatMap(applicant =>
-        applicant.schedule.map(schedule => ({
-          ...schedule,
-          companyName: applicant.companyId.name,
-          companyEmail: applicant.companyId.email,
-          companyImage: applicant.companyId.images
-        }))
-      );
+        applicant.schedule
+            .filter(schedule => {
+                const scheduleDate = new Date(schedule.date); // Create a Date object from the schedule date
+                scheduleDate.setHours(today.getHours(), today.getMinutes(), today.getSeconds(), today.getMilliseconds()); // Adjust schedule date to have today's time
+
+                return scheduleDate > today;
+            })
+            .map(schedule => ({
+                ...schedule,
+                companyName: applicant.companyId.name,
+                companyEmail: applicant.companyId.email,
+                companyImage: applicant.companyId.images
+            }))
+    );
+    console.log(allSchedules)
     return (
         <div className='overflow-y-scroll upcoming '>
             {
@@ -31,9 +41,9 @@ function DashboardInterviewList() {
                                             {data?.companyName}
                                         </div>
                                         <div className="mt-1.5 text-xs font-medium text-slate-500 whitespace-nowrap">
-                                            {data?.testType} 
+                                            {data?.testType}
                                             {
-                                               '(' + formatDateToThree(data?.date) + ')'
+                                                '(' + formatDateToThree(data?.date) + ')'
                                             }
                                         </div>
                                     </div>

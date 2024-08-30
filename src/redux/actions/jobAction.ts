@@ -150,7 +150,7 @@ export const getSpecificApplicantDetails = createAsyncThunk(
 
 type hiring = {
     applicationId: string,
-    status: string | null
+    status: string | boolean | null
 }
 
 
@@ -158,7 +158,7 @@ export const updateHiringStatus = createAsyncThunk(
     'applicant/hiring-status',
     async (req: hiring, { rejectWithValue }) => {
         try {
-            const { data } = await AXIOS_INSTANCE_JOB.put(`/application/${req.applicationId}`, req.status)
+            const { data } = await AXIOS_INSTANCE_JOB.put(`/application/${req.applicationId}`, {status:req.status})
             console.log(data)
             return {
                 id: data?._id, hiring_status: data.hiring_status

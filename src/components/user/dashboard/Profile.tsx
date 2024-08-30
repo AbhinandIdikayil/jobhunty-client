@@ -20,7 +20,6 @@ import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { removeExperienceAndUpdateUserProfile, updateUserProfile } from 'src/redux/actions/userAction';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AddSkills from './AddSkills';
-import { removeExperienceState } from 'src/redux/reducers/user/userSlice';
 import { formatDate } from 'src/utils/formateDate';
 import EditEducation from './EditEducation';
 import EditExperience from './EditExperience';
@@ -250,10 +249,6 @@ function Profile() {
                                         </>
                                     ))
                                 }
-
-                                {/* <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
-                                    Show 3 more experiences
-                                </div> */}
                             </div>
 
                             <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">

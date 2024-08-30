@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_JOB } from "src/constants/axiosInstance";
-import { AddCategory, IAddSector, IListCategory } from "src/types/Admin";
+import {  IAddSector, IListCategory } from "src/types/Admin";
 import { ErrorPayload } from "src/types/AllTypes";
 import { ICategory } from "src/types/category";
 

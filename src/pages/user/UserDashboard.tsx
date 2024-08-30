@@ -3,7 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 import { useDispatch, useSelector } from 'react-redux';
 import ApplicationListInDashboard from 'src/components/user/dashboard/ApplicationListInDashboard';
 import DashboardInterviewList from 'src/components/user/dashboard/DashboardInterviewList';
-import { listApplicants } from 'src/redux/actions/jobAction';
+import { listApplications } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 
 function UserDashboard() {
@@ -36,7 +36,7 @@ function UserDashboard() {
 
   const fetchData = async () => {
     try {
-      let data = await dispatch(listApplicants()).unwrap()
+      let data = await dispatch(listApplications()).unwrap()
       return data
     } catch (error) {
       console.log(error)

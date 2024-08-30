@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
-import { ChevronDown, MoreHorizontal, PlusCircle } from 'lucide-react';
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
+import { ChevronDown, MoreHorizontal } from 'lucide-react';
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
@@ -15,11 +15,9 @@ import { prop } from 'src/types/AllTypes';
 
 function Skills() {
     const state = useSelector((state: RootState) => state?.admin)
-    const navigate = useNavigate()
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const dispatch: AppDispatch = useDispatch();
-    const [loading, setLoading] = useState<boolean>(false)
 
 
     async function handleRemove(id: string) {
@@ -117,8 +115,6 @@ function Skills() {
         data: state?.skills || [],
         columns,
         getCoreRowModel: getCoreRowModel(),
-        // getPaginationRowModel: getPaginationRowModel(),
-        // getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         rowCount:Infinity
     })
