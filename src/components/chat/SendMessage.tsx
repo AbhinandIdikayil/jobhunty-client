@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { UseChatSocketContext } from 'src/context/ChatSocketContext'
-import { sendMessage } from 'src/redux/actions/chatAction'
+import { listChats, sendMessage } from 'src/redux/actions/chatAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import EmojiPicker from 'emoji-picker-react';
 
@@ -21,6 +21,10 @@ function SendMessage({ setMessages }: { setMessages: any }) {
     const location = useLocation()
     const [show, setShow] = useState<boolean>(false)
 
+    async function fetchChats() {
+        await dispatch(listChats()).unwrap()
+    }
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault()
         if (socket && socket.connected && socketConnected) {
@@ -33,7 +37,7 @@ function SendMessage({ setMessages }: { setMessages: any }) {
                         type: 'text',
                         content: messageInput
                     },
-                    status: 'sent'
+                    status: 'unread'
                 }
             } else {
                 data = {
@@ -43,7 +47,7 @@ function SendMessage({ setMessages }: { setMessages: any }) {
                         type: 'text',
                         content: messageInput
                     },
-                    status: 'sent'
+                    status: 'unread'
                 }
             }
             try {
@@ -60,19 +64,48 @@ function SendMessage({ setMessages }: { setMessages: any }) {
     }
 
     useEffect(() => {
-        const handleReceiveMessage = (message:any) => {
-            console.log(message, '----------------')
-            setMessages((prevMessages: any) => [...prevMessages, message]);
-        };
+
         if (socket) {
+            const handleReceiveMessage = (message: any) => {
+                console.log(message, 'recieve message ----------------')
+                setMessages((prevMessages: any) => [...prevMessages, message]);
+                socket.emit('mark-as-read', ({ messageId: message?._id, senderId: message?.senderId }))
+            };
+            const handleReadMesage = ({ messageId, status }: { messageId: string, status: string }) => {
+                setMessages((prevMessages: any) => {
+                    const updatedMessages = prevMessages?.map((data: any) =>
+                        data?._id === messageId ? { ...data, status } : data
+                    );
+                    return updatedMessages;
+                });
+            }
+
+
+
             socket.on('recieve-message', handleReceiveMessage);
-        }
-        return () => {
-            if(socket){
+
+            socket.on('message-read', handleReadMesage)
+
+            return () => {
                 socket.off('recieve-message', handleReceiveMessage);
+                socket.off('message-read', handleReadMesage)
             }
         }
+
     }, [socket])
+
+    useEffect(() => {
+        fetchChats()
+        if (socket) {
+            const unreadMessages = chatState?.messages?.filter(data => data?.status == 'unread')
+
+            if (unreadMessages?.length > 0) {
+                unreadMessages?.forEach(data => {
+                    socket.emit('mark-as-read', { messageId: data?._id, senderId: data?.senderId })
+                })
+            }
+        }
+    }, [chatState, socket])
 
 
     return (

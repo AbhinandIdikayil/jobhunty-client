@@ -72,7 +72,6 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
         if (data) {
             filterChat().then(data => data).catch(err => console.log(err))
         }
-        console.log('---------user listing cards -----------')
     }, [])
 
     useEffect(() => {
@@ -94,6 +93,8 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
         }
 
     }, [socket])
+
+
 
     useEffect(() => {
         listMessage()
@@ -117,6 +118,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                 if (data?.members[0] === val?.userId) {
                                     return (
                                         <div
+                                        key={val?.userId}
                                             className={`  
                                             bg-green-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-lg shadow-lg`}
@@ -126,6 +128,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                     )
                                 } else {
                                     return (<div
+                                    key={val?.userId}
                                         className={`  
                                             bg-blue-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-lg shadow-lg`}
@@ -146,7 +149,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                 onlineCompanies?.map((val: any) => {
                                     if (data?.members[1] == val?.userId) {
                                         return (
-                                            <div
+                                            <div key={val?.userId}
                                                 className={`  
                                             bg-green-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
@@ -156,7 +159,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                         )
                                     } else {
                                         return (
-                                            <div
+                                            <div key={val?.userId}
                                                 className={`  
                                             bg-blue-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}

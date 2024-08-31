@@ -25,7 +25,7 @@ function JobCard() {
                                     {data?.jobTitle || 'hai'}
                                 </div>
                                 <div className="flex gap-2 justify-between text-base text-slate-500">
-                                    <div>{data?.location[0]}</div>
+                                    <div>{data?.location?.[0]}</div>
                                 </div>
                                 <div className="flex gap-2 mt-6 whitespace-nowrap">
                                     <div className="justify-center px-2.5 py-1.5 text-amber-400 border border-amber-400 border-solid rounded-[80px]">

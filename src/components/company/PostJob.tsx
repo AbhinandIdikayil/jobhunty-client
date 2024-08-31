@@ -13,6 +13,8 @@ import { LocationInput } from '../common/LocationInput';
 import { Button } from '@/components/ui/button';
 import { Brain, LoaderCircle } from 'lucide-react';
 import { AIChatSession } from 'src/service/AIModal';
+import Multiselect from 'multiselect-react-dropdown';
+
 
 function PostJob() {
     const [loading, setLoading] = useState<boolean>(false);
@@ -24,10 +26,22 @@ function PostJob() {
     const navigate = useNavigate()
     const [location, setLocation] = useState<any>([]);
     const [AiGeneratedDesc, setAiGeneratedDesc] = useState<any>();
+    const skillOption = useSelector((state: RootState) => state?.admin)
+    const [selectedSkills, setSelectedSkills] = useState<any>([])
+    const [skill, setSkills] = useState<any>([])
+
+
+    
+    function setSelectedSkill() {
+        const matchingSkills = skillOption?.skills?.filter(skill => company?.user?.skills?.includes(skill.name));
+        console.log(matchingSkills)
+        setSelectedSkills(matchingSkills)
+    }
 
     useEffect(() => {
         dispatch(listCategory(null)).unwrap()
         dispatch(listSectors()).unwrap()
+        setSelectedSkill()
         console.log(location)
     }, [location])
 
@@ -87,7 +101,13 @@ function PostJob() {
                 toast.error('pleae complete the profile')
                 return
             }
-            await dispatch(postJob({ ...values, location })).unwrap()
+            if(skill?.length < 1){
+                toast.error('Add morethan 1 skill')
+                return;
+            }
+            const newSKill = skill?.map((data: any) => data?.name);
+
+            await dispatch(postJob({ ...values, location , skills:newSKill})).unwrap()
             return navigate('/company/job-list')
         } catch (error) {
             console.log(error)
@@ -231,7 +251,7 @@ function PostJob() {
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
 
-                                    <FieldArray name='skills'>
+                                    {/* <FieldArray name='skills'>
                                         {({ remove, push }) => (
                                             <div>
                                                 {values.skills.length > 0 &&
@@ -275,8 +295,13 @@ function PostJob() {
                                                 )}
                                             </div>
                                         )}
-                                    </FieldArray>
-
+                                    </FieldArray> */}
+                                    <Multiselect
+                                        selectedValues={selectedSkills}
+                                        onSelect={(e) => setSkills(e)}
+                                        options={skillOption?.skills}
+                                        displayValue='name'
+                                    />
                                 </div>
                             </div>
                             <hr />

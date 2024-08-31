@@ -37,19 +37,16 @@ function Header({ func, open }: props) {
                 }
                 return;
             } else {
-                console.log(state);
-                console.log(email);
+
             }
         };
 
         if (socket) {
-            console.log("Adding event listener for request_update");
             socket.on('request_update', handleRequestUpdate);
         }
 
         return () => {
             if (socket) {
-                console.log("Removing event listener for request_update");
                 socket.off('request_update', handleRequestUpdate);
             }
         };

@@ -110,15 +110,15 @@ export const postJobValidationSchema = Yup.object().shape({
         )
         .min(2, 'At least one responsibilities is required')
         .required('resonsibilities are required'),
-    skills: Yup.array()
-        .of(
-            Yup.string()
-                .trim()
-                .strict(true)
-                .min(3, 'min 3 character')
-        )
-        .min(2, 'At least one skill is required')
-        .required('Skills are required'),
+    // skills: Yup.array()
+    //     .of(
+    //         Yup.string()
+    //             .trim()
+    //             .strict(true)
+    //             .min(3, 'min 3 character')
+    //     )
+    //     .min(2, 'At least one skill is required')
+    //     .required('Skills are required'),
     qualification: Yup.array()
         .of(
             Yup.string()

@@ -80,7 +80,6 @@ function Sidebar({ setLoading , setMessages}: { setLoading: (newState: boolean) 
     useEffect(() => {
         fetchChats()
         setData([]);
-        console.log('---------------sidebar------------')
     }, [])
 
     return (
@@ -92,7 +91,8 @@ function Sidebar({ setLoading , setMessages}: { setLoading: (newState: boolean) 
             </div>
             <div className='flex flex-col px-3 gap-2 mt-1 w-full'>
                 {
-                    search && search?.length > 0 ? (
+                    //! FOR LISTING THE USER WHEN SEARCHING THEM
+                    search && search?.length > 0 ? ( 
                         data?.length > 0 ? (
                             data.map(item => (
                                 <UserListingCard setMessages={setMessages}  key={item?._id} data={item} setLoading={setLoading} />

@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from 'src/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllMessages, listChats } from 'src/redux/actions/chatAction';
 import { dateToTime } from 'src/utils/FormatDateToTime';
+import { CheckCheck } from 'lucide-react';
 
 
 function Chat() {
@@ -31,14 +32,13 @@ function Chat() {
             socket.on('disconnect', () => {
                 console.log('disconnected');
             });
-        }
 
-        return () => {
-            if (socket) {
+
+            return () => {
                 socket.off('connected');
                 socket.off('disconnect');
-            }
-        };
+            };
+        }
     }, [socket])
 
     const fetchMessages = async () => {
@@ -50,11 +50,12 @@ function Chat() {
         }
     }
 
-
+    async function fetchChats() {
+        await dispatch(listChats()).unwrap()
+    }
 
     useEffect(() => {
-        dispatch(listChats()).unwrap()
-        console.log('------------ chat page ------------')
+        fetchChats()
     }, [])
 
     useEffect(() => {
@@ -63,6 +64,8 @@ function Chat() {
 
     useEffect(() => {
         handleScrollToBottom();
+        console.log(messages)
+
     }, [messages])
 
     return (
@@ -80,14 +83,20 @@ function Chat() {
                                     <h1>
                                         {data?.content?.content ?? ''}
                                     </h1>
-                                    <h1 className='text-right text-xs'> {dateToTime(data?.createdAt)} </h1>
+                                    <h1 className='text-right text-xs flex float-right'>
+                                        {dateToTime(data?.createdAt)}
+                                        <CheckCheck size={15} className={`${data?.status == 'read' ? 'text-blue-500' : ''}`} />
+                                    </h1>
                                 </div>
                             ) : (
                                 <div key={`${data?.id}+${ind}`} className='text-black mb-1 w-fit max-w-[50%] bg-gray-200 px-2 mb rounded-lg rounded-bl-none break-words h-10'>
                                     <h1>
                                         {data?.content?.content ?? ''}
                                     </h1>
-                                    <h1 className='text-left text-xs'> {dateToTime(data?.createdAt)} </h1>
+                                    <h1 className='text-left text-xs'>
+                                        {/* <CheckCheck size={15} /> */}
+                                        {dateToTime(data?.createdAt)}
+                                    </h1>
                                 </div>
                             )
                         })
@@ -98,24 +107,30 @@ function Chat() {
                             )
                     }
                     {
-                        // console.log(messages),
+
                         messages?.length ? messages?.map((data: any, ind: number) => {
                             return data?.senderId === user?._id ? (
-                                <div key={`${data?.id}+${ind}`}
+                                <div key={`${data?._id}+${ind}`}
                                     className='list-chat text-black w-fit mb-1 max-w-[50%] bg-gray-200 px-2 mb rounded-lg rounded-bl-none break-words'
                                 >
                                     <h1>
                                         {data?.content?.content ?? ''}
                                     </h1>
-                                    <h1 className='text-right text-xs'> {dateToTime(data?.createdAt)} </h1>
+                                    <h1 className='text-right text-xs flex float-right'>
+                                        {dateToTime(data?.createdAt)}
+                                        <CheckCheck size={15} className={`${data?.status == 'read' ? 'text-blue-500' : ''}`} />
+                                    </h1>
                                 </div>
                             ) : (
-                                <div key={`${data?.id}+${ind}`}
+                                <div key={`${data?._id}+${ind}`}
                                     className=' text-black w-fit max-w-[50%] bg-gray-200 px-2 mb-1 rounded-lg rounded-bl-none break-words'>
                                     <h1>
                                         {data?.content?.content ?? ''}
                                     </h1>
-                                    <h1 className='text-left text-xs'> {dateToTime(data?.createdAt)} </h1>
+                                    <h1 className='text-left text-xs'>
+                                        {/* <CheckCheck size={15} /> */}
+                                        {dateToTime(data?.createdAt)}
+                                    </h1>
                                 </div>
                             )
                         }) : (
