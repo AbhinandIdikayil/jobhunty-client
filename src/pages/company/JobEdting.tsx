@@ -11,6 +11,7 @@ import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes';
 import { formatDate } from 'src/utils/formateDatetoDateinput';
 import { postJobValidationSchema } from 'src/validation/company'
+import Multiselect from 'multiselect-react-dropdown';
 
 function JobEdting() {
 
@@ -19,8 +20,12 @@ function JobEdting() {
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state?.job)
     const categoryState = useSelector((state: RootState) => state?.category)
+    const skillsOption = useSelector((state:RootState) => state?.admin?.skills)
     const navigate = useNavigate()
-    const [location,setLocation] = useState<any>([])
+    const [location, setLocation] = useState<any>([])
+    const [selectedSkills, setSelectedSkills] = useState<any>([])
+    const [skill, setSkills] = useState<any>([])
+
 
     const PostJobInitialValues = {
         jobTitle: state?.job?.job?.jobTitle || '',
@@ -35,26 +40,40 @@ function JobEdting() {
         companyId: state?.job?.job?.company?._id || '',
         expiry: formatDate(state?.job?.job?.expiry || '') || '',
         responsibilities: state?.job?.job?.responsibilities || [''],
-        skills: state?.job?.job?.skills || [''],
+        // skills: state?.job?.job?.skills || [''],
         qualification: state?.job?.job?.qualification || [''],
     }
     function handleSubmit(values: FormikValues) {
         try {
-            if(location?.length > 1){
+            if (location?.length > 1) {
                 return toast.error('Multiple locations are restricted')
             }
-            dispatch(updateJob({data:{...values,location},id:state?.job?._id})).unwrap()
-            toast.success('job updated successfully',{position:'top-center'})
+            if(skill?.length < 1){
+                toast.error('Add morethan 1 skill')
+                return;
+            }
+            const newSKill = skill?.map((data: any) => data?.name);
+
+            //! here i have passed a id, it is used to pass an a params 
+            dispatch(updateJob({ data: { ...values, location, skills:newSKill }, id: state?.job?._id })).unwrap()
+            toast.success('job updated successfully', { position: 'top-center' })
             navigate('/company/job-list')
         } catch (error) {
             console.log(error)
         }
     }
 
+    function setSelectedSkill() {
+        const matchingSkills = skillsOption?.filter(skill =>  state?.job?.job?.skills?.includes(skill.name));
+        console.log(matchingSkills)
+        setSelectedSkills(matchingSkills)
+    }
+
     useEffect(() => {
         setLocation(state?.job?.job?.location ?? [])
         dispatch(listSectors())
         dispatch(listCategory(null))
+        setSelectedSkill()
     }, [])
 
     return (
@@ -65,8 +84,7 @@ function JobEdting() {
                 onSubmit={handleSubmit}
             >
 
-                {({ errors, setFieldValue, isSubmitting, values }) =>
-                 {
+                {({ errors, setFieldValue, isSubmitting, values }) => {
                     return (
                         <Form>
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center'>
@@ -196,51 +214,13 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <FieldArray name='skills'>
-                                        {({ remove, push }) => (
-                                            <div>
-                                                {values.skills.length > 0 &&
-                                                    values.skills.map((_, index) => (
-                                                        <div className="w-full sm:w-auto flex items-center" key={index}>
-                                                            <div className="flex flex-col w-full">
-                                                                <Field
-                                                                    name={`skills.${index}`}
-                                                                    type="text"
-                                                                    className='w-full border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2'
-                                                                />
-                                                                {errors.skills && (
-                                                                    <div className="text-red-600 text-xs">
-                                                                        {errors.skills[index]}
-                                                                    </div>
-                                                                )}
-                                                            </div>
-
-                                                            {values.skills.length > 1 && (
-                                                                <button
-                                                                    type="button"
-                                                                    className="font-sans bg-red-500 px-1 text-white font-bold rounded ml-2"
-                                                                    onClick={() => remove(index)}
-                                                                >
-                                                                    Remove
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                    ))}
-                                                <button
-                                                    type="button"
-                                                    className="font-sans bg-indigo-600  text-white font-bold px-2 mt-2"
-                                                    onClick={() => push('')}
-                                                >
-                                                    Add
-                                                </button>
-                                                {typeof errors.skills === 'string' && (
-                                                    <div className="text-red-600 text-xs">
-                                                        {errors.skills}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
-                                    </FieldArray>
+                                    <Multiselect
+                                        selectedValues={selectedSkills}
+                                        onSelect={(e) => setSkills(e)}
+                                        options={skillsOption}
+                                        displayValue='name'
+                                    />
+                   
                                 </div>
                             </div>
                             <hr />
@@ -369,8 +349,8 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <LocationInput label='location' name='location'  key={'location'} location={location} 
-                                     setLocation={setLocation}/>
+                                    <LocationInput label='location' name='location' key={'location'} location={location}
+                                        setLocation={setLocation} />
                                 </div>
                             </div>
                             <hr />

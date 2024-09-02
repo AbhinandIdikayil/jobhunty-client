@@ -42,7 +42,6 @@ function PostJob() {
         dispatch(listCategory(null)).unwrap()
         dispatch(listSectors()).unwrap()
         setSelectedSkill()
-        console.log(location)
     }, [location])
 
     let PostJobInitialValues = {

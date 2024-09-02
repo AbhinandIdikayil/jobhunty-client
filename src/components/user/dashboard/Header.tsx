@@ -121,16 +121,12 @@ function Header({ func, open }: props) {
                                     {
                                         notifications?.length > 0 &&
                                         notifications?.map((data: any, ind: number) => (
-                                            <div key={ind + data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                            <div key={ind+data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
                                                 <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
                                                 {data?.content?.content}
                                             </div>
                                         ))
                                     }
-                                    <div className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
-                                        <span className="text-indigo-600 rounded-full  h-1 "> 1) </span>
-                                        asfsdfasdfklsfkasdjk kasdjf asf jkasdhf asjdkf j asdjh a
-                                    </div>
                                 </div>
                             </div>
                         </ScrollArea>
