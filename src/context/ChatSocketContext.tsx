@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client'
@@ -44,6 +44,7 @@ export const ChatSocketProvider = ({ children }: Children) => {
     // const remoteStreamRef = useRef(null);
     // const peerConnectionRef = useRef(null);
     const socketRef = useRef<Socket | null>(null);
+    const locationRef = useRef(location.pathname); // Store the latest location.pathname
 
     useEffect(() => {
         if (!socketRef.current) {
@@ -72,31 +73,38 @@ export const ChatSocketProvider = ({ children }: Children) => {
         };
     }, []);
 
-    const handleNotification = useCallback(
-        (data: any) => {
-            console.log('HANDLE NOTIFICATION --- CHAT CONTEXT');
-            if (location.pathname.includes('messages') && data?.chatId === selectedChat?._id) {
-                return null
-            }
-            if (!location?.pathname?.includes('messages') || data?.chatId !== selectedChat?._id) {
+    const handleNotification = (data:any) => {
+        console.log('HANDLE NOTIFICATION --- CHAT CONTEXT');
+        console.log(locationRef?.current)
+        if (locationRef?.current?.endsWith('messages')) {
+            return;
+        } else {
+            console.log('HANDLE NOTIFICATION --- CHAT CONTEXT 2');
+            console.log(data?.chatId, selectedChat?._id, locationRef?.current, data?.chatId == selectedChat?._id)
+            if (data?.chatId == selectedChat?._id && locationRef?.current?.endsWith('messages')) {
+                return
+            } else {
                 console.log(data, 'INSIDE IF CONDITION--------------------');
                 setNotifications((prev: any) => [...prev, data]);
             }
-        },
-        [location?.pathname, selectedChat?._id] 
-    );
+        }
+    }
+
+
+    // Update the ref whenever location.pathname changes
+    useEffect(() => {
+        locationRef.current = location.pathname;
+    }, [location.pathname]);
+
 
     useEffect(() => {
         if (socketRef?.current) {
-
-            if (socketRef?.current && !location?.pathname?.includes('messages')) {
-                socketRef.current.on('recieve-message', handleNotification);
-            }
+            socketRef.current.on('recieve-message', handleNotification);
             return () => {
                 socketRef?.current?.off('receive-message', handleNotification);
             };
         }
-    }, [handleNotification])
+    }, [location])
 
     return (
         <ChatSocketContext.Provider value={{
