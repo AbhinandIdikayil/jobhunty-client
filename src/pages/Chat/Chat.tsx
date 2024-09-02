@@ -13,7 +13,7 @@ import { CheckCheck } from 'lucide-react';
 function Chat() {
 
     const [loading, setLoading] = useState<boolean>(false);
-    const { socket, setSocketConnected } = UseChatSocketContext()
+    // const { socket, setSocketConnected } = UseChatSocketContext()
     const user = useSelector((state: RootState) => state?.user?.user)
     const chat = useSelector((state: RootState) => state?.chat)
     const [messages, setMessages] = useState<any>([])
@@ -25,21 +25,7 @@ function Chat() {
             chatRef.current.scrollTop = chatRef.current.scrollHeight;
         }
     };
-    useEffect(() => {
-        if (socket) {
-            socket.emit('setup', user)
-            socket.on('connected', () => setSocketConnected(true))
-            socket.on('disconnect', () => {
-                console.log('disconnected');
-            });
-
-
-            return () => {
-                socket.off('connected');
-                socket.off('disconnect');
-            };
-        }
-    }, [socket])
+  
 
     const fetchMessages = async () => {
         try {
@@ -65,7 +51,6 @@ function Chat() {
     useEffect(() => {
         handleScrollToBottom();
         console.log(messages)
-
     }, [messages])
 
     return (

@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client'
+import { RootState } from 'src/redux/store';
 import { Children } from 'src/types/AllTypes';
 
 
@@ -28,27 +31,55 @@ export const UseChatSocketContext = () => {
 
 
 export const ChatSocketProvider = ({ children }: Children) => {
-    const [socket, setSocket] = useState<Socket | null>(null);
     const [socketConnected, setSocketConnected] = useState<boolean>(false)
     const [isCalling, setIsCalling] = useState(false);
     const [isOnCall, setIsOnCall] = useState(false);
     const [callId, setCallId] = useState<string | null>(null);
-    const localStreamRef = useRef(null);
-    const remoteStreamRef = useRef(null);
-    const peerConnectionRef = useRef(null);
+    const [notifications, setNotifications] = useState<any>([])
+    const selectedChat = useSelector((state: RootState) => state?.chat?.selectedUser)
+    const location = useLocation()
+    // const localStreamRef = useRef(null);
+    // const remoteStreamRef = useRef(null);
+    // const peerConnectionRef = useRef(null);
+    const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
-        const newSocket = io(String(process.env.CHAT_ORIGIN))
-        setSocket(newSocket);
+        if (!socketRef.current) {
+            // Initialize the socket only once
+            const newSocket = io(String(process.env.CHAT_ORIGIN));
 
-        return () => {
-            newSocket.close()
+            newSocket.on('connect', () => {
+                console.log('Socket connected');
+                setSocketConnected(true);
+            });
+
+            newSocket.on('disconnect', () => {
+                console.log('Socket disconnected');
+                setSocketConnected(false);
+            });
+
+            newSocket.on('recieve-message', (data) => {
+                if(data?.chatId !== selectedChat?._id || !location.pathname.includes('/messages')){
+                    setNotifications((prev:any) => [...prev,data])
+                }
+            })
+
+            // Assign the socket instance to the ref
+            socketRef.current = newSocket;
         }
-    }, [])
+
+        // Cleanup function to disconnect the socket on unmount
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+                socketRef.current = null;
+            }
+        };
+    }, []);
 
     return (
         <ChatSocketContext.Provider value={{
-            socket, socketConnected, setSocketConnected, isCalling, setIsCalling,
+            socket: socketRef.current, socketConnected, setSocketConnected, isCalling, setIsCalling,
             callId, setCallId, setIsOnCall, isOnCall
         }}>
             {children}

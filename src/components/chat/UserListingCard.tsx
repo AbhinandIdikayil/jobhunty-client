@@ -13,6 +13,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
     const [chatDetails, setChatDetails] = useState<any>()
     const users = useSelector((state: RootState) => state?.admin)
     const chat = useSelector((state: RootState) => state?.chat)
+    const user = useSelector((state:RootState)=> state?.user?.user)
     const location = useLocation()
     const { socket } = UseChatSocketContext()
     const [onlineUsers, setOnlineUsers] = useState<any>([]);
@@ -76,7 +77,10 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
 
     useEffect(() => {
         if (socket && socket?.connected) {
+            socket.emit('setup', user)
+
             const handleOnlineUsers = (val: any) => {
+                console.log(val)
                 const users = val?.filter((user: any) => user.role === 'user');
                 const companies = val?.filter((user: any) => user.role === 'company');
                 if (location.pathname === '/company/messages') {
@@ -92,7 +96,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
             }
         }
 
-    }, [socket])
+    }, [socket,user,location.pathname])
 
 
 

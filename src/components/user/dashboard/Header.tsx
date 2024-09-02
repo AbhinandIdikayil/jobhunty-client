@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { HiMenuAlt3 } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { UseChatSocketContext } from 'src/context/ChatSocketContext'
 import { getUser } from 'src/redux/actions/userAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 
@@ -20,6 +21,23 @@ function Header({ func, open }: props) {
     const user = useSelector((state: RootState) => state?.user)
     const navigate = useNavigate()
     const [loading, setLoading] = useState<boolean>()
+    const { socket, setSocketConnected } = UseChatSocketContext()
+
+    useEffect(() => {
+        if (socket) {
+            socket.emit('setup', user?.user)
+            socket.on('connected', () => setSocketConnected(true))
+            socket.on('disconnect', () => {
+                console.log('disconnected');
+            });
+
+            return () => {
+                socket.off('connected');
+                socket.off('disconnect');
+            };
+        }
+    }, [socket])
+
     const fetchUser = async () => {
         try {
             await dispatch(getUser()).unwrap();

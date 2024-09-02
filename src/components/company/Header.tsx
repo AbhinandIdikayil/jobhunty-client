@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import { getCompany } from "src/redux/actions/companyAction";
+import { UseChatSocketContext } from "src/context/ChatSocketContext";
 interface props {
     func: () => void,
     open: boolean
@@ -19,10 +20,27 @@ interface props {
 
 function Header({ func, open }: props) {
 
-    const socket = useSocket();
+    const socketForRequestUpdation = useSocket();
     const state = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
-    // const navigate = useNavigate()
+    const { socket, setSocketConnected } = UseChatSocketContext()
+
+    useEffect(() => {
+        if (socket) {
+            socket.emit('setup', state?.user)
+            socket.on('connected', () => setSocketConnected(true))
+            socket.on('disconnect', () => {
+                console.log('disconnected');
+            });
+
+            return () => {
+                socket.off('connected');
+                socket.off('disconnect');
+            };
+        }
+    }, [socket])
+
+
     useEffect(() => {
         const handleRequestUpdate = ({ email, status }: { email: string, status: string }) => {
             if (state?.user?.email === email) {
@@ -41,22 +59,18 @@ function Header({ func, open }: props) {
             }
         };
 
-        if (socket) {
-            socket.on('request_update', handleRequestUpdate);
+        if (socketForRequestUpdation) {
+            socketForRequestUpdation.on('request_update', handleRequestUpdate);
         }
 
         return () => {
-            if (socket) {
-                socket.off('request_update', handleRequestUpdate);
+            if (socketForRequestUpdation) {
+                socketForRequestUpdation.off('request_update', handleRequestUpdate);
             }
         };
-    }, [socket, state])
+    }, [socketForRequestUpdation, state])
 
-    // useEffect(() => {
-    //     if(!state.role && !state.user){
-    //         return navigate('/company/login')
-    //     }
-    // },[state])
+
 
     const fetchData = async () => {
         try {
