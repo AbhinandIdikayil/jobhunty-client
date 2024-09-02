@@ -73,20 +73,19 @@ export const ChatSocketProvider = ({ children }: Children) => {
         };
     }, []);
 
-    const handleNotification = (data:any) => {
+    const handleNotification = (data: any) => {
         console.log('HANDLE NOTIFICATION --- CHAT CONTEXT');
         console.log(locationRef?.current)
-        if (locationRef?.current?.endsWith('messages')) {
-            return;
+        if (!locationRef?.current?.endsWith('messages') || data?.chatId !== selectedChat?._id) {
+            console.log(data, 'INSIDE IF CONDITION--------------------');
+            setNotifications((prev: any) => [...prev, data]);
         } else {
-            console.log('HANDLE NOTIFICATION --- CHAT CONTEXT 2');
-            console.log(data?.chatId, selectedChat?._id, locationRef?.current, data?.chatId == selectedChat?._id)
-            if (data?.chatId == selectedChat?._id && locationRef?.current?.endsWith('messages')) {
-                return
-            } else {
-                console.log(data, 'INSIDE IF CONDITION--------------------');
-                setNotifications((prev: any) => [...prev, data]);
-            }
+            // console.log('HANDLE NOTIFICATION --- CHAT CONTEXT 2');
+            // console.log(data?.chatId, selectedChat?._id, locationRef?.current, data?.chatId == selectedChat?._id)
+            // if (data?.chatId == selectedChat?._id && locationRef?.current?.endsWith('messages')) {
+            //     return
+            // } else {
+            // }
         }
     }
 
@@ -104,7 +103,7 @@ export const ChatSocketProvider = ({ children }: Children) => {
                 socketRef?.current?.off('receive-message', handleNotification);
             };
         }
-    }, [location])
+    }, [locationRef?.current])
 
     return (
         <ChatSocketContext.Provider value={{
