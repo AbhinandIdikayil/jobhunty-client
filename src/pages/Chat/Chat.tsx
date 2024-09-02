@@ -42,6 +42,7 @@ function Chat() {
 
     useEffect(() => {
         fetchChats()
+        console.log('_______-chat page')
     }, [])
 
     useEffect(() => {
@@ -50,7 +51,6 @@ function Chat() {
 
     useEffect(() => {
         handleScrollToBottom();
-        console.log(messages)
     }, [messages])
 
     return (

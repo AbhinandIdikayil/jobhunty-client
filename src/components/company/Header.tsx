@@ -7,23 +7,21 @@ import { AppDispatch, RootState } from "src/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
 import { Avatar } from "@mui/material";
 import { getCompany } from "src/redux/actions/companyAction";
 import { UseChatSocketContext } from "src/context/ChatSocketContext";
+import { Bell } from "lucide-react";
 interface props {
     func: () => void,
     open: boolean
 }
 
 function Header({ func, open }: props) {
-
     const socketForRequestUpdation = useSocket();
     const state = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
-    const { socket, setSocketConnected } = UseChatSocketContext()
+    const { socket, setSocketConnected, notifications, setNotifications } = UseChatSocketContext()
 
     useEffect(() => {
         if (socket) {
@@ -71,7 +69,6 @@ function Header({ func, open }: props) {
     }, [socketForRequestUpdation, state])
 
 
-
     const fetchData = async () => {
         try {
             await dispatch(getCompany()).unwrap()
@@ -80,8 +77,10 @@ function Header({ func, open }: props) {
         }
     }
 
+    
     useEffect(() => {
         fetchData()
+        console.log('------------compnay header')
     }, [])
 
     return (
@@ -108,11 +107,7 @@ function Header({ func, open }: props) {
                     </div>
                     <div className="flex gap-2 text-xl font-semibold leading-6 text-slate-800">
                         <div>{state?.user?.name}</div>
-                        {/* <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/11e2517998516c181ac04025690221ae22f5c4e4eb4dee7f65d6fdbaf2f88a9b?apiKey=bf80438c4595450788b907771330b274&"
-                            className="shrink-0 w-6 aspect-square"
-                        /> */}
+
                         <DropDown />
                     </div>
                 </div>
@@ -120,55 +115,40 @@ function Header({ func, open }: props) {
             <div className="flex gap-5 justify-center text-base font-bold leading-6 text-center text-white">
                 <Popover>
                     <PopoverTrigger asChild>
-                        <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/22cc243b4b17eb6822f1aae2f96ecac59c86787ba7154d9a5282f66481ba231f?apiKey=bf80438c4595450788b907771330b274&"
-                            className="shrink-0 my-auto w-10 aspect-square hover:-translate-y-1 duration-200"
-                        />
+
+                        <div className="flex relative justify-center items-center">
+                            {
+                                notifications?.length > 0 && (
+                                    <span className="bg-red-500 absolute top-1 right-0 px-1 rounded-full flex justify-center items-center" style={{ fontSize: '10px', height: '15px' }} >
+                                        {notifications?.length}
+                                    </span>
+                                )
+                            }
+                            <Bell color="blue" />
+                        </div>
                     </PopoverTrigger>
                     <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
-                        <ScrollArea className="h-40 sm:h-48 rounded-md ">
+                        <ScrollArea className="h-40 sm:h-48 ">
 
                             <div className="grid gap-4">
-                                <div className="space-y-2">
-                                    <h4 className="font-medium leading-none">Dimensions</h4>
-                                    <p className="text-sm text-muted-foreground">
-                                        Set the dimensions for the layer.
-                                    </p>
+                                <div className=" border-b border-indigo-600 flex items-center w-full justify-between pb-1">
+                                    <h4 className="font-medium leading-none">Notifications</h4>
+                                    <span onClick={() => setNotifications([])} className="font-normal text-sm leading-none bg-indigo-600 text-white  rounded-md px-2 py-1">
+                                        CLEAR ALL
+                                    </span>
                                 </div>
-                                <div className="grid gap-2">
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="width">Width</Label>
-                                        <Input
-                                            id="width"
-                                            defaultValue="100%"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="maxWidth">Max. width</Label>
-                                        <Input
-                                            id="maxWidth"
-                                            defaultValue="300px"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="height">Height</Label>
-                                        <Input
-                                            id="height"
-                                            defaultValue="25px"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="maxHeight">Max. height</Label>
-                                        <Input
-                                            id="maxHeight"
-                                            defaultValue="none"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
+                                {
+                                    notifications?.length > 0 &&
+                                    notifications?.map((data: any, ind: number) => (
+                                        <div key={ind+data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                            <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                            {data?.content?.content}
+                                        </div>
+                                    ))
+                                }
+                                <div className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                    <span className="text-indigo-600 rounded-full  h-1 "> 1) </span>
+                                    asfsdfasdfklsfkasdjk kasdjf asf jkasdhf asjdkf j asdjh a
                                 </div>
                             </div>
                         </ScrollArea>

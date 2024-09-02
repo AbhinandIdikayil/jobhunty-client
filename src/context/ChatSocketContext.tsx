@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import io, { Socket } from 'socket.io-client'
@@ -17,6 +17,8 @@ interface ChatSocketContextType {
     setCallId: React.Dispatch<React.SetStateAction<string | null>>;
     isOnCall: boolean;
     setIsOnCall: React.Dispatch<React.SetStateAction<boolean>>;
+    notifications: any[]
+    setNotifications: React.Dispatch<React.SetStateAction<any[]>>
 }
 
 const ChatSocketContext = createContext<ChatSocketContextType | null>(null);
@@ -45,31 +47,24 @@ export const ChatSocketProvider = ({ children }: Children) => {
 
     useEffect(() => {
         if (!socketRef.current) {
-            // Initialize the socket only once
             const newSocket = io(String(process.env.CHAT_ORIGIN));
 
             newSocket.on('connect', () => {
-                console.log('Socket connected');
                 setSocketConnected(true);
             });
 
             newSocket.on('disconnect', () => {
-                console.log('Socket disconnected');
                 setSocketConnected(false);
             });
-
-            newSocket.on('recieve-message', (data) => {
-                if(data?.chatId !== selectedChat?._id || !location.pathname.includes('/messages')){
-                    setNotifications((prev:any) => [...prev,data])
-                }
-            })
 
             // Assign the socket instance to the ref
             socketRef.current = newSocket;
         }
+        // socketRef?.current?.on('recieve-message', handleNotification)
 
         // Cleanup function to disconnect the socket on unmount
         return () => {
+            // socketRef.current?.off('receive-message', handleNotification);
             if (socketRef.current) {
                 socketRef.current.disconnect();
                 socketRef.current = null;
@@ -77,10 +72,37 @@ export const ChatSocketProvider = ({ children }: Children) => {
         };
     }, []);
 
+    const handleNotification = useCallback(
+        (data: any) => {
+            console.log('HANDLE NOTIFICATION --- CHAT CONTEXT');
+            if (location.pathname.includes('messages') && data?.chatId === selectedChat?._id) {
+                return null
+            }
+            if (!location?.pathname?.includes('messages') || data?.chatId !== selectedChat?._id) {
+                console.log(data, 'INSIDE IF CONDITION--------------------');
+                setNotifications((prev: any) => [...prev, data]);
+            }
+        },
+        [location?.pathname, selectedChat?._id] 
+    );
+
+    useEffect(() => {
+        if (socketRef?.current) {
+
+            if (socketRef?.current && !location?.pathname?.includes('messages')) {
+                socketRef.current.on('recieve-message', handleNotification);
+            }
+            return () => {
+                socketRef?.current?.off('receive-message', handleNotification);
+            };
+        }
+    }, [handleNotification])
+
     return (
         <ChatSocketContext.Provider value={{
             socket: socketRef.current, socketConnected, setSocketConnected, isCalling, setIsCalling,
             callId, setCallId, setIsOnCall, isOnCall
+            , notifications, setNotifications
         }}>
             {children}
         </ChatSocketContext.Provider>

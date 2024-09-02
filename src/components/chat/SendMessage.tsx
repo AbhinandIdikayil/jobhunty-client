@@ -64,10 +64,8 @@ function SendMessage({ setMessages }: { setMessages: any }) {
     }
 
     useEffect(() => {
-
         if (socket) {
             const handleReceiveMessage = (message: any) => {
-                console.log(message, 'recieve message ----------------')
                 setMessages((prevMessages: any) => [...prevMessages, message]);
                 socket.emit('mark-as-read', ({ messageId: message?._id, senderId: message?.senderId }))
             };
@@ -80,8 +78,6 @@ function SendMessage({ setMessages }: { setMessages: any }) {
                 });
             }
 
-
-
             socket.on('recieve-message', handleReceiveMessage);
 
             socket.on('message-read', handleReadMesage)
@@ -91,11 +87,9 @@ function SendMessage({ setMessages }: { setMessages: any }) {
                 socket.off('message-read', handleReadMesage)
             }
         }
-
     }, [socket])
 
     useEffect(() => {
-        fetchChats()
         if (socket) {
             const unreadMessages = chatState?.messages?.filter(data => data?.status == 'unread')
 
@@ -105,7 +99,11 @@ function SendMessage({ setMessages }: { setMessages: any }) {
                 })
             }
         }
-    }, [chatState, socket])
+    }, [chatState?.messages, socket])
+
+    useEffect(() => {
+        fetchChats()
+    }, [chatState?.selectedUser])
 
 
     return (
