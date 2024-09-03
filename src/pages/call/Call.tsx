@@ -1,5 +1,4 @@
 import { CircleUserRound, Phone } from "lucide-react"
-import { useState } from "react"
 import { UseChatSocketContext } from "src/context/ChatSocketContext"
 
 function Call() {

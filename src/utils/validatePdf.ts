@@ -1,6 +1,5 @@
 import React from "react";
 import { toast } from 'react-toastify'
-import { uploadToCloudinary } from "./common/cloudinaryUpload";
 const allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/rtf', 'text/html', 'application/vnd.oasis.opendocument.text'];
 
 

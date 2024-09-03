@@ -95,19 +95,18 @@ function Header({ func, open }: props) {
                             loading="lazy"
                             src={state.user.images}
                             alt="hai"
-                            className="shrink-0 self-start w-12 aspect-square"
+                            className="shrink-0 self-start w-12 aspect-square hidden sm:block"
                         />
                     ) : (
                         <Avatar> {state.user?.name[0]} </Avatar>
                     )
                 }
-                <div className="flex flex-col">
-                    <div className="text-base leading-6 text-slate-600">
+                <div className="flex flex-col justify-center sm:justify-normal">
+                    <div className="text-base leading-6 text-slate-600 hidden sm:block">
                         Company
                     </div>
                     <div className="flex gap-2 text-xl font-semibold leading-6 text-slate-800">
-                        <div>{state?.user?.name}</div>
-
+                        <div className="hidden sm:block">{state?.user?.name}</div>
                         <DropDown />
                     </div>
                 </div>
@@ -127,14 +126,14 @@ function Header({ func, open }: props) {
                             <Bell color="blue" />
                         </div>
                     </PopoverTrigger>
-                    <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
-                        <ScrollArea className="h-40 sm:h-48 ">
+                    <PopoverContent align="center" className="w-48 sm:w-80" style={{ zIndex: 99 }}>
+                        <ScrollArea className="h-48 sm:h-48 ">
 
                             <div className="grid gap-4">
                                 <div className=" border-b border-indigo-600 flex items-center w-full justify-between pb-1">
                                     <h4 className="font-medium leading-none">Notifications</h4>
                                     <span onClick={() => setNotifications([])} className="font-normal text-sm leading-none bg-indigo-600 text-white  rounded-md px-2 py-1">
-                                        CLEAR ALL
+                                        CLEAR
                                     </span>
                                 </div>
                                 {
@@ -154,7 +153,7 @@ function Header({ func, open }: props) {
                     <img
                         loading="lazy"
                         src="https://cdn.builder.io/api/v1/image/assets/TEMP/c4cf21e8a0b760a5ffef9e7996a107a62bc1d05df032f9ade093a7c12125c833?apiKey=bf80438c4595450788b907771330b274&"
-                        className="shrink-0 self-start w-6 aspect-square"
+                        className="shrink-0 self-start w-6 aspect-square hidden sm:block"
                     />
                     <Link to={'/company/post'}>Post a job</Link>
                 </div>

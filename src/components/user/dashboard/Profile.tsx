@@ -59,6 +59,7 @@ function Profile() {
         if (image) {
             setPdfUrl(image)
             let url = URL.createObjectURL(image)
+            console.log(url)
             setPdf(url)
         }
     }
