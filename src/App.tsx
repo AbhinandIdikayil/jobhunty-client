@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
@@ -51,11 +51,19 @@ import Interview from './pages/Interview'
 import Call from './pages/call/Call'
 import UserDashboard from './pages/user/UserDashboard'
 import Skills from './pages/admin/Skills'
+import { setGlobalDispatch } from './redux/global'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from './redux/store'
 
 
 
 function App() {
 
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    setGlobalDispatch(dispatch);
+  }, [dispatch]);
 
   return (
     <Suspense fallback={
@@ -63,7 +71,7 @@ function App() {
         <CircularProgress color="inherit" />
       </Backdrop>
     }>
-      <Call /> 
+      <Call />
       <Routes>
 
       ////! routes for user
@@ -79,7 +87,7 @@ function App() {
           <Route path='companies/details' element={<CompanyDetails />} />
         </Route>
         <Route path='/Dashboard' element={<UserDashboardHome />}>
-          <Route path='' element={<UserDashboard  />} />
+          <Route path='' element={<UserDashboard />} />
           <Route path='messages' element={<Chat />} />
           <Route path='applications' element={<Applications />} />
           <Route path='jobs' element={<Jobs />} />

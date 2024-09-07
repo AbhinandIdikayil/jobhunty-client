@@ -129,6 +129,7 @@ const jobSlice = createSlice({
                 state.err = payload
                 state.loading = false
                 state.applications = []
+                handleAuthError(state, payload)
             })
             .addCase(listApplicants.pending, (state) => {
                 state.err = null

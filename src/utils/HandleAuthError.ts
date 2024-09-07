@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 
 export const handleAuthError = (state: any, payload: any) => {
-    console.log(payload)
+    console.log(payload,'----------')
     if (payload === 'Token') {
         state.user = null;
         state.role = null

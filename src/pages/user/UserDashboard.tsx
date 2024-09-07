@@ -56,7 +56,7 @@ function UserDashboard() {
             <div className="flex z-10 flex-col self-start mr-0">
               <div className="text-xl leading-tight">Total Jobs Applied</div>
               <div className="self-start mt-7 text-7xl leading-none text-center max-md:text-4xl">
-                {application.length ?? 0}
+                {application?.length ?? 0}
               </div>
             </div>
             <img
