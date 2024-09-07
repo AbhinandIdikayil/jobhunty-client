@@ -120,12 +120,28 @@ function Header({ func, open }: props) {
                                     </div>
                                     {
                                         notifications?.length > 0 &&
-                                        notifications?.map((data: any, ind: number) => (
-                                            <div key={ind+data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
-                                                <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
-                                                {data?.content?.content}
-                                            </div>
-                                        ))
+                                        notifications?.map((data: any, ind: number) => {
+                                            console.log(data)
+                                            return data?.from ? (
+                                                <div key={ind + data?.from} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1 border rounded shadow-md">
+                                                    <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                    {data?.data}
+                                                    <h1 className='pl-1'>from : {data?.from} </h1>
+                                                    <a href={data?.link}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"  >
+                                                        <h1 className='px-1 bg-indigo-600 text-white font-bold text-center'>
+                                                            click to join
+                                                        </h1>
+                                                    </a>
+                                                </div>
+                                            ) : (
+                                                <div key={ind + data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                                    <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                    {data?.content?.content}
+                                                </div>
+                                            )
+                                        })
                                     }
                                 </div>
                             </div>

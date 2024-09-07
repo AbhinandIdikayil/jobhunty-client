@@ -26,7 +26,6 @@ function ApplicantDetails() {
     const params = useParams()
     const [loading, setLoading] = useState<boolean>(false)
     const [modalOpen, setOpen] = useState<boolean>(false)
-
     const { id } = params
 
     function handleGoBack() {

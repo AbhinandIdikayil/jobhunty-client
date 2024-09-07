@@ -81,9 +81,7 @@ function SendMessage({ setMessages }: { setMessages: any }) {
             }
 
             socket.on('recieve-message', handleReceiveMessage);
-
             socket.on('message-read', handleReadMesage)
-
             return () => {
                 socket.off('recieve-message', handleReceiveMessage);
                 socket.off('message-read', handleReadMesage)
@@ -139,7 +137,6 @@ function SendMessage({ setMessages }: { setMessages: any }) {
             }
         }
     }
-
 
     return (
         <>

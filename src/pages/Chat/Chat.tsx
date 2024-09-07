@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Loading from 'src/components/common/Loading'
 import Sidebar from 'src/components/chat/Sidebar'
-import { UseChatSocketContext } from 'src/context/ChatSocketContext'
 import SendMessage from 'src/components/chat/SendMessage';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +10,6 @@ import { CheckCheck } from 'lucide-react';
 
 function Chat() {
     const [loading, setLoading] = useState<boolean>(false);
-    // const { socket, setSocketConnected } = UseChatSocketContext()
     const user = useSelector((state: RootState) => state?.user?.user)
     const chat = useSelector((state: RootState) => state?.chat)
     const [messages, setMessages] = useState<any>([])

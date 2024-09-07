@@ -2,11 +2,11 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Backdrop, CircularProgress } from '@mui/material'
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { ChevronDown, ChevronLeftIcon, ChevronRightIcon, MoreHorizontal } from 'lucide-react'
+import { ChevronDown, ChevronLeftIcon, ChevronRightIcon, LoaderCircle, MoreHorizontal } from 'lucide-react'
 import { useEffect, useState, memo } from 'react'
+import { FaClosedCaptioning } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { UseDebounce } from 'src/hooks/Debounce'
@@ -17,7 +17,6 @@ import { prop } from 'src/types/AllTypes'
 import { getAllJobsEntity } from 'src/types/Job'
 
 function CompanyJobListing() {
-
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const jobState = useSelector((state: RootState) => state?.job)
@@ -48,26 +47,20 @@ function CompanyJobListing() {
     const fetchData = async (page: number, pageSize: number, name?: string, category?: string, employment?: string) => {
         try {
             setLoading(true)
-            await dispatch(getAllJob(
-                {
+            await dispatch(getAllJob({
                     _id: userState?.user?._id,
                     page,
                     pageSize,
                     name,
                     employment,
                     category
-                }
-            )).unwrap()
-
-            setLoading(false)
+                })).unwrap()
         } catch (error) {
-            setLoading(false)
             console.log(error)
+        } finally {
+            setLoading(false)
         }
     }
-
-
-
 
     function handleNavigation(id: string) {
         dispatch(setJobById(id))
@@ -208,23 +201,13 @@ function CompanyJobListing() {
     useEffect(() => {
         setLoading(true)
         fetchData(pagination.pageIndex + 1, pagination.pageSize, debounceSearchQuery);
-        console.log(jobState?.jobs?.jobs)
-    }, [pagination.pageIndex, pagination.pageSize, debounceSearchQuery]);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pagination?.pageIndex, pagination?.pageSize, debounceSearchQuery]);
 
-    if (loading) {
-        return (
-            <Backdrop
-                open={loading}
-                sx={{ color: 'white', backgroundColor: 'rgba( 9,9,9,0.2)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
-        )
-    }
 
     return (
-        <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
-            <div className="w-full">
+        <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 h-full`}>
+            <div className="w-full h-full">
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Search jobs..."
@@ -259,8 +242,16 @@ function CompanyJobListing() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <div className="rounded-md border" >
-                    <Table>
+                {
+                        loading && (
+                            <div className='h-full  flex justify-center items-center'>
+                                <LoaderCircle className='animate-spin' size={30} />
+                            </div>
+                        )
+                    }
+                <div className="rounded-md border w-full" >
+                   
+                    <Table className='w-full'>
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <TableRow key={headerGroup.id}>
@@ -357,4 +348,6 @@ function CompanyJobListing() {
     )
 }
 
-export default memo(CompanyJobListing)
+
+export const JobListingCompanySide = memo(CompanyJobListing)
+// export default 

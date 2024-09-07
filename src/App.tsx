@@ -32,7 +32,7 @@ import 'react-profile/themes/default'
 import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
-import CompanyJobListing from './components/company/CompanyJobListing'
+import { JobListingCompanySide } from './components/company/CompanyJobListing'
 import Chat from './pages/Chat/Chat'
 import JobDetails from './pages/user/JobDetails'
 import CompanyDetails from './pages/user/CompanyDetails'
@@ -129,7 +129,7 @@ function App() {
             <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<Applicants />} />
             <Route path='applicants/:id' element={<ApplicantDetails />} />
-            <Route path='job-list' element={<CompanyJobListing />} />
+            <Route path='job-list' element={<JobListingCompanySide />} />
             <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='job-list/applicants/:id' element={<ApplicantsOfJob />} />
             <Route path='schedules' element={<Schedules />} />

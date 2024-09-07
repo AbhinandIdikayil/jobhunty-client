@@ -9,12 +9,18 @@ import { toast } from 'react-toastify'
 import { memo } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/store'
+import { UseChatSocketContext } from 'src/context/ChatSocketContext'
 
-function InterviewList({applcantId, email, setLoading, date, image, name, testType, time, ind, room }:
-    {applcantId:any, email: string, setLoading: (prev: boolean) => void, date: any, image: any, name: string, testType: string, time: string, ind: number, room: string }) {
+function InterviewList({  applcantId, email, setLoading, date, image, name, testType, time, ind, room }:
+    { applcantId: any, email: string, setLoading: (prev: boolean) => void, date: any, image: any, name: string, testType: string, time: string, ind: number, room: string }) {
     const user = useSelector((state: RootState) => state?.user);
+    const { socket } = UseChatSocketContext()
     const navigate = useNavigate()
     const handleNavigation = async () => {
+
+        socket?.emit('interviewer',{from:user?.user?.name,to:applcantId,link:`/home/interview/${room}=${applcantId}`,
+            data:'Your interview has just started'})
+
         setLoading(true)
         try {
             if (room) {
