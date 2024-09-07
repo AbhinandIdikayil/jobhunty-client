@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
+import { AXIOS_INSTANCE_AUTH, AXIOS_INSTANCE_COMPANY, AXIOS_INSTANCE_JOB, AXIOS_INSTANCE_USER } from "src/constants/axiosInstance";
 
 
 export const adminLogin = createAsyncThunk(
@@ -73,3 +73,38 @@ export const updateApproval = createAsyncThunk(
 
 
 
+export const addSkill = createAsyncThunk(
+    'admin/add-skill',
+    async (req: any, { rejectWithValue }) => {
+        try {
+            const { data } = await AXIOS_INSTANCE_JOB.post('/skill', { data: req })
+            return data
+        } catch (error: any) {
+            return rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const editSkill = createAsyncThunk(
+    'admin/edit-skill',
+    async (req: any, { rejectWithValue }) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.put('/skill',{data:req})
+            return data
+        } catch (error:any) {
+            return rejectWithValue(error?.response?.data)
+        }
+    }
+)
+
+export const listSkills = createAsyncThunk(
+    'admin/list-skill',
+    async (_,{rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.get('/skill')
+            return data
+        } catch (error) {
+            return rejectWithValue(error)
+        }
+    }
+)

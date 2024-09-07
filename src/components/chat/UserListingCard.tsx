@@ -13,6 +13,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
     const [chatDetails, setChatDetails] = useState<any>()
     const users = useSelector((state: RootState) => state?.admin)
     const chat = useSelector((state: RootState) => state?.chat)
+    const user = useSelector((state:RootState)=> state?.user?.user)
     const location = useLocation()
     const { socket } = UseChatSocketContext()
     const [onlineUsers, setOnlineUsers] = useState<any>([]);
@@ -72,12 +73,14 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
         if (data) {
             filterChat().then(data => data).catch(err => console.log(err))
         }
-        console.log('---------user listing cards -----------')
     }, [])
 
     useEffect(() => {
         if (socket && socket?.connected) {
+            socket.emit('setup', user)
+
             const handleOnlineUsers = (val: any) => {
+                console.log(val)
                 const users = val?.filter((user: any) => user.role === 'user');
                 const companies = val?.filter((user: any) => user.role === 'company');
                 if (location.pathname === '/company/messages') {
@@ -93,7 +96,9 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
             }
         }
 
-    }, [socket])
+    }, [socket,user,location.pathname])
+
+
 
     useEffect(() => {
         listMessage()
@@ -117,6 +122,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                 if (data?.members[0] === val?.userId) {
                                     return (
                                         <div
+                                        key={val?.userId}
                                             className={`  
                                             bg-green-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-lg shadow-lg`}
@@ -126,6 +132,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                     )
                                 } else {
                                     return (<div
+                                    key={val?.userId}
                                         className={`  
                                             bg-blue-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-lg shadow-lg`}
@@ -146,7 +153,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                 onlineCompanies?.map((val: any) => {
                                     if (data?.members[1] == val?.userId) {
                                         return (
-                                            <div
+                                            <div key={val?.userId}
                                                 className={`  
                                             bg-green-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}
@@ -156,7 +163,7 @@ function UserListingCard({ data, setLoading, setMessages }: { data: any, setLoad
                                         )
                                     } else {
                                         return (
-                                            <div
+                                            <div key={val?.userId}
                                                 className={`  
                                             bg-blue-500          
                                     w-[8px] h-[8px] absolute right-0 top-2 rounded-md shadow-lg`}

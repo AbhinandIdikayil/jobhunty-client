@@ -25,6 +25,7 @@ function ExploreByCategory() {
                 <div className="mt-0 sm:mt-12  max-md:max-w-full pb-3">
                     <div className="flex flex-wrap w-full justify-items-startmax-md:flex-col ">
                         {
+                            category?.sectors?.length > 0 &&
                             category?.sectors?.map((data:any) => (
                                 <CategoryCard  name={data?.name} image={data?.image} count={data?.jobs} />
                             ))

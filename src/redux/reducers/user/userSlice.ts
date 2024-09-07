@@ -34,7 +34,7 @@ const userSlice = createSlice({
                     ...state,
                     user: {
                         ...state.user,
-                        experiences: state.user.experiences.filter((data, index) => index !== payload && data)
+                        experiences: state.user.experiences.filter((data:any, index:number) => index !== payload && data)
                     }
                 };
             }
@@ -216,7 +216,7 @@ const userSlice = createSlice({
             })
             .addCase(sendRequest.rejected, (state, { payload }) => {
                 state.loading = false
-                state.err = payload
+                state.err = payload as string
                 handleAuthError(state,payload)
             })
             .addCase(adminLogin.pending, (state) => {
@@ -233,7 +233,7 @@ const userSlice = createSlice({
                 state.loading = false
                 state.user = null
                 state.role = null
-                state.err = payload
+                state.err = payload as string; 
             })
             .addCase(getUser.pending, (state) => {
                 state.loading = true
@@ -247,7 +247,7 @@ const userSlice = createSlice({
             })
             .addCase(getUser.rejected, (state, { payload }) => {
                 state.loading = false
-                state.err = payload?.message
+                state.err = payload as string
                 handleAuthError(state,payload)
             })
             .addCase(updateUserProfile.pending, (state) => {
@@ -264,7 +264,7 @@ const userSlice = createSlice({
             })
             .addCase(updateUserProfile.rejected, (state, { payload }) => {
                 state.loading = false
-                state.err = payload
+                state.err = payload as string
                 handleAuthError(state,payload)
             })
     }

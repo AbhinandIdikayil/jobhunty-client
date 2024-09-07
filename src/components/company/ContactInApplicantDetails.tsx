@@ -28,7 +28,7 @@ function ContactInApplicantDetails({email,socialLink}:{email: string,socialLink:
                             <Instagram />
                             <div className="flex flex-col">
                                 <div className="text-slate-500">Instagram</div>
-                                <div className="text-indigo-600"> {socialLink[0].substr(12)} </div>
+                                <div className="text-indigo-600"> {socialLink[0]?.substr(12)} </div>
                             </div>
                         </>
                     )
@@ -38,14 +38,14 @@ function ContactInApplicantDetails({email,socialLink}:{email: string,socialLink:
                 <Twitter />
                 <div className="flex flex-col">
                     <div className="text-slate-500">Twitter</div>
-                    <div className="text-indigo-600"> {socialLink?.[1].substr(12)} </div>
+                    <div className="text-indigo-600"> {socialLink?.[1]?.substr(12)} </div>
                 </div>
             </div>
             <div className="flex gap-4 items-start mt-4 whitespace-nowrap">
                 <Linkedin />
                 <div className="flex flex-col">
                     <div className="text-slate-500">Linked in </div>
-                    <div className="text-indigo-600"> {socialLink?.[2].substr(12)} </div>
+                    <div className="text-indigo-600"> {socialLink?.[2]?.substr(12)} </div>
                 </div>
             </div>
             <div className="flex gap-4 items-start mt-4 whitespace-nowrap">

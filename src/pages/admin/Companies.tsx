@@ -1,10 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { File, ListFilter, MoreHorizontal, PlusCircle } from "lucide-react"
+import { File, ListFilter, PlusCircle } from "lucide-react"
 import { useOutletContext } from 'react-router-dom'
 import { prop } from 'src/types/AllTypes'
 import { useDispatch, useSelector } from "react-redux"
@@ -20,7 +19,7 @@ function Companies() {
     const state = useSelector((state: RootState) => state.admin)
 
     useEffect(() => {
-        dispatch(listAllCompanies()).unwrap()
+        dispatch(listAllCompanies('')).unwrap()
     }, [])
 
 
@@ -56,78 +55,10 @@ function Companies() {
                 return <div>{row.original?.locations?.[0]}</div>
             }
         },
-        // {
-        //     id: "actions",
-        //     header: 'Actions',
-        //     enableHiding: false,
-        //     cell: ({ row }) => {
-        //         return (
-        //             <DropdownMenu>
-        //                 <DropdownMenuTrigger asChild>
-        //                     <Button variant="ghost" className="h-8 w-8 p-0">
-        //                         <span className="sr-only">Open menu</span>
-        //                         <MoreHorizontal className="h-4 w-4" />
-        //                     </Button>
-        //                 </DropdownMenuTrigger>
-        //                 <DropdownMenuContent align="end">
-        //                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        //                     {
-        //                         row.original.status ? (
-        //                             <DropdownMenuItem
-        //                                 className='
-        //                               border
-        //                               font-bold
-        //                               bg-indigo-600
-        //                               text-white
-        //                               '
-        //                                 onClick={() => handleRemove(row.original._id)}
-        //                             >
-        //                                 undo
-        //                             </DropdownMenuItem>
-        //                         ) : (
-        //                             <DropdownMenuItem
-        //                                 className='
-        //                               border
-        //                               font-bold
-        //                               bg-red-600
-        //                               '
-        //                                 onClick={() => handleRemove(row.original._id)}
-        //                             >
-        //                                 remove
-        //                             </DropdownMenuItem>
-
-        //                         )
-        //                     }
-
-        //                     <DropdownMenuItem
-        //                         className='
-        //                               border
-        //                               font-bold
-        //                               '
-        //                         onClick={() => navigate(
-        //                             '/admin/home/update',
-        //                             {
-        //                                 state: {
-        //                                     _id: row.original._id,
-        //                                     name: row.original.name,
-        //                                     description: row.original.description,
-        //                                     image: row.original.image
-        //                                 }
-        //                             }
-        //                         )}
-        //                     >
-        //                         Edit
-        //                     </DropdownMenuItem>
-        //                     <DropdownMenuSeparator />
-        //                 </DropdownMenuContent>
-        //             </DropdownMenu>
-        //         )
-        //     },
-        // },
     ]
 
     const table = useReactTable({
-        data: state?.companies ?? [],
+        data: state?.companies?.companies ?? [],
         columns,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),

@@ -29,9 +29,14 @@ const experienceSchema = z.object({
     from: z.date({ required_error: 'Start date is required' }).refine(date => date <= new Date(), {
       message: 'Start date must be in the past'
     }),
-    to: z.date({ required_error: 'End date is required' }).refine(date => date <= new Date(), {
-      message: 'End date must be in the past'
-    }).optional()
+    to: z.preprocess(arg => {
+      if (typeof arg === 'string' || arg instanceof Date) {
+        return new Date(arg);
+      }
+      return arg;
+    }, z.date({ required_error: 'End date is required' }).refine(date => date <= new Date(), {
+      message: 'End date must be in the past',
+    }).optional())
   }).refine(data => {
     if (data.to) {
       return data.from <= data.to;
@@ -83,6 +88,14 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
 
   const state = useSelector((state: RootState) => state?.user);
   const dispatch: AppDispatch = useDispatch()
+  const toDate = state?.user?.experiences?.[ind]?.year?.to
+    ? new Date(state?.user?.experiences?.[ind]?.year?.to)
+    : undefined;
+
+  const fromDate = state?.user?.experiences?.[ind]?.year?.from
+    ? new Date(state?.user?.experiences?.[ind]?.year?.from)
+    : undefined;
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -94,8 +107,8 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
           company: state?.user?.experiences?.[ind]?.company,
           description: state?.user?.experiences?.[ind]?.description,
           year: {
-            from: new Date(state?.user?.experiences?.[ind]?.year?.from),
-            to: new Date(state?.user?.experiences?.[ind]?.year?.to || Date.now())
+            from: fromDate || undefined,
+            to: toDate || undefined,
           },
         }
       ]
@@ -112,17 +125,17 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
     }));
 
     const payload = {
-      experiences: state.user?.experiences?.map((data, index) => {
+      experiences: state.user?.experiences?.map((data:any, index:number) => {
         return index == ind ? updatedEducation[0] : data
       })
     };
     try {
       dispatch(updateUserProfile(payload)).unwrap()
-      toast.success('experience updated succesfully',{position:'top-center'})
+      toast.success('experience updated succesfully', { position: 'top-center' })
       setOpen(false)
     } catch (error: any) {
       console.log(error)
-      toast.error(error?.message,{position:'top-center'})
+      toast.error(error?.message, { position: 'top-center' })
       setOpen(false)
     }
   }
@@ -130,7 +143,6 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-0">
-
         <FormField
           control={form.control}
           name={`experiences.${0}.title`}
@@ -150,9 +162,7 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
           name={`experiences.${0}.company`}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>company name
-
-              </FormLabel>
+              <FormLabel> company name </FormLabel>
               <FormControl>
                 <Input  {...field} />
               </FormControl>
@@ -215,7 +225,7 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
                   <input
                     className='border border-solid border-gray-400'
                     type='date'
-                    value={field.value ? formatDate(field.value || '') : ''}
+                    value={field?.value ? formatDate(field.value ?? '') : ''}
                     onChange={(e) => {
                       const valueAsDate = e.target.value ? new Date(e.target.value) : null;
                       field.onChange(valueAsDate);
@@ -239,7 +249,7 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
                   <input
                     className='border border-solid border-gray-400'
                     type='date'
-                    value={field?.value ? formatDate(field.value || '') : ''}
+                    value={field?.value ? formatDate(field.value ?? '') : ''}
                     onChange={(e) => {
                       const valueAsDate = e.target.value ? new Date(e.target.value) : null;
                       field.onChange(valueAsDate);
@@ -251,12 +261,8 @@ function EditEducationForm({ setOpen, ind }: UserEditExperience) {
             )}
           />
         </div>
-
         <AlertDialogCancel onClick={() => setOpen(false)} className="">Cancel</AlertDialogCancel>
-        {/* <AlertDialogAction> */}
         <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button>
-        {/* </AlertDialogAction> */}
-
       </form>
     </Form>
   )

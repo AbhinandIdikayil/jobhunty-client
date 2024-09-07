@@ -1,12 +1,12 @@
+import { formatDateToThree } from "src/utils/formateDate";
 
 function CompanyDetailsHeader({data}:{data:any}) {
   return (
-    <div className="flex flex-wrap gap-6 items-center">
+    <div className="flex flex-wrap gap-3 items-center w-full">
       <img
         loading="lazy"
         srcSet={data?.images}
-        // srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/4a10562975cce996670684a9d3c324fb06acf212c2358a5e565d80f420481218?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-        className="object-contain shrink-0 self-stretch my-auto aspect-square w-[189px]"
+        className="object-contain shrink-0 self-stretch my-auto aspect-square w-1/6"
       />
       <div className="flex flex-col self-stretch my-auto min-w-[240px] max-md:max-w-full">
         <div className="flex flex-col self-start">
@@ -18,7 +18,7 @@ function CompanyDetailsHeader({data}:{data:any}) {
               43 Jobs
             </div> */}
           </div>
-          <a href="https://stripe.com" className="mt-3 text-base font-semibold leading-relaxed text-indigo-600">
+          <a href={data?.website} target="_blank" className="mt-3 text-base font-semibold leading-relaxed text-indigo-600">
           {data?.website}
           </a>
         </div>
@@ -33,7 +33,7 @@ function CompanyDetailsHeader({data}:{data:any}) {
             </div>
             <div className="flex flex-col self-stretch my-auto text-base leading-relaxed">
               <div className="text-slate-600">Founded</div>
-              <div className="font-semibold text-slate-800">  {data?.foundedDate || 'non disclosable'} </div>
+              <div className="font-semibold text-slate-800">  {data?.foundedDate && formatDateToThree(data?.foundedDate) || 'non disclosable'} </div>
             </div>
           </div>
           <div className="flex gap-4 items-center">

@@ -5,6 +5,8 @@ import { AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { resetState } from "../../redux/reducers/user/userSlice";
 import { googleLogout } from '@react-oauth/google'
+import { reset } from "src/redux/reducers/jobSlice";
+import { resetChat } from "src/redux/reducers/ChatSlice";
 
 export default function DropDown() {
 
@@ -14,6 +16,8 @@ export default function DropDown() {
     async function handleLogout() {
         try {
             let data = await dispatch(logout(undefined))
+            dispatch(reset())
+            dispatch(resetChat())
             if (data) {
                 googleLogout()
                 dispatch(resetState())

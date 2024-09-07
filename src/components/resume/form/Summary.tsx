@@ -1,18 +1,18 @@
 import { Button } from '@/components/ui/button';
 import { Brain, LoaderCircle } from 'lucide-react';
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
-import { AIChatSession } from '../../../../service/AIModal'
+import { AIChatSession } from '../../../service/AIModal'
 
-const prompt="Job Title: {jobTitle} , Depends on job title give me list of  summary for 3 experience level, Mid Level and Fresher level in 3 -4 lines in array format, With summary and experience_level Field in JSON Format"
+const prompt = "Job Title: {jobTitle} , Depends on job title give me list of  summary for 3 experience level, Mid Level and Fresher level in 3 -4 lines in array format, With summary and experience_level Field in JSON Format"
 
 function Summary({ enabledNext }: { enabledNext: any }) {
 
   const { resume, setResume } = UseResumeContext();
   const [summery, setSummery] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [aiGeneratedSummeryList, setAiGenerateSummeryList] = useState();
+  const [aiGeneratedSummeryList, setAiGenerateSummeryList] = useState([]);
 
   const GenerateSummeryFromAI = async () => {
     setLoading(true)
@@ -27,27 +27,21 @@ function Summary({ enabledNext }: { enabledNext: any }) {
 
 
 
-  const onSave = (e) => {
+  const onSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setLoading(true)
-    const data = {
-      data: {
-        summery: summery
-      }
-    }
     enabledNext(true);
     setLoading(false);
     toast("Details updated")
 
   }
 
-  useEffect(()=>{
-    summery&&setResume({
-        ...resume,
-        summery:summery
+  useEffect(() => {
+    summery && setResume({
+      ...resume,
+      summery: summery
     })
-},[summery])
+  }, [summery])
 
   return (
     <div>
@@ -63,7 +57,7 @@ function Summary({ enabledNext }: { enabledNext: any }) {
               <Brain className='h-4 w-4' />  Generate from AI</Button>
           </div>
           <textarea className="mt-5 w-full h-32 p-2 border-2 border-solid border-black rounded" required
-            
+
             value={summery}
             defaultValue={summery ? summery : resume?.summery}
             onChange={(e) => setSummery(e.target.value)}
@@ -78,17 +72,21 @@ function Summary({ enabledNext }: { enabledNext: any }) {
       </div>
 
 
-      {aiGeneratedSummeryList && <div className='my-5'>
-        <h2 className='font-bold text-lg'>Suggestions</h2>
-        {aiGeneratedSummeryList?.map((item: any, index: any) => (
-          <div key={index}
-            onClick={() => setSummery(item?.summary)}
-            className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
-            <h2 className='font-bold my-1 text-primary'>Level: {item?.experience_level}</h2>
-            <p>{item?.summary}</p>
-          </div>
-        ))}
-      </div>}
+      {
+        aiGeneratedSummeryList &&
+        <div className='my-5'>
+          <h2 className='font-bold text-lg'>Suggestions</h2>
+          {
+            aiGeneratedSummeryList?.map((item: any, index: any) => (
+              <div key={index}
+                onClick={() => setSummery(item?.summary)}
+                className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
+                <h2 className='font-bold my-1 text-primary'>Level: {item?.experience_level}</h2>
+                <p>{item?.summary}</p>
+              </div>
+            ))}
+        </div>
+      }
 
     </div>
   )

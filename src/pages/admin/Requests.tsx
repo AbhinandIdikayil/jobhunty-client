@@ -48,6 +48,7 @@ function Requests() {
 
     const columns: ColumnDef<CompanyRequest>[] = [
         {
+            id:'name',
             accessorKey: 'companyId.name',
             header: () => <div className="text-left">Name</div>,
             cell: ({ row }) => {
@@ -125,9 +126,9 @@ function Requests() {
                 <div className="flex items-center py-4">
                     <Input
                         placeholder="Filter emails..."
-                        value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("email")?.setFilterValue(event.target.value)
+                            table.getColumn("name")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />

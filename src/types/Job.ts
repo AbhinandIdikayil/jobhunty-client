@@ -4,7 +4,7 @@ import { JobApplication } from "./applicationApplicants"
 export type JobReducer = {
     loading: boolean,
     err: null | any,
-    jobs: getAllJobsEntity[],
+    jobs: getAllJobsEntity | any
     job: getAllJobsEntity | null,
     applicant: JobApplication | null
     applicants: JobApplication[]
@@ -34,7 +34,7 @@ export interface applicants {
 
 export interface getAllJobsEntity {
     _id?: string,
-    job?: {
+    jobs?: {
         _id?: string,
         jobTitle?: string,
         employment?: string,
@@ -46,6 +46,75 @@ export interface getAllJobsEntity {
         responsibilities?: [string],
         skills?: [string],
         qualification?: [string],
+        createdAt?: Date,
+        updatedAt?: Date,
+        status?: boolean,
+        applicants?: {
+            _id?: string,
+            companyId?: string,
+            jobId?: string,
+            deleted?: boolean,
+            userId?: string,
+            hiring_status?: string,
+            resume?: string,
+            answers?: [],
+            createdAt?: Date,
+            hiring_info?: [{
+                name?: string,
+                notes?: string,
+            }],
+        },
+        company?: {
+            _id?: string,
+            email?: string,
+            name?: string,
+            password?: string,
+            description?: string,
+            locations?: [string],
+            industry?: string,
+            images?: string,
+            benefits?: [],
+            foundedDate?: null,
+            teams?: [],
+            techStack?: [string],
+            website?: string,
+            employees?: string,
+            approvalStatus?: string,
+            socialLinks?: [string],
+            isBlocked?: boolean,
+            createdAt?: Date,
+            LinkedInLink?: string,
+            profileCompletionStatus?: string
+        },
+        employmentDetails?: {
+            _id?: string,
+            name?: string,
+            description?: string,
+            image?: string,
+            status?: false,
+            createdAt?: string,
+        },
+        categoryDetails?: {
+            _id?: string,
+            name?: string,
+            image?: string,
+            isDeleted?: boolean,
+            createdAt?: Date,
+        }
+    }[],
+    job: {
+        _id?: string,
+        jobTitle?: string,
+        employment?: string,
+        description?: string,
+        category?: string,
+        salaryrange?: { from?: 10000, to?: 1000000 },
+        companyId?: string,
+        expiry?: Date,
+        responsibilities?: [string],
+        skills?: [string],
+        qualification?: [string],
+        location?: [string],
         createdAt?: Date,
         updatedAt?: Date,
         status?: boolean,
@@ -126,8 +195,9 @@ export interface getAllJobsEntity {
         LinkedInLink?: string,
         profileCompletionStatus?: string
     },
+    description: string,
     jobTitle?: string,
-    locations?: [string],
+    location?: [string],
     responsibilities?: [string],
     skills?: [string],
     qualification?: [string],

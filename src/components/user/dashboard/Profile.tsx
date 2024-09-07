@@ -8,33 +8,37 @@ import { deepOrange } from '@mui/material/colors';
 import UserEditProfile from './EditProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { Delete, DeleteIcon, Edit, Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, PlusIcon, Smartphone, Trash2, Twitter } from 'lucide-react';
+import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Trash2, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
 import { FaAward, FaUniversity } from 'react-icons/fa'
 import AddExperience from './AddExperience';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { handleFileChange } from 'src/utils/validatePdf';
-import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { removeExperienceAndUpdateUserProfile, updateUserProfile } from 'src/redux/actions/userAction';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import AddSkills from './AddSkills';
-import { removeExperienceState } from 'src/redux/reducers/user/userSlice';
 import { formatDate } from 'src/utils/formateDate';
 import EditEducation from './EditEducation';
 import EditExperience from './EditExperience';
+import Multiselect from 'multiselect-react-dropdown';
+import { listSkills } from 'src/redux/actions/adminAction';
+
 
 function Profile() {
+    const skills = useSelector((state: RootState) => state?.admin?.skills) //!
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state.user);
     const dispatch: AppDispatch = useDispatch()
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [pdf, setPdf] = useState()
-    const [pdfUrl, setPdfUrl] = useState()
+    const [pdf, setPdf] = useState<any>()
+    const [pdfUrl, setPdfUrl] = useState<any>()
     const [modal, setModal] = useState<boolean>(false)
-
+    const [skill, setSkills] = useState<any>([])
+    const [selectedSkills, setSelectedSkills] = useState<any>([])
 
     function handleClick() {
         if (fileInputRef.current) {
@@ -46,7 +50,7 @@ function Profile() {
     function formatDateRange(dateStr: string) {
         const date = new Date(dateStr);
 
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        const options: any = { year: 'numeric', month: 'short', day: 'numeric' };
         return date.toLocaleDateString('en-US', options);
     }
 
@@ -55,6 +59,7 @@ function Profile() {
         if (image) {
             setPdfUrl(image)
             let url = URL.createObjectURL(image)
+            console.log(url)
             setPdf(url)
         }
     }
@@ -84,7 +89,28 @@ function Profile() {
             console.error('Failed to remove experience and update profile:', error);
         }
     }
+    async function saveSkill() {
+        const newSKill = skill?.map((data: any) => data?.name);
+        try {
+            console.log(skill)
+            console.log(newSKill)
+            let data = await dispatch(updateUserProfile({ skills: newSKill })).unwrap()
+            console.log(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    function setSelectedSkill() {
+        const matchingSkills = skills.filter(skill => state?.user?.skills?.includes(skill.name));
+        console.log(matchingSkills)
+        setSelectedSkills(matchingSkills)
+    }
+    // ml
+    useEffect(() => {
+        dispatch(listSkills()).unwrap()
+        setSelectedSkill()
+    }, [])
     return (
         <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full '}max-md:ml-0`}>
             <div className="justify-between">
@@ -107,7 +133,6 @@ function Profile() {
                                     {
                                         state?.user?.coverImage ? (
                                             <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 126, height: 126 }} />
-
                                         ) : (
                                             <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
                                         )
@@ -134,17 +159,9 @@ function Profile() {
                                                     />
                                                     <div>Manchester, UK</div>
                                                 </div>
-                                                <div className="flex gap-2.5 justify-center px-6 py-3 mt-2 text-base text-center text-emerald-300 rounded-lg bg-emerald-300 bg-opacity-10 max-md:px-5">
-                                                    <img
-                                                        loading="lazy"
-                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/49168d812fdf6da7a7a7aac95f8d09653973067c39a759a55c09b94fdce7b1dd?"
-                                                        className="shrink-0 w-6 aspect-square"
-                                                    />
-                                                    <div>OPEN FOR OPPORTUNITIES</div>
-                                                </div>
                                             </div>
                                         </div>
-                                        <div className="flex flex-col ml-5 w-[31%] items-center max-md:ml-0 max-md:w-full">
+                                        <div className="flex flex-col w-[31%] items-center max-md:ml-0 max-md:w-full">
                                             <UserEditProfile name={state?.user?.name} />
                                         </div>
                                     </div>
@@ -177,7 +194,7 @@ function Profile() {
                                     </div>
                                 </div>
                                 {
-                                    state?.user?.experiences?.map((data, ind) => (
+                                    state?.user?.experiences?.map((data: any, ind: number) => (
                                         <div key={ind} className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap max-md:px-5">
                                             <FaAward size={60} />
                                             <div className="flex flex-col max-md:max-w-full">
@@ -217,7 +234,7 @@ function Profile() {
                             </div>
 
 
-                            <div className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
+                            <div key={'hai'} className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
                                 <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Education
@@ -227,10 +244,9 @@ function Profile() {
                                     </div>
                                 </div>
                                 {
-                                    state?.user?.education?.map((data, index) => (
+                                    state?.user?.education?.map((data: any, index: number) => (
                                         <>
-
-                                            <div className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap ">
+                                            <div key={data?.university + index} className="flex gap-5 justify-between px-6 py-6 bg-white max-md:flex-wrap ">
                                                 <div className=''>
                                                     <FaUniversity size={50} />
                                                 </div>
@@ -256,14 +272,10 @@ function Profile() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
+                                            <div key={index} className="shrink-0 max-w-full h-px bg-zinc-200 w-full max-md:mr-1" />
                                         </>
                                     ))
                                 }
-
-                                {/* <div className="self-center text-base font-semibold leading-6 text-center text-indigo-600">
-                                    Show 3 more experiences
-                                </div> */}
                             </div>
 
                             <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
@@ -277,25 +289,31 @@ function Profile() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex flex-wrap gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
+                                <Multiselect
+                                    displayValue="name"
+                                    options={skills}
+                                    selectedValues={selectedSkills}
+                                    onSelect={(e) => setSkills(e)}
+                                />
+                                {/* <div className="flex flex-wrap gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
                                     {
-                                        state?.user?.skills?.map((data: string) => (
-                                            <div className="px-3 py-1 whitespace-nowrap bg-slate-50">
+                                        state?.user?.skills?.map((data: string, ind: number) => (
+                                            <div key={data + ind} className="px-3 py-1 whitespace-nowrap bg-slate-50">
                                                 {data}
                                             </div>
                                         ))
                                     }
-                                </div>
+                                </div> */}
 
                             </div>
                             <div className='flex mt-3'>
-                                <button className='bg-indigo-600 w-full text-white font-bold p-2'>
+                                <button type='button' onClick={saveSkill} className='bg-indigo-600 w-full text-white font-bold p-2'>
                                     save
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col ml-5 w-[33%] max-md:ml-0 max-md:w-full">
+                    <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col max-md:mt-6">
                             <div className="flex flex-col p-6 w-full bg-white border border-gray-500 rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
@@ -344,12 +362,11 @@ function Profile() {
                                 <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
                                     <Accordion type="single" collapsible className="w-full">
                                         {
-                                            state?.user?.resumes?.map((data, index) => (
-                                                <AccordionItem value={`item-${index + 1}`}>
+                                            state?.user?.resumes?.map((data: any, index: number) => (
+                                                <AccordionItem key={index} value={`item-${index + 1}`}>
                                                     <AccordionTrigger>resume 1</AccordionTrigger>
                                                     <AccordionContent>
-                                                        <iframe height={400} src={state?.user?.resumes[index]} className='w-full sm:w-auto'>
-
+                                                        <iframe height={400} src={data} className='w-full sm:w-auto'>
                                                         </iframe>
                                                     </AccordionContent>
                                                 </AccordionItem>

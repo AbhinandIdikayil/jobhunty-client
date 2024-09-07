@@ -1,4 +1,4 @@
-import { AIChatSession } from '../../service/AIModal'
+import { AIChatSession } from '../service/AIModal'
 export const generateQuizQuestion = async (skills: string) => {
     const prompt = `Generate a quiz with ${5} multiple-choice questions about ${skills}. 
     Each question should have 4 options. Format the response as a JSON array of objects, 

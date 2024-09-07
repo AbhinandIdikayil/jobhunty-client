@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import Login from './pages/common/Login'
 import Signup from './pages/common/Signup'
 import './App.css'
@@ -24,7 +24,6 @@ const Requests = lazy(() => import('./pages/admin/Requests'))
 const UsersListing = lazy(() => import('./pages/admin/UsersListing'))
 const Companies = lazy(() => import('./pages/admin/Companies'))
 const UserDashboardHome = lazy(() => import('./components/user/dashboard/Home'));
-import UserDashboard from './components/user/dashboard/Dashboard'
 import Profile from './components/user/dashboard/Profile'
 import Categories from './pages/admin/Categories'
 import AddCategory from './pages/admin/AddCategory'
@@ -49,10 +48,22 @@ import ResumeView from './pages/resume/ResumeView'
 import { ResumeContextProvider } from './context/ResumeContext'
 import Quiz from './pages/quiz/Quiz'
 import Interview from './pages/Interview'
+import Call from './pages/call/Call'
+import UserDashboard from './pages/user/UserDashboard'
+import Skills from './pages/admin/Skills'
+import { setGlobalDispatch } from './redux/global'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from './redux/store'
 
 
 
 function App() {
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    setGlobalDispatch(dispatch);
+  }, [dispatch]);
 
   return (
     <Suspense fallback={
@@ -60,6 +71,7 @@ function App() {
         <CircularProgress color="inherit" />
       </Backdrop>
     }>
+      <Call />
       <Routes>
 
       ////! routes for user
@@ -67,7 +79,7 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='home' element={<UserLayout />} >
-          <Route path='interview/:room' element={<Interview />} />
+          <Route path='interview/:room' element={<Interview />} />  //! FOR INTERVIEW (VIDEO CALL)
           <Route index element={<Home />} />
           <Route path='jobs' element={<Jobs />} />
           <Route path='jobs/:id' element={<JobDetails />} />
@@ -147,6 +159,7 @@ function App() {
             <Route path='requests' element={<Requests />} />
             <Route path='companies' element={<Companies />} />
             <Route path='users' element={<UsersListing />} />
+            <Route path='skills' element={<Skills />} />
           </Route>
         </Route>
       </Routes>

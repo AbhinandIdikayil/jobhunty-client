@@ -24,7 +24,7 @@ function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => 
                     )
                 }
 
-                <div className="flex flex-col">
+                <div className="flex flex-col ">
                     {
                         location.pathname == '/home/jobs' ? (
                             <Link to={`/home/jobs/${data?._id}`} className="text-xl leading-6 text-slate-800 hover:underline">

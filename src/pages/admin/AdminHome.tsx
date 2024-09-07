@@ -74,7 +74,7 @@ function Dashboard() {
     setOpen(false);
   }, []);
 
-  const navLinks = ['', 'requests', 'companies', 'users','category','sector']
+  const navLinks = ['', 'requests', 'companies', 'users','category','sector', 'skills']
 
   return (
     <Box sx={{ display: 'flex' }}>

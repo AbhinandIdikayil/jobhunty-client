@@ -32,6 +32,7 @@ function UserEditProfile({ name }: UserEditProfileProps2) {
     return (
         <AlertDialog open={open}>
             <AlertDialogTrigger asChild>
+                
                 <div onClick={() => setOpen(true)} className="px-6 py-3 text-base font-bold leading-6 text-center text-indigo-600 border border-gray-500 rounded max-md:px-5 max-md:mt-10 hover:cursor-pointer">
                     Edit Profile
                 </div>

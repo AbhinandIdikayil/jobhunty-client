@@ -154,7 +154,7 @@ export const updateUserProfile = createAsyncThunk(
 
 export const removeExperienceAndUpdateUserProfile = createAsyncThunk(
   'updateprofile/remove-experience',
-  async (ind, { dispatch, getState }) => {
+  async (ind:number, { dispatch, getState }) => {
     dispatch(removeExperienceState(ind))
     const updatedUserState = getState() as RootState;
     // Dispatch the updateUserProfile action

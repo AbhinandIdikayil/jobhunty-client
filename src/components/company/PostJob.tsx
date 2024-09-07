@@ -10,20 +10,38 @@ import { AppDispatch, RootState } from 'src/redux/store';
 import { prop } from 'src/types/AllTypes';
 import { postJobValidationSchema } from 'src/validation/company';
 import { LocationInput } from '../common/LocationInput';
+import { Button } from '@/components/ui/button';
+import { Brain, LoaderCircle } from 'lucide-react';
+import { AIChatSession } from 'src/service/AIModal';
+import Multiselect from 'multiselect-react-dropdown';
+
 
 function PostJob() {
+    const [loading, setLoading] = useState<boolean>(false);
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state?.category);
     const company = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
     const navigate = useNavigate()
-    const [location,setLocation] = useState([]);
+    const [location, setLocation] = useState<any>([]);
+    const [AiGeneratedDesc, setAiGeneratedDesc] = useState<any>();
+    const skillOption = useSelector((state: RootState) => state?.admin)
+    const [selectedSkills, setSelectedSkills] = useState<any>([])
+    const [skill, setSkills] = useState<any>([])
+
+
+    
+    function setSelectedSkill() {
+        const matchingSkills = skillOption?.skills?.filter(skill => company?.user?.skills?.includes(skill.name));
+        console.log(matchingSkills)
+        setSelectedSkills(matchingSkills)
+    }
 
     useEffect(() => {
         dispatch(listCategory(null)).unwrap()
         dispatch(listSectors()).unwrap()
-        console.log(location)
+        setSelectedSkill()
     }, [location])
 
     let PostJobInitialValues = {
@@ -44,13 +62,34 @@ function PostJob() {
 
     useEffect(() => {
         console.log(location)
+    }, [])
 
-    },[])
+    async function GenerateSummeryFromAI(title: string, skills: string[], responsibility: string[], qualification: string[]) {
+        setLoading(true)
+
+        let skillIntoString: string = ''
+        let responsibilities: string = ''
+        let qualifications: string = ''
+        skills.forEach((val) => skillIntoString += val + ',')
+        responsibility?.forEach((val) => responsibilities += val + ',')
+        qualification?.forEach((val) => qualifications += val + ',')
+
+        const prompt = `Create a detailed job description for a ${title} position. The ideal candidate will possess the following skills: ${skillIntoString}. The responsibilities for this role include: ${responsibilities} and the qualification for this role ${qualifications} . all these in to one paragraph`
+        try {
+            const result = await AIChatSession.sendMessage(prompt)
+            console.log(JSON.parse(result.response.text()))
+            setAiGeneratedDesc(JSON.parse(result.response.text()))
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     async function handleSubmit(values: FormikValues) {
         try {
             console.log(values)
-            if(location?.length > 1){
+            if (location?.length > 1) {
                 return toast.error('Multiple location is restricted')
             }
             if (company?.user?.approvalStatus !== 'Accepted') {
@@ -61,7 +100,13 @@ function PostJob() {
                 toast.error('pleae complete the profile')
                 return
             }
-            await dispatch(postJob({...values,location})).unwrap()
+            if(skill?.length < 1){
+                toast.error('Add morethan 1 skill')
+                return;
+            }
+            const newSKill = skill?.map((data: any) => data?.name);
+
+            await dispatch(postJob({ ...values, location , skills:newSKill})).unwrap()
             return navigate('/company/job-list')
         } catch (error) {
             console.log(error)
@@ -95,26 +140,6 @@ function PostJob() {
                                         }
                                     </span>
                                     <Field type="text" name='jobTitle' className='w-full sm:w-auto border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
-                                    <span className='font-sans'>atleast 50 character</span>
-                                </div>
-                            </div>
-                            <hr />
-                            <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
-                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <span className='font-bold text-xl'>Job descriptions</span>
-                                    <label htmlFor="" className='font-sans'>
-                                        Enter job description
-                                    </label>
-                                </div>
-                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <span className='text-xs text-red-600'>
-                                        {
-                                            errors?.description && (
-                                                errors?.description
-                                            )
-                                        }
-                                    </span>
-                                    <Field type="text" name='description' className='w-full sm:w-auto  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
                                     <span className='font-sans'>atleast 50 character</span>
                                 </div>
                             </div>
@@ -225,11 +250,11 @@ function PostJob() {
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
 
-                                    <FieldArray name='skills'>
+                                    {/* <FieldArray name='skills'>
                                         {({ remove, push }) => (
                                             <div>
                                                 {values.skills.length > 0 &&
-                                                    values.skills?.map((skill, index) => (
+                                                    values.skills?.map((_, index) => (
                                                         <div className="w-full sm:w-auto flex items-center" key={index}>
                                                             <div className="flex flex-col w-full">
                                                                 <Field
@@ -269,8 +294,13 @@ function PostJob() {
                                                 )}
                                             </div>
                                         )}
-                                    </FieldArray>
-
+                                    </FieldArray> */}
+                                    <Multiselect
+                                        selectedValues={selectedSkills}
+                                        onSelect={(e) => setSkills(e)}
+                                        options={skillOption?.skills}
+                                        displayValue='name'
+                                    />
                                 </div>
                             </div>
                             <hr />
@@ -287,7 +317,7 @@ function PostJob() {
                                         {({ remove, push }) => (
                                             <div>
                                                 {values?.responsibilities?.length > 0 &&
-                                                    values?.responsibilities?.map((skill, index) => (
+                                                    values?.responsibilities?.map((_, index) => (
                                                         <div className="w-full sm:w-auto flex items-center" key={index}>
                                                             <div className="flex flex-col w-full">
                                                                 <Field
@@ -331,6 +361,17 @@ function PostJob() {
                                     <span className='font-sans'>atleast 50 character</span>
                                 </div>
                             </div>
+                            <div className='flex w-full'>
+                                {
+                                    AiGeneratedDesc?.responsibilities?.map((data: string, ind: number) => (
+                                        <div className='p-5 shadow-lg my-4 rounded-lg cursor-pointer' key={data + ind}>
+                                            <p>
+                                                {data}
+                                            </p>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                             <hr />
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
@@ -345,7 +386,7 @@ function PostJob() {
                                             ({ remove, push }) => (
                                                 <div>
                                                     {values.qualification.length > 0 &&
-                                                        values.qualification?.map((skill, index) => (
+                                                        values.qualification?.map((_, index) => (
                                                             <div className="w-full sm:w-auto flex items-center" key={index}>
                                                                 <div className="flex flex-col w-full">
                                                                     <Field
@@ -391,6 +432,67 @@ function PostJob() {
                                 </div>
                             </div>
                             <hr />
+                            <div className='flex w-full'>
+                                {
+                                    AiGeneratedDesc?.qualifications?.map((data: string, ind: number) => (
+                                        <div className='p-5 shadow-lg my-4 rounded-lg cursor-pointer' key={data + ind}>
+                                            <p>
+                                                {data}
+                                            </p>
+                                        </div>
+                                    )) ||
+                                    AiGeneratedDesc?.requirements?.map((data: string, ind: number) => (
+                                        <div className='p-5 shadow-lg my-4 rounded-lg cursor-pointer' key={data + ind}>
+                                            <p>
+                                                {data}
+                                            </p>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                            <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
+                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
+                                    <span className='font-bold text-xl'>Job descriptions</span>
+                                    <label htmlFor="" className='font-sans'>
+                                        Enter job description
+                                    </label>
+                                </div>
+                                <div className='w-full sm:w-1/2 flex flex-col items-start'>
+                                    <Button variant="outline"
+                                        onClick={() => {
+                                            if (values?.jobTitle) {
+                                                GenerateSummeryFromAI(values?.jobTitle, values?.skills, values?.responsibilities, values?.qualification)
+                                            } else {
+                                                toast.error('Pleae provide job title, skill, responsibility,qualification')
+                                            }
+                                        }}
+                                        type="button" size="sm" className="border-primary text-primary flex gap-2 mb-1">
+                                        {
+                                            loading ? <LoaderCircle className='animate-spin h-4 w-4' /> : <Brain className='h-4 w-4' />
+                                        }
+                                        Generate from AI
+                                    </Button>
+                                    <span className='text-xs text-red-600'>
+                                        {
+                                            errors?.description && (
+                                                errors?.description
+                                            )
+                                        }
+                                    </span>
+                                    <Field as='textarea' type="text" name='description' className='w-full sm:w-[450px] h-36  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
+                                    <span className='font-sans'>atleast 50 character</span>
+                                </div>
+                            </div>
+                            {
+                                AiGeneratedDesc?.description && (
+                                    <div className='flex   mx-1'>
+                                        <div onClick={() => setFieldValue('description', AiGeneratedDesc?.description)} className='p-5 shadow-lg my-4 rounded-lg cursor-pointer'>
+                                            <p>{AiGeneratedDesc?.description}</p>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                            <hr />
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
                                     <span className='font-bold text-xl'>Location</span>
@@ -399,7 +501,7 @@ function PostJob() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <LocationInput label='location' name='location'  key={'location'} location={location}  setLocation={setLocation}/>
+                                    <LocationInput label='location' name='location' key={'location'} location={location} setLocation={setLocation} />
                                 </div>
                             </div>
 

@@ -1,6 +1,7 @@
 html {
   scroll-behavior: smooth;
 }
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -8,11 +9,14 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="number"] {
-  -moz-appearance: textfield; 
+  -moz-appearance: textfield;
 }
+
 input[type="number"]:focus {
-  outline: none; /* Removes the default focus outline */
-  border: 1px solid #ccc; /* Adjust border width and color as needed */
+  outline: none;
+  /* Removes the default focus outline */
+  border: 1px solid #ccc;
+  /* Adjust border width and color as needed */
 }
 
 .sidebar-link.active {
@@ -105,7 +109,8 @@ input[type="number"]:focus {
     visibility: hidden;
   }
 
-  #print-area, #print-area * {
+  #print-area,
+  #print-area * {
     visibility: visible;
   }
 
@@ -119,24 +124,34 @@ input[type="number"]:focus {
 
 
 ol {
-  list-style-type: decimal; /* Ensures the ordered list uses numbers */
-  margin: 0; /* Adjust margin as needed */
+  list-style-type: decimal;
+  /* Ensures the ordered list uses numbers */
+  margin: 0;
+  /* Adjust margin as needed */
 }
 
 
 .custom-list ol {
-  list-style-type: decimal; /* Ensure the ordered list displays numbers */
+  list-style-type: decimal;
+  /* Ensure the ordered list displays numbers */
   padding-left: 20px;
 }
+
 .custom-list ul {
-  list-style-type: circle; /* Ensure the ordered list displays numbers */
+  list-style-type: circle;
+  /* Ensure the ordered list displays numbers */
   padding-left: 20px;
 }
+
 .custom-list li {
-  margin-left: 0; /* Ensure no extra margin is added */
-  padding-left: 0; /* Ensure no extra padding is added */
-  color: inherit; /* Inherit the text color */
-  font-size: inherit; /* Inherit the font size */
+  margin-left: 0;
+  /* Ensure no extra margin is added */
+  padding-left: 0;
+  /* Ensure no extra padding is added */
+  color: inherit;
+  /* Inherit the text color */
+  font-size: inherit;
+  /* Inherit the font size */
 }
 
 
@@ -147,12 +162,55 @@ ol {
 
 @keyframes jump {
   0% {
-      transform: scale(1);
+    transform: scale(1);
   }
+
   50% {
-      transform: scale(1.1);
+    transform: scale(1.1);
   }
+
   100% {
-      transform: scale(1);
+    transform: scale(1);
   }
+}
+
+.upcoming::-webkit-scrollbar {
+  width: 4px;
+  height: 10px;
+}
+
+/* Define the thumb style */
+.upcoming::-webkit-scrollbar-thumb {
+  background: #000000;
+  /* #4d7fff */
+  border-radius: 5px;
+}
+
+/* Define the track style */
+.upcoming::-webkit-scrollbar-track {
+  background-color: #ddd;
+  border: 5px solid #ccc;
+  border-radius: 10px;
+}
+
+/* Define the button style */
+.upcoming::-webkit-scrollbar-button {
+  /* background-color: #4d7fff; */
+  border-radius: 5px;
+}
+
+/* Define the button style when being hovered over */
+.upcoming::-webkit-scrollbar-button:hover {
+  background-color: #999999;
+}
+
+.main-content {
+  flex-grow: 1;
+  /* Main content takes remaining space */
+  display: flex;
+  align-items: center;
+  /* Center content vertically */
+  justify-content: center;
+  /* Center content horizontally */
+  padding: 16px;
 }

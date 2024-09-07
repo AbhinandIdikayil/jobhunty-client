@@ -38,8 +38,7 @@ function EditInterview({ ind }: { ind: number }) {
     };
     return (
         <AlertDialog open={open} onOpenChange={handleOpenChange}
-            onPointerDownOutside={(e) => e.preventDefault()}
-            onClickOutside={(e) => e.preventDefault()}>
+            onClickOutside={(e: any) => e?.preventDefault()}>
             <AlertDialogTrigger asChild className='w-full'>
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent event from bubbling up
@@ -128,7 +127,7 @@ function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, i
                                 <Input
                                     onKeyDown={(e) => e.stopPropagation()}
                                     onClick={(e) => e.stopPropagation()}
-                                    onClick={(e) => e.stopPropagation()} {...field} />
+                                    {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -146,8 +145,7 @@ function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, i
                                 <Input
                                     onKeyDown={(e) => e.stopPropagation()}
                                     onClick={(e) => e.stopPropagation()}
-                                    onClick={(e) => e.stopPropagation()}
-                                      {...field} />
+                                    {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

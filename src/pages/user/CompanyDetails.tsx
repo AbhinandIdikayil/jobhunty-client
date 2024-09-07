@@ -21,13 +21,7 @@ function CompanyDetails() {
                             </div>
                             <div className={`
                             mt-4 text-base leading-7 text-slate-600 
-                            // //max-md:max-w-full
                             `}>
-                                Stripe is a software platform for starting and running internet
-                                businesses. Millions of businesses rely on Stripe’s software
-                                tools to accept payments, expand globally, and manage their
-                                businesses online. Stripe has been at the forefront of expanding
-                                internet commerce, powering new business models, and supporting
                                 {state?.description}
                             </div>
                         </div>
@@ -86,7 +80,7 @@ function CompanyDetails() {
                                 Tech stack
                             </div>
                             <div className="mt-4 text-base leading-7 text-slate-600">
-                                Learn about the technology and tools that Stripe uses.{" "}
+                                Learn about the technology and tools that {state?.name} uses.{" "}
                             </div>
                         </div>
                         <div className="flex flex-col self-start mt-4 w-[297px] h-full text-base leading-relaxed text-slate-800">
@@ -107,27 +101,17 @@ function CompanyDetails() {
                                         </div>
                                     ))
                                 }
-
-
-                                {/* <div className="flex flex-col items-center p-3 whitespace-nowrap">
-                                    <img
-                                        loading="lazy"
-                                        srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/d090860ad9d89ec7b1e33a3805bc097c05064a777e6c0358395222e0b493442b?apiKey=bf80438c4595450788b907771330b274&&apiKey=bf80438c4595450788b907771330b274"
-                                        className="object-contain aspect-square w-[74px]"
-                                    />
-                                    <div className="mt-2.5">JavaScript</div>
-                                </div> */}
                             </div>
                         </div>
                         <div className="mt-4 w-full min-h-[1px]" />
                     </div>
                     <div className="flex flex-col mt-10 w-full max-w-[376px]">
                         <div className="flex flex-col w-full">
-                            <div className="text-3xl font-semibold leading-tight text-slate-800">
+                            <div className="text-3xl font-semibold leading-tight text-slate-900">
                                 Office Location
                             </div>
                         </div>
-                        <div className="flex flex-col items-start self-start mt-6 text-base font-semibold leading-relaxed text-black">
+                        <div className="flex flex-col items-start self-start mt-6 text-base font-semibold leading-relaxed ">
                             {
                                 state.locations.map((data:any) => (
                                     <div className="flex gap-3 items-center self-stretch">
@@ -136,7 +120,6 @@ function CompanyDetails() {
                                 ))
                             }
                         </div>
-
                         <div className="mt-6 w-full min-h-[1px]" />
                     </div>
                 </div>

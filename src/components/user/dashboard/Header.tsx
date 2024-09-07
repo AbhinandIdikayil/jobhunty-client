@@ -2,11 +2,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Home } from 'lucide-react'
+import { Bell, Home } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { HiMenuAlt3 } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { UseChatSocketContext } from 'src/context/ChatSocketContext'
 import { getUser } from 'src/redux/actions/userAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 
@@ -20,6 +21,23 @@ function Header({ func, open }: props) {
     const user = useSelector((state: RootState) => state?.user)
     const navigate = useNavigate()
     const [loading, setLoading] = useState<boolean>()
+    const { socket, setSocketConnected, notifications, setNotifications } = UseChatSocketContext()
+
+    useEffect(() => {
+        if (socket) {
+            socket.emit('setup', user?.user)
+            socket.on('connected', () => setSocketConnected(true))
+            socket.on('disconnect', () => {
+                console.log('disconnected');
+            });
+
+            return () => {
+                socket.off('connected');
+                socket.off('disconnect');
+            };
+        }
+    }, [socket])
+
     const fetchUser = async () => {
         try {
             await dispatch(getUser()).unwrap();
@@ -72,11 +90,16 @@ function Header({ func, open }: props) {
             <div className="flex gap-5 justify-center text-base font-bold leading-6 text-center text-white">
                 <Popover>
                     <PopoverTrigger asChild>
-                        <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/22cc243b4b17eb6822f1aae2f96ecac59c86787ba7154d9a5282f66481ba231f?apiKey=bf80438c4595450788b907771330b274&"
-                            className="shrink-0 my-auto w-10 aspect-square"
-                        />
+                        <div className="flex relative justify-center items-center">
+                            {
+                                notifications?.length > 0 && (
+                                    <span className="bg-red-500 absolute top-1 right-0 px-1 rounded-full flex justify-center items-center" style={{ fontSize: '10px', height: '15px' }} >
+                                        {notifications?.length}
+                                    </span>
+                                )
+                            }
+                            <Bell color="blue" />
+                        </div>
                     </PopoverTrigger>
                     <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
                         <ScrollArea className="h-40 sm:h-48 rounded-md ">
@@ -88,39 +111,22 @@ function Header({ func, open }: props) {
                                         Set the dimensions for the layer.
                                     </p>
                                 </div>
-                                <div className="grid gap-2">
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="width">Width</Label>
-                                        <Input
-                                            id="width"
-                                            defaultValue="100%"
-                                            className="col-span-2 h-8"
-                                        />
+                                <div className="grid gap-4">
+                                    <div className=" border-b border-indigo-600 flex items-center w-full justify-between pb-1">
+                                        <h4 className="font-medium leading-none">Notifications</h4>
+                                        <span onClick={() => setNotifications([])} className="font-normal text-sm leading-none bg-indigo-600 text-white  rounded-md px-2 py-1">
+                                            CLEAR ALL
+                                        </span>
                                     </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="maxWidth">Max. width</Label>
-                                        <Input
-                                            id="maxWidth"
-                                            defaultValue="300px"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="height">Height</Label>
-                                        <Input
-                                            id="height"
-                                            defaultValue="25px"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
-                                    <div className="grid grid-cols-3 items-center gap-4">
-                                        <Label htmlFor="maxHeight">Max. height</Label>
-                                        <Input
-                                            id="maxHeight"
-                                            defaultValue="none"
-                                            className="col-span-2 h-8"
-                                        />
-                                    </div>
+                                    {
+                                        notifications?.length > 0 &&
+                                        notifications?.map((data: any, ind: number) => (
+                                            <div key={ind+data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                                <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                {data?.content?.content}
+                                            </div>
+                                        ))
+                                    }
                                 </div>
                             </div>
                         </ScrollArea>

@@ -61,6 +61,11 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
+        "callPopup": {
+          '0%': { transform: 'scale(0.9)', opacity: '0' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.5' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -73,6 +78,7 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        'call-popup': 'callPopup 0.5s ease-out forwards',
       },
     },
   },

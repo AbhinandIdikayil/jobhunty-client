@@ -46,13 +46,13 @@ const Login: React.FC = () => {
             data = {
                 ...response,
                 role: 'company',
-                page:'login'
+                page: 'login'
             }
         } else {
             data = {
                 ...response,
                 role: 'user',
-                page:'login'
+                page: 'login'
             }
         }
         console.log(data)
@@ -83,7 +83,7 @@ const Login: React.FC = () => {
     }
 
     async function handleSubmit(values: FormikValues) {
-        
+
         // if (url == 'login') {
         const formData: any = {
             ...values
@@ -91,7 +91,7 @@ const Login: React.FC = () => {
         try {
             const data = await dispath(login(formData)).unwrap()
             if (data) {
-                if(location.pathname == '/company/login'){
+                if (location.pathname == '/company/login') {
                     return navigate('/company')
                 } else {
                     return navigate('/home')
@@ -189,7 +189,7 @@ const Login: React.FC = () => {
                                         validationSchema={LoginvalidationSchema}
                                         onSubmit={handleSubmit}
                                     >
-                                        {({  errors, isSubmitting }) => (
+                                        {({ errors, isSubmitting }) => (
                                             <>
                                                 <Form className="flex flex-col">
 
@@ -197,8 +197,11 @@ const Login: React.FC = () => {
                                                         Email Address
                                                         <span className="text-red-600">
                                                             {
-                                                                errors?.email && '(' + errors.email + ')' ||
-                                                                user?.err && (user?.err as string)?.includes('user') && '(' + user?.err + ")"
+                                                                errors?.email
+                                                                    ? '(' + errors.email + ')'
+                                                                    : (typeof user?.err === 'string' && user?.err.includes('user'))
+                                                                        ? '(' + user?.err + ')'
+                                                                        : null
                                                             }
                                                         </span>
                                                     </div>
@@ -213,9 +216,13 @@ const Login: React.FC = () => {
                                                         Password
                                                         <span className="text-red-600">
                                                             {
-                                                                errors?.password && '(' + errors.password + ')' ||
-                                                                user?.err && (user?.err as string)?.includes('password') && '(' + user?.err + ")"
+                                                                errors?.password
+                                                                    ? '(' + errors.password + ')'
+                                                                    : (typeof user?.err === 'string' && user?.err.includes('user'))
+                                                                        ? '(' + user?.err + ')'
+                                                                        : null
                                                             }
+
                                                         </span>
                                                     </div>
                                                     <Field
@@ -225,14 +232,14 @@ const Login: React.FC = () => {
                                                         type="text"
                                                     />
 
-                                {/* //! here whenever some click the forgot password a modal will popup
+                                                    {/* //! here whenever some click the forgot password a modal will popup
                                     //! here if the email exist in DB it will render a otp page the function 
                                     //! passing is to update the otpPage state to true. On the starting phase of 
                                     //! this component i have done the conditional rendering
                                     */}
 
                                                     <ForgotPSConfirm setOtpPage={setOtpPage} />
-                                                    
+
                                                     {
                                                         isSubmitting ? (
                                                             <button className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">

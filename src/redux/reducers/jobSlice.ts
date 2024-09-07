@@ -7,7 +7,7 @@ const initialState: JobReducer = {
     loading: false,
     err: null,
     job: null,
-    jobs: [],
+    jobs: null,
     applicant: null,
     applicants: [],
     applications: []
@@ -19,9 +19,16 @@ const jobSlice = createSlice({
     reducers: {
         setJobById(state, action: PayloadAction<string>) {
             const id = action.payload;
-            const foundJob = state.jobs?.jobs.find(job => job._id === id);
+            const foundJob = state.jobs?.jobs.find((job:any) => job._id === id);
             state.job = foundJob || null // Set to null if no job is found
         },
+        reset(state){
+            state.jobs = []
+            state.applicants = []
+            state.applications = []
+            state.applicant = null
+            state.job = null
+        }
     },
     extraReducers: (builder: ActionReducerMapBuilder<JobReducer>) => {
         builder
@@ -32,7 +39,7 @@ const jobSlice = createSlice({
             .addCase(postJob.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = null
-                state.jobs = [...state.jobs?.jobs, payload]
+                state.jobs.jobs = [...state.jobs?.jobs, payload]
             })
             .addCase(postJob.rejected, (state, { payload }) => {
                 state.loading = false
@@ -50,7 +57,7 @@ const jobSlice = createSlice({
             .addCase(getAllJob.rejected, (state, { payload }) => {
                 state.loading = false
                 state.err = payload
-                state.jobs = []
+                state.jobs.jobs = []
             })
             .addCase(applyJob.pending, (state) => {
                 state.loading = true
@@ -86,7 +93,7 @@ const jobSlice = createSlice({
             .addCase(removeJob.fulfilled, (state, { payload }) => {
                 state.loading = false
                 state.err = null
-                state.jobs = state.jobs.map(job =>
+                state.jobs.jobs = state.jobs?.jobs?.map((job:any) =>
                     job?._id === payload?._id ? { ...job, ...payload } : job
                 );
             })
@@ -100,7 +107,7 @@ const jobSlice = createSlice({
             })
             .addCase(updateJob.fulfilled, (state, { payload }) => {
                 state.loading = false
-                state.jobs = state.jobs.map(job => {
+                state.jobs.jobs = state.jobs?.jobs?.map((job:any) => {
                     return job._id == payload?._id ? { ...job, ...payload } : job
                 })
                 state.err = null
@@ -122,6 +129,7 @@ const jobSlice = createSlice({
                 state.err = payload
                 state.loading = false
                 state.applications = []
+                handleAuthError(state, payload)
             })
             .addCase(listApplicants.pending, (state) => {
                 state.err = null
@@ -206,5 +214,5 @@ const jobSlice = createSlice({
     }
 })
 
-export const { setJobById } = jobSlice.actions;
+export const { setJobById, reset } = jobSlice.actions;
 export default jobSlice.reducer

@@ -22,17 +22,17 @@ function CompanyCard({ data }: { data: Company }) {
                     )
                 }
             </div>
-            <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800">
+            <div className="mt-4 text-2xl font-semibold leading-7 text-slate-800 capitalize">
                 {data?.name ?? ''}
             </div>
-            <div className="company-desc mt-4 text-lg leading-7 text-slate-600">
+            <div className="company-desc mt-4 text-lg leading-7 text-slate-600 capitalize">
                 {
                     data?.description ?? ''
                 }
 
             </div>
             <div className="self-start px-2.5 py-1.5 mt-4 text-sm font-semibold text-emerald-300 whitespace-nowrap border border-emerald-300 border-solid rounded-[80px]">
-                Business
+                {data?.industry}
             </div>
         </div>
     )

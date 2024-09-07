@@ -32,33 +32,33 @@ export const socialLinksValidation = Yup.object().shape({
     instagram: Yup
         .string()
         .matches(
-            /^https:\/\/www\.instagram\.com\/in\//,
-            'instagram link must start with "https://www.instagram.com/in/"'
+            /^https:\/\/(www\.)?instagram\.com\/[A-Za-z0-9_.]+\/?$/,
+            'instagram link must start with "https://www.instagram.com/"'
         ),
     twitter: Yup
         .string()
         .matches(
-            /^https:\/\/www\.twitter\.com\/in\//,
-            'Twitter link must start with "https://www.twitter.com/in/"'
+            /^https:\/\/www\.twitter\.com\/[A-Za-z0-9_.]+\/?$/,
+            'Twitter link must start with "https://www.twitter.com/"'
         ),
     facebook: Yup
         .string()
         .matches(
-            /^https:\/\/www\.facebook\.com\/in\//,
-            'Facebook link must start with "https://www.facebook.com/in/"'
+            /^https:\/\/www\.facebook\.com\/[A-Za-z0-9_.]+\/?$/,
+            'Facebook link must start with "https://www.facebook.com/"'
         ),
     LinkedInLink: Yup
         .string()
         .matches(
-            /^https:\/\/www\.linkedin\.com\/in\//,
-            'LinkedIn link must start with "https://www.linkedin.com/in/"'
+            /^https:\/\/www\.linkedin\.com\/[A-Za-z0-9_.]+\/?$/,
+            'LinkedIn link must start with "https://www.linkedin.com/"'
         )
         .required('Linkedin link is required'),
     youtube: Yup
         .string()
         .matches(
-            /^https:\/\/www\.youtube\.com\/in\//,
-            'Youtube link must start with "https://www.youtube.com/in/"'
+            /^https:\/\/www\.youtube\.com\/[A-Za-z0-9_.]+\/?$/,
+            'Youtube link must start with "https://www.youtube.com/"'
         )
 })
 
@@ -70,8 +70,7 @@ export const postJobValidationSchema = Yup.object().shape({
         .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
     description: Yup
         .string()
-        .required('Description is required')
-        .matches(/^[^0-9]*$/, 'Numbers are not allowed'),
+        .required('Description is required'),
     employment: Yup
         .string()
         .required('Employment type is required'),
@@ -111,15 +110,15 @@ export const postJobValidationSchema = Yup.object().shape({
         )
         .min(2, 'At least one responsibilities is required')
         .required('resonsibilities are required'),
-    skills: Yup.array()
-        .of(
-            Yup.string()
-                .trim()
-                .strict(true)
-                .min(3, 'min 3 character')
-        )
-        .min(2, 'At least one skill is required')
-        .required('Skills are required'),
+    // skills: Yup.array()
+    //     .of(
+    //         Yup.string()
+    //             .trim()
+    //             .strict(true)
+    //             .min(3, 'min 3 character')
+    //     )
+    //     .min(2, 'At least one skill is required')
+    //     .required('Skills are required'),
     qualification: Yup.array()
         .of(
             Yup.string()

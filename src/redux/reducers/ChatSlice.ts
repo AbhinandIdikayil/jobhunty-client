@@ -17,7 +17,14 @@ const initialState: ChatInitialState = {
 const chatSlice = createSlice({
     name: 'chat',
     initialState,
-    reducers: {},
+    reducers: {
+        resetChat(state) {
+            state.chats = []
+            state.messages = []
+            state.users = []
+            state.selectedUser = null
+        }
+    },
     extraReducers: (builder: ActionReducerMapBuilder<ChatInitialState>) => {
         builder
             .addCase(createOneToOneChat.pending, (state) => {
@@ -63,4 +70,5 @@ const chatSlice = createSlice({
     }
 })
 
+export const { resetChat } = chatSlice.actions
 export default chatSlice.reducer
