@@ -1,19 +1,14 @@
-
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import SideDrawer from '../../components/company/SideDrawer';
 import { getCompany } from 'src/redux/actions/companyAction';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from 'src/redux/store';
-
+import { useDispatch} from 'react-redux';
+import { AppDispatch } from 'src/redux/store';
 
 const drawerWidth = 240;
-
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
@@ -69,9 +64,6 @@ export default function CompanyHome() {
     const [open, setOpen] = React.useState(true);
     const dispatch: AppDispatch = useDispatch()
     const [loading, setLoading] = React.useState<boolean>(false)
-    const user = useSelector((state:RootState) => state?.user)
-    const navigate = useNavigate()
-
 
     const handleDrawerOpen = React.useCallback(() => {
         setOpen(true);
@@ -98,11 +90,6 @@ export default function CompanyHome() {
             } catch (error) {
                 // Optionally handle any errors here
             }
-            //  finally {
-            //     if (!user.role) {
-            //         navigate('/login');
-            //     }
-            // }
         };
 
         checkUserRole();

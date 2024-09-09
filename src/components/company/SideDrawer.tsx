@@ -12,7 +12,6 @@ import Header from './Header';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
-import { TbNumber1Small } from "react-icons/tb";
 import { Building2Icon, ClipboardListIcon, LayoutGrid, MessageSquareText, NotebookPen, Users } from 'lucide-react'
 
 
@@ -57,13 +56,13 @@ interface props {
 }
 
 function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: props) {
+
   return (
     <>
       <CssBaseline />
-      <AppBar position="fixed" open={open} style={{zIndex:90}}>
-
-        <Header open={open} func={handleDrawerOpen} />
-
+      <AppBar position="fixed" open={open} style={{ zIndex: 90 }}>
+        {/* //! company header */}
+        <Header open={open} func={handleDrawerOpen} /> 
       </AppBar>
       <Drawer
         sx={{
@@ -72,15 +71,13 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-            // borderRight: '1px solid black'
           },
         }}
-        variant="persistent"
+        variant={`persistent`}
         anchor="left"
         open={open}
       >
-
-        <DrawerHeader sx={{ borderBottom: '1px solid black', display: 'flex', gap:2,height:'81px' }}>
+        <DrawerHeader sx={{ borderBottom: '1px solid black', display: 'flex', gap: 2, height: '81px' }}>
           <div className='flex items-center justify-center text-left'>
             <div className="flex overflow-hidden relative flex-col justify-center items-center w-8 aspect-square">
               <img
@@ -95,8 +92,8 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           </div>
           <MdOutlineArrowBackIos onClick={handleDrawerClose} />
         </DrawerHeader>
-        <Divider  />
-        <List 
+        <Divider />
+        <List
         >
           {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
@@ -112,7 +109,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                       text == 'My schedule' && <NotebookPen color='black' />
                     }
                   </ListItemIcon>
-                  <ListItemText sx={{color:'black'}} primary={text} />
+                  <ListItemText sx={{ color: 'black' }} primary={text} />
                 </ListItemButton>
               </NavLink>
             </ListItem>
