@@ -99,7 +99,7 @@ function Sidebar({ setLoading, setMessages }: { setLoading: (newState: boolean) 
             <div
                 className={`w-1/3 ${isSidebarVisible ? 'block absolute z-50 w-[230px] md:w-[290px] h-fit rounded shadow-lg' : 'hidden'} bg-white md:block`}
             >
-                <X onClick={toggleSidebar} className='absolute right-0 pt-1' />
+                <X onClick={toggleSidebar} className={`block md:hidden absolute right-0 pt-1 `} />
                 <div className='w-full'>
                     <input type="text" value={search || ''} onChange={(e) => setSearch(e.target.value)}
                         placeholder={location.pathname == '/company/messages' ? 'Search for users...' : 'Search for companies...'}

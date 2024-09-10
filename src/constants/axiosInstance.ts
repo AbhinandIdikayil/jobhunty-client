@@ -28,30 +28,47 @@ const createAxiosInstance = (url: string): AxiosInstance => {
             return response;
         },
         async (error: AxiosError<ErrorResponse>) => {
-            if (!error.config) {
+            const originalRequest = error.config as InternalAxiosRequestConfig & {
+                _retry?: boolean;
+                _retryCount?: number;
+            };
+
+            if (!originalRequest) {
                 return Promise.reject(error);
             }
 
-            const originalRequest = error.config as InternalAxiosRequestConfig & {
-                _retry?: boolean;
-            };
-
-            // if (error.response?.status === 403) {
-            //     if (error.response.data && error.response.data.message === 'User is blocked') {
-            //         handleLogout();
-            //         toast.error('Your account has been blocked. Please contact support.');
-            //         return Promise.reject(error);
-            //     }
-            // }
-
-            if (error.response?.status === 401) {
-                console.log('--------------- intercepter ------------')
-                const token = await refreshToken()
-                console.log('token---------------',token)
-                return token
+            // Set a retry limit
+            if (!originalRequest._retryCount) {
+                originalRequest._retryCount = 0;
             }
-            return instance(originalRequest)
-        },
+
+            if (error.response?.status === 401 && originalRequest._retryCount < 2) {
+                originalRequest._retryCount += 1;
+                console.log('Retrying request:', originalRequest.url);
+
+                const token = await refreshToken();
+                return instance(originalRequest);
+            }
+
+            return Promise.reject(error);
+        }
+        // async (error: AxiosError<ErrorResponse>) => {
+        //     if (!error.config) {
+        //         return Promise.reject(error);
+        //     }
+
+        //     const originalRequest = error.config as InternalAxiosRequestConfig & {
+        //         _retry?: boolean;
+        //     };
+
+        //     if (error.response?.status === 401) {
+        //         console.log('--------------- intercepter ------------')
+        //         const token = await refreshToken()
+        //         console.log('token---------------', token)
+        //         return token
+        //     }
+        //     return instance(originalRequest)
+        // },
     );
     return instance;
 }
@@ -66,10 +83,10 @@ const refreshToken = async () => {
             }
         );
         console.log(response)
-        if(response.status == 401) {
+        if (response.status == 401) {
             // window.location.href = '/home'
             Logout()
-              return response
+            return response
         }
         const data = await response.json();
         return data;
@@ -81,9 +98,9 @@ const refreshToken = async () => {
 
 function Logout() {
     const dispatch = getGlobalDispatch();
-  if (dispatch) {
-    dispatch(logout(undefined));
-  }
+    if (dispatch) {
+        dispatch(logout(undefined));
+    }
 }
 
 

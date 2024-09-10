@@ -88,6 +88,7 @@ export interface JobApplication {
     answers: any[];
     createdAt: string;
     hiring_info: any[];
+    mark:number,
     schedule: [
         {
             _id: string,

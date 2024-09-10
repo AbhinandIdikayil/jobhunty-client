@@ -58,7 +58,6 @@ export const getAllJob = createAsyncThunk(
             return data
         } catch (error: any) {
             return rejectWithValue(handleTokenError(error))
-
         }
     }
 )

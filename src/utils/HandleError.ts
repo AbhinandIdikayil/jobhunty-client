@@ -1,6 +1,7 @@
 
 
 export const handleTokenError = (error: any) => {
+  console.log(error)
     if (error.response?.status === 401) {
       // Handle token expired or missing token
       return 'Token';

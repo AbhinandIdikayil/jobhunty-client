@@ -8,7 +8,7 @@ function ApplicationListInDashboard() {
   const application = useSelector((state: RootState) => state?.job?.applications);
 
   return (
-    <div className=" px-4 py-4 flex flex-col leading-relaxed">
+    <div className="py-4 flex leading-relaxed">
       <div className="flex flex-col w-full max-md:max-w-full  shadow-md">
         <div className="flex flex-col py-6 w-full bg-white border border-solid border-zinc-500 rounded max-md:max-w-full">
           <div className="self-start ml-6 text-xl font-semibold leading-tight text-slate-800 max-md:ml-2.5">

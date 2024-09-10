@@ -16,8 +16,8 @@ function SalaryAccordian({ handleSalary, setMinSalary, setMaxSalary }: { handleS
                 </div>
                 {
 
-                    salary?.map(data => (
-                        <div className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                    salary?.map((data,ind:number) => (
+                        <div key={ind} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                             <Checkbox id="terms2" onClick={(e) => handleSalary(e, data)} />
                             <label
                                 htmlFor="terms2"

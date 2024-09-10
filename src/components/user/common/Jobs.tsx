@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import NativeSelect from '@mui/material/NativeSelect';
 import Button from '@mui/material/Button'
 import {
     Accordion,
@@ -53,7 +52,7 @@ function Jobs() {
     }
     const [filterAndSearch, setFilterAndSearch] = useState<FilterAndSearch>({
         name: '',
-        location:'',
+        location: '',
         category: [],
         employment: [],
         price: [],
@@ -63,7 +62,7 @@ function Jobs() {
     const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[], location: string) => {
         try {
             setLoading(true)
-            let data = await dispatch(getAllJob({
+            await dispatch(getAllJob({
                 page,
                 pageSize,
                 name,
@@ -109,21 +108,18 @@ function Jobs() {
         let userid = userState?.user._id;
         try {
             console.log({ userid, jobid, resume: data, companyId })
-            await dispatch(applyJob({ userid, jobid, resume: data, companyId })).unwrap()
-            setModalOpen(false)
+            let res = await dispatch(applyJob({ userid, jobid, resume: data, companyId })).unwrap()
+            if(res){
+                setModalOpen(false)
+            }
             toast.success('applied succesfully', { position: "top-center" })
         } catch (error) {
             console.log(error)
             toast.error(jobState?.err?.message, { position: "top-center" })
-        }
+        } 
     }
 
     function handleSearch() {
-        // if (filterAndSearch?.name?.trim().length <= 1) {
-        //     return toast.error('At least 2 character', {
-        //         position: 'top-center'
-        //     })
-        // }
         setStartNameSearch(!startNameSearch)
     }
 
@@ -272,7 +268,6 @@ function Jobs() {
                     </div>
                 </div>
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-
             </div>
             <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
                 <div className="w-full max-w-[1193px] max-md:max-w-full">
@@ -353,7 +348,7 @@ function Jobs() {
                                                                 src={data}
                                                             >
                                                             </iframe>
-                                                            <button className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
+                                                            <button type='button' className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
                                                                 select
                                                             </button>
                                                         </div>
