@@ -10,7 +10,7 @@ function MonthChart() {
     const job = useSelector((state: RootState) => state.job);
     const applicants = useSelector((state: RootState) => state.job.applicants);
 
-    const [yearData, setYearData] = useState<any[]>([]);
+    const [yearlyData, setYearlyData] = useState<any[]>([]);
 
     useEffect(() => {
         const update = async () => {
@@ -23,44 +23,41 @@ function MonthChart() {
     useEffect(() => {
         const filterDataByYear = () => {
             const currentYear = new Date().getFullYear();
+            const jobCountsByMonth = Array(12).fill(0); // Array to hold job counts for each month
+            const applicantCountsByMonth = Array(12).fill(0); // Array to hold applicant counts for each month
 
-            // Create an array to store job and applicant counts for each month
-            const monthDataArray: any[] = Array.from({ length: 12 }, () => ({ jobCount: 0, applicantCount: 0 }));
-
-            // Filter and count jobs and applicants by month
+            // Filter jobs by the current year
             job?.jobs?.jobs?.forEach((job: any) => {
                 const jobDate = new Date(job?.job?.createdAt);
                 if (jobDate.getFullYear() === currentYear) {
-                    const jobMonth = jobDate.getMonth(); // Month is zero-based (0 = January, 11 = December)
-                    monthDataArray[jobMonth].jobCount++;
+                    const month = jobDate.getMonth(); // Get month (0 - 11)
+                    jobCountsByMonth[month]++;
                 }
             });
 
+            // Filter applicants by the current year
             applicants?.forEach((applicant: any) => {
                 const applicantDate = new Date(applicant.createdAt);
                 if (applicantDate.getFullYear() === currentYear) {
-                    const applicantMonth = applicantDate.getMonth(); // Month is zero-based (0 = January, 11 = December)
-                    monthDataArray[applicantMonth].applicantCount++;
+                    const month = applicantDate.getMonth(); // Get month (0 - 11)
+                    applicantCountsByMonth[month]++;
                 }
             });
 
-            // Format the data to be used in the chart or visualization
-            const formattedData = monthDataArray.map((data, index) => ({
-                month: new Date(currentYear, index).toLocaleString('default', { month: 'short' }), // Convert index to month name
-                data: [data.jobCount, data.applicantCount],
-                color: index % 2 === 0 ? 'violet' : 'cyan',
-            }));
+            // Format the data for display
+            const formattedData = [
+                { data: jobCountsByMonth, color: 'violet' },       // Data for jobs
+                { data: applicantCountsByMonth, color: 'cyan' }    // Data for applicants
+            ];
 
-            setYearData(formattedData);
+            setYearlyData(formattedData);
         };
 
         filterDataByYear();
     }, [job?.jobs?.jobs, applicants]);
-
-
     return (
         <BarChart
-            series={yearData}
+            series={yearlyData}
             height={290}
             xAxis={[{ data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], scaleType: 'band' }]}
             margin={{ top: 10, bottom: 30, left: 40, right: 10 }}
