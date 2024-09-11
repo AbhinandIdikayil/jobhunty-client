@@ -106,6 +106,7 @@ function Profile() {
         console.log(matchingSkills)
         setSelectedSkills(matchingSkills)
     }
+
     // ml
     useEffect(() => {
         dispatch(listSkills()).unwrap()
@@ -294,16 +295,8 @@ function Profile() {
                                     options={skills}
                                     selectedValues={selectedSkills}
                                     onSelect={(e) => setSkills(e)}
+                                    onRemove={(e) => setSkills(e)}
                                 />
-                                {/* <div className="flex flex-wrap gap-4 pr-20 mt-4 text-base leading-6 text-indigo-600 max-md:flex-wrap max-md:pr-5">
-                                    {
-                                        state?.user?.skills?.map((data: string, ind: number) => (
-                                            <div key={data + ind} className="px-3 py-1 whitespace-nowrap bg-slate-50">
-                                                {data}
-                                            </div>
-                                        ))
-                                    }
-                                </div> */}
 
                             </div>
                             <div className='flex mt-3'>
