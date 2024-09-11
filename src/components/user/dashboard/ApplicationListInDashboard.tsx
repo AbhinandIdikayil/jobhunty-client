@@ -8,10 +8,10 @@ function ApplicationListInDashboard() {
   const application = useSelector((state: RootState) => state?.job?.applications);
 
   return (
-    <div className="py-4 flex leading-relaxed">
-      <div className="flex flex-col w-full max-md:max-w-full  shadow-md">
+    <div className="leading-relaxed">
+      <div className="flex flex-col items-center justify-center w-full shadow-md">
         <div className="flex flex-col py-6 w-full bg-white border border-solid border-zinc-500 rounded max-md:max-w-full">
-          <div className="self-start ml-6 text-xl font-semibold leading-tight text-slate-800 max-md:ml-2.5">
+          <div className="self-start ml-0 md:ml-6 text-xl font-semibold leading-tight text-slate-800 max-md:ml-2.5">
             Recent Applications History
           </div>
           <div className="mt-5 w-full border-b border-solid border-zinc-500 " />
@@ -20,7 +20,7 @@ function ApplicationListInDashboard() {
               return ind <= 1 ? (
                 <div key={ind} className="flex flex-col mx-6 mt-6 max-md:mr-2.5 max-md:max-w-full">
                   <div className="flex flex-wrap gap-10 justify-between items-center p-6 w-full rounded-lg bg-slate-50 max-md:px-5 max-md:max-w-full">
-                    <div className="flex gap-4 items-center self-stretch my-auto min-w-[240px] w-[446px] max-md:max-w-full">
+                    <div className="flex gap-4 items-center self-stretch my-auto md:w-full w-[446px] max-md:max-w-full">
                       <img loading="lazy" src={data?.companyId?.images}
                         className="object-contain shrink-0 self-stretch my-auto w-16 aspect-square"
                       />

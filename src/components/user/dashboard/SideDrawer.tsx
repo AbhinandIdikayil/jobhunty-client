@@ -7,10 +7,11 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import {  LayoutGrid, MessageSquareText, FileText, Search, Building2, CircleUserRound, FilePlus2, ListChecks } from 'lucide-react'
 import Header from './Header';
+import { useMediaQuery } from '@mui/material';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -52,6 +53,8 @@ interface props {
 }
 
 function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: props) {
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <>
             <CssBaseline />
@@ -61,16 +64,20 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
 
             </AppBar>
             <Drawer
-                sx={{
-                    width: drawerWidth,
+                 sx={{
+                    width: isSmallScreen ? '100%' : drawerWidth,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: drawerWidth,
+                        width: isSmallScreen ? '100%' : drawerWidth,
                         boxSizing: 'border-box',
-                        // borderRight: '1px solid black'
+                    },
+                    '& .MuiDrawer-paperAnchorLeft': {
+                        [theme.breakpoints.down('sm')]: {
+                            left: open ? 0 : '-100%',
+                        },
                     },
                 }}
-                variant="persistent"
+                variant={isSmallScreen ? "temporary" : "persistent"}
                 anchor="left"
                 open={open}
             >

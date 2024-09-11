@@ -26,6 +26,11 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
         }),
         marginLeft: 0,
     }),
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
+        width: '100%',
+        padding: theme.spacing(2),
+    },
 }));
 
 
