@@ -19,7 +19,6 @@ import { Button } from '@/components/ui/button';
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { removeExperienceAndUpdateUserProfile, updateUserProfile } from 'src/redux/actions/userAction';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import AddSkills from './AddSkills';
 import { formatDate } from 'src/utils/formateDate';
 import EditEducation from './EditEducation';
 import EditExperience from './EditExperience';
@@ -28,7 +27,7 @@ import { listSkills } from 'src/redux/actions/adminAction';
 
 
 function Profile() {
-    const skills = useSelector((state: RootState) => state?.admin?.skills) //!
+    const skills = useSelector((state: RootState) => state?.admin?.skills)
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const state = useSelector((state: RootState) => state.user);
@@ -145,20 +144,18 @@ function Profile() {
                                             <div className="flex flex-col items-center grow text-lg font-semibold leading-7 text-slate-800 max-md:mt-10">
                                                 <div className="text-2xl leading-7 capitalize"> {state?.user?.name} </div>
                                                 <div className="mt-2">
-                                                    <span className="text-slate-500">
-                                                        Product Designer at
+                                                    <span className="text-slate-500 capitalize">
+                                                        {
+                                                            state?.user?.experiences?.map((data: any) => {
+                                                                return data?.working ? (
+                                                                    `${data?.title} at ${data?.company}`
+                                                                ) : (
+                                                                    ''
+                                                                )
+                                                            })
+                                                        }
+                                                        {/* Product Designer at */}
                                                     </span>{" "}
-                                                    <span className="font-medium text-slate-800">
-                                                        Twitter
-                                                    </span>
-                                                </div>
-                                                <div className="flex gap-2 mt-2 text-slate-500">
-                                                    <img
-                                                        loading="lazy"
-                                                        src="https://cdn.builder.io/api/v1/image/assets/TEMP/ae8b37fc26bd1bd5f8e96c86a49789f57c0c966d5c47293a8783eb173a8bf5e3?"
-                                                        className="shrink-0 my-auto w-6 aspect-square"
-                                                    />
-                                                    <div>Manchester, UK</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -284,11 +281,6 @@ function Profile() {
                                     <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
                                         Skills
                                     </div>
-                                    <div className="flex gap-2">
-                                        <div className="flex justify-center items-center p-2.5 rounded border border-gray-400">
-                                            <AddSkills />
-                                        </div>
-                                    </div>
                                 </div>
                                 <Multiselect
                                     displayValue="name"
@@ -333,13 +325,6 @@ function Profile() {
                                         <div className="text-slate-800">{state.user.phonenumber || 'none'}</div>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6">
-                                    <Languages />
-                                    <div className="flex flex-col">
-                                        <div className="text-slate-500">Languages</div>
-                                        <div className="text-slate-800">English, French</div>
-                                    </div>
-                                </div>
                             </div>
                             <div className="flex flex-col p-6 w-full mt-6 bg-white border border-gray-500 rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
@@ -357,7 +342,7 @@ function Profile() {
                                         {
                                             state?.user?.resumes?.map((data: any, index: number) => (
                                                 <AccordionItem key={index} value={`item-${index + 1}`}>
-                                                    <AccordionTrigger>resume 1</AccordionTrigger>
+                                                    <AccordionTrigger>resume {index+1} </AccordionTrigger>
                                                     <AccordionContent>
                                                         <iframe height={400} src={data} className='w-full sm:w-auto'>
                                                         </iframe>
