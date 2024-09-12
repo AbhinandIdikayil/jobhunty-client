@@ -46,9 +46,9 @@ function Applications() {
                 return (
                     <span
                         className={`
-                            ${row.original.hiring_status == 'interview' ? 'border border-green-500 text-green-500': ''}
-                            ${row.original.hiring_status == 'shortlisted' ? 'border border-orange-500 text-orange-500': ''}
-                            ${row.original.hiring_status == 'in-review' ? 'border border-indigo-500 text-indigo-500': ''}
+                            ${row.original.hiring_status === 'hired' ? 'border border-green-500 text-green-500': ''}
+                            ${row.original.hiring_status === 'shortlisted' ? 'border border-orange-500 text-orange-500': ''}
+                            ${row.original.hiring_status === 'in-review' ? 'border border-indigo-500 text-indigo-500': ''}
                             border border-solid px-2 py-1 rounded-full`}
                     >
                         {row.original.hiring_status}

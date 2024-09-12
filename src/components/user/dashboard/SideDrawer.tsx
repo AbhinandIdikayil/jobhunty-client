@@ -9,7 +9,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { styled, useTheme } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
-import {  LayoutGrid, MessageSquareText, FileText, Search, Building2, CircleUserRound, FilePlus2, ListChecks } from 'lucide-react'
+import {  LayoutGrid, MessageSquareText, FileText, Search, Building2, CircleUserRound, FilePlus2, ListChecks, Target } from 'lucide-react'
 import Header from './Header';
 import { useMediaQuery } from '@mui/material';
 

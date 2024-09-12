@@ -8,7 +8,8 @@ export type JobReducer = {
     job: getAllJobsEntity | null,
     applicant: JobApplication | null
     applicants: JobApplication[]
-    applications: JobApplication[]
+    applications: JobApplication[],
+    recommended: getAllJobsEntity[]
 }
 
 interface applied {

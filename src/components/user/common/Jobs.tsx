@@ -10,16 +10,17 @@ import { useOutletContext } from 'react-router-dom';
 import UserJobCard from './JobCard'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { applyJob, getAllJob } from 'src/redux/actions/jobAction';
+import { applyJob, getAllJob, recommendedJobs } from 'src/redux/actions/jobAction';
 import { AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { toast } from 'react-toastify';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
-import { Backdrop, CircularProgress } from '@mui/material';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
 import CategoryAccordian from 'src/components/common/CategoryAccordian';
 import SectoresAccordian from 'src/components/common/SectoresAccordian';
 import SalaryAccordian from 'src/components/common/SalaryAccordian';
 import Loading from 'src/components/common/Loading';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 
 function Jobs() {
@@ -109,14 +110,14 @@ function Jobs() {
         try {
             console.log({ userid, jobid, resume: data, companyId })
             let res = await dispatch(applyJob({ userid, jobid, resume: data, companyId })).unwrap()
-            if(res){
+            if (res) {
                 setModalOpen(false)
             }
             toast.success('applied succesfully', { position: "top-center" })
         } catch (error) {
             console.log(error)
             toast.error(jobState?.err?.message, { position: "top-center" })
-        } 
+        }
     }
 
     function handleSearch() {
@@ -217,6 +218,10 @@ function Jobs() {
         return merged
     };
 
+    useEffect(() => {
+        dispatch(recommendedJobs()).unwrap()
+    }, [])
+
     return (
         <>
             <div className={`flex flex-col items-center  ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
@@ -269,107 +274,157 @@ function Jobs() {
                 </div>
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
             </div>
-            <div className="flex justify-center items-center self-stretch px-10 py-10 bg-white max-md:px-5">
+            <div className="flex justify-center items-center self-stretch px-10 py-3 bg-white max-md:px-5">
                 <div className="w-full max-w-[1193px] max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col">
-                        <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col grow text-base leading-6 text-slate-900 max-md:mt-10">
-                                <Accordion type="multiple" className="w-full">
-                                    <CategoryAccordian handleEmployment={handleEmployment} />
-                                    <SectoresAccordian handleCategory={handleCategory} />
-                                    <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} />
-                                </Accordion>
+                    <Tabs defaultValue="jobs" className={cn("w-ful")}>
+                        <div className="flex gap-5 items-center justify-center w-full max-md:flex-wrap max-md:max-w-full">
+                            <div className="flex flex-col w-full justify-center items-center ">
+                                <div className="text-3xl font-semibold leading-10 text-slate-900 mb-1">
+                                    All Jobs
+                                </div>
+                                <TabsList className='flex gap-2 bg-white mb-2'>
+                                    <TabsTrigger value='jobs' className={cn("font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm data-[state=active]:border-indigo-600 ")}>
+                                        Showing {jobState?.jobs?.totalCount?.[0]?.count} results
+                                    </TabsTrigger>
+                                    <TabsTrigger value='recommended' className={cn("font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm data-[state=active]:border-indigo-600 ")}>
+                                        recommended jobs {jobState?.recommended?.length}
+                                    </TabsTrigger>
+                                </TabsList>
                             </div>
                         </div>
-                        <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
-                            <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
-                                <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                                    <div className="flex flex-col">
-                                        <div className="text-3xl font-semibold leading-10 text-slate-900">
-                                            All Jobs
-                                        </div>
-                                        <div className="font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm">
-                                            Showing {jobState?.jobs?.totalCount?.[0]?.count} results
-                                        </div>
+                        <TabsContent value='jobs'>
+                            <div className="flex gap-5 max-md:flex-col">
+                                <div className="flex flex-col w-1/5 max-md:ml-0 max-md:w-full">
+                                    <div className="flex flex-col grow text-base leading-6 text-slate-900 max-md:mt-10">
+                                        <Accordion type="multiple" className="w-full">
+                                            <CategoryAccordian handleEmployment={handleEmployment} />
+                                            <SectoresAccordian handleCategory={handleCategory} />
+                                            <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} />
+                                        </Accordion>
                                     </div>
                                 </div>
-                                {
-                                    jobState?.jobs?.jobs?.map((data: any, ind) => (
-                                        <UserJobCard key={ind} data={data} apply={applyForJob} />
-                                    ))
-                                }
-                                <div className='flex items-center justify-center gap-2 font-bold'>
-                                    <Button
-                                        variant="contained"
-                                        onClick={() => {
-                                            if (pagination.pageIndex < page) {
-                                                if (pagination.pageIndex + 1 > 1) {
-                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
-                                                }
+                                <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
+                                    <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
+
+                                        {
+                                            jobState?.jobs?.jobs?.map((data: any, ind) => (
+                                                <UserJobCard key={ind} data={data} apply={applyForJob} />
+                                            ))
+                                        }
+                                        <div className='flex items-center justify-center gap-2 font-bold'>
+                                            <Button
+                                                variant="contained"
+                                                onClick={() => {
+                                                    if (pagination.pageIndex < page) {
+                                                        if (pagination.pageIndex + 1 > 1) {
+                                                            setPagination({ ...pagination, pageIndex: pagination.pageIndex - 1 })
+                                                        }
+                                                    }
+                                                }}
+                                                className="h-8 w-8 p-0"
+                                            >
+                                                <span className="sr-only">Go to first page</span>
+                                                <DoubleArrowLeftIcon className="h-4 w-4" />
+                                            </Button>
+                                            {
+                                                <span className='font-thin'>
+                                                    page {pagination?.pageIndex + 1} of {page}
+                                                </span>
                                             }
-                                        }}
-                                        className="h-8 w-8 p-0"
-                                    >
-                                        <span className="sr-only">Go to first page</span>
-                                        <DoubleArrowLeftIcon className="h-4 w-4" />
-                                    </Button>
-                                    {
-                                        <span className='font-thin'>
-                                            page {pagination?.pageIndex + 1} of {page}
-                                        </span>
-                                    }
-                                    <Button
-                                        variant="contained"
-                                        className={`h-8 w-8 p-0`}
-                                        onClick={() => {
-                                            if (pagination.pageIndex < page) {
-                                                if (pagination.pageIndex + 1 < page) {
-                                                    setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
-                                                }
-                                            }
-                                        }}
-                                    >
-                                        <span className="sr-only">Go to first page</span>
-                                        <DoubleArrowRightIcon className="h-4 w-4" />
-                                    </Button>
+                                            <Button
+                                                variant="contained"
+                                                className={`h-8 w-8 p-0`}
+                                                onClick={() => {
+                                                    if (pagination.pageIndex < page) {
+                                                        if (pagination.pageIndex + 1 < page) {
+                                                            setPagination({ ...pagination, pageIndex: pagination.pageIndex + 1 })
+                                                        }
+                                                    }
+                                                }}
+                                            >
+                                                <span className="sr-only">Go to first page</span>
+                                                <DoubleArrowRightIcon className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                        <AlertDialog open={modalOpen}>
+
+                                            <AlertDialogTrigger asChild>
+                                            </AlertDialogTrigger >
+                                            <AlertDialogContent className='max-w-fit'>
+                                                <AlertDialogHeader>
+                                                    <div className='flex w-72 overflow-x-scroll'>
+                                                        {
+                                                            pdf.map(data => (
+                                                                <div>
+                                                                    <iframe width="320" className='hover:cursor-grab w-fit' height="360"
+                                                                        // URL.createObjectURL(file)
+                                                                        src={data}
+                                                                    >
+                                                                    </iframe>
+                                                                    <button type='button' className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
+                                                                        select
+                                                                    </button>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <span>select resume</span>
+                                                    <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog >
+
+                                    </div>
                                 </div>
-                                <AlertDialog open={modalOpen}>
-
-                                    <AlertDialogTrigger asChild>
-                                    </AlertDialogTrigger >
-                                    <AlertDialogContent className='max-w-fit'>
-                                        <AlertDialogHeader>
-                                            <div className='flex w-72 overflow-x-scroll'>
-                                                {
-                                                    pdf.map(data => (
-                                                        <div>
-                                                            <iframe width="320" className='hover:cursor-grab w-fit' height="360"
-                                                                // URL.createObjectURL(file)
-                                                                src={data}
-                                                            >
-                                                            </iframe>
-                                                            <button type='button' className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
-                                                                select
-                                                            </button>
-                                                        </div>
-                                                    ))
-                                                }
-                                            </div>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <span>select resume</span>
-                                            <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
-                                            {/* <Button type="submit" className='ml-2 bg-indigo-700'>Submit</Button> */}
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog >
-
                             </div>
-                        </div>
-                    </div>
+                        </TabsContent>
+                        <TabsContent value='recommended'>
+                            <div className="flex gap-5 max-md:flex-col  sm:justify-center">
+                                <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
+                                    <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
+                                        {
+                                            jobState?.recommended?.map((data: any, ind) => (
+                                                <UserJobCard key={ind} data={data} apply={applyForJob} />
+                                            ))
+                                        }
+                                        <AlertDialog open={modalOpen}>
+
+                                            <AlertDialogTrigger asChild>
+                                            </AlertDialogTrigger >
+                                            <AlertDialogContent className='max-w-fit'>
+                                                <AlertDialogHeader>
+                                                    <div className='flex w-72 overflow-x-scroll'>
+                                                        {
+                                                            pdf.map(data => (
+                                                                <div>
+                                                                    <iframe width="320" className='hover:cursor-grab w-fit' height="360"
+                                                                        // URL.createObjectURL(file)
+                                                                        src={data}
+                                                                    >
+                                                                    </iframe>
+                                                                    <button type='button' className='p-2 bg-indigo-600 rounded-sm hover:bg-indigo-400' onClick={() => handleResume(data)}>
+                                                                        select
+                                                                    </button>
+                                                                </div>
+                                                            ))
+                                                        }
+                                                    </div>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <span>select resume</span>
+                                                    <AlertDialogCancel onClick={() => setModalOpen(false)} className="">Cancel</AlertDialogCancel>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog >
+                                    </div>
+                                </div>
+                            </div>
+                        </TabsContent>
+                    </Tabs>
                 </div>
                 <Loading loading={loading} key={'loading'} />
-
             </div>
         </>
     )

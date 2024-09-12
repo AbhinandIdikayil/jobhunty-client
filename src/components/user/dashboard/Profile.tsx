@@ -106,7 +106,6 @@ function Profile() {
         setSelectedSkills(matchingSkills)
     }
 
-    // ml
     useEffect(() => {
         dispatch(listSkills()).unwrap()
         setSelectedSkill()
@@ -154,7 +153,6 @@ function Profile() {
                                                                 )
                                                             })
                                                         }
-                                                        {/* Product Designer at */}
                                                     </span>{" "}
                                                 </div>
                                             </div>

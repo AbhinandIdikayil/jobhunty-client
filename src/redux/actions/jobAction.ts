@@ -191,3 +191,15 @@ export const editInterview = createAsyncThunk(
         }
     }
 )
+
+export const recommendedJobs = createAsyncThunk(
+    'user/recommeded',
+    async (_, {rejectWithValue}) => {
+        try {
+            const {data} = await AXIOS_INSTANCE_JOB.get('/recommend')
+            return data
+        } catch (error) {
+            return rejectWithValue(handleTokenError(error))
+        }
+    }
+)

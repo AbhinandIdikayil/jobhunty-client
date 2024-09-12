@@ -7,7 +7,7 @@ import { formatSalary } from "src/utils/formatSalary"
 function JobCard({ data, apply }: { data: getAllJobsUser, apply: (data: any) => void }) {
     const location = useLocation()
     return ( 
-        <div className="hover:cursor-default flex gap-5 justify-between p-6 mt-8 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full rounded-lg  border-t-indigo-600 border-t-4 shadow-sm">
+        <div className="hover:cursor-default flex gap-5 justify-between p-6 mb-4 w-full bg-white border border-solid border-zinc-200 leading-[160%] max-md:flex-wrap max-md:px-5 max-md:max-w-full rounded-lg  border-t-indigo-600 border-t-4 shadow-sm">
             <div className="flex gap-5 justify-between font-semibold">
                 {
                     data?.company?.images ? (
