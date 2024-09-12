@@ -1,8 +1,9 @@
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Checkbox } from '@/components/ui/checkbox'
+import { CircleChevronRight } from 'lucide-react'
 import { formatSalary } from 'src/utils/formatSalary'
 
-function SalaryAccordian({ handleSalary, setMinSalary, setMaxSalary }: { handleSalary: (e: any, data: any) => void, setMinSalary: any, setMaxSalary: any }) {
+function SalaryAccordian({ handleSalary, setMinSalary, setMaxSalary, minSalary, handleInputSalary }: { handleSalary: (e: any, data: any) => void, setMinSalary: any, setMaxSalary: any, minSalary: number | undefined, handleInputSalary: (d: any) => void }) {
     let salary = [[100000, 300000], [300000, 600000],
     [600000, 1200000], [1200000, 2350000]]
     return (
@@ -10,13 +11,28 @@ function SalaryAccordian({ handleSalary, setMinSalary, setMaxSalary }: { handleS
             <AccordionTrigger className='font-bold'>Salary Range</AccordionTrigger>
             <AccordionContent>
                 <div className='flex gap-2 items-center justify-start mb-1'>
-                    <input type="number" onChange={(e) => setMinSalary(parseInt(e.target.value))} className='border border-solid h-8 w-1/3 px-2' min={0} max={10000000} />
-                    <input type="number" onChange={(e) => setMaxSalary(parseInt(e.target.value))} className='border border-solid h-8 w-1/3 px-2' min={0} max={10000000} />
-                    {/* <CircleChevronRight onClick={handleSubmit} className='text-gray-500' /> */}
+                    <input type="number"
+                        onInput={(e: any) => {
+                            const value = Math.max(0, parseInt(e.target.value) || 0); // Ensure the value is non-negative
+                            e.target.value = value.toString(); // Update the input value to be non-negative
+                        }}
+                        onChange={(e) => setMinSalary(parseInt(e.target.value))} className='border border-solid h-8 w-5/12 px-2' min={0} max={10000000} />
+                    <input type="number"
+                        onInput={(e: any) => {
+                            let value = Math.max(0, parseInt(e.target.value) || 0); // Ensure the value is non-negative
+                            if(!minSalary) return
+                            if (value < minSalary) {
+                                value = minSalary; // If value is less than minSalary, reset it to minSalary
+                            }
+                            setMaxSalary(value);
+                            e.target.value = value.toString(); // Update the input value to the validated non-negative number
+                        }}
+                        onChange={(e) => setMaxSalary(parseInt(e.target.value))} className='border border-solid h-8 w-5/12 px-2' min={0} max={10000000} />
+                    <CircleChevronRight onClick={handleInputSalary} className='text-gray-500' />
                 </div>
                 {
 
-                    salary?.map((data,ind:number) => (
+                    salary?.map((data, ind: number) => (
                         <div key={ind} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                             <Checkbox id="terms2" onClick={(e) => handleSalary(e, data)} />
                             <label

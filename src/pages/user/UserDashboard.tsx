@@ -57,7 +57,7 @@ function UserDashboard() {
     overflowX: 'hidden',
     padding: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
-        width: open ? `calc(100% - ${240}px)` : '100%',
+        // width: open ? `calc(100% - ${240}px)` : '100%',
         // marginLeft: open ? 240 : 0,
     },
 }));

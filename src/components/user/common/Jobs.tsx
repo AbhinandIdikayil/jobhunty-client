@@ -60,7 +60,7 @@ function Jobs() {
     })
     const page = Math.ceil((jobState?.jobs?.totalCount?.[0]?.count || 5) / pagination.pageSize)
 
-    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[], location: string) => {
+    const fetchData = async (page: number, pageSize: number, name?: string, employment?: string[], category?: string[], price?: number[], location?: string) => {
         try {
             setLoading(true)
             await dispatch(getAllJob({
@@ -188,7 +188,7 @@ function Jobs() {
         const ariaChecked = target.getAttribute('aria-checked');
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
-        setFilterAndSearch(prevState => {
+        setFilterAndSearch((prevState: any) => {
             let updatedPrice;
 
             if (newAriaChecked === 'true') {
@@ -210,11 +210,24 @@ function Jobs() {
         })
     }
 
+    function handleInputSalary() {
+        setFilterAndSearch((prev: any) => {
+            console.log( {
+                ...prev,
+                price: [minSalary, maxSalary]
+            })
+            return {
+                ...prev,
+                price: [minSalary, maxSalary]
+            }
+        })
+    }
+
     const mergeRanges = (ranges: any) => {
         if (ranges.length === 0) return [];
         const sortedRanges = ranges.sort((a, b) => a[0] - b[0]);
         console.log(sortedRanges)
-        const merged = [sortedRanges[0][0], sortedRanges[sortedRanges?.length - 1][1]];
+        const merged = [sortedRanges?.[0]?.[0] || sortedRanges?.[0], sortedRanges?.[sortedRanges?.length - 1]?.[1] ||  sortedRanges?.[sortedRanges?.length - 1]];
         return merged
     };
 
@@ -299,7 +312,7 @@ function Jobs() {
                                         <Accordion type="multiple" className="w-full">
                                             <CategoryAccordian handleEmployment={handleEmployment} />
                                             <SectoresAccordian handleCategory={handleCategory} />
-                                            <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} />
+                                            <SalaryAccordian handleSalary={handleSalary} setMaxSalary={setMaxSalary} setMinSalary={setMinSalary} minSalary={minSalary} handleInputSalary={handleInputSalary} />
                                         </Accordion>
                                     </div>
                                 </div>
@@ -307,7 +320,7 @@ function Jobs() {
                                     <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
 
                                         {
-                                            jobState?.jobs?.jobs?.map((data: any, ind) => (
+                                            jobState?.jobs?.jobs?.map((data: any, ind: number) => (
                                                 <UserJobCard key={ind} data={data} apply={applyForJob} />
                                             ))
                                         }

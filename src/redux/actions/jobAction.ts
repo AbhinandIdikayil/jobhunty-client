@@ -16,12 +16,12 @@ export const postJob = createAsyncThunk(
 )
 
 export type paginationAndFilter = {
-    price?: [number] | [],
+    price?: number[],
     name?: string,
     pageSize?: number,
     page?: number,
-    category?: [string],
-    employment?: [string],
+    category?: string[] | undefined,
+    employment?: string[] | undefined,
     location?: string,
     _id?: string  //! HERE THE ID IS USED TO GET THE JOBS THAT ARE BY A SPECIFIED COMPNAY
     //! IF USER SIDE IS USING THE API DONT PASS THE ID
