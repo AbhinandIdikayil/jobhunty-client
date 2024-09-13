@@ -134,7 +134,6 @@ function Overview() {
         }
     }
 
-
     if (loading) {
         return (
             <h1>Loading....</h1>
@@ -143,8 +142,7 @@ function Overview() {
 
     return (
         <>
-            <div className="flex flex-col justify-center p-3 w-full bg-white max-md:px-5 max-md:max-w-full">
-
+            <div className="flex flex-col justify-center px-2 sm:p-3 w-full bg-white max-md:max-w-full">
                 <div className="self-start text-lg font-semibold leading-7 text-slate-800 max-md:max-w-full">
                     Basic Information
                 </div>

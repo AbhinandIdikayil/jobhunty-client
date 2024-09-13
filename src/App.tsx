@@ -126,7 +126,6 @@ function App() {
             <Route path='' element={<Dashboard />} />
             <Route path='post' element={<PostJob />} />
             <Route path='messages' element={<Chat />} />
-            <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<Applicants />} />
             <Route path='applicants/:id' element={<ApplicantDetails />} />
             <Route path='job-list' element={<JobListingCompanySide />} />

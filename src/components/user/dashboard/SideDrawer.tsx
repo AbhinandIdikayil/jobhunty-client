@@ -48,7 +48,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 interface props {
     handleDrawerOpen: () => void,
     handleDrawerClose: () => void,
-    navLinks: [],
+    navLinks: string[],
     open: boolean
 }
 
@@ -104,7 +104,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                             
                         }} >
                             <NavLink className={'sidebar-link '} end to={navLinks[index]}>
-                                <ListItemButton disableRipple sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }} >
+                                <ListItemButton disableRipple sx={{ width: isSmallScreen ? '100vw' : drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }} >
                                     <div
                                         className={`flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
                                       hover:translate-y-[-2px] hover:shadow-2xl transition-all duration-300 ease-in-out cursor-pointer
@@ -131,9 +131,9 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                 <Divider sx={{ borderBottom: '.5px solid black' }} />
                 <List disablePadding>
                     {['quiz', 'resume'].map((text) => (
-                        <ListItem key={text} disablePadding className='capitalize'>
+                        <ListItem key={text} disablePadding className='capitalize' >
                             <NavLink to={text}>
-                                <ListItemButton sx={{ width: drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
+                                <ListItemButton sx={{  width: isSmallScreen ? '100vw' : drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
                                     <div className='flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
                                      hover:translate-y-[-2px] hover:shadow-xl transition-all duration-300 ease-in-out'>
                                         <ListItemIcon>

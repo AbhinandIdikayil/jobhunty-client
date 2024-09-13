@@ -10,9 +10,10 @@ import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import Header from './Header';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import { Building2Icon, ClipboardListIcon, LayoutGrid, MessageSquareText, NotebookPen, Users } from 'lucide-react'
+import { useMediaQuery } from '@mui/material';
 
 
 interface AppBarProps extends MuiAppBarProps {
@@ -56,24 +57,30 @@ interface props {
 }
 
 function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: props) {
-
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <>
       <CssBaseline />
       <AppBar position="fixed" open={open} style={{ zIndex: 90 }}>
         {/* //! company header */}
-        <Header open={open} func={handleDrawerOpen} /> 
+        <Header open={open} func={handleDrawerOpen} />
       </AppBar>
       <Drawer
         sx={{
-          width: drawerWidth,
+          width: isSmallScreen ? '100%' : drawerWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: isSmallScreen ? '100%' : drawerWidth,
             boxSizing: 'border-box',
           },
+          '& .MuiDrawer-paperAnchorLeft': {
+            [theme.breakpoints.down('sm')]: {
+              left: open ? 0 : '-100%',
+            },
+          },
         }}
-        variant={`persistent`}
+        variant={isSmallScreen ? "temporary" : "persistent"}
         anchor="left"
         open={open}
       >
@@ -95,36 +102,42 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         <Divider />
         <List
         >
-          {['Dashboard', 'Messages', 'Company profiles', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
+          {['Dashboard', 'Messages', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton sx={{ width: drawerWidth - 2 }}>
-                  <ListItemIcon>
-                    {
-                      text == 'Dashboard' && <LayoutGrid color='black' /> ||
-                      text == 'Messages' && <MessageSquareText color='black' /> ||
-                      text == 'Company profiles' && <Building2Icon color='black' /> ||
-                      text == 'All applicants' && <Users color='black' /> ||
-                      text == 'Job listing' && <ClipboardListIcon color='black' /> ||
-                      text == 'My schedule' && <NotebookPen color='black' />
-                    }
-                  </ListItemIcon>
-                  <ListItemText sx={{ color: 'black' }} primary={text} />
+                <ListItemButton sx={{ width: isSmallScreen ? '100vw' : drawerWidth - 2 }}>
+                  <div
+                    className={`flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200`}>
+                    <ListItemIcon>
+                      {
+                        text == 'Dashboard' && <LayoutGrid color='black' /> ||
+                        text == 'Messages' && <MessageSquareText color='black' /> ||
+                        text == 'Company profiles' && <Building2Icon color='black' /> ||
+                        text == 'All applicants' && <Users color='black' /> ||
+                        text == 'Job listing' && <ClipboardListIcon color='black' /> ||
+                        text == 'My schedule' && <NotebookPen color='black' />
+                      }
+                    </ListItemIcon>
+                    <ListItemText sx={{ color: 'black' }} primary={text} />
+                  </div>
                 </ListItemButton>
               </NavLink>
             </ListItem>
           ))}
         </List>
         <Divider sx={{ borderBottom: '.5px solid black' }} />
-        <List>
+        <List disablePadding>
           {['Settings'].map((text) => (
             <ListItem key={text} disablePadding>
               <NavLink to={'settings'}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <IoSettingsOutline size={30} color='black' />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
+                <ListItemButton  sx={{  width: isSmallScreen ? '100vw' : drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
+                  <div className='flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
+                                     hover:translate-y-[-2px] hover:shadow-xl transition-all duration-300 ease-in-out'>
+                    <ListItemIcon>
+                      <IoSettingsOutline size={30} color='black' />
+                    </ListItemIcon>
+                    <ListItemText primary={text} />
+                  </div>
                 </ListItemButton>
               </NavLink>
             </ListItem>

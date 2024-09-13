@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import { Outlet } from 'react-router-dom';
 import SideDrawer from '../../components/company/SideDrawer';
 import { getCompany } from 'src/redux/actions/companyAction';
@@ -27,43 +26,25 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
         }),
         marginLeft: 0,
     }),
+    [theme.breakpoints.down('sm')]: {
+        marginLeft: 0,
+        width: '100%',
+        padding: theme.spacing(2),
+    },
 }));
 
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-    transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(4, 1),
-    // necessary for content to be below app bar
+    padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
 
 export default function CompanyHome() {
-
     const [open, setOpen] = React.useState(true);
     const dispatch: AppDispatch = useDispatch()
-    const [loading, setLoading] = React.useState<boolean>(false)
 
     const handleDrawerOpen = React.useCallback(() => {
         setOpen(true);
@@ -78,8 +59,6 @@ export default function CompanyHome() {
             await dispatch(getCompany()).unwrap();
         } catch (error) {
             console.log(error);
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -95,7 +74,7 @@ export default function CompanyHome() {
         checkUserRole();
     }, [])
 
-    const navLinks = ['', 'messages', 'profile', 'applicants', 'job-list', 'schedules']
+    const navLinks = ['', 'messages', 'applicants', 'job-list', 'schedules']
 
     return (
         <Box sx={{ display: 'flex' }}>

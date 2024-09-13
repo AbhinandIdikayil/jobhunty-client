@@ -69,17 +69,17 @@ function Navbar() {
                         <NavLink to={'/home/companies'}>Companies</NavLink>
                     </div>
                 </div>
-                <div className="flex max-md:flex-wrap w-full sm:w-auto gap-4 justify-center items-center p-1 sm:py-3.5 pl-6 text-base font-bold leading-6 text-center">
+                <div className="flex max-md:flex-wrap w-full sm:w-auto gap-1 sm:gap-4 justify-center items-center p-1 sm:py-3.5  text-base font-bold leading-6 text-center">
                     {
                         user?.user ? (
-                            <>
-                                <button onClick={handleLogout} className="justify-center px-3 md:px-6 py-1 text-sm md:text-base md:py-3 text-white bg-indigo-600 max-md:px-5">Logout</button>
-                                <NavLink to='/Dashboard' className="my-auto text-indigo-600 text-sm">Dashboard</NavLink>
-                            </>
+                            <div className='flex justify-center items-center gap-1 sm:gap-4 '>
+                                <button onClick={handleLogout} className="px-3 md:px-6 py-1 text-xs md:text-base sm:py-3 text-white bg-indigo-600 max-sm:rounded-md my-auto">Logout</button>
+                                <NavLink to='/Dashboard' className="text-indigo-600 text-xs md:text-base">Dashboard</NavLink>
+                            </div>
                         ) : (
                             <>
                                 <NavLink to='/login' className="my-auto text-indigo-600">Login</NavLink>
-                                <NavLink to='/signup' className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">
+                                <NavLink to='/signup' className="justify-center px-3 text-sm ms:px-6 py-1 sm:py-3 text-white bg-indigo-600 max-sm:rounded">
                                     Sign Up
                                 </NavLink>
                             </>

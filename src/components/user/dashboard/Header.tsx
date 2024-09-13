@@ -101,7 +101,7 @@ function Header({ func, open }: props) {
                             <Bell color="blue" />
                         </div>
                     </PopoverTrigger>
-                    <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
+                    <PopoverContent align="center" className="w-56 sm:w-80" style={{ zIndex: 99 }}>
                         <ScrollArea className="h-40 sm:h-48 rounded-md ">
 
                             <div className="grid gap-4">
@@ -148,9 +148,9 @@ function Header({ func, open }: props) {
                         </ScrollArea>
                     </PopoverContent>
                 </Popover>
-                <div className="flex gap-1 sm:gap-2.5 justify-center px-2 py-3 sm:px-6 sm:py-3 bg-indigo-600">
+                <div className="flex gap-1 sm:gap-2.5 justify-center px-2 py-3 sm:px-6 sm:py-3 bg-indigo-600 max-md:rounded-md">
                     <Home className='hidden sm:block' />
-                    <Link to={'/home'}>Home Page</Link>
+                    <Link to={'/home'} className=''>Home Page</Link>
                 </div>
             </div>
         </div>

@@ -56,7 +56,7 @@ export default function DashboardHome() {
         setOpen(false);
     }, []);
 
-    const navLinks = ['', 'messages', 'applications', 'jobs', 'companies', 'profile']
+    const navLinks = ['', 'messages', 'applications', 'jobs', 'companies', 'profile'] as string[]
 
     return (
         <Box sx={{ display: 'flex' }}>
