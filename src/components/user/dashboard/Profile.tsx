@@ -118,10 +118,10 @@ function Profile() {
                         <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
                             <div className="flex flex-col sm:flex-row justify-center items-center gap-0 sm:gap-3 pb-6 py-3 sm:pt-0 bg-white border border-gray-500 rounded max-md:max-w-full">
                                 {/* //! AVATAR */}
-                                <div className='hidden sm:block'>
+                                <div className='hidden sm:block pt-3'>
                                     {
                                         state?.user?.coverImage ? (
-                                            <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }} />
+                                            <Avatar  src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }} />
 
                                         ) : (
                                             <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
@@ -340,7 +340,7 @@ function Profile() {
                                         {
                                             state?.user?.resumes?.map((data: any, index: number) => (
                                                 <AccordionItem key={index} value={`item-${index + 1}`}>
-                                                    <AccordionTrigger>resume {index+1} </AccordionTrigger>
+                                                    <AccordionTrigger>resume {index + 1} </AccordionTrigger>
                                                     <AccordionContent>
                                                         <iframe height={400} src={data} className='w-full sm:w-auto'>
                                                         </iframe>
@@ -387,29 +387,29 @@ function Profile() {
                                         <UserSocialLinkUpdate />
                                     </div>
                                 </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
+                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
                                     <Instagram />
-                                    <div className="flex flex-col">
+                                    <div className="flex flex-col flex-grow">
                                         <div className="text-slate-500">Instagram</div>
-                                        <div className="text-indigo-600">{state?.user?.socialLink?.[0]}</div>
+                                        <div className="text-indigo-600 truncate ">{state?.user?.socialLink?.[0]?.substr(8)}</div>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
+                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
                                     <Twitter />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Twitter</div>
-                                        <div className="text-indigo-600">{state?.user?.socialLink?.[1]}</div>
+                                        <div className="text-indigo-600">{state?.user?.socialLink?.[1]?.substr(8)}</div>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <Globe />
+                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
+                                    <LinkedinIcon />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Website</div>
-                                        <div className="text-indigo-600">{state?.user?.socialLink?.[2]}</div>
+                                        <div className="text-indigo-600">{state?.user?.socialLink?.[2]?.substr(8)}</div>
                                     </div>
                                 </div>
-                                <div className="flex gap-4 mt-4 text-base leading-6 whitespace-nowrap">
-                                    <LinkedinIcon />
+                                <div className="flex gap-4 mt-4 text-base leading-6 w-auto overflow-hidden">
+                                    <Globe />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Website</div>
                                         <div className="text-indigo-600">{state?.user?.personalsite}</div>

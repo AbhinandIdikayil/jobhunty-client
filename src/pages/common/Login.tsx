@@ -75,7 +75,9 @@ const Login: React.FC = () => {
         }
     }
 
-
+    function handleOnChange() {
+        dispath(resetErr())
+    }
 
     const initialValues: LoginI = {
         email: '',
@@ -110,7 +112,7 @@ const Login: React.FC = () => {
             <div className="flex  max-md:flex-col max-md:gap-0">
                 <div className="hidden md:flex flex-col w-[50%] ">
                     <div className="flex flex-col">
-                        <div className="flex gap-5 justify-between items-start pl-16 bg-slate-50 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
+                        <div className="relative flex gap-5 justify-between items-start pl-16 bg-slate-50 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
                             <div className="flex flex-col mt-7">
                                 <div className="flex gap-3 self-end text-2xl font-bold tracking-tight leading-9 text-gray-800 whitespace-nowrap">
 
@@ -131,8 +133,36 @@ const Login: React.FC = () => {
                                 </div>
                             </div>
                             <div className="shrink-0 w-px bg-zinc-300 h-[630px]" />
+                            <img
+                                loading="lazy"
+                                srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
+                                className="absolute bottom-0 left-1/2  -translate-x-1/2 object-contain w-full aspect-[0.58] max-w-[386px] max-h-[506px]"
+                            />
+                            <div className="absolute bottom-20 right-7 flex flex-col rounded-none max-w-[277px]">
+                                <img
+                                    loading="lazy"
+                                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
+                                    className="object-contain z-10 self-end mr-6 w-20 rounded-3xl aspect-square"
+                                />
+                                <div className="flex flex-col items-start px-5 pt-4 pb-2 w-full bg-white">
+                                    <div className="text-sm font-semibold leading-snug text-gray-800 opacity-50">
+                                        Adam Sandler
+                                    </div>
+                                    <div className="mt-1 text-sm leading-snug text-gray-800 opacity-50">
+                                        Lead Engineer at Canva
+                                    </div>
+                                    <div className="flex gap-2 items-start self-stretch mt-4">
+                                        <div className="text-4xl font-bold leading-none text-indigo-600">
+                                            “
+                                        </div>
+                                        <div className="mt-3 text-sm font-semibold leading-7 text-gray-800">
+                                            “Great platform for the job seeker that searching for new career
+                                            heights.”
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                 </div>
                 <div className="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
@@ -174,7 +204,7 @@ const Login: React.FC = () => {
                                         Welcome back dude{" "}
                                     </div>
                                     <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600 leading-[160%] max-md:px-5">
-                                        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} width={'500'} />
+                                        <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
 
                                     </div>
                                     <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
@@ -211,18 +241,16 @@ const Login: React.FC = () => {
                                                         type="text"
                                                         name='email'
                                                     />
-
                                                     <div className="mt-4 font-semibold leading-[160%] text-slate-600">
                                                         Password
                                                         <span className="text-red-600">
                                                             {
                                                                 errors?.password
                                                                     ? '(' + errors.password + ')'
-                                                                    : (typeof user?.err === 'string' && user?.err.includes('user'))
+                                                                    : (typeof user?.err === 'string' && !user?.err.includes('user'))
                                                                         ? '(' + user?.err + ')'
                                                                         : null
                                                             }
-
                                                         </span>
                                                     </div>
                                                     <Field
@@ -231,7 +259,6 @@ const Login: React.FC = () => {
                                                         className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
                                                         type="text"
                                                     />
-
                                                     {/* //! here whenever some click the forgot password a modal will popup
                                     //! here if the email exist in DB it will render a otp page the function 
                                     //! passing is to update the otpPage state to true. On the starting phase of 

@@ -18,7 +18,7 @@ function Home() {
     return (
         <>
             <div className="pl-7 pr-5 sm:pl-32 w-full">
-                <div className="mt-20  text-2xl sm:text-7xl font-semibold text-sky-400 leading-[79px] w-1/2 max-md:mt-10 max-md:max-w-full max-md:text-4xl max-md:leading-[49px]">
+                <div className="mt-20  text-2xl sm:text-7xl font-semibold text-sky-400 leading-[79px] w-1/2 max-md:mt-10 max-md:w-full max-md:text-4xl max-md:leading-[49px]">
                     <span className="text-slate-800">Discover more than</span>{" "}
                     <span className="text-sky-400">5000+ Jobs</span>
                 </div>
@@ -31,7 +31,6 @@ function Home() {
                     Great platform for the job seeker that searching for new career heights
                     and passionate about startups.
                 </div>
-
                 <FormControl sx={{ m: 1 }} variant="standard">
                     <InputLabel htmlFor="demo-customized-textbox">Search company name</InputLabel>
                     <BootstrapInput id="demo-customized-textbox" />
@@ -56,8 +55,7 @@ function Home() {
                         backgroundColor: 'rgb(55 48 163)', // Darker shade for hover
                     }
                 }} variant="outlined">search my job</Button>
-                <div className="mt-2 text-base leading-6 text-gray-800 max-md:max-w-full">
-                </div>
+               
             </div>
             <ExploreByCategory />
         </>

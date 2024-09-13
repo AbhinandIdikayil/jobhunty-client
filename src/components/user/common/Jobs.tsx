@@ -36,7 +36,6 @@ function Jobs() {
     const [loading, setLoading] = useState(false)
     const [minSalary, setMinSalary] = useState<number>()
     const [maxSalary, setMaxSalary] = useState<number>()
-    const [search, setSearch] = useState<string>('')
     const [startNameSearch, setStartNameSearch] = useState<boolean>(false)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
@@ -197,7 +196,7 @@ function Jobs() {
             } else {
                 // Remove category if unchecked
                 updatedPrice = prevState.price.filter(
-                    (r) => r[1] != data[1] || r[0] != data[0]
+                    (r:any) => r[1] != data[1] || r[0] != data[0]
                 );
             }
 
@@ -225,7 +224,7 @@ function Jobs() {
 
     const mergeRanges = (ranges: any) => {
         if (ranges.length === 0) return [];
-        const sortedRanges = ranges.sort((a, b) => a[0] - b[0]);
+        const sortedRanges = ranges.sort((a:any, b:any) => a[0] - b[0]);
         console.log(sortedRanges)
         const merged = [sortedRanges?.[0]?.[0] || sortedRanges?.[0], sortedRanges?.[sortedRanges?.length - 1]?.[1] ||  sortedRanges?.[sortedRanges?.length - 1]];
         return merged

@@ -49,9 +49,9 @@ function Navbar() {
     }
 
     return (
-        <nav className="flex justify-center items-center self-stretch px-16 w-full max-md:px-5 max-md:max-w-full border-b-2">
-            <div className="flex gap-1 sm:gap-5 justify-between items-center  w-full max-w-[1192px] max-md:max-w-full">
-                <div className="flex gap-1 sm:gap-5 justify-center max-md:flex-wrap max-md:max-w-full">
+        <nav className="flex justify-center items-center self-stretch px-16 max-md:py-2 w-full max-md:px-5 max-md:w-full border-b-2">
+            <div className="flex gap-1 sm:gap-5 justify-between items-center  w-full max-w-[1192px] max-md:w-full">
+                <div className="flex gap-1 sm:gap-5 justify-center max-md:flex-wrap max-md:w-full">
                     <div className="hidden sm:flex gap-2  items-center">
                         <div className="flex overflow-hidden relative flex-col justify-center items-center w-8 aspect-square">
                             <img
@@ -69,12 +69,12 @@ function Navbar() {
                         <NavLink to={'/home/companies'}>Companies</NavLink>
                     </div>
                 </div>
-                <div className="flex w-auto sm:w-auto gap-4 justify-center items-center p-1 sm:py-3.5 pl-6 text-base font-bold leading-6 text-center">
+                <div className="flex max-md:flex-wrap w-full sm:w-auto gap-4 justify-center items-center p-1 sm:py-3.5 pl-6 text-base font-bold leading-6 text-center">
                     {
                         user?.user ? (
                             <>
-                                <button onClick={handleLogout} className="justify-center px-6 py-3 text-white bg-indigo-600 max-md:px-5">Logout</button>
-                                <NavLink to='/Dashboard' className="my-auto text-indigo-600">Dashboard</NavLink>
+                                <button onClick={handleLogout} className="justify-center px-3 md:px-6 py-1 text-sm md:text-base md:py-3 text-white bg-indigo-600 max-md:px-5">Logout</button>
+                                <NavLink to='/Dashboard' className="my-auto text-indigo-600 text-sm">Dashboard</NavLink>
                             </>
                         ) : (
                             <>
