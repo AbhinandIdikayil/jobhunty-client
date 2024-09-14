@@ -73,7 +73,7 @@ function Header({ func, open }: props) {
     }, [loading, user.role, navigate]);
 
     return (
-        <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
+        <div className="flex gap-5 justify-between px-8 w-full bg-white  max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{  paddingBlock: '16px' }}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />
@@ -83,7 +83,6 @@ function Header({ func, open }: props) {
                         <div className="hidden sm:block sm:flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
                             Dashboard
                         </div>
-                        {/* <DropDown /> */}
                     </div>
                 </div>
             </div>
@@ -103,7 +102,6 @@ function Header({ func, open }: props) {
                     </PopoverTrigger>
                     <PopoverContent align="center" className="w-56 sm:w-80" style={{ zIndex: 99 }}>
                         <ScrollArea className="h-40 sm:h-48 rounded-md ">
-
                             <div className="grid gap-4">
                                 <div className="space-y-2">
                                     <h4 className="font-medium leading-none">Dimensions</h4>

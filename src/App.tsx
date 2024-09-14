@@ -54,6 +54,7 @@ import Skills from './pages/admin/Skills'
 import { setGlobalDispatch } from './redux/global'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from './redux/store'
+import SIde from './components/user/SIde'
 
 
 
@@ -78,6 +79,7 @@ function App() {
         <Route path='/' element={<Navigate to='home' />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
+        <Route path='/side' element={<SIde />} />
         <Route path='home' element={<UserLayout />} >
           <Route path='interview/:room' element={<Interview />} />  //! FOR INTERVIEW (VIDEO CALL)
           <Route index element={<Home />} />

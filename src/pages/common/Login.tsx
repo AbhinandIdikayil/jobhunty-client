@@ -11,12 +11,10 @@ import { LoginvalidationSchema } from "src/validation/common/signup-validation"
 import Otp from "src/components/common/Otp"
 import { GoogleLogin } from '@react-oauth/google'
 import { resetErr } from "src/redux/reducers/user/userSlice"
-
+import LoginAndSignupSidePage from "src/components/common/LoginAndSignupSidePage"
 
 
 const Login: React.FC = () => {
-
-
     const user = useSelector((state: RootState) => state?.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate();
@@ -85,8 +83,6 @@ const Login: React.FC = () => {
     }
 
     async function handleSubmit(values: FormikValues) {
-
-        // if (url == 'login') {
         const formData: any = {
             ...values
         }
@@ -102,7 +98,6 @@ const Login: React.FC = () => {
         } catch (error) {
             console.log(error)
         }
-        // }
         console.log(values)
     }
 
@@ -110,71 +105,15 @@ const Login: React.FC = () => {
         <div className="bg-white h-screen">
             <Navbar />
             <div className="flex  max-md:flex-col max-md:gap-0">
-                <div className="hidden md:flex flex-col w-[50%] ">
-                    <div className="flex flex-col">
-                        <div className="relative flex gap-5 justify-between items-start pl-16 bg-slate-50 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
-                            <div className="flex flex-col mt-7">
-                                <div className="flex gap-3 self-end text-2xl font-bold tracking-tight leading-9 text-gray-800 whitespace-nowrap">
-
-                                </div>
-                                <div className="flex flex-col px-8 py-6 mt-28 w-full bg-white max-md:px-5 max-md:mt-10">
-                                    <div className="flex gap-2 items-start max-md:pr-5">
-                                        <div className="shrink-0 mt-5 w-2 bg-indigo-600 h-[22px] rounded-[40px]" />
-                                        <div className="shrink-0 mt-2.5 w-2 bg-indigo-600 h-[30px] rounded-[40px]" />
-                                        <div className="shrink-0 mt-2.5 w-2 bg-indigo-600 h-[30px] rounded-[40px]" />
-                                        <div className="shrink-0 self-stretch w-2 h-10 bg-indigo-600 rounded-[40px]" />
-                                    </div>
-                                    <div className="mt-7 text-xl font-bold tracking-normal leading-5 text-gray-800">
-                                        100K+
-                                    </div>
-                                    <div className="mt-3.5 text-base leading-6 text-gray-800">
-                                        People got hired
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="shrink-0 w-px bg-zinc-300 h-[630px]" />
-                            <img
-                                loading="lazy"
-                                srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/31aa17c982a5b3b4cd2b84e16cfd713dd698d8b5f86da7a99e4b905b9a5eb8f2?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-                                className="absolute bottom-0 left-1/2  -translate-x-1/2 object-contain w-full aspect-[0.58] max-w-[386px] max-h-[506px]"
-                            />
-                            <div className="absolute bottom-20 right-7 flex flex-col rounded-none max-w-[277px]">
-                                <img
-                                    loading="lazy"
-                                    srcSet="https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=100 100w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=200 200w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=400 400w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=800 800w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1200 1200w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=1600 1600w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274&width=2000 2000w, https://cdn.builder.io/api/v1/image/assets/TEMP/29e8d55bc914f5d40f6fc75127a76445c2c8aded2d01422e814feb3dfb73301f?placeholderIfAbsent=true&apiKey=bf80438c4595450788b907771330b274"
-                                    className="object-contain z-10 self-end mr-6 w-20 rounded-3xl aspect-square"
-                                />
-                                <div className="flex flex-col items-start px-5 pt-4 pb-2 w-full bg-white">
-                                    <div className="text-sm font-semibold leading-snug text-gray-800 opacity-50">
-                                        Adam Sandler
-                                    </div>
-                                    <div className="mt-1 text-sm leading-snug text-gray-800 opacity-50">
-                                        Lead Engineer at Canva
-                                    </div>
-                                    <div className="flex gap-2 items-start self-stretch mt-4">
-                                        <div className="text-4xl font-bold leading-none text-indigo-600">
-                                            “
-                                        </div>
-                                        <div className="mt-3 text-sm font-semibold leading-7 text-gray-800">
-                                            “Great platform for the job seeker that searching for new career
-                                            heights.”
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <LoginAndSignupSidePage />
                 <div className="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
                     <div className="flex flex-col h-full justify-center px-16 w-full text-base bg-white max-md:px-5 max-md:max-w-full">
                         {
                             otpPage ? (
-
                                 <div className="flex flex-col pt-5 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
                                     <Otp />
                                 </div>
                             ) : (
-
                                 <div className="flex flex-col pt-3 sm:pt-0 pb-1 mx-8 bg-white max-md:mx-2.5">
                                     <div className="flex gap-0 justify-center self-center font-semibold text-indigo-600 leading-[160%]">
                                         {
@@ -198,14 +137,12 @@ const Login: React.FC = () => {
                                                 </>
                                             )
                                         }
-
                                     </div>
                                     <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
                                         Welcome back dude{" "}
                                     </div>
                                     <div className="flex justify-center items-center px-4 py-3 mt-6 font-bold text-center text-indigo-600 leading-[160%] max-md:px-5">
                                         <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
-
                                     </div>
                                     <div className="flex gap-2 items-center py-1 mt-3 text-center text-gray-800 leading-[160%]">
                                         <div className="hidden shrink-0 self-stretch my-auto h-px border border-solid bg-zinc-200 border-zinc-200 w-[109px]" />
@@ -220,82 +157,79 @@ const Login: React.FC = () => {
                                         onSubmit={handleSubmit}
                                     >
                                         {({ errors, isSubmitting }) => (
-                                            <>
-                                                <Form className="flex flex-col">
+                                            <Form className="flex flex-col">
 
-                                                    <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                                        Email Address
-                                                        <span className="text-red-600">
-                                                            {
-                                                                errors?.email
-                                                                    ? '(' + errors.email + ')'
-                                                                    : (typeof user?.err === 'string' && user?.err.includes('user'))
-                                                                        ? '(' + user?.err + ')'
-                                                                        : null
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                    <Field
-                                                        placeholder=' Enter email address'
-                                                        className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                                        type="text"
-                                                        name='email'
-                                                    />
-                                                    <div className="mt-4 font-semibold leading-[160%] text-slate-600">
-                                                        Password
-                                                        <span className="text-red-600">
-                                                            {
-                                                                errors?.password
-                                                                    ? '(' + errors.password + ')'
-                                                                    : (typeof user?.err === 'string' && !user?.err.includes('user'))
-                                                                        ? '(' + user?.err + ')'
-                                                                        : null
-                                                            }
-                                                        </span>
-                                                    </div>
-                                                    <Field
-                                                        name='password'
-                                                        placeholder=' Enter password'
-                                                        className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
-                                                        type="text"
-                                                    />
-                                                    {/* //! here whenever some click the forgot password a modal will popup
+                                                <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                    Email Address
+                                                    <span className="text-red-600">
+                                                        {
+                                                            errors?.email
+                                                                ? '(' + errors.email + ')'
+                                                                : (typeof user?.err === 'string' && user?.err.includes('user'))
+                                                                    ? '(' + user?.err + ')'
+                                                                    : null
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <Field
+                                                    placeholder=' Enter email address'
+                                                    className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                    type="text"
+                                                    name='email'
+                                                />
+                                                <div className="mt-4 font-semibold leading-[160%] text-slate-600">
+                                                    Password
+                                                    <span className="text-red-600">
+                                                        {
+                                                            errors?.password
+                                                                ? '(' + errors.password + ')'
+                                                                : (typeof user?.err === 'string' && !user?.err.includes('user'))
+                                                                    ? '(' + user?.err + ')'
+                                                                    : null
+                                                        }
+                                                    </span>
+                                                </div>
+                                                <Field
+                                                    name='password'
+                                                    placeholder=' Enter password'
+                                                    className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
+                                                    type="text"
+                                                />
+                                                {/* //! here whenever some click the forgot password a modal will popup
                                     //! here if the email exist in DB it will render a otp page the function 
                                     //! passing is to update the otpPage state to true. On the starting phase of 
                                     //! this component i have done the conditional rendering
                                     */}
 
-                                                    <ForgotPSConfirm setOtpPage={setOtpPage} />
+                                                <ForgotPSConfirm setOtpPage={setOtpPage} />
 
-                                                    {
-                                                        isSubmitting ? (
-                                                            <button className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
-                                                                Loging in
-                                                            </button>
-                                                        ) : (
-                                                            <button type="submit" disabled={isSubmitting} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
-                                                                Login
-                                                            </button>
-                                                        )
-                                                    }
+                                                {
+                                                    isSubmitting ? (
+                                                        <button className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                            Loging in
+                                                        </button>
+                                                    ) : (
+                                                        <button type="submit" disabled={isSubmitting} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                            Login
+                                                        </button>
+                                                    )
+                                                }
 
-                                                    <div className="flex gap-2 mt-4">
-                                                        <div className="text-gray-800 leading-[160%]">
-                                                            Dont have an account?
-                                                        </div>
-                                                        <Link to={'/signup'} className="font-semibold text-center text-indigo-600 leading-[150%]">
-                                                            signup
-                                                        </Link>
+                                                <div className="flex gap-2 mt-4">
+                                                    <div className="text-gray-800 leading-[160%]">
+                                                        Dont have an account?
                                                     </div>
+                                                    <Link to={'/signup'} className="font-semibold text-center text-indigo-600 leading-[150%]">
+                                                        signup
+                                                    </Link>
+                                                </div>
 
-                                                </Form>
-                                            </>
+                                            </Form>
                                         )}
                                     </Formik>
                                 </div>
                             )
                         }
-
                     </div>
                 </div>
             </div>

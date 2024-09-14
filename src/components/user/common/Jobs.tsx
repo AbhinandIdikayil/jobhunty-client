@@ -196,7 +196,7 @@ function Jobs() {
             } else {
                 // Remove category if unchecked
                 updatedPrice = prevState.price.filter(
-                    (r:any) => r[1] != data[1] || r[0] != data[0]
+                    (r: any) => r[1] != data[1] || r[0] != data[0]
                 );
             }
 
@@ -211,7 +211,7 @@ function Jobs() {
 
     function handleInputSalary() {
         setFilterAndSearch((prev: any) => {
-            console.log( {
+            console.log({
                 ...prev,
                 price: [minSalary, maxSalary]
             })
@@ -224,9 +224,9 @@ function Jobs() {
 
     const mergeRanges = (ranges: any) => {
         if (ranges.length === 0) return [];
-        const sortedRanges = ranges.sort((a:any, b:any) => a[0] - b[0]);
+        const sortedRanges = ranges.sort((a: any, b: any) => a[0] - b[0]);
         console.log(sortedRanges)
-        const merged = [sortedRanges?.[0]?.[0] || sortedRanges?.[0], sortedRanges?.[sortedRanges?.length - 1]?.[1] ||  sortedRanges?.[sortedRanges?.length - 1]];
+        const merged = [sortedRanges?.[0]?.[0] || sortedRanges?.[0], sortedRanges?.[sortedRanges?.length - 1]?.[1] || sortedRanges?.[sortedRanges?.length - 1]];
         return merged
     };
 
@@ -236,7 +236,7 @@ function Jobs() {
 
     return (
         <>
-            <div className={`flex flex-col items-center  ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <div className={`flex flex-col items-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
                         <div className="self-start text-slate-800 max-md:text-4xl">
@@ -286,17 +286,17 @@ function Jobs() {
                 </div>
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
             </div>
-            <div className="flex justify-center items-center self-stretch px-10 py-3 bg-white max-md:px-5">
-                <div className="w-full max-w-[1193px] max-md:max-w-full">
-                    <Tabs defaultValue="jobs" className={cn("w-ful")}>
-                        <div className="flex gap-5 items-center justify-center w-full max-md:flex-wrap max-md:max-w-full">
+            <div className="flex justify-center items-center self-stretch px-10 py-3 max-md:px-5 w-full">
+                <div className="w-full max-w-[1193px]  max-md:max-w-full ">
+                    <Tabs defaultValue="jobs">
+                        <div className="flex gap-5 items-center justify-center w-full max-md:flex-wrap max-md:max-w-full ">
                             <div className="flex flex-col w-full justify-center items-center ">
                                 <div className="text-3xl font-semibold leading-10 text-slate-900 mb-1">
                                     All Jobs
                                 </div>
                                 <TabsList className='flex gap-2 bg-white mb-2'>
                                     <TabsTrigger value='jobs' className={cn("font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm data-[state=active]:border-indigo-600 ")}>
-                                        Showing {jobState?.jobs?.totalCount?.[0]?.count} results
+                                        Showing {jobState?.jobs?.totalCount?.[0]?.count || 0} results
                                     </TabsTrigger>
                                     <TabsTrigger value='recommended' className={cn("font-semibold leading-10 border border-solid rounded-lg px-2 w-fit shadow-sm data-[state=active]:border-indigo-600 ")}>
                                         recommended jobs {jobState?.recommended?.length}
@@ -317,7 +317,6 @@ function Jobs() {
                                 </div>
                                 <div className="flex flex-col ml-5 w-4/5 max-md:ml-0 max-md:w-full">
                                     <div className="flex flex-col justify-center max-md:mt-10 max-md:max-w-full">
-
                                         {
                                             jobState?.jobs?.jobs?.map((data: any, ind: number) => (
                                                 <UserJobCard key={ind} data={data} apply={applyForJob} />

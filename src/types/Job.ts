@@ -172,6 +172,7 @@ export interface getAllJobsEntity {
             createdAt?: Date,
         }
     },
+    totalCount:any,
     applicantCount?: number,
     applicants: [applicants],
     company?: {

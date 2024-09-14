@@ -59,6 +59,9 @@ const jobSlice = createSlice({
                 state.loading = false
                 state.err = payload
                 state.jobs.jobs = []
+                if(state.jobs?.totalCount){
+                    state.jobs.totalCount = []
+                }
             })
             .addCase(applyJob.pending, (state) => {
                 state.loading = true
@@ -224,6 +227,7 @@ const jobSlice = createSlice({
             .addCase(recommendedJobs.rejected,(state, {payload}) => {
                 state.loading = false
                 state.err = payload
+                state.recommended = []
             })
     }
 })
