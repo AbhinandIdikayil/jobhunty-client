@@ -73,7 +73,7 @@ function Header({ func, open }: props) {
     }, [loading, user.role, navigate]);
 
     return (
-        <div className="flex gap-5 justify-between px-8 w-full bg-white  max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{  paddingBlock: '16px' }}>
+        <div className="flex gap-5 justify-between px-8 w-full bg-slate-50  max-md:flex-wrap max-md:px-5 max-md:max-w-full " style={{  paddingBlock: '16px', borderBottom: '0.5px solid gray' }}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />

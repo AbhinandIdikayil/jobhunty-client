@@ -79,12 +79,12 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                     border: ''
                 }}
                 variant={isSmallScreen ? "temporary" : "persistent"}
-                className='bg-slate-50'
+                className={`${open ? 'bg-slate-50' : 'bg-none'} `}
                 anchor="left"
                 open={open}
             >
 
-                <DrawerHeader className='bg-slate-50' sx={{ display: 'flex', gap: 2, height: '81px', paddingTop: '42px' }}>
+                <DrawerHeader className='bg-slate-50' sx={{ display: 'flex', gap: 2, height: '81px', paddingY: '40px', borderBottom: '0.5px solid gray' }}>
                     {/* <div className='flex items-center justify-center text-left '>
                         <div className="flex overflow-hidden relative flex-col justify-center items-center w-8 aspect-square">
                             <img
@@ -97,15 +97,17 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                             JobHuntly
                         </div>
                     </div> */}
-                    <div className="flex gap-1 items-start md:items-center pr-5 pl-4 text-2xl tracking-tight text-gray-800 whitespace-nowrap w-full ">
-                        <img
-                            loading="lazy"
-                            src="https://cdn.builder.io/api/v1/image/assets/TEMP/40550eadec7bbc460f9ee4be4291e780f8963001faa5df2daa66f0614767c8b9?"
-                            className="shrink-0 aspect-[1.35] w-[43px]"
-                        />
-                        <h1 className="font-black tracking-wide">JobHuntly</h1>
+                    <div className='flex justify-around items-center w-full h-full'>
+                        <div className="relative flex gap-1 items-start md:items-center pr-5 pl-4 text-2xl tracking-tight text-gray-800 whitespace-nowrap w-full">
+                            <img
+                                loading="lazy"
+                                src="https://cdn.builder.io/api/v1/image/assets/TEMP/40550eadec7bbc460f9ee4be4291e780f8963001faa5df2daa66f0614767c8b9?"
+                                className="shrink-0 aspect-[1.35] w-[43px]"
+                            />
+                            <h1 className="font-black tracking-wide -1">JobHuntly</h1>
+                        </div>
+                        <MdOutlineArrowBackIos onClick={handleDrawerClose} className='max-md:w-10 max-md:pr-3' />
                     </div>
-                    <MdOutlineArrowBackIos onClick={handleDrawerClose} className='max-md:w-10 max-md:pr-3' />
                 </DrawerHeader>
                 {/* <Divider /> */}
                 <List className='bg-slate-50' sx={
