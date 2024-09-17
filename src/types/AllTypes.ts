@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 
 export type UserReducer = {
     loading: boolean,
-    err: boolean | string,
+    err: boolean | string | any,
     role: 'user' | 'admin' | 'company' | null,
     user: null | any,
 }
@@ -27,7 +27,6 @@ export type verifyOtpRequest = {
     password?: string,
     role?: string,
     intention?: boolean
-
 }
 
 export type verifyOtpResponse = {

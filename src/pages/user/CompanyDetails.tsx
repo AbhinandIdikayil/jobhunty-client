@@ -1,4 +1,4 @@
-import { Facebook, Instagram, TwitchIcon, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 import { useLocation, useOutletContext } from "react-router-dom";
 import CompanyDetailsHeader from "src/components/common/CompanyDetailsHeader";
 import { prop } from "src/types/AllTypes";

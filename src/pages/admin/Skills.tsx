@@ -4,9 +4,9 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from '@tanstack/react-table';
 import { ChevronDown, MoreHorizontal } from 'lucide-react';
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useOutletContext } from 'react-router-dom';
 import AddSkillModal from 'src/components/admin/AddSkillModal';
 import EditSkillModal from 'src/components/admin/EditSkillModal';
 import { listSkills } from 'src/redux/actions/adminAction';
@@ -21,7 +21,7 @@ function Skills() {
 
 
     async function handleRemove(id: string) {
-
+        console.log(id)
     }
 
     interface Skill {

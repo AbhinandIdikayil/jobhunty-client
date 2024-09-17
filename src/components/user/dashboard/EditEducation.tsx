@@ -89,8 +89,8 @@ function EditEducationForm({ setOpen, ind }: UserEditEducation) {
     })
 
 
-    function onSubmit(values) {
-        const updatedEducation = values.education.map(ed => ({
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        const updatedEducation = values.education.map((ed:any) => ({
             ...ed,
             year: {
                 from: ed.year.from?.toISOString(),
@@ -98,7 +98,7 @@ function EditEducationForm({ setOpen, ind }: UserEditEducation) {
             }
         }));
         const payload = {
-            education: state.user?.education?.map((data,index) => {
+            education: state.user?.education?.map((data:any,index:number) => {
                 return index == ind ? updatedEducation[0] : data
             })
         };

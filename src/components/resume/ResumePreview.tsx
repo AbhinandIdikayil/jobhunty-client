@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import PersonalDetails from './preview/PersonalDetails'
 import { UseResumeContext } from 'src/context/ResumeContext'
 import ha from './data/dummy'

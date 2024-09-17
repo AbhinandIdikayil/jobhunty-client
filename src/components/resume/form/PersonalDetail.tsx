@@ -1,14 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LoaderCircle } from 'lucide-react';
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
 
 function PersonalDetail({ enabledNext }: { enabledNext: any }) {
 
-  const params = useParams();
   const { resume, setResume } = UseResumeContext()
 
   const [formData, setFormData] = useState<any>();
@@ -19,9 +17,9 @@ function PersonalDetail({ enabledNext }: { enabledNext: any }) {
 
 
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     enabledNext(false)
-    const { name, value } = e.target;
+    const { name, value } = e?.target;
 
     setFormData({
       ...formData,
@@ -33,12 +31,9 @@ function PersonalDetail({ enabledNext }: { enabledNext: any }) {
     })
   }
 
-  const onSave = (e) => {
+  const onSave = (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true)
-    const data = {
-      data: formData
-    }
     toast("Details updated")
     setLoading(false)
     enabledNext(true);

@@ -6,7 +6,6 @@ import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getSortedR
 import { format } from 'date-fns'
 import { ChevronDown, ChevronLeftIcon, ChevronRightIcon, LoaderCircle, MoreHorizontal } from 'lucide-react'
 import { useEffect, useState, memo } from 'react'
-import { FaClosedCaptioning } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import { UseDebounce } from 'src/hooks/Debounce'
@@ -44,17 +43,17 @@ function CompanyJobListing() {
         dispatch(setJobById(id))
         navigate(`/company/job-list/${id}`)
     }
-    const fetchData = async (page: number, pageSize: number, name?: string, category?: string, employment?: string) => {
+    const fetchData = async (page: number, pageSize: number, name?: string | null) => {
         try {
             setLoading(true)
             await dispatch(getAllJob({
-                    _id: userState?.user?._id,
-                    page,
-                    pageSize,
-                    name,
-                    employment,
-                    category
-                })).unwrap()
+                _id: userState?.user?._id,
+                page,
+                pageSize,
+                name: name || '',
+                employment: undefined,
+                category: undefined
+            })).unwrap()
         } catch (error) {
             console.log(error)
         } finally {
@@ -201,7 +200,7 @@ function CompanyJobListing() {
     useEffect(() => {
         setLoading(true)
         fetchData(pagination.pageIndex + 1, pagination.pageSize, debounceSearchQuery);
-            // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pagination?.pageIndex, pagination?.pageSize, debounceSearchQuery]);
 
 
@@ -243,14 +242,14 @@ function CompanyJobListing() {
                     </DropdownMenu>
                 </div>
                 {
-                        loading && (
-                            <div className='h-full  flex justify-center items-center'>
-                                <LoaderCircle className='animate-spin' size={30} />
-                            </div>
-                        )
-                    }
+                    loading && (
+                        <div className='h-full  flex justify-center items-center'>
+                            <LoaderCircle className='animate-spin' size={30} />
+                        </div>
+                    )
+                }
                 <div className="rounded-md border w-full" >
-                   
+
                     <Table className='w-full'>
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (

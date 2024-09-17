@@ -5,8 +5,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Plus } from 'lucide-react'
-import { title } from 'process'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserProfile } from 'src/redux/actions/userAction'
@@ -109,13 +108,12 @@ function AddExperienceForm({ setOpen }: UserAddExperience) {
             }
         }));
 
-        const payload = {
+        const payload:any = {
             experiences: [
                 ...state.user.experiences,
                 ...updatedExperience
             ]
         };
-        console.log(payload);
         try {
             dispatch(updateUserProfile(payload)).unwrap()
             setOpen(false)

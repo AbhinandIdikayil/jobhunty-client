@@ -8,7 +8,7 @@ import { deepOrange } from '@mui/material/colors';
 import UserEditProfile from './EditProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from 'src/redux/store';
-import { Globe, Instagram, Languages, LinkedinIcon, Mail, Plus, Smartphone, Trash2, Twitter } from 'lucide-react';
+import { Globe, Instagram, LinkedinIcon, Mail, Plus, Smartphone, Trash2, Twitter } from 'lucide-react';
 import AddEducation from './addEducation';
 import { FaAward, FaUniversity } from 'react-icons/fa'
 import AddExperience from './AddExperience';
@@ -111,17 +111,20 @@ function Profile() {
         setSelectedSkill()
     }, [])
     return (
-        <div className={`flex flex-col ${open ? 'w-5/6' : 'w-full '}max-md:ml-0`}>
+        <div className={`flex flex-col ${open ? 'w-full' : 'w-full '} max-md:ml-0 sm:px-6`}>
+            <div className="text-2xl font-bold tracking-tight leading-9 text-slate-700 sm:py-2 capitalize">
+                My profile
+            </div> 
             <div className="justify-between">
                 <div className="flex gap-5 max-md:flex-col">
                     <div className="flex flex-col w-[67%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col grow max-md:mt-6 max-md:max-w-full">
-                            <div className="flex flex-col sm:flex-row justify-center items-center gap-0 sm:gap-3 pb-6 py-3 sm:pt-0 bg-white border border-gray-500 rounded max-md:max-w-full">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col sm:flex-row justify-center items-center gap-0 sm:gap-3 pb-6 py-3 sm:pt-0 bg-white rounded max-md:max-w-full">
                                 {/* //! AVATAR */}
                                 <div className='hidden sm:block pt-3'>
                                     {
                                         state?.user?.coverImage ? (
-                                            <Avatar  src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }} />
+                                            <Avatar src={state?.user?.coverImage} sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }} />
 
                                         ) : (
                                             <Avatar className='' sx={{ bgcolor: deepOrange[500], width: 86, height: 86 }}>N</Avatar>
@@ -140,7 +143,7 @@ function Profile() {
                                 <div className="justify-between self-end sm:mt-6 max-w-full w-[524px] max-md:pr-5">
                                     <div className="flex gap-5 max-md:flex-col">
                                         <div className="flex flex-col w-[69%] max-md:ml-0 max-md:w-full">
-                                            <div className="flex flex-col items-center grow text-lg font-semibold leading-7 text-slate-800 max-md:mt-10">
+                                            <div className="flex flex-col items-center grow text-lg font-semibold leading-7 text-slate-700 max-md:mt-10">
                                                 <div className="text-2xl leading-7 capitalize"> {state?.user?.name} </div>
                                                 <div className="mt-2">
                                                     <span className="text-slate-500 capitalize">
@@ -163,9 +166,9 @@ function Profile() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 mt-6 bg-white rounded max-md:px-5 max-md:max-w-full">
                                 <div className="flex gap-4 justify-between max-md:flex-wrap max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         About Me
                                     </div>
                                     <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
@@ -180,9 +183,9 @@ function Profile() {
                                 <div className="mt-4 text-base leading-7 text-slate-600 max-md:max-w-full">
                                 </div>
                             </div>
-                            <div className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col px-px py-6 mt-6 bg-white  rounded max-md:max-w-full">
                                 <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         Experiences
                                     </div>
                                     <div className="flex justify-center items-center p-2  border border-gray-500 rounded">
@@ -195,7 +198,7 @@ function Profile() {
                                             <FaAward size={60} />
                                             <div className="flex flex-col max-md:max-w-full">
                                                 <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                                    <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
+                                                    <div className="my-auto text-lg font-semibold leading-7 text-slate-700">
                                                         {data.title}
                                                     </div>
                                                     <div className="flex justify-center items-center gap-1 p-2.5">
@@ -208,7 +211,7 @@ function Profile() {
                                                     </div>
                                                 </div>
                                                 <div className="flex gap-2 justify-between self-start mt-2 text-base leading-6 text-slate-600">
-                                                    <div className="font-medium text-slate-800"> {data?.company} </div>
+                                                    <div className="font-medium text-slate-700"> {data?.company} </div>
                                                     <div>
                                                         {
                                                             formatDate(data?.year?.from) || +
@@ -228,11 +231,9 @@ function Profile() {
                                 }
 
                             </div>
-
-
-                            <div key={'hai'} className="flex flex-col px-px py-6 mt-6 bg-white border border-gray-500 rounded max-md:max-w-full">
+                            <div style={{border: '0.5px solid #dedbd3'}} key={'hai'} className="flex flex-col px-px py-6 mt-6 bg-white rounded max-md:max-w-full">
                                 <div className="flex gap-4 justify-between px-6 max-md:flex-wrap max-md:px-5 max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         Education
                                     </div>
                                     <div className="flex justify-center items-center p-2 border border-gray-500 rounded">
@@ -248,7 +249,7 @@ function Profile() {
                                                 </div>
                                                 <div className="flex flex-col max-md:max-w-full">
                                                     <div className="flex gap-1.5 justify-between px-px max-md:flex-wrap max-md:max-w-full">
-                                                        <div className="my-auto text-lg font-semibold leading-7 text-slate-800">
+                                                        <div className="my-auto text-lg font-semibold leading-7 text-slate-700">
                                                             {data.university}
                                                         </div>
                                                         <div className="flex justify-center items-center p-2.5 border border-solid border-zinc-200">
@@ -261,7 +262,7 @@ function Profile() {
                                                     <div className="mt-1.5 text-base leading-6 text-slate-500 max-md:max-w-full">
                                                         {formatDateRange(state?.user?.education[index].year?.from) + ' - ' + formatDateRange(state?.user?.education[index]?.year?.to)}
                                                     </div>
-                                                    <div className="mt-3 text-base leading-7 text-slate-800 max-md:max-w-full">
+                                                    <div className="mt-3 text-base leading-7 text-slate-700 max-md:max-w-full">
                                                         {
                                                             data?.description
                                                         }
@@ -273,10 +274,9 @@ function Profile() {
                                     ))
                                 }
                             </div>
-
-                            <div className="flex flex-col p-6 mt-6 bg-white border border-gray-500 rounded max-md:px-5 max-md:max-w-full">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 mt-6 bg-white rounded max-md:px-5 max-md:max-w-full">
                                 <div className="flex gap-4 justify-between w-full max-md:flex-wrap max-md:max-w-full">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         Skills
                                     </div>
                                 </div>
@@ -298,12 +298,12 @@ function Profile() {
                     </div>
                     <div className="flex flex-col w-[33%] max-md:ml-0 max-md:w-full">
                         <div className="flex flex-col max-md:mt-6">
-                            <div className="flex flex-col p-6 w-full bg-white border border-gray-500 rounded max-md:px-5">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 w-full bg-white rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         Additional Details
                                     </div>
-                                    <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
+                                    <div className="flex justify-center items-center p-2.5 border border-gray-500  rounded">
 
                                         {/* //!  A MODAL WILL POPUP IF THE EDIT ICON IS CLICKED */}
                                         <UserAddtionalDetailsUpdate />
@@ -313,20 +313,20 @@ function Profile() {
                                     <Mail />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Email</div>
-                                        <div className="text-slate-800">{state?.user?.email}</div>
+                                        <div className="text-slate-700">{state?.user?.email}</div>
                                     </div>
                                 </div>
                                 <div className="flex gap-4 mt-4 text-base leading-6">
                                     <Smartphone />
                                     <div className="flex flex-col">
                                         <div className="text-slate-500">Phone</div>
-                                        <div className="text-slate-800">{state.user.phonenumber || 'none'}</div>
+                                        <div className="text-slate-700">{state.user.phonenumber || 'none'}</div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col p-6 w-full mt-6 bg-white border border-gray-500 rounded max-md:px-5">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 w-full mt-6 bg-white rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         Add resume
                                     </div>
                                     <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">
@@ -376,9 +376,9 @@ function Profile() {
                                     )
                                 }
                             </div>
-                            <div className="flex flex-col p-6 mt-6 w-full bg-white border border-gray-500 rounded max-md:px-5">
+                            <div style={{border: '0.5px solid #dedbd3'}} className="flex flex-col p-6 mt-6 w-full bg-white rounded max-md:px-5">
                                 <div className="flex gap-4 justify-between">
-                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-800">
+                                    <div className="my-auto text-xl font-semibold leading-6 text-slate-700">
                                         Social Links
                                     </div>
                                     <div className="flex justify-center items-center p-2.5 border border-gray-500 rounded">

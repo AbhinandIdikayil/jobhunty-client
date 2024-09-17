@@ -23,7 +23,7 @@ function Companies() {
     }, [])
 
 
-    const columns: ColumnDef<Company>[] = [
+    const columns: ColumnDef<Company | any>[] = [
         {
             accessorKey: 'images',
             header: () => <div>Image</div>,

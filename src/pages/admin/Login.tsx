@@ -9,10 +9,10 @@ import { adminLoginInitialValues, adminLoginValidationSchema } from "src/validat
 function Login() {
 
   const dispatch: AppDispatch = useDispatch();
-  const state = useSelector((state:RootState) => state.user);
+  const state = useSelector((state: RootState) => state.user);
   const navigate = useNavigate()
 
-  async function handleAdminLogin(values:FormikValues) {
+  async function handleAdminLogin(values: FormikValues) {
     try {
       const data = await dispatch(adminLogin(values)).unwrap()
       console.log(data)
@@ -23,7 +23,7 @@ function Login() {
   }
 
   useEffect(() => {
-    if(state.role == 'admin' && state.user){
+    if (state.role == 'admin' && state.user) {
       return navigate('/admin/home')
     }
   }, [])
@@ -48,11 +48,12 @@ function Login() {
 
                     <div className="mx-auto max-w-xs">
                       {
-                        errors?.email && (<span className="text-red-600"> {errors?.email} </span>) 
+                        errors?.email && (<span className="text-red-600"> {errors?.email} </span>)
                         ||
-                        state.err && (<span className="text-red-600"> {state?.err?.message} </span>) 
-                      } 
-
+                        (typeof state?.err === 'object' && state?.err?.message && (
+                          <span className="text-red-600">{state?.err?.message}</span>
+                        ))
+                      }
                       <Field
                         name='email'
                         className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"

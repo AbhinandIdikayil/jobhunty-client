@@ -96,7 +96,7 @@ function AddEducationForm({setOpen}:UserAddEducation) {
             }));
         
             // Merge with existing education data
-            const payload = {
+            const payload:any = {
                 education: [
                     ...state.user.education,
                     ...updatedEducation

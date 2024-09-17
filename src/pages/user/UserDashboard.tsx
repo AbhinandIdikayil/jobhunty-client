@@ -51,7 +51,7 @@ function UserDashboard() {
     fetchData()
   }, [])
 
-  const ResponsiveContainer = styled('div')<{ open: boolean }>(({ theme, open }) => ({
+  const ResponsiveContainer = styled('div')<{ open: boolean }>(({ theme }) => ({
     width: '100%',
     maxWidth: '100%',
     overflowX: 'hidden',

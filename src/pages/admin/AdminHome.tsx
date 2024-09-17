@@ -1,16 +1,10 @@
-
-import * as React from 'react';
+import * as React from 'react'
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-
 import { Outlet } from 'react-router-dom';
 import SideDrawer from '../../components/admin/sideDrawer';
 
-
 const drawerWidth = 240;
-
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   open?: boolean;
@@ -31,26 +25,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
   }),
 }));
 
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -85,12 +59,9 @@ function Dashboard() {
         handleDrawerClose={handleDrawerClose}
       />
       <Main open={open}>
-        <DrawerHeader>
-        </DrawerHeader>
-
+        <DrawerHeader></DrawerHeader>
 
         <Outlet context={{ open }} />
-
       </Main>
     </Box>
   );

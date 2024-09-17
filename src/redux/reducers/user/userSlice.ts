@@ -2,7 +2,7 @@ import { ActionReducerMapBuilder, createSlice } from '@reduxjs/toolkit'
 import { ErrorPayload, UserReducer } from '../../../types/AllTypes'
 import { forgotPassword, getUser, googleLoginAndSignup, login, logout, signupUser, updateUserProfile, verifyEmail, verifyOtp } from '../../actions/userAction'
 import { getCompany, sendRequest, updateProfile, updateSocialLinks } from 'src/redux/actions/companyAction'
-import { adminLogin, getAllusers } from 'src/redux/actions/adminAction'
+import { adminLogin } from 'src/redux/actions/adminAction'
 import { toast } from 'react-toastify'
 import { handleAuthError } from 'src/utils/HandleAuthError'
 

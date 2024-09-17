@@ -11,10 +11,7 @@ import Loading from 'src/components/common/Loading';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { Button, FormControl, InputLabel } from '@mui/material';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
-import { toast } from 'react-toastify';
-import CategoryAccordian from 'src/components/common/CategoryAccordian';
 import SectoresAccordian from 'src/components/common/SectoresAccordian';
-import { filter } from 'lodash';
 
 interface FilterAndSearch {
     name: string;
@@ -27,7 +24,6 @@ function CompanyList() {
     const { open } = context;
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state.admin)
-    const categoryState = useSelector((state: RootState) => state?.category)
     const [loading, setLoading] = useState<boolean>(false)
     const [pagination, setPagination] = useState({
         pageIndex: 0,

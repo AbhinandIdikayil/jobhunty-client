@@ -4,7 +4,6 @@ import { otpInitialValues, otpValidationSchema } from "src/validation/common/sig
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "src/redux/store";
 import { verifyOtp } from "src/redux/actions/userAction";
-import { resetErr } from "src/redux/reducers/user/userSlice";
 import { useNavigate } from "react-router-dom";
 
 function Otp() {
@@ -14,7 +13,7 @@ function Otp() {
     async function handleOtp(values: FormikValues) {
         console.log(values)
         try {
-            let value = {
+            let value:any = {
                 ...values,
                 email: state.user.email,
                 intention: true

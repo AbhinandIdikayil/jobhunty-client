@@ -20,10 +20,10 @@ const formSchema = z.object({
     skills: z.array(z.string().min(3, "Skill cannot be empty")).min(1, { message: "At least one skill is required" })
 });
 
-type FormValues = z.infer<typeof formSchema>;
+
+
 
 function AddSkills() {
-
     const [open, setOpen] = useState<boolean>(false)
     return (
         <>
@@ -53,6 +53,9 @@ export default AddSkills
 function AddSkillsForm({ setOpen }: func) {
     const state = useSelector((state: RootState) => state?.user)
     const dispatch: AppDispatch = useDispatch()
+    
+    type FormValues = z.infer<typeof formSchema>;
+
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -60,10 +63,11 @@ function AddSkillsForm({ setOpen }: func) {
         },
     });
 
+    // Use `form.control` directly here
     const { fields, append, remove } = useFieldArray({
-        control: form.control,
-        name: 'skills'
-    })
+        control: form.control, // Access control from `form`
+        name: 'skills', // Make sure this matches the schema
+    });
 
     const onSubmit = (data: FormValues) => {
         try {
@@ -110,7 +114,7 @@ function AddSkillsForm({ setOpen }: func) {
                 }
                 <Button
                     type="button"
-                    onClick={() => append("")}
+                    onClick={() => append('')}
                     className="mt-2"
                     variant="secondary"
                 >

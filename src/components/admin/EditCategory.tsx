@@ -20,7 +20,7 @@ function EditCategory() {
                 ...state,
                 ...values
             }
-            const res =  dispatch(updateCategory(data)).unwrap()
+            dispatch(updateCategory(data)).unwrap()
             return navigate('/admin/home/category')
         } catch (error) {
             console.log(error)

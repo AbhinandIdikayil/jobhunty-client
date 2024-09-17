@@ -11,7 +11,7 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
-const ScheduleChart = ({ data }: { data: any }) => {
+const ScheduleChart = () => {
     const [events, setEvents] = useState();
     const applicants = useSelector((state: RootState) => state?.job?.applicants)
 

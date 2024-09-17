@@ -73,9 +73,7 @@ const Login: React.FC = () => {
         }
     }
 
-    function handleOnChange() {
-        dispath(resetErr())
-    }
+
 
     const initialValues: LoginI = {
         email: '',

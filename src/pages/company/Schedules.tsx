@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import ScheduleChart from "src/components/company/ScheduleChart";
 
 function Schedules() {
-    const [selected, setSelected] = useState()
     const interviewData = [
         { date: '2024-08-18', time: '09:00', count: 1 },
         { date: '2024-08-18', time: '10:00', count: 2 },
