@@ -236,7 +236,7 @@ function Jobs() {
 
     return (
         <>
-            <div className={`flex flex-col items-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <div className={`flex flex-col items-center justify-center ${open && open ? 'w-80' : 'w-full'} ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
                         <div className="self-start text-slate-800 max-md:text-4xl">
@@ -286,7 +286,7 @@ function Jobs() {
                 </div>
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
             </div>
-            <div className="flex justify-center items-center self-stretch px-10 py-3 max-md:px-5 w-full">
+            <div className="flex justify-center items-center self-stretch px-10 py-3 max-md:px-5 w-full m-0">
                 <div className="w-full max-w-[1193px]  max-md:max-w-full ">
                     <Tabs defaultValue="jobs">
                         <div className="flex gap-5 items-center justify-center w-full max-md:flex-wrap max-md:max-w-full ">

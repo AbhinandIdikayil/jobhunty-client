@@ -58,7 +58,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
     return (
         <>
             <CssBaseline />
-            <AppBar position="fixed" open={open} style={{ zIndex: 90, boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)', borderBottom: '0.1px solid #f1f1f1' }}>
+            <AppBar position="fixed" open={open} style={{ zIndex: 90, boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)' }}>
                 <Header open={open} func={handleDrawerOpen} />
             </AppBar>
             <Drawer
@@ -68,7 +68,7 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                     '& .MuiDrawer-paper': {
                         width: isSmallScreen ? '100%' : drawerWidth,
                         boxSizing: 'border-box',
-                        borderRight: '0.1px solid #f1f1f1',
+                        // borderRight: '0.5px solid gray',
                         // boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', 
                     },
                     '& .MuiDrawer-paperAnchorLeft': {
@@ -76,10 +76,9 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
                             left: open ? 0 : '-100%',
                         },
                     },
-                    border: ''
                 }}
                 variant={isSmallScreen ? "temporary" : "persistent"}
-                className={`${open ? 'bg-slate-50' : 'bg-none'} `}
+                className={`${open ? 'bg-slate-50' : 'bg-none'}`}
                 anchor="left"
                 open={open}
             >

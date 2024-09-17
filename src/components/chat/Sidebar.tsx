@@ -91,19 +91,19 @@ function Sidebar({ setLoading, setMessages }: { setLoading: (newState: boolean) 
 
     return (
         <>
-            <div className={`absolute z-50 left-7 block md:hidden`}>
+            <div className={`absolute z-50 left-7 block md:hidden pt-2`}>
                 <button onClick={toggleSidebar} className='bg-indigo-400 p-2 rounded'>
                     <CircleUser color='white' />
                 </button>
             </div >
             <div
-                className={`w-1/3 ${isSidebarVisible ? 'block absolute z-50 w-[230px] md:w-[290px] h-fit rounded shadow-lg' : 'hidden'} bg-white md:block`}
+                className={`w-1/3 ${isSidebarVisible ? 'block absolute z-50 w-[230px] md:w-[290px] h-fit rounded shadow-lg' : 'hidden'} bg-white md:block border border-solid border-slate-200 rounded`}
             >
                 <X onClick={toggleSidebar} className={`block md:hidden absolute right-0 pt-1 `} />
                 <div className='w-full'>
                     <input type="text" value={search || ''} onChange={(e) => setSearch(e.target.value)}
                         placeholder={location.pathname == '/company/messages' ? 'Search for users...' : 'Search for companies...'}
-                        className='w-full bg-gray-200 h-8 px-2 focus:outline-gray-200 rounded-md' />
+                        className='w-full bg-gray-200 h-8 px-2 focus:outline-gray-200 rounded' />
                 </div>
                 <div className='flex flex-col px-3 gap-2 mt-1 w-full '>
                     {

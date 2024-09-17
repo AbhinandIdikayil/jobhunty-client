@@ -10,7 +10,7 @@ function CompanyDetails() {
     const location = useLocation()
     const { state } = location
     return (
-        <div className={`flex flex-col items-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+        <div className={`flex flex-col items-center justify-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
             <CompanyDetailsHeader data={state} />
             <div className={`flex flex-col sm:flex-row gap-5 items-start  ${open ? 'px-5 py-5' : 'px-10 py-10'}  w-full bg-white `}>
                 <div className="flex flex-col grow shrink w-full sm:w-1/2">

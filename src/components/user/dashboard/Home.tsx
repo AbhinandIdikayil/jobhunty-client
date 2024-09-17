@@ -6,14 +6,14 @@ import Box from '@mui/material/Box';
 import { Outlet } from 'react-router-dom';
 import SideDrawer from './SideDrawer';
 
-const drawerWidth = 240;
+const drawerWidth = 270;
 
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
 }>(({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(3,1,0,1),
     transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -24,7 +24,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
-        marginLeft: 0,
+        marginLeft: '0px',
     }),
     [theme.breakpoints.down('sm')]: {
         marginLeft: 0,
@@ -59,7 +59,7 @@ export default function DashboardHome() {
     const navLinks = ['', 'messages', 'applications', 'jobs', 'companies', 'profile'] as string[]
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', alignItems:'center' , justifyContent:'center' }}>
             <SideDrawer
                 open={open}
                 navLinks={navLinks}
@@ -69,10 +69,7 @@ export default function DashboardHome() {
             <Main open={open}>
                 <DrawerHeader>
                 </DrawerHeader>
-
-
                 <Outlet context={{ open }} />
-
             </Main>
         </Box>
     );
