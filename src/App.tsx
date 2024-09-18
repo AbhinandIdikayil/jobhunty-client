@@ -5,8 +5,6 @@ import './App.css'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import AdminLogin from './pages/admin/Login'
-
-
 import Home from './pages/user/BeforeOneApplicant/Home'
 const CompanyHome = lazy(() => import('./pages/company/CompanyHome'))
 const Dashboard = lazy(() => import('./pages/company/Dashboard'))
@@ -57,9 +55,7 @@ import { AppDispatch } from './redux/store'
 import SIde from './components/user/SIde'
 
 
-
 function App() {
-
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -110,9 +106,6 @@ function App() {
             </ResumeContextProvider>
           } />
         </Route>
-
-
-
 
         <Route path='/forgot-password' element={<ForgotPassword />} />
 

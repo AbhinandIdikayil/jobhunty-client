@@ -8,7 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "noEmit": true,
-    "types": ["cypress"] // Add this line to include Cypress types
   },
-  "include": ["vite.config.ts", "cypress.config.ts"] // Include both config files
+  "include": ["vite.config.ts"] // Include both config files
 }

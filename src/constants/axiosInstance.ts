@@ -3,13 +3,13 @@ import { ErrorResponse } from 'react-router-dom';
 import { logout } from 'src/redux/actions/userAction';
 import { getGlobalDispatch } from 'src/redux/global';
 
-// const AUTH_SERVICE_URL = String(process.env.AUTH_SERVICE_URL)
-// const COMPANY_SERVICE_URL = String(process.env.COMPANY_SERVICE_URL)
-// const USER_SERVICE_URL = String(process.env.USER_SERVICE_URL)
+const AUTH_SERVICE_URL = String(process.env.AUTH_SERVICE_URL)
+const COMPANY_SERVICE_URL = String(process.env.COMPANY_SERVICE_URL)
+const USER_SERVICE_URL = String(process.env.USER_SERVICE_URL)
 const CLOUDINARY = String(process.env.CLOUDINARY)
-// const JOB_SERVICE_URL = String(process.env.JOB_SERVICE_URL)
-// const CHAT_SERVICE_URL = String(process.env.CHAT_SERVICE_URL)
-// const NOTIFICATION_SERVICE_URL = String(process.env.NOTIFICATION_URL)
+const JOB_SERVICE_URL = String(process.env.JOB_SERVICE_URL)
+const CHAT_SERVICE_URL = String(process.env.CHAT_SERVICE_URL)
+const NOTIFICATION_SERVICE_URL = String(process.env.NOTIFICATION_URL)
 const API_GATEWAY_URL = String(process.env.API_SERVICE_URL)
 
 const createAxiosInstance = (url: string): AxiosInstance => {
@@ -75,7 +75,7 @@ const createAxiosInstance = (url: string): AxiosInstance => {
 const refreshToken = async () => {
     try {
         const response = await fetch(
-            `${process.env.AUTH_SERVICE_URL}/refresh`,
+            `${AUTH_SERVICE_URL}/refresh`,
             {
                 method: 'POST',
                 credentials: 'include'
@@ -105,32 +105,32 @@ function Logout() {
 
 export const AXIOS_INSTANCE_GATEWAY = createAxiosInstance(API_GATEWAY_URL)
 
-export const AXIOS_INSTANCE_AUTH = createAxiosInstance(API_GATEWAY_URL+'auth')
-//  createAxiosInstance(AUTH_SERVICE_URL)
+export const AXIOS_INSTANCE_AUTH = createAxiosInstance(AUTH_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'auth')
 
 
 
-export const AXIOS_INSTANCE_COMPANY = createAxiosInstance(API_GATEWAY_URL+'company')
-// createAxiosInstance(COMPANY_SERVICE_URL)
+export const AXIOS_INSTANCE_COMPANY = createAxiosInstance(COMPANY_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'company')
 
 
 
-export const AXIOS_INSTANCE_USER = createAxiosInstance(API_GATEWAY_URL+'user')
-//  createAxiosInstance(USER_SERVICE_URL)
+export const AXIOS_INSTANCE_USER =  createAxiosInstance(USER_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'user')
 
 
 
-export const AXIOS_INSTANCE_NOTIFICATION = createAxiosInstance('api')
-//  createAxiosInstance(NOTIFICATION_SERVICE_URL)
+export const AXIOS_INSTANCE_NOTIFICATION =  createAxiosInstance(NOTIFICATION_SERVICE_URL)
+// createAxiosInstance('api')
 
 
-export const AXIOS_INSTANCE_JOB = createAxiosInstance(API_GATEWAY_URL+'job')
-//  createAxiosInstance(JOB_SERVICE_URL)
+export const AXIOS_INSTANCE_JOB =  createAxiosInstance(JOB_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'job')
 
 
 
-export const AXIOS_INSTANCE_CHAT = createAxiosInstance(API_GATEWAY_URL+'chat')
-//  createAxiosInstance(CHAT_SERVICE_URL)
+export const AXIOS_INSTANCE_CHAT = createAxiosInstance(CHAT_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'chat')
 
 
 export const CLOUDINARY_INSTANCE = axios.create({

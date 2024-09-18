@@ -11,11 +11,11 @@ function ApplicationListInDashboard() {
     application?.length > 0 && (
       <div className="leading-relaxed">
         <div className="flex flex-col items-center justify-center w-full shadow-md">
-          <div className="flex flex-col py-6 w-full bg-white border border-solid border-zinc-500 rounded max-md:max-w-full">
+          <div className="flex flex-col py-6 w-full bg-white border border-solid border-gray-300 rounded max-md:max-w-full">
             <div className="self-start ml-0 md:ml-6 text-xl font-semibold leading-tight text-slate-800 max-md:ml-2.5">
               Recent Applications History
             </div>
-            <div className="mt-5 w-full border-b border-solid border-zinc-500 " />
+            <div className="mt-5 w-full border-b border-solid border-gray-300 " />
             {
               application?.map((data: any, ind: number) => {
                 return ind <= 1 ? (

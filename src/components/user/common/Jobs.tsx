@@ -136,17 +136,13 @@ function Jobs() {
             let updatedCategory;
 
             if (newAriaChecked === 'true') {
-                console.log('-i')
                 // Add category if checked
                 updatedCategory = [...prevState.category, _id];
             } else {
-                console.log('i-')
-
                 // Remove category if unchecked
                 updatedCategory = prevState.category.filter(id => id !== _id);
             }
 
-            console.log(updatedCategory)
             return {
                 ...prevState,
                 category: updatedCategory
@@ -157,12 +153,9 @@ function Jobs() {
     function handleEmployment(e: any, _id: string) {
         const target = e.currentTarget; // or e.target if it's directly on the button
         const ariaChecked = target.getAttribute('aria-checked');
-        console.log('aria-checked value:', ariaChecked); // Should match what is in the DOM
-
         // Optional: Toggle aria-checked value if needed
         const newAriaChecked = ariaChecked === 'true' ? 'false' : 'true';
         target.setAttribute('aria-checked', newAriaChecked);
-        console.log('asdf', newAriaChecked)
         setFilterAndSearch(prevState => {
             let updatedEmployment;
 
@@ -236,12 +229,12 @@ function Jobs() {
 
     return (
         <>
-            <div className={`flex flex-col items-center justify-center ${open && open ? 'w-80' : 'w-full'} ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
+            <div className={`flex flex-col items-center justify-center ${open && open ? 'w-full' : 'w-full'} ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
-                        <div className="self-start text-slate-800 max-md:text-4xl">
+                        <h1 className="self-start text-slate-800 max-md:text-4xl">
                             Find your
-                        </div>
+                        </h1>
                         <div className={`flex-col text-sky-400 max-md:text-4xl`}>
                             <div className="max-md:text-4xl">dream job</div>
                             <img
@@ -256,8 +249,8 @@ function Jobs() {
                     </div>
                 </div>
                 <hr className={`${open ? 'w-full bg-black border-solid border-black' : 'hidden'}`} />
-                <div className="p-6 flex justify-center items-center w-full bg-white max-w-[800px]  max-md:max-w-full">
-                    <div className="flex gap-5 max-md:flex-col">
+                <div className="p-6 flex justify-center items-center bg-white max-w-[800px]  max-md:max-w-full">
+                    <div className="flex gap-5 max-md:flex-col w-full ">
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel
                                 htmlFor="demo-customized-textbox"
@@ -271,7 +264,6 @@ function Jobs() {
                             <BootstrapInput
                                 onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })}
                                 id="demo-customized-textbox" />
-
                         </FormControl>
                         <Button
                             onClick={handleSearch}

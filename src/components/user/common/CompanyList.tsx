@@ -140,7 +140,6 @@ function CompanyList() {
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
                             <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })} id="demo-customized-textbox" />
-
                         </FormControl>
                         <Button
                             onClick={handleSearch}
