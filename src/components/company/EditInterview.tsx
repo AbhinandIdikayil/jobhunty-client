@@ -37,8 +37,10 @@ function EditInterview({ ind }: { ind: number }) {
         }
     };
     return (
-        <AlertDialog open={open} onOpenChange={handleOpenChange}
-            onClickOutside={(e: any) => e?.preventDefault()}>
+        <AlertDialog open={open} 
+        onOpenChange={handleOpenChange}
+            // onClickOutside={(e: any) => e?.preventDefault()}
+            >
             <AlertDialogTrigger asChild className='w-full'>
                 <button onClick={(e) => {
                     e.stopPropagation(); // Prevent event from bubbling up
@@ -78,7 +80,7 @@ function EditScheduleForm({ setOpen, ind }: { setOpen: (pre: boolean) => void, i
             schedule: [
                 {
                     testType: "" || applicant?.schedule?.[ind]?.testType,
-                    date: new Date(applicant?.schedule?.[ind]?.date) ?? '',
+                    date: applicant?.schedule?.[ind]?.date ? new Date(applicant.schedule[ind].date) : undefined,
                     time: applicant?.schedule?.[ind]?.time?.slice(0, 5) ?? '',
                     roomId: "" ?? applicant?.schedule?.[ind]?.roomId
                 }

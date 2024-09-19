@@ -1,12 +1,12 @@
 
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useOutletContext } from 'react-router-dom';
 import { listRequest, updateApproval } from 'src/redux/actions/adminAction';
 import { AppDispatch, RootState } from 'src/redux/store'
 import { prop } from 'src/types/AllTypes';
 import {
-    ColumnDef, createColumnHelper,
+    ColumnDef,
     flexRender,
     getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable
 } from '@tanstack/react-table'
@@ -25,7 +25,7 @@ function Requests() {
 
 
     useEffect(() => {
-        dispatch(listRequest(undefined)).unwrap()
+        dispatch(listRequest()).unwrap()
     }, [])
 
 
@@ -35,16 +35,16 @@ function Requests() {
             status: 'Accepted'
         }
         await dispatch(updateApproval(req)).unwrap()
-        await dispatch(listRequest(undefined)).unwrap()
+        await dispatch(listRequest()).unwrap()
     }
-    async function handleRejectRequest(id: string) {
-        const req = {
-            id,
-            status: 'Rejected'
-        }
-        await dispatch(updateApproval(req)).unwrap()
-        await dispatch(listRequest(undefined)).unwrap()
-    }
+    // async function handleRejectRequest(id: string) {
+    //     const req = {
+    //         id,
+    //         status: 'Rejected'
+    //     }
+    //     await dispatch(updateApproval(req)).unwrap()
+    //     await dispatch(listRequest()).unwrap()
+    // }
 
     const columns: ColumnDef<CompanyRequest>[] = [
         {

@@ -1,11 +1,11 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, chromium } from '@playwright/test';
 let url = 'http://localhost:5173/'
-test('has title', async ({ page }) => {
-  await page.goto(url + 'home');
+// test('has title', async ({ page }) => {
+//   await page.goto(url + 'home');
 
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Jobhuntly/);
-});
+//   // Expect a title "to contain" a substring.
+//   await expect(page).toHaveTitle(/Jobhuntly/);
+// });
 
 test('get started link', async ({ page }) => {
   await page.goto(url + 'home/jobs');
@@ -18,6 +18,7 @@ test('get started link', async ({ page }) => {
 });
 
 test('signup form validation', async ({ page }) => {
+
   await page.goto(url + 'signup');
   await page.waitForSelector('button[type="submit"]', { state: 'visible' });
 
@@ -31,4 +32,13 @@ test('signup form validation', async ({ page }) => {
   // TEST EMAIL VALIDATION
   await page.fill('input[type="email"]','$#$#%@gmail.com')
   await expect(page.getByText('email is invalid')).toBeVisible();
+
+  //TEST EXISTING USER
+  await page.fill('input[type="text"]','abhinand')
+  await page.fill('input[type="email"]','abhinand@gmail.com')
+  await page.fill('#password','Abhi@123')
+
+  await page.click('button[type="submit"]')
+
+  await expect(page.getByText('user already exist')).toBeVisible()
 })

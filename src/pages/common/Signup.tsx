@@ -292,6 +292,7 @@ function Signup() {
                                                     </span>
                                                 </div>
                                                 <Field
+                                                    id='password'
                                                     name='password'
                                                     placeholder=' Enter password'
                                                     className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'

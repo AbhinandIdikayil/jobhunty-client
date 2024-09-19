@@ -108,7 +108,7 @@ function UsersListing() {
             accessorKey: "name",
             header: () => <div className="text-left">Name</div>,
             cell: ({ row }) => {
-                const name = row.getValue("name")
+                const name: string = row.getValue("name")
                 return <div className="text-left font-medium capitalize">{name}</div>
             },
         },
