@@ -37,41 +37,44 @@ export const ChatSocketProvider = ({ children }: Children) => {
     const [isCalling, setIsCalling] = useState(false);
     const [isOnCall, setIsOnCall] = useState(false);
     const [callId, setCallId] = useState<string | null>(null);
-    const [notifications, setNotifications] = useState<any>([])
+    const [notifications, setNotifications] = useState<any[]>([])
     const selectedChat = useSelector((state: RootState) => state?.chat?.selectedUser)
     const location = useLocation()
-    // const localStreamRef = useRef(null);
-    // const remoteStreamRef = useRef(null);
-    // const peerConnectionRef = useRef(null);
     const socketRef = useRef<Socket | null>(null);
     const locationRef = useRef(location.pathname); // Store the latest location.pathname
 
     useEffect(() => {
         if (!socketRef.current) {
             const newSocket = io(String(process.env.CHAT_ORIGIN));
-
             newSocket.on('connect', () => {
                 setSocketConnected(true);
             });
-
             newSocket.on('disconnect', () => {
                 setSocketConnected(false);
             });
-
-            // Assign the socket instance to the ref
             socketRef.current = newSocket;
         }
-        // socketRef?.current?.on('recieve-message', handleNotification)
 
-        // Cleanup function to disconnect the socket on unmount
         return () => {
-            // socketRef.current?.off('receive-message', handleNotification);
             if (socketRef.current) {
                 socketRef.current.disconnect();
                 socketRef.current = null;
             }
         };
     }, []);
+
+    useEffect(() => {
+        function interview(data: any) {
+            setNotifications((prev: any) => [...prev,data])
+        }
+        if(socketRef?.current){
+            socketRef?.current?.on('interviewee',interview)
+
+            return () => {
+                socketRef.current?.off('interviewee',interview)
+            }
+        }
+    }, [socketRef])
 
     const handleNotification = (data: any) => {
         console.log('HANDLE NOTIFICATION --- CHAT CONTEXT');
@@ -80,21 +83,12 @@ export const ChatSocketProvider = ({ children }: Children) => {
             console.log(data, 'INSIDE IF CONDITION--------------------');
             setNotifications((prev: any) => [...prev, data]);
         } else {
-            // console.log('HANDLE NOTIFICATION --- CHAT CONTEXT 2');
-            // console.log(data?.chatId, selectedChat?._id, locationRef?.current, data?.chatId == selectedChat?._id)
-            // if (data?.chatId == selectedChat?._id && locationRef?.current?.endsWith('messages')) {
-            //     return
-            // } else {
-            // }
         }
     }
 
-
-    // Update the ref whenever location.pathname changes
     useEffect(() => {
         locationRef.current = location.pathname;
     }, [location.pathname]);
-
 
     useEffect(() => {
         if (socketRef?.current) {
@@ -103,13 +97,12 @@ export const ChatSocketProvider = ({ children }: Children) => {
                 socketRef?.current?.off('receive-message', handleNotification);
             };
         }
-    }, [locationRef?.current])
+    }, [socketRef])
 
     return (
         <ChatSocketContext.Provider value={{
             socket: socketRef.current, socketConnected, setSocketConnected, isCalling, setIsCalling,
-            callId, setCallId, setIsOnCall, isOnCall
-            , notifications, setNotifications
+            callId, setCallId, setIsOnCall, isOnCall, notifications, setNotifications
         }}>
             {children}
         </ChatSocketContext.Provider>

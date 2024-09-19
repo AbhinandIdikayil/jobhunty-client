@@ -4,7 +4,6 @@ import { RootState } from '../../redux/store'
 import { Children } from 'src/types/AllTypes'
 
 
-
 function CompnanyPrivateRoute({children}:Children) {
     const state = useSelector((state: RootState) => state?.user)
 

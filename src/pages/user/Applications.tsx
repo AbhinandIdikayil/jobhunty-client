@@ -46,9 +46,9 @@ function Applications() {
                 return (
                     <span
                         className={`
-                            ${row.original.hiring_status == 'interview' ? 'border border-green-500 text-green-500': ''}
-                            ${row.original.hiring_status == 'shortlisted' ? 'border border-orange-500 text-orange-500': ''}
-                            ${row.original.hiring_status == 'in-review' ? 'border border-indigo-500 text-indigo-500': ''}
+                            ${row.original.hiring_status === 'hired' ? 'border border-green-500 text-green-500': ''}
+                            ${row.original.hiring_status === 'shortlisted' ? 'border border-orange-500 text-orange-500': ''}
+                            ${row.original.hiring_status === 'in-review' ? 'border border-indigo-500 text-indigo-500': ''}
                             border border-solid px-2 py-1 rounded-full`}
                     >
                         {row.original.hiring_status}
@@ -101,11 +101,11 @@ function Applications() {
     }, [])
 
     return (
-        <div className={`flex flex-col ml-1 ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  py-5 max-md:w-full text-zinc-800 `}>
-            <div className="w-full">
-                <div className="flex items-center py-4">
+        <div className={`flex flex-col  ${open ? 'w-5/6' : 'w-full'}max-md:ml-0 px-0  max-md:w-full text-zinc-800 `}>
+            <div className="w-full px-4">
+                <div className="flex items-center py-2">
                     <Input
-                        placeholder="Filter emails..."
+                        placeholder="Filter applications..."
                         value={(table.getColumn("jobTitle")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
                             table.getColumn("jobTitle")?.setFilterValue(event.target.value)
@@ -120,7 +120,6 @@ function Applications() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             {
-
                                 table
                                     .getAllColumns()
                                     .filter((column) => column.getCanHide())
@@ -141,7 +140,7 @@ function Applications() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <div className="rounded-md border" >
+                <div className="rounded-md border">
                     <Table>
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (

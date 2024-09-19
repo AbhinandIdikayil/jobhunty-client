@@ -1,9 +1,7 @@
 "use client"
-
 import * as React from "react"
 import { CalendarIcon } from "@radix-ui/react-icons"
-import { addDays, format , isBefore } from "date-fns"
-
+import { addDays, format, isBefore } from "date-fns"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -23,9 +21,12 @@ import {
 export default function DatePickerWithPresets() {
   const [date, setDate] = React.useState<Date>()
 
-  function disableFutureDates () {
-    const today = new Date()
-    return isBefore(date,today)
+  function disableFutureDates() {
+    const today = new Date();
+    if (date) {
+      return isBefore(date, today);
+    }
+    return false; 
   }
 
   return (
@@ -62,7 +63,7 @@ export default function DatePickerWithPresets() {
           </SelectContent>
         </Select>
         <div className="rounded-md border">
-          <Calendar mode="single" selected={date} onSelect={setDate} disabled={(date) => !disableFutureDates(date)} />
+          <Calendar mode="single" selected={date} onSelect={setDate} disabled={() => !disableFutureDates()} />
         </div>
       </PopoverContent>
     </Popover>

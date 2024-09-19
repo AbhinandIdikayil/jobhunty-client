@@ -3,15 +3,12 @@ import axios from 'axios'
 import _ from 'lodash';
 import { IoCloseCircle } from 'react-icons/io5';
 
-
-
 interface PasswordInputProps {
     label: string;
     name: string;
     location: any // Define the type for locations
     setLocation: React.Dispatch<React.SetStateAction<any[]>>;
 }
-
 
 export const LocationInput: React.FC<PasswordInputProps> = ({ label, name, location, setLocation }) => {
     const [suggestions, setSuggestions] = useState([])

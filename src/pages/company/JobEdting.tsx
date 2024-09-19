@@ -14,7 +14,6 @@ import { postJobValidationSchema } from 'src/validation/company'
 import Multiselect from 'multiselect-react-dropdown';
 
 function JobEdting() {
-
     const context = useOutletContext<prop>() || {};
     const { open } = context;
     const dispatch: AppDispatch = useDispatch()
@@ -25,7 +24,6 @@ function JobEdting() {
     const [location, setLocation] = useState<any>([])
     const [selectedSkills, setSelectedSkills] = useState<any>([])
     const [skill, setSkills] = useState<any>([])
-
 
     const PostJobInitialValues = {
         jobTitle: state?.job?.job?.jobTitle || '',
@@ -43,7 +41,7 @@ function JobEdting() {
         // skills: state?.job?.job?.skills || [''],
         qualification: state?.job?.job?.qualification || [''],
     }
-    function handleSubmit(values: FormikValues) {
+    async function handleSubmit(values: FormikValues) {
         try {
             if (location?.length > 1) {
                 return toast.error('Multiple locations are restricted')
@@ -54,8 +52,8 @@ function JobEdting() {
             }
             const newSKill = skill?.map((data: any) => data?.name);
 
-            //! here i have passed a id, it is used to pass an a params 
-            dispatch(updateJob({ data: { ...values, location, skills:newSKill }, id: state?.job?._id })).unwrap()
+            //! here i passed an id, it is used to pass as  params 
+            await dispatch(updateJob({ data: { ...values, location, skills:newSKill }, id: state?.job?._id })).unwrap()
             toast.success('job updated successfully', { position: 'top-center' })
             navigate('/company/job-list')
         } catch (error) {
@@ -83,7 +81,6 @@ function JobEdting() {
                 validationSchema={postJobValidationSchema}
                 onSubmit={handleSubmit}
             >
-
                 {({ errors, setFieldValue, isSubmitting, values }) => {
                     return (
                         <Form>
@@ -95,9 +92,6 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-                                    <span className='text-xs text-red-600'>
-
-                                    </span>
                                     <Field type="text" name='jobTitle' className='w-full sm:w-auto border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
                                     <span className='font-sans'>atleast 50 character</span>
                                 </div>
@@ -127,8 +121,6 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-1/2 flex flex-col items-start'>
-
-
                                     <Select onValueChange={(e) => setFieldValue('employment', e)}>
                                         <SelectTrigger className="w-[200px]">
                                             <SelectValue placeholder={state?.job?.job?.employmentDetails?.name} />
@@ -163,11 +155,8 @@ function JobEdting() {
                                     </label>
                                 </div>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
-
                                     <Field type="text" name='salaryrange.from' className='w-full sm:w-auto  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' /> <br />
-
                                     <Field type="text" name='salaryrange.to' className='w-full sm:w-auto  border border-solid border-zinc-200 focus:border-zinc-500 focus:outline-none p-2' />
-
                                     <span className='font-sans'>number</span>
                                 </div>
                             </div>
@@ -220,11 +209,9 @@ function JobEdting() {
                                         options={skillsOption}
                                         displayValue='name'
                                     />
-                   
                                 </div>
                             </div>
                             <hr />
-
                             <div className='w-full flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center mt-5'>
                                 <div className='w-full sm:w-1/2 flex flex-col items-start'>
                                     <span className='font-bold text-xl'>Responsibilities</span>
@@ -237,7 +224,7 @@ function JobEdting() {
                                         {({ remove, push }) => (
                                             <div>
                                                 {values.responsibilities.length > 0 &&
-                                                    values.responsibilities.map((skill, index) => (
+                                                    values.responsibilities.map((_, index) => (
                                                         <div className="w-full sm:w-auto flex items-center" key={index}>
                                                             <div className="flex flex-col w-full">
                                                                 <Field
@@ -295,7 +282,7 @@ function JobEdting() {
                                             ({ remove, push }) => (
                                                 <div>
                                                     {values.qualification.length > 0 &&
-                                                        values.qualification.map((skill, index) => (
+                                                        values.qualification.map((_, index) => (
                                                             <div className="w-full sm:w-auto flex items-center" key={index}>
                                                                 <div className="flex flex-col w-full">
                                                                     <Field

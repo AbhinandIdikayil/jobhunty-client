@@ -11,12 +11,10 @@ import Navbar from '../user/BeforeOneApplicant/Navbar';
 import Timer from '../../components/common/Timer';
 import { otpInitialValues, otpValidationSchema, validationSchema } from '../../validation/common/signup-validation';
 import { resetErr } from '../../redux/reducers/user/userSlice';
-
-
+import LoginAndSignupSidePage from 'src/components/common/LoginAndSignupSidePage';
 
 
 function Signup() {
-
     const user = useSelector((state: RootState) => state?.user)
     const dispath: AppDispatch = useDispatch();
     const navigate = useNavigate()
@@ -41,8 +39,6 @@ function Signup() {
         email: '',
         password: ''
     }
-
-
 
     useEffect(() => {
         dispath(resetErr())
@@ -92,10 +88,9 @@ function Signup() {
         }
     }
 
-
     async function handleSubmit(values: FormikValues) {
         try {
-
+            handleOpen()
             if (isExpired) {
                 alert('OTP has expired. Please request a new one.');
                 return;
@@ -153,52 +148,25 @@ function Signup() {
                     navigate(navigateTo)
                 }
             } catch (error) {
-                handleClose()
                 console.log(error)
+            } finally {
+                handleClose()
             }
         } else {
             console.log('unrecognized url')
         }
     }
 
-
     const handleExpire = () => {
         setIsExpired(true);
         alert('OTP has expired. Please request a new one.');
     };
 
-
     return (
         <div className="bg-white h-screen">
             <Navbar />
             <div className="flex  max-md:flex-col max-md:gap-0">
-                <div className="hidden md:flex flex-col w-[50%] ">
-                    <div className="flex flex-col">
-                        <div className="flex gap-5 justify-between items-start pl-16 bg-slate-50 max-md:flex-wrap max-md:pl-5 max-md:max-w-full">
-                            <div className="flex flex-col mt-7">
-                                <div className="flex gap-3 self-end text-2xl font-bold tracking-tight leading-9 text-gray-800 whitespace-nowrap">
-
-                                </div>
-                                <div className="flex flex-col px-8 py-6 mt-28 w-full bg-white max-md:px-5 max-md:mt-10">
-                                    <div className="flex gap-2 items-start max-md:pr-5">
-                                        <div className="shrink-0 mt-5 w-2 bg-indigo-600 h-[22px] rounded-[40px]" />
-                                        <div className="shrink-0 mt-2.5 w-2 bg-indigo-600 h-[30px] rounded-[40px]" />
-                                        <div className="shrink-0 mt-2.5 w-2 bg-indigo-600 h-[30px] rounded-[40px]" />
-                                        <div className="shrink-0 self-stretch w-2 h-10 bg-indigo-600 rounded-[40px]" />
-                                    </div>
-                                    <div className="mt-7 text-xl font-bold tracking-normal leading-5 text-gray-800">
-                                        100K+
-                                    </div>
-                                    <div className="mt-3.5 text-base leading-6 text-gray-800">
-                                        People got hired
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="shrink-0 w-px bg-zinc-300 h-[630px]" />
-                        </div>
-
-                    </div>
-                </div>
+                <LoginAndSignupSidePage />
                 <div className="flex flex-col w-[50%] max-md:ml-0 max-md:w-full">
                     <div className="flex flex-col h-full justify-center px-16 w-full text-base bg-white max-md:px-5 max-md:max-w-full">
                         {
@@ -214,9 +182,8 @@ function Signup() {
                                                 <div className="mt-3 text-1xl sm:text-3xl font-semibold leading-10 text-center text-gray-800">
                                                     Get more opportunities{" "}
                                                 </div>
-
+                                                {/* //! TIMER FOR OTP  */}
                                                 <Timer initialSeconds={120} onExpire={handleExpire} />
-
                                                 <div className="mt-4 font-semibold leading-[160%] text-slate-600">
                                                     Enter otp
                                                     <span className='text-red-600'>
@@ -227,21 +194,16 @@ function Signup() {
                                                     </span>
                                                 </div>
                                                 <Field
-                                                    // onChange={resetErr()}
                                                     name='otp'
                                                     placeholder='Enter otp'
                                                     className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
                                                     type="text"
                                                 />
-
                                                 <button type='submit' className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
                                                     verify
                                                 </button>
-
                                             </Form>
                                         )}
-
-
                                     </Formik>
                                 </div>
                             ) : (
@@ -293,10 +255,10 @@ function Signup() {
                                                     {
                                                         isCompanySignup ? 'Company name' : 'Full name'
                                                     }
-                                                    <span className='text-red-600'>
+                                                    <span className='text-red-600 capitalize'>
                                                         {errors?.name ||
                                                             (typeof user?.err === 'object' && 'message' in user.err && `(${(user.err as { message: string }).message})`) ||
-                                                            (typeof user?.err === 'string' && user.err.includes('user') && `(${user.err})`)
+                                                            (typeof user?.err === 'string' && `(${user.err})`)
                                                         }
                                                     </span>
                                                 </div>
@@ -306,31 +268,31 @@ function Signup() {
                                                     type="text"
                                                     className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
                                                 />
-
                                                 <div className="mt-4 font-semibold leading-[160%] text-slate-600">
                                                     Email Address
-                                                    <span className='text-red-600'>
+                                                    <span className='text-red-600 capitalize'>
                                                         {
                                                             errors?.email && errors?.email
                                                         }
                                                     </span>
                                                 </div>
                                                 <Field
+                                                    id='email'
                                                     name='email'
                                                     placeholder=' Enter email address'
                                                     className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
                                                     type="email"
                                                 />
-
                                                 <div className="mt-4 font-semibold leading-[160%] text-slate-600">
                                                     Password
-                                                    <span className='text-red-600'>
+                                                    <span className='text-red-600 capitalize'>
                                                         {
                                                             errors?.password && errors?.password
                                                         }
                                                     </span>
                                                 </div>
                                                 <Field
+                                                    id='password'
                                                     name='password'
                                                     placeholder=' Enter password'
                                                     className='justify-center items-start px-3 py-2 mt-1 text-gray-500 bg-white border border-solid border-zinc-200 leading-[160%] max-md:pr-5'
@@ -342,12 +304,11 @@ function Signup() {
                                                             Signup..
                                                         </button>
                                                     ) : (
-                                                        <button onClick={handleOpen} className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
+                                                        <button type='submit' className="justify-center items-center px-6 py-3 mt-6 font-bold text-center text-white whitespace-nowrap bg-indigo-600 leading-[160%] max-md:px-5">
                                                             Signup
                                                         </button>
                                                     )
                                                 }
-
                                                 <div className="flex gap-2 mt-4">
                                                     <div className="text-gray-800 leading-[160%]">
                                                         Already have an account?
@@ -358,18 +319,14 @@ function Signup() {
                                                 </div>
                                             </Form>
                                         )}
-
                                     </Formik>
                                 </div>
                             )
                         }
-
                     </div>
                 </div>
             </div>
-            <Backdrop
-                open={open}
-            >
+            <Backdrop open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop>
         </div>

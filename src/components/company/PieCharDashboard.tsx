@@ -10,7 +10,7 @@ function PieCharDashboard() {
     const rejected = state?.applicants?.filter((data) => data?.hiring_status === 'rejected')
     const hired = state?.applicants?.filter((data) => data?.hiring_status === 'hired')
     console.log(inreview?.length, shortlisted?.length, interview?.length, rejected?.length || 0, hired?.length || 0)
-    const options = {
+    const options: any = {
         series: [inreview?.length, shortlisted?.length, interview?.length, rejected?.length || 0, hired?.length || 0],
         chart: {
             width: 300,

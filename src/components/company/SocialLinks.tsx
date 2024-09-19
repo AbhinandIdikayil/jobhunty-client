@@ -5,11 +5,8 @@ import { AppDispatch, RootState } from "src/redux/store";
 import { socialLinksValidation } from "src/validation/company"
 
 function SocialLinks() {
-
   const dispatch: AppDispatch = useDispatch();
   const state = useSelector((state: RootState) => state.user);
-
-
   const socialLinks = {
     twitter: state?.user?.socialLinks?.[0] || '',
     youtube: state?.user?.socialLinks?.[1] || '',

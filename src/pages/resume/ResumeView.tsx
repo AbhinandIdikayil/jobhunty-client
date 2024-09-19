@@ -5,7 +5,7 @@ import { UseResumeContext } from 'src/context/ResumeContext'
 function ResumeView() {
 
 
-    const { resume, setResume } = UseResumeContext()
+    const { resume } = UseResumeContext()
 
 
     const HandleDownload = () => {

@@ -11,7 +11,7 @@ function CategoryAccordian({handleEmployment}:{handleEmployment:(e:any,id:string
             <AccordionContent>
                 {
                     categoryState.category?.map(data => (
-                        <div onClick={(e) => handleEmployment(e, data?._id)} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
+                        <div key={data?._id} onClick={(e) => handleEmployment(e, data?._id)} className='flex flex-wrap gap-2 items-center justify-start mb-1'>
                             <Checkbox id="terms2" />
                             <label
                                 htmlFor="terms2"

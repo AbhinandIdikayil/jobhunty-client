@@ -9,7 +9,7 @@ export type adminReducer = {
     },
     users: any[],
     skills: any[],
-    err: null | any,
+    err: null | any ,
     role: 'admin' | null
 }
 

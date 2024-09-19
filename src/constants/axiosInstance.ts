@@ -2,7 +2,6 @@ import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestCo
 import { ErrorResponse } from 'react-router-dom';
 import { logout } from 'src/redux/actions/userAction';
 import { getGlobalDispatch } from 'src/redux/global';
-import store from 'src/redux/store';
 
 const AUTH_SERVICE_URL = String(process.env.AUTH_SERVICE_URL)
 const COMPANY_SERVICE_URL = String(process.env.COMPANY_SERVICE_URL)
@@ -11,7 +10,7 @@ const CLOUDINARY = String(process.env.CLOUDINARY)
 const JOB_SERVICE_URL = String(process.env.JOB_SERVICE_URL)
 const CHAT_SERVICE_URL = String(process.env.CHAT_SERVICE_URL)
 const NOTIFICATION_SERVICE_URL = String(process.env.NOTIFICATION_URL)
-
+const API_GATEWAY_URL = String(process.env.API_SERVICE_URL)
 
 const createAxiosInstance = (url: string): AxiosInstance => {
     const instance = axios.create({
@@ -28,30 +27,47 @@ const createAxiosInstance = (url: string): AxiosInstance => {
             return response;
         },
         async (error: AxiosError<ErrorResponse>) => {
-            if (!error.config) {
+            const originalRequest = error.config as InternalAxiosRequestConfig & {
+                _retry?: boolean;
+                _retryCount?: number;
+            };
+
+            if (!originalRequest) {
                 return Promise.reject(error);
             }
 
-            const originalRequest = error.config as InternalAxiosRequestConfig & {
-                _retry?: boolean;
-            };
-
-            // if (error.response?.status === 403) {
-            //     if (error.response.data && error.response.data.message === 'User is blocked') {
-            //         handleLogout();
-            //         toast.error('Your account has been blocked. Please contact support.');
-            //         return Promise.reject(error);
-            //     }
-            // }
-
-            if (error.response?.status === 401) {
-                console.log('--------------- intercepter ------------')
-                const token = await refreshToken()
-                console.log('token---------------',token)
-                return token
+            // Set a retry limit
+            if (!originalRequest._retryCount) {
+                originalRequest._retryCount = 0;
             }
-            return instance(originalRequest)
-        },
+
+            if (error.response?.status === 401 && originalRequest._retryCount < 2) {
+                originalRequest._retryCount += 1;
+                console.log('Retrying request:', originalRequest.url);
+
+                await refreshToken();
+                return instance(originalRequest);
+            }
+
+            return Promise.reject(error);
+        }
+        // async (error: AxiosError<ErrorResponse>) => {
+        //     if (!error.config) {
+        //         return Promise.reject(error);
+        //     }
+
+        //     const originalRequest = error.config as InternalAxiosRequestConfig & {
+        //         _retry?: boolean;
+        //     };
+
+        //     if (error.response?.status === 401) {
+        //         console.log('--------------- intercepter ------------')
+        //         const token = await refreshToken()
+        //         console.log('token---------------', token)
+        //         return token
+        //     }
+        //     return instance(originalRequest)
+        // },
     );
     return instance;
 }
@@ -59,17 +75,17 @@ const createAxiosInstance = (url: string): AxiosInstance => {
 const refreshToken = async () => {
     try {
         const response = await fetch(
-            `${process.env.AUTH_SERVICE_URL}/refresh`,
+            `${AUTH_SERVICE_URL}/refresh`,
             {
                 method: 'POST',
                 credentials: 'include'
             }
         );
         console.log(response)
-        if(response.status == 401) {
+        if (response.status == 401) {
             // window.location.href = '/home'
             Logout()
-              return response
+            return response
         }
         const data = await response.json();
         return data;
@@ -81,55 +97,41 @@ const refreshToken = async () => {
 
 function Logout() {
     const dispatch = getGlobalDispatch();
-  if (dispatch) {
-    dispatch(logout(undefined));
-  }
+    if (dispatch) {
+        dispatch(logout(undefined));
+    }
 }
 
 
+export const AXIOS_INSTANCE_GATEWAY = createAxiosInstance(API_GATEWAY_URL)
 
 export const AXIOS_INSTANCE_AUTH = createAxiosInstance(AUTH_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'auth')
 
-//  axios.create({
-// baseURL: AUTH_SERVICE_URL,
-// withCredentials: true
-// })
+
 
 export const AXIOS_INSTANCE_COMPANY = createAxiosInstance(COMPANY_SERVICE_URL)
-
-//  axios.create({
-// baseURL: COMPANY_SERVICE_URL,
-// withCredentials: true
-// })
-
-export const AXIOS_INSTANCE_USER = createAxiosInstance(USER_SERVICE_URL)
-
-//  axios.create({
-// baseURL: USER_SERVICE_URL,
-// withCredentials: true
-// })
-
-export const AXIOS_INSTANCE_NOTIFICATION = createAxiosInstance(NOTIFICATION_SERVICE_URL)
-
-//  axios.create({
-// baseURL: NOTIFICATION_SERVICE_URL,
-// withCredentials: true
-// })
+// createAxiosInstance(API_GATEWAY_URL+'company')
 
 
-export const AXIOS_INSTANCE_JOB = createAxiosInstance(JOB_SERVICE_URL)
 
-//  axios.create({
-// baseURL: JOB_SERVICE_URL,
-// withCredentials: true
-// })
+export const AXIOS_INSTANCE_USER =  createAxiosInstance(USER_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'user')
+
+
+
+export const AXIOS_INSTANCE_NOTIFICATION =  createAxiosInstance(NOTIFICATION_SERVICE_URL)
+// createAxiosInstance('api')
+
+
+export const AXIOS_INSTANCE_JOB =  createAxiosInstance(JOB_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'job')
+
+
 
 export const AXIOS_INSTANCE_CHAT = createAxiosInstance(CHAT_SERVICE_URL)
+// createAxiosInstance(API_GATEWAY_URL+'chat')
 
-//  axios.create({
-// baseURL: CHAT_SERVICE_URL,
-// withCredentials: true
-// })
 
 export const CLOUDINARY_INSTANCE = axios.create({
     baseURL: CLOUDINARY,

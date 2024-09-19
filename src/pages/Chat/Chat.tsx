@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Loading from 'src/components/common/Loading'
 import Sidebar from 'src/components/chat/Sidebar'
-import { UseChatSocketContext } from 'src/context/ChatSocketContext'
 import SendMessage from 'src/components/chat/SendMessage';
 import { AppDispatch, RootState } from 'src/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +10,6 @@ import { CheckCheck } from 'lucide-react';
 
 function Chat() {
     const [loading, setLoading] = useState<boolean>(false);
-    // const { socket, setSocketConnected } = UseChatSocketContext()
     const user = useSelector((state: RootState) => state?.user?.user)
     const chat = useSelector((state: RootState) => state?.chat)
     const [messages, setMessages] = useState<any>([])
@@ -52,9 +50,9 @@ function Chat() {
 
     const handleCardClick = (data: string) => {
         if (data) {
-          window.open(data, '_blank'); // Open the file in a new tab
+            window.open(data, '_blank'); // Open the file in a new tab
         }
-      };
+    };
 
     return (
         <div className='flex gap-1 w-full'>
@@ -102,6 +100,16 @@ function Chat() {
                                         )
                                     }
                                     {
+                                        data?.content?.type === 'doc' && (
+                                            <div
+                                                onClick={() => handleCardClick(data?.content?.content)}
+                                                className="hover:cursor-pointer"
+                                            >
+                                                <p className="text-sm text-gray-500">Type: {data?.content?.type}</p>
+                                            </div>
+                                        )
+                                    }
+                                    {
                                         data?.content?.type === 'text' && (
                                             <h1>
                                                 {data?.content?.content ?? ''}
@@ -133,6 +141,16 @@ function Chat() {
                                         )
                                     }
                                     {
+                                        data?.content?.type === 'doc' && (
+                                            <div
+                                                onClick={() => handleCardClick(data?.content?.content)}
+                                                className="hover:cursor-pointer"
+                                            >
+                                                <p className="text-sm text-gray-500">Type: {data?.content?.type}</p>
+                                            </div>
+                                        )
+                                    }
+                                    {
                                         data?.content?.type === 'text' && (
                                             <h1>
                                                 {data?.content?.content ?? ''}
@@ -149,6 +167,15 @@ function Chat() {
                                     {
                                         data?.content?.type === 'image' && (
                                             <img src={data?.content?.content} className="shrink-0 my-auto w-48 aspect-square bg-gray-200 pt-2" />
+                                        )
+                                    } {
+                                        data?.content?.type === 'doc' && (
+                                            <div
+                                                onClick={() => handleCardClick(data?.content?.content)}
+                                                className="hover:cursor-pointer"
+                                            >
+                                                <p className="text-sm text-gray-500">Type: {data?.content?.type}</p>
+                                            </div>
                                         )
                                     }
                                     {

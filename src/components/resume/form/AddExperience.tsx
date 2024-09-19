@@ -6,15 +6,6 @@ import { toast } from 'react-toastify';
 import { UseResumeContext } from 'src/context/ResumeContext';
 import RichTextEditor from '../RichTextEditor';
 
-const formField = {
-  title: '',
-  companyName: '',
-  city: '',
-  state: '',
-  startDate: '',
-  endDate: '',
-  workSummery: '',
-}
 
 function AddExperience() {
   const [experinceList, setExperinceList] = useState<any>([]);

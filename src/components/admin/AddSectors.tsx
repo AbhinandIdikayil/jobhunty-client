@@ -9,6 +9,7 @@ import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload';
 import { addSectorValidationSchema } from 'src/validation/admin';
 import { openEditor } from 'react-profile'
 import { addSector } from 'src/redux/actions/commonAction';
+import { toast } from 'react-toastify';
 
 
 function AddSectors() {
@@ -33,7 +34,9 @@ function AddSectors() {
                 const ctx = canvas.getContext('2d');
                 canvas.width = img.width;
                 canvas.height = img.height;
-
+                if (!ctx) {
+                    return null
+                }
                 ctx.drawImage(img, 0, 0);
 
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -67,12 +70,14 @@ function AddSectors() {
                 if (imageSrc) {
                     const dataUrl = await convertToWhiteOpaque(imageSrc);
                     const image = await openEditor({ src: dataUrl });
-                    if (image && image.editedImage) {
-                        const dataUrl = await convertToWhiteOpaque(image.editedImage.getDataURL())
-                        
+                    if (image && image?.editedImage) {
+                        let url = image?.editedImage?.getDataURL()
+                        if (!url) {
+                            return toast.error('Couldnt edit image', { position: 'top-center' })
+                        }
+                        const dataUrl = await convertToWhiteOpaque(url)
                         setImage(dataUrl); // Call the function to get the URL and then set it
                     }
-                    // setImage(dataUrl);
                 }
             };
             reader.readAsDataURL(file);

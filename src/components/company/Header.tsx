@@ -24,12 +24,14 @@ function Header({ func, open }: props) {
     const { socket, setSocketConnected, notifications, setNotifications } = UseChatSocketContext()
 
     useEffect(() => {
+
         if (socket) {
             socket.emit('setup', state?.user)
             socket.on('connected', () => setSocketConnected(true))
             socket.on('disconnect', () => {
                 console.log('disconnected');
             });
+
 
             return () => {
                 socket.off('connected');
@@ -77,11 +79,13 @@ function Header({ func, open }: props) {
         }
     }
 
-    
+
     useEffect(() => {
         fetchData()
         console.log('------------compnay header')
     }, [])
+
+
 
     return (
         <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
@@ -138,12 +142,14 @@ function Header({ func, open }: props) {
                                 </div>
                                 {
                                     notifications?.length > 0 &&
-                                    notifications?.map((data: any, ind: number) => (
-                                        <div key={ind+data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
-                                            <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
-                                            {data?.content?.content}
-                                        </div>
-                                    ))
+                                    notifications?.map((data: any, ind: number) => {
+                                        return (
+                                            <div key={ind + data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                                <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                {data?.content?.content + 'hii'}
+                                            </div>
+                                        )
+                                    })
                                 }
                             </div>
                         </ScrollArea>

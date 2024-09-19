@@ -43,16 +43,16 @@ function Quiz() {
                     <QuizCard data={quiz} setShow={setShow} />
                 ) : (
                     <>
-                        <div className="flex flex-col w-1/2">
+                        <div className="flex flex-col w-full sm:w-1/2">
                             <div className="flex flex-col items-start py-8 pr-16 pl-8 w-full bg-blend-difference max-md:px-5">
                                 <div className="text-4xl text-white font-bold">
-                                    <span className="font">Learn </span>
-                                    <br />
+                                    <span className="font ">Learn </span>
+                                    {/* <br /> */}
                                     <span className="font text-indigo-600 w-full text-2xl sm:text-4xl">new concepts</span>
                                     <br />
                                     <span className="text-lg sm:text-4xl w-full">for each question</span>
                                 </div >
-                                <div className="mt-12 ml-3 text-white tracking-widest max-md:mt-10 max-md:ml-2.5">
+                                <div className="mt-12 ml-0 sm:ml-3 text-white tracking-widest max-md:mt-10 w-full ">
                                     We help you prepare for interview and quizes(based on your skills in profile ){" "}
                                 </div>
                                 <div className="flex gap-5 justify-between mt-10 max-w-full w-[158px]">

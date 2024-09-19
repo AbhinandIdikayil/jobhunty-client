@@ -11,10 +11,7 @@ import Loading from 'src/components/common/Loading';
 import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
 import { Button, FormControl, InputLabel } from '@mui/material';
 import { BootstrapInput } from 'src/components/common/BootsrapInput';
-import { toast } from 'react-toastify';
-import CategoryAccordian from 'src/components/common/CategoryAccordian';
 import SectoresAccordian from 'src/components/common/SectoresAccordian';
-import { filter } from 'lodash';
 
 interface FilterAndSearch {
     name: string;
@@ -27,7 +24,6 @@ function CompanyList() {
     const { open } = context;
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state.admin)
-    const categoryState = useSelector((state: RootState) => state?.category)
     const [loading, setLoading] = useState<boolean>(false)
     const [pagination, setPagination] = useState({
         pageIndex: 0,
@@ -111,7 +107,7 @@ function CompanyList() {
 
     return (
         <>
-            <div className={`flex flex-col items-center  ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'} px-3`}>
+            <div className={`flex flex-col items-center justify-center ${open && open ? 'w-full' : 'w-full'}  ${open && open ? 'bg-none' : 'bg-slate-50'}`}>
                 <div className={`${open && open ? 'hidden' : ''} `}>
                     <div className={`hidden sm:flex gap-4 mt-10 text-5xl font-semibold text-center leading-[52.8px] max-md:flex-wrap max-md:text-4xl`}>
                         <div className="self-start text-slate-800 max-md:text-4xl">
@@ -144,7 +140,6 @@ function CompanyList() {
                         <FormControl sx={{ m: 1 }} variant="standard">
                             <InputLabel htmlFor="demo-customized-select-native">location</InputLabel>
                             <BootstrapInput onChange={(e) => setFilterAndSearch({ ...filterAndSearch, location: e.target.value })} id="demo-customized-textbox" />
-
                         </FormControl>
                         <Button
                             onClick={handleSearch}
@@ -155,7 +150,7 @@ function CompanyList() {
                             }}
                             variant='outlined'
                         >
-                            search my job
+                            search companies 
                         </Button>
                     </div>
                 </div>

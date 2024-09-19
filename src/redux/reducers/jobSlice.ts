@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JobReducer } from "src/types/Job";
-import { applyJob, editInterview, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, removeJob, scheduleInterview, updateHiringStatus, updateJob } from "../actions/jobAction";
+import { applyJob, editInterview, getAllJob, getJobDetails, getSpecificApplicantDetails, listApplicants, listApplications, postJob, recommendedJobs, removeJob, scheduleInterview, updateHiringStatus, updateJob } from "../actions/jobAction";
 import { handleAuthError } from "src/utils/HandleAuthError";
 
 const initialState: JobReducer = {
@@ -10,7 +10,8 @@ const initialState: JobReducer = {
     jobs: null,
     applicant: null,
     applicants: [],
-    applications: []
+    applications: [],
+    recommended: [] 
 }
 
 const jobSlice = createSlice({
@@ -58,6 +59,9 @@ const jobSlice = createSlice({
                 state.loading = false
                 state.err = payload
                 state.jobs.jobs = []
+                if(state.jobs?.totalCount){
+                    state.jobs.totalCount = []
+                }
             })
             .addCase(applyJob.pending, (state) => {
                 state.loading = true
@@ -210,6 +214,20 @@ const jobSlice = createSlice({
             .addCase(editInterview.rejected, (state,{payload}) => {
                 state.loading = false
                 state.err = {payload}
+            })
+            .addCase(recommendedJobs.pending,(state) => {
+                state.loading = true
+                state.err = null
+            })
+            .addCase(recommendedJobs.fulfilled,(state,{payload}) => {
+                state.loading = false
+                state.err = null
+                state.recommended = payload
+            })
+            .addCase(recommendedJobs.rejected,(state, {payload}) => {
+                state.loading = false
+                state.err = payload
+                state.recommended = []
             })
     }
 })

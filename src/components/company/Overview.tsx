@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Formik, Form, Field, FormikValues, FormikHandlers } from 'formik'
+import { Formik, Form, Field, FormikValues } from 'formik'
 import TypeDate from '../common/TypeDate'
 import { LocationInput } from '../common/LocationInput'
 import { companyProfile } from '../../validation/company/index'
@@ -9,13 +9,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { getCompany, updateProfile } from 'src/redux/actions/companyAction'
 import { Backdrop, CircularProgress } from '@mui/material'
-import { toast } from 'react-toastify'
 import { IoCloseCircle } from 'react-icons/io5'
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload'
 
 
 function Overview() {
-
     const dispatch: AppDispatch = useDispatch()
     const state = useSelector((state: RootState) => state?.user)
     let companyProfileInitialState = {
@@ -134,7 +132,6 @@ function Overview() {
         }
     }
 
-
     if (loading) {
         return (
             <h1>Loading....</h1>
@@ -143,8 +140,7 @@ function Overview() {
 
     return (
         <>
-            <div className="flex flex-col justify-center p-3 w-full bg-white max-md:px-5 max-md:max-w-full">
-
+            <div className="flex flex-col justify-center px-2 sm:p-3 w-full bg-white max-md:max-w-full">
                 <div className="self-start text-lg font-semibold leading-7 text-slate-800 max-md:max-w-full">
                     Basic Information
                 </div>
@@ -165,7 +161,7 @@ function Overview() {
                             <div className="grow max-md:mt-10 max-md:max-w-full">
                                 <div className="flex gap-5 max-md:flex-col max-md:gap-0">
                                     <div className="flex items-center justify-center w-full">
-                                        <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                        <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                                             <div className="flex flex-col items-center justify-center pt-5 pb-6 ">
                                                 {imagePreview ? (
                                                     // <ReactCrop

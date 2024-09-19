@@ -1,6 +1,7 @@
 import { BarChart } from '@mui/x-charts'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllJob, listApplicants } from 'src/redux/actions/jobAction';
 import { AppDispatch, RootState } from 'src/redux/store';
 
 function DayChart() {
@@ -13,14 +14,13 @@ function DayChart() {
 
     useEffect(() => {
         const update = async () => {
-            // await dispatch(fecthJob(data?._id));
-            // await dispatch(companyApplicantList(String(data?._id)));
+            await dispatch(getAllJob({_id:user?.user?._id}));
+            await dispatch(listApplicants());
         };
         update();
     }, []);
 
     useEffect(() => {
-
         const filterDataByWeek = () => {
             const currentDate = new Date();
             const currentDay = currentDate.getDay();
@@ -30,7 +30,6 @@ function DayChart() {
             const endDate = new Date(startDate);
             endDate.setDate(endDate.getDate() + 6);
             endDate.setHours(23, 59, 59, 999);
-
 
             const filteredJobs = job?.jobs?.jobs?.filter((job: any) => {
                 const jobDate = new Date(job?.job?.createdAt);
@@ -71,21 +70,6 @@ function DayChart() {
 
     return (
         <div>
-            {/* <BarChart
-                series={[
-                    { data: [4, 2, 5, 4, 1], stack: 'A', label: 'Series A1' },
-                    { data: [2, 8, 1, 3, 1], stack: 'A', label: 'Series A2' },
-                    { data: [14, 6, 5, 8, 9], label: 'Series B1' },
-                ]}
-                barLabel={(item, context) => {
-                    if ((item.value ?? 0) > 10) {
-                        return 'High';
-                    }
-                    return context.bar.height < 60 ? null : item.value?.toString();
-                }}
-                width={600}
-                height={350}
-            /> */}
             <BarChart
                 series={weekData}
                 height={290}

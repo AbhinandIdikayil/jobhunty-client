@@ -5,8 +5,6 @@ import './App.css'
 import { Backdrop, CircularProgress } from '@mui/material'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import AdminLogin from './pages/admin/Login'
-
-
 import Home from './pages/user/BeforeOneApplicant/Home'
 const CompanyHome = lazy(() => import('./pages/company/CompanyHome'))
 const Dashboard = lazy(() => import('./pages/company/Dashboard'))
@@ -32,7 +30,7 @@ import 'react-profile/themes/default'
 import EditCategory from './components/admin/EditCategory'
 import ListSector from './components/admin/ListSector'
 import AddSectors from './components/admin/AddSectors'
-import CompanyJobListing from './components/company/CompanyJobListing'
+import { JobListingCompanySide } from './components/company/CompanyJobListing'
 import Chat from './pages/Chat/Chat'
 import JobDetails from './pages/user/JobDetails'
 import CompanyDetails from './pages/user/CompanyDetails'
@@ -54,11 +52,10 @@ import Skills from './pages/admin/Skills'
 import { setGlobalDispatch } from './redux/global'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from './redux/store'
-
+import SIde from './components/user/SIde'
 
 
 function App() {
-
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -78,6 +75,7 @@ function App() {
         <Route path='/' element={<Navigate to='home' />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
+        <Route path='/side' element={<SIde />} />
         <Route path='home' element={<UserLayout />} >
           <Route path='interview/:room' element={<Interview />} />  //! FOR INTERVIEW (VIDEO CALL)
           <Route index element={<Home />} />
@@ -109,9 +107,6 @@ function App() {
           } />
         </Route>
 
-
-
-
         <Route path='/forgot-password' element={<ForgotPassword />} />
 
      ////! routes for the company
@@ -126,10 +121,9 @@ function App() {
             <Route path='' element={<Dashboard />} />
             <Route path='post' element={<PostJob />} />
             <Route path='messages' element={<Chat />} />
-            <Route path='profile' element={<h1>profile</h1>} />
             <Route path='applicants' element={<Applicants />} />
             <Route path='applicants/:id' element={<ApplicantDetails />} />
-            <Route path='job-list' element={<CompanyJobListing />} />
+            <Route path='job-list' element={<JobListingCompanySide />} />
             <Route path='job-list/:id' element={<JobEdting />} />
             <Route path='job-list/applicants/:id' element={<ApplicantsOfJob />} />
             <Route path='schedules' element={<Schedules />} />

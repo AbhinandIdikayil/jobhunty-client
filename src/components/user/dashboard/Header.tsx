@@ -1,5 +1,3 @@
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Bell, Home } from 'lucide-react'
@@ -73,7 +71,7 @@ function Header({ func, open }: props) {
     }, [loading, user.role, navigate]);
 
     return (
-        <div className="flex gap-5 justify-between px-8 w-full bg-white shadow-sm max-md:flex-wrap max-md:px-5 max-md:max-w-full" style={{ borderBottom: '.5px solid black', paddingBlock: '16px' }}>
+        <div className="flex gap-5 justify-between px-8 w-full bg-slate-50  max-md:flex-wrap max-md:px-5 max-md:max-w-full " style={{  paddingBlock: '16px', borderBottom: '0.5px solid gray' }}>
             <div className="flex gap-4 whitespace-nowrap">
                 <div className={`flex items-center ${open ? 'hidden' : ''} `}>
                     <HiMenuAlt3 onClick={func} color='black' size={30} />
@@ -83,7 +81,6 @@ function Header({ func, open }: props) {
                         <div className="hidden sm:block sm:flex-auto text-2xl font-bold tracking-tight leading-9 text-slate-800">
                             Dashboard
                         </div>
-                        {/* <DropDown /> */}
                     </div>
                 </div>
             </div>
@@ -101,9 +98,8 @@ function Header({ func, open }: props) {
                             <Bell color="blue" />
                         </div>
                     </PopoverTrigger>
-                    <PopoverContent align="end" className="w-40 sm:w-80" style={{ zIndex: 99 }}>
+                    <PopoverContent align="center" className="w-56 sm:w-80" style={{ zIndex: 99 }}>
                         <ScrollArea className="h-40 sm:h-48 rounded-md ">
-
                             <div className="grid gap-4">
                                 <div className="space-y-2">
                                     <h4 className="font-medium leading-none">Dimensions</h4>
@@ -120,21 +116,37 @@ function Header({ func, open }: props) {
                                     </div>
                                     {
                                         notifications?.length > 0 &&
-                                        notifications?.map((data: any, ind: number) => (
-                                            <div key={ind+data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
-                                                <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
-                                                {data?.content?.content}
-                                            </div>
-                                        ))
+                                        notifications?.map((data: any, ind: number) => {
+                                            console.log(data)
+                                            return data?.from ? (
+                                                <div key={ind + data?.from} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1 border rounded shadow-md">
+                                                    <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                    {data?.data}
+                                                    <h1 className='pl-1'>from : {data?.from} </h1>
+                                                    <a href={data?.link}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"  >
+                                                        <h1 className='px-1 bg-indigo-600 text-white font-bold text-center'>
+                                                            click to join
+                                                        </h1>
+                                                    </a>
+                                                </div>
+                                            ) : (
+                                                <div key={ind + data?.content?.content} className="overflow-hidden text-ellipsis whitespace-nowrap w-full items-center gap-1">
+                                                    <span className="text-indigo-600 rounded-full  h-1 "> {ind + 1} ) </span>
+                                                    {data?.content?.content}
+                                                </div>
+                                            )
+                                        })
                                     }
                                 </div>
                             </div>
                         </ScrollArea>
                     </PopoverContent>
                 </Popover>
-                <div className="flex gap-1 sm:gap-2.5 justify-center px-2 py-3 sm:px-6 sm:py-3 bg-indigo-600">
+                <div className="flex gap-1 sm:gap-2.5 justify-center px-2 py-3 sm:px-6 sm:py-3 bg-indigo-600 max-md:rounded-md">
                     <Home className='hidden sm:block' />
-                    <Link to={'/home'}>Home Page</Link>
+                    <Link to={'/home'} className=''>Home Page</Link>
                 </div>
             </div>
         </div>

@@ -1,21 +1,16 @@
-
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-
 import { Outlet } from 'react-router-dom';
 import SideDrawer from './SideDrawer';
 
-const drawerWidth = 240;
-
+const drawerWidth = 270;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
     open?: boolean;
 }>(({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(3,1,0,1),
     transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -26,30 +21,17 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
         }),
+        marginLeft: '0px',
+    }),
+    [theme.breakpoints.down('sm')]: {
         marginLeft: 0,
-    }),
+        width: '100%',
+        padding: theme.spacing(2),
+    },
 }));
 
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
 
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-    transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        width: `calc(100% - ${drawerWidth}px)`,
-        marginLeft: `${drawerWidth}px`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
+
 
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -71,10 +53,10 @@ export default function DashboardHome() {
         setOpen(false);
     }, []);
 
-    const navLinks = ['', 'messages', 'applications', 'jobs', 'companies', 'profile']
+    const navLinks = ['', 'messages', 'applications', 'jobs', 'companies', 'profile'] as string[]
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', alignItems:'center' , justifyContent:'center' }}>
             <SideDrawer
                 open={open}
                 navLinks={navLinks}
@@ -84,10 +66,7 @@ export default function DashboardHome() {
             <Main open={open}>
                 <DrawerHeader>
                 </DrawerHeader>
-
-
                 <Outlet context={{ open }} />
-
             </Main>
         </Box>
     );

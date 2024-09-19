@@ -37,9 +37,6 @@ function ListSector() {
         }
     }
 
-    function handleRemove(id: string) {
-
-    }
 
     const columns: ColumnDef<ISectors>[] = [
         {
@@ -89,7 +86,7 @@ function ListSector() {
                                       bg-indigo-600
                                       text-white
                                       '
-                                        onClick={() => handleRemove(row.original._id)}
+                                        // onClick={() => handleRemove(row.original._id)}
                                     >
                                         undo
                                     </DropdownMenuItem>
@@ -100,7 +97,7 @@ function ListSector() {
                                       font-bold
                                       bg-red-600
                                       '
-                                        onClick={() => handleRemove(row.original._id)}
+                                        // onClick={() => handleRemove(row.original._id)}
                                     >
                                         remove
                                     </DropdownMenuItem>

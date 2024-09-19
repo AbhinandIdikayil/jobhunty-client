@@ -30,7 +30,7 @@ function DashboardInterviewList() {
                         <div className="flex flex-col w-full font-medium text-slate-500">
                             <div className="flex gap-4 mt-3 max-w-full rounded-none w-[406px] max-md:mt-10 border-b pb-1">
                                 <span className='text-sm'> {data?.time} </span>
-                                <div className="flex z-10 gap-4 self-end py-4 pr-16 pl-4 mt-0 bg-violet-100 rounded-lg max-md:pr-5">
+                                <div className="flex  gap-4 self-end py-4 pr-16 pl-4 mt-0 bg-violet-100 rounded-lg max-md:pr-5">
                                     <img
                                         loading="lazy"
                                         srcSet={data?.companyImage}

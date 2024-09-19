@@ -8,7 +8,8 @@ export type JobReducer = {
     job: getAllJobsEntity | null,
     applicant: JobApplication | null
     applicants: JobApplication[]
-    applications: JobApplication[]
+    applications: JobApplication[],
+    recommended: getAllJobsEntity[]
 }
 
 interface applied {
@@ -33,7 +34,7 @@ export interface applicants {
 
 
 export interface getAllJobsEntity {
-    _id?: string,
+    _id: string,
     jobs?: {
         _id?: string,
         jobTitle?: string,
@@ -171,6 +172,7 @@ export interface getAllJobsEntity {
             createdAt?: Date,
         }
     },
+    totalCount:any,
     applicantCount?: number,
     applicants: [applicants],
     company?: {

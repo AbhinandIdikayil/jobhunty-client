@@ -4,7 +4,6 @@ import { updateHiringStatus } from 'src/redux/actions/jobAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { formatDateToThree } from 'src/utils/formateDate'
 
-
 function HiringProcess({ applicantId, setLoading, setOpen }: { applicantId: string | null, setLoading: (prev: boolean) => void, setOpen: (prev: boolean) => void }) {
     const jobState = useSelector((state: RootState) => state?.job)
     const dispatch: AppDispatch = useDispatch()
@@ -32,10 +31,8 @@ function HiringProcess({ applicantId, setLoading, setOpen }: { applicantId: stri
     }
 
     const status = ['in-review', 'shortlisted', 'interview', 'hired/declined']
-
     return (
         <>
-
             <TabsContent value='hiring'>
                 <div className="flex flex-col max-w-2xl px-2 ">
                     <div className="flex flex-col w-full max-md:max-w-full">

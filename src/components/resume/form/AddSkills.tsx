@@ -43,17 +43,9 @@ function AddSkills() {
   }
 
   const onSave = () => {
-
     setLoading(true);
-    const data = {
-      data: {
-        skills: skillsList.map(({ id, ...rest }) => rest)
-      }
-    }
-
     setLoading(false);
     toast('Details updated !')
-
   }
 
   useEffect(() => {
@@ -65,7 +57,7 @@ function AddSkills() {
 
   const handleSkillChange = (index: number, key: 'name' | 'data', value: string) => {
     setResume((prevState: any) => {
-      const updatedSkills = prevState.skill.map((skill, i) =>
+      const updatedSkills = prevState.skill.map((skill:any, i:number) =>
         i === index ? { ...skill, [key]: value } : skill
       );
       return {

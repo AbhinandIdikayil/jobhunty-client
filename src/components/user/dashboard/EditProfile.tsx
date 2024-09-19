@@ -8,9 +8,11 @@ import { deepOrange } from '@mui/material/colors'
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import { updateUserProfile } from 'src/redux/actions/userAction'
 import { AppDispatch, RootState } from 'src/redux/store'
 import { uploadToCloudinary } from 'src/utils/common/cloudinaryUpload'
+import { validateImage } from 'src/validation/common/image-validation'
 import { z } from 'zod'
 
 
@@ -69,6 +71,9 @@ function EditProfile({ name, setOpen }: UserEditProfileProps) {
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target?.files?.[0];
         if (file) {
+            if(!validateImage(file)){
+                return toast.error('Invalid file type',{position:'top-center'})
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 if (typeof reader.result === 'string') {

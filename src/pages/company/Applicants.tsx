@@ -71,7 +71,7 @@ function Applicants() {
             accessorKey: 'jobId.jobTitle',
             header: () => <div>Role</div>,
             cell: ({ row }) => {
-                return <div className='text-left capitalize'> {row?.original?.jobId?.jobTitle}  </div>
+                return <div className='text-left capitalize text-ellipsis whitespace-nowrap overflow-hidden'> {row?.original?.jobId?.jobTitle}  </div>
             }
         },
         {

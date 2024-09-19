@@ -21,7 +21,7 @@ function InterviewSchedule({ setLoading }: { setLoading: (prev: boolean) => void
                 <div className="chat flex flex-col mt-4 w-full h-[700px] overflow-y-auto shadow-md">
                     {
                         applicant?.schedule?.map((data, ind: number) => (
-                            <InterviewList applcantId={applicant?.userId?._id ?? ''} email={applicant?.userId?.email || ''} setLoading={setLoading} date={data?.date} image={applicant?.userId?.coverImage} name={applicant?.userId?.name || ''}
+                            <InterviewList  applcantId={applicant?.userId?._id ?? ''} email={applicant?.userId?.email || ''} setLoading={setLoading} date={data?.date} image={applicant?.userId?.coverImage} name={applicant?.userId?.name || ''}
                                 ind={ind} testType={data?.testType || ''} time={data?.time} key={ind} room={data?.roomId} />
                         ))
                     }
