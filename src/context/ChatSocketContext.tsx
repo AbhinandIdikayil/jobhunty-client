@@ -46,6 +46,7 @@ export const ChatSocketProvider = ({ children }: Children) => {
     useEffect(() => {
         if (!socketRef.current) {
             const newSocket = io(String(process.env.CHAT_ORIGIN));
+            console.log('chat origin',process.env.CHAT_ORIGIN)
             newSocket.on('connect', () => {
                 setSocketConnected(true);
             });

@@ -16,6 +16,7 @@ export const SocketProvider = ({ children }: Children) => {
 
     useEffect(() => {
         const newSocket = io(String(process.env.COMPANY_ORIGIN));
+        console.log('company socket url',process.env.COMPANY_ORIGIN)
         setSocket(newSocket);
         return () => {
             newSocket.close()
