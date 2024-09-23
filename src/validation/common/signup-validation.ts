@@ -12,8 +12,12 @@ export const validationSchema = Yup.object().shape({
         .matches(/^([A-Z0-9_+-]+\.?)*[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}$/i, 'email is invalid'),
     password: Yup
         .string()
+        .min(6, 'atleast 6 charchter')
+        .matches(/[a-z]/, 'Must contain at least one lowercase letter')
+        .matches(/[A-Z]/, 'Must contain at least one uppercase letter')
+        .matches(/[0-9]/, 'Must contain at least one number')
+        .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Must contain at least one special character')
         .required('password is required')
-        .min(4, 'atleast 4 charchter')
 })
 
 
@@ -30,7 +34,7 @@ export const otpValidationSchema = Yup.object().shape({
 
 export const LoginvalidationSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('Invalid email'),
-    password: Yup.string().required('Password is required').min(4, 'must be atleast 4 character'),
+    password: Yup.string().required('Password is required'),
 })
 
 
