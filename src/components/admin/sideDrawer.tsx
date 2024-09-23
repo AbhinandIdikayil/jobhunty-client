@@ -101,13 +101,12 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
         </DrawerHeader>
         <Divider />
         <List>
-          {['Dashboard', 'Company request', 'All companies', 'All users', 'Category', 'Sector', 'Skills'].map((text, index) => (
+          {['Company request', 'All companies', 'All users', 'Category', 'Sector', 'Skills'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton sx={{ width: drawerWidth }}>
+                <ListItemButton sx={{ width: drawerWidth-1 }}>
                   <ListItemIcon>
                     {
-                      text == 'Dashboard' && <RiHome2Line size={30} /> ||
                       text == 'Company request' && <TbBuildingSkyscraper size={30} /> ||
                       text == 'All companies' && <PiUsersThreeDuotone size={30} /> ||
                       text == 'All users' && <PiUsersThreeDuotone size={30} /> ||

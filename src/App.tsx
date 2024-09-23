@@ -144,7 +144,6 @@ function App() {
               <AdminHome />
             </AdminPrivateRoute>
           }>
-            <Route path='' element={<h1>sadfsdf</h1>} />
             <Route path='add-category' element={<AddCategory />} />
             <Route path='category' element={<Categories />} />
             <Route path='sector' element={<ListSector />} />
