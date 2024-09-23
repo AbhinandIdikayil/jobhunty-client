@@ -3,6 +3,7 @@ import * as Yup from 'yup'
 export const validationSchema = Yup.object().shape({
     name: Yup
         .string()
+        .matches(/^[^0-9]*$/, 'Name should not contain numbers')
         .required('name is required'),
     email: Yup
         .string()
