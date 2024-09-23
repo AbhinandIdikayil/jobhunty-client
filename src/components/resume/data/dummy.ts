@@ -87,7 +87,7 @@ export default {
         },
         {
             name: 'soft_skill',
-            data: 'communication,problem solvinag, asdf ,asfsdfasasdffssdfasd,hoasf,sdafsjafs,sdfasjkfjksdjfsdjfdfjkhsdfjkshdfjkashfjkjksdfsadfs'
+            data: 'communication,problem solving, asdf,'
         }
     ]
 }

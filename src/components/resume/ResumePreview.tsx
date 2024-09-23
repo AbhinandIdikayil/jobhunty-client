@@ -11,16 +11,15 @@ function ResumePreview() {
   const { resume, setResume } = UseResumeContext()
   const location = useLocation();
   const { state } = location;
-  console.log(state)
   useEffect(() => {
-    if(state){
+    if (state) {
       setResume(state)
     } else {
       setResume(ha)
     }
   }, [])
   return (
-    <div className='shadow-lg h-full p-14 border-t-[20px]'
+    <div className='shadow-lg h-full p-14 max-md:p-10 border-t-[20px]'
       style={{
         borderColor: resume?.themeColor
       }}>

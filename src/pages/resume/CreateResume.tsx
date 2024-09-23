@@ -3,7 +3,7 @@ import ResumePreview from 'src/components/resume/ResumePreview'
 
 function CreateResume() {
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 p-10 gap-10'>
+    <div className='grid grid-cols-1 md:grid-cols-2 p-10 max-md:p-5 gap-10'>
       {/*//! Form section */}
       <FormSection />
 

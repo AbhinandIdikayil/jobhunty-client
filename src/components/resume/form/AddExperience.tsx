@@ -20,7 +20,6 @@ function AddExperience() {
     const newEntries = experinceList.slice();
     const { name, value } = event.target;
     newEntries[index][name] = value;
-    console.log(newEntries)
     setExperinceList(newEntries);
   }
 
@@ -123,11 +122,10 @@ function AddExperience() {
             </div>
           ))}
         </div>
-        <div className='flex justify-between'>
-          <div className='flex gap-2'>
+        <div className='flex max-md:flex-wrap max-md:gap-2 justify-between'>
+          <div className='flex gap-2 max-md:flex-wrap'>
             <Button variant="outline" onClick={AddNewExperience} className="text-primary"> + Add More Experience</Button>
             <Button variant="outline" onClick={RemoveExperience} className="text-primary"> - Remove</Button>
-
           </div>
           <Button disabled={loading} onClick={() => onSave()}>
             {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}

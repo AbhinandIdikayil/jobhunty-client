@@ -105,10 +105,16 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           {['Dashboard', 'Messages', 'All applicants', 'Job listing', 'My schedule'].map((text, index) => (
             <ListItem key={text} disablePadding >
               <NavLink className={'sidebar-link'} end to={navLinks[index]}>
-                <ListItemButton sx={{ width: isSmallScreen ? '100vw' : drawerWidth - 2 }}>
+                <ListItemButton disableRipple  sx={{
+                  paddingX: '15px ',
+                  paddingY: '5px',
+                  width: isSmallScreen ? '100vw' : drawerWidth - 2,
+                  "&.MuiButtonBase-root:hover": { bgcolor: "transparent" }
+                }}
+                >
                   <div
-                    className={`flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200`}>
-                    <ListItemIcon>
+                    className={`flex w-full items-center rounded px-2 py-2  border border-solid border-gray-200`}>
+                    <ListItemIcon  sx={{ "&:hover": { backgroundColor: "transparent" } }}>
                       {
                         text == 'Dashboard' && <LayoutGrid color='black' /> ||
                         text == 'Messages' && <MessageSquareText color='black' /> ||
@@ -130,8 +136,8 @@ function SideDrawer({ handleDrawerOpen, handleDrawerClose, navLinks, open }: pro
           {['Settings'].map((text) => (
             <ListItem key={text} disablePadding>
               <NavLink to={'settings'}>
-                <ListItemButton  sx={{  width: isSmallScreen ? '100vw' : drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
-                  <div className='flex w-full items-center rounded-lg px-2 py-2 shadow-md border border-solid border-gray-200
+                <ListItemButton sx={{ width: isSmallScreen ? '100vw' : drawerWidth - 2, "&.MuiButtonBase-root:hover": { bgcolor: "transparent" } }}>
+                  <div className='flex w-full items-center rounded-sm px-2 py-2  border border-solid border-gray-200
                                      hover:translate-y-[-2px] hover:shadow-xl transition-all duration-300 ease-in-out'>
                     <ListItemIcon>
                       <IoSettingsOutline size={30} color='black' />

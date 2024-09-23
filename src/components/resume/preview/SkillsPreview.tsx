@@ -17,14 +17,14 @@ function SkillsPreview({ data }: { data: any }) {
                 data?.skill?.length &&
                 data?.skill?.map((val: any) => {
                     return (
-                        <div className="text-xs flex mt-2 w-full">
+                        <div className="text-xs flex justify-between mt-2 w-full">
                             <div className="w-[110px] capitalize flex-shrink-0">
                                 {val?.name}
                             </div>
                             <div
                                 className={`
                                 ${path == '/Dashboard/resume/create'
-                                        ? ' w-[230px] ' : 'w-full text-right'
+                                        ? ' w-[230px] max-md:w-2/3' : 'w-full text-right' 
                                 }
                                h-full break-words`}
                             >
@@ -36,8 +36,6 @@ function SkillsPreview({ data }: { data: any }) {
                     )
                 })
             }
-
-
         </div>
     )
 }

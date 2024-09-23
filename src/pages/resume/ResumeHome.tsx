@@ -36,11 +36,6 @@ function ResumeHome() {
                             </span>
                             <ResumeNameModal />
                         </button>
-                        <button
-                            className="  border-2 after:w-full  hover:border-indigo-700  transition-all border-teal-600 px-6 py-3 rounded-md"
-                        >
-                            Create cover letter
-                        </button>
                     </div>
                 </div>
 

@@ -114,11 +114,10 @@ function AddEducation() {
           </div>
         ))}
       </div>
-      <div className='flex justify-between'>
-        <div className='flex gap-2'>
+      <div className='flex justify-between max-md:flex-wrap gap-1'>
+        <div className='flex gap-2 max-md:flex-wrap'>
           <Button variant="outline" onClick={AddNewEducation} className="text-primary"> + Add More Education</Button>
           <Button variant="outline" onClick={RemoveEducation} className="text-primary"> - Remove</Button>
-
         </div>
         <Button disabled={loading} onClick={() => onSave()}>
           {loading ? <LoaderCircle className='animate-spin' /> : 'Save'}
