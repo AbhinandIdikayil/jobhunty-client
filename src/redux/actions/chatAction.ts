@@ -32,8 +32,8 @@ export const sendMessage = createAsyncThunk(
         try {
             const { data } = await AXIOS_INSTANCE_CHAT.post('/message', { data: req })
             return data
-        } catch (error) {
-            return rejectWithValue(error)
+        } catch (error:any) {
+            return rejectWithValue(error?.response?.data)
         }
     }
 )

@@ -57,7 +57,8 @@ function SendMessage({ setMessages }: { setMessages: any }) {
                 socket.emit('send-message', res)
                 setMessageInput('')
                 setMessages((prevMessages: any) => [...prevMessages, res]);
-            } catch (error) {
+            } catch (error: any) {
+                toast.error(error?.message, { position: 'top-center' })
                 console.log(error)
             }
         } else {
@@ -141,14 +142,14 @@ function SendMessage({ setMessages }: { setMessages: any }) {
     return (
         <>
             {file && (
-                    <File_And_ImagePreview setMessages={setMessages} file={file} preview={preview} setPreview={setPreview} setFile={setFile} />
+                <File_And_ImagePreview setMessages={setMessages} file={file} preview={preview} setPreview={setPreview} setFile={setFile} />
             )}
             {
                 show && (
                     <div className='absolute  left-0'>
                         <EmojiPicker className='w-full' width={800} height={300} onEmojiClick={(emoji) => {
                             setMessageInput(prevState => prevState + emoji.emoji);
-                        }}/>
+                        }} />
                     </div>
                 )
             }
