@@ -10,7 +10,7 @@ export const uploadToCloudinary = async (imageFile: any ) => {
     try {
         const {data} = await CLOUDINARY_INSTANCE.post('',formData,{withCredentials:false})
         console.log(data);
-        return data.url
+        return data.secure_url
     } catch (error) {
         console.log(error)
     }

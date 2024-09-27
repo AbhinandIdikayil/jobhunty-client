@@ -1,5 +1,5 @@
 import { test, expect, chromium } from '@playwright/test';
-let url = 'http://localhost:5173/'
+let url = 'https://jobhunty-client.vercel.app/'
 // test('has title', async ({ page }) => {
 //   await page.goto(url + 'home');
 
@@ -30,15 +30,24 @@ test('signup form validation', async ({ page }) => {
   await expect(page.getByText('password is required')).toBeVisible();
 
   // TEST EMAIL VALIDATION
-  await page.fill('input[type="email"]','$#$#%@gmail.com')
+  await page.fill('input[type="email"]', '$#$#%@gmail.com')
   await expect(page.getByText('email is invalid')).toBeVisible();
 
   //TEST EXISTING USER
-  await page.fill('input[type="text"]','abhinand')
-  await page.fill('input[type="email"]','abhinand@gmail.com')
-  await page.fill('#password','Abhi@123')
+  await page.fill('input[type="text"]', 'abhinand')
+  await page.fill('input[type="email"]', 'abhinand@gmail.com')
+  await page.fill('#password', 'Abhi@123')
 
   await page.click('button[type="submit"]')
 
   await expect(page.getByText('user already exist')).toBeVisible()
+})
+
+test('login validation', async ({ page }) => {
+  await page.goto('https://jobhunty-client.vercel.app/login')
+
+  await page.click('button[type="submit"]')
+
+  await expect(page.getByText('email is required')).toBeVisible();
+  await expect(page.getByText('password is required')).toBeVisible();
 })
