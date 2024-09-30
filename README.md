@@ -2,34 +2,20 @@
 
 This project is a comprehensive **job-portal** and **interview scheduling** project built with ***microservice*** architecure
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 ## TECHNOLOGIES USED
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 - MERN (mongodb, expressjs, reactjs and nodejs)
-- socket-io (interaction b/w employee and recruiter, realtime notification)
-- nodemailer 
-- shadcn, mui
-- rabbitmq (communicatino b/w services)
-- cloudinary (For storing image)
-- docker and k8s
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- Socket-io (interaction b/w employee and recruiter, realtime notification)
+- Nodemailer 
+- Shadcn, mui and tailwindcss
+- Tensorflowjs (For job recommendation)
+- NLP (resume grader)
+- Gemini ai (For resume generator, quiz and for job description generator)
+- Rabbitmq (communication b/w services)
+- Cloudinary (For storing image)
+- Docker and k8s
 
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
