@@ -1,16 +1,22 @@
 # JOBHUNTLY
 
-This project is a comprehensive job-portal and interview scheduling project built with microservice architecure
+This project is a comprehensive **job-portal** and **interview scheduling** project built with ***microservice*** architecure
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## TECHNOLOGIES USED
 
 If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
+- MERN (mongodb, expressjs, reactjs and nodejs)
+- socket-io (interaction b/w employee and recruiter, realtime notification)
+- nodemailer 
+- shadcn, mui
+- rabbitmq (communicatino b/w services)
+- cloudinary (For storing image)
+- docker and k8s
 - Configure the top-level `parserOptions` property like this:
 
 ```js
