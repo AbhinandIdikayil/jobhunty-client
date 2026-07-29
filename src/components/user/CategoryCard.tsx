@@ -1,27 +1,52 @@
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
-function CategoryCard({image,name,count}:{image: string,name: string,count:number}) {
+const cardMotion = {
+    hidden: { opacity: 0, y: 18 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.45, ease: 'easeOut' },
+    },
+}
+
+function CategoryCard({ image, name, count, index = 0 }: { image: string, name: string, count: number, index?: number }) {
     return (
-        <Link to={'jobs'} className="flex flex-col w-full sm:w-3/12">
-            <div className="border-solid border-zinc-200 p-1">
-                <div className="flex flex-col grow p-8 mx-auto w-full bg-white border  max-md:px-5 max-md:mt-8 hover:bg-indigo-600 duration-300 hover:rounded-xl hover:-translate-y-2 group">
+        <motion.div
+            variants={cardMotion}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ delay: index * 0.08 }}
+        >
+            <Link
+                to={'jobs'}
+                className="group block rounded-[24px] border border-warm-border bg-[linear-gradient(180deg,_#ffffff_0%,_#fbfaf7_100%)] p-6 shadow-warm transition-all duration-300 hover:-translate-y-1 hover:shadow-warm-md"
+            >
+                <div className="w-11 h-11 rounded-2xl bg-indigo-600/10 grid place-items-center overflow-hidden">
                     <img
                         loading="lazy"
                         src={image}
-                        // src="https://cdn.builder.io/api/v1/image/assets/TEMP/63c8189458ac5f21b05be8bf89f4950a86b8f74a7de1a844d806a44770027777?"
-                        className="w-12 h-12 aspect-square rounded-lg"
+                        className="w-6 h-6 object-contain"
+                        alt={name}
                     />
-                    <div className="mt-8 text-2xl font-semibold leading-7 text-slate-800 group-hover:text-white">
-                        {name}
-                    </div>
-                    <div className="flex gap-4 px-px mt-3 text-lg leading-7 text-slate-500">
-                        <div className='group-hover:text-white'>{count} jobs available</div>
-                        <ArrowRight className='group-hover:text-white' />
-                    </div>
                 </div>
-            </div>
-        </Link>
+                <div className="mt-5 text-lg font-semibold leading-tight tracking-tight text-slate-900">
+                    {name}
+                </div>
+                <div className="flex items-center justify-between mt-4">
+                    <span className="rounded-full bg-slate-900/5 px-3 py-1.5 text-xs font-medium text-slate-700">
+                        {count} jobs available
+                    </span>
+                    <ArrowRight
+                        size={16}
+                        strokeWidth={2}
+                        className="text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-1 transition-all duration-300"
+                    />
+                </div>
+            </Link>
+        </motion.div>
     )
 }
 

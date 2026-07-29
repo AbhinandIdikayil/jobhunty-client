@@ -1,7 +1,7 @@
 
 function Footer() {
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center min-w-full">
             <div className="flex  flex-col items-center px-12 sm:px-32 pt-16 pb-10 w-full bg-gray-800 max-md:px-5 max-md:max-w-full">
                 <div className="flex flex-col w-full max-w-[1192px] max-md:max-w-full">
                     <div className="flex flex-wrap gap-5 justify-between items-start max-md:max-w-full">
